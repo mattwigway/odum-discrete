@@ -1,0 +1,67 @@
+# Data prep script for Data Matters discrete choice class
+
+```{r}
+#| include=FALSE
+library(tidyverse)
+```
+
+## Carpool dataset
+
+For testing logistic regression.
+
+```{r}
+read_csv("data/nhts/trippub.csv") %>%
+    filter(TRPTRANS %in% c("03", "04", "05", "06") & DRVRCNT >= 1) %>%
+    mutate(carpool=NUMONTRP > 1, cars_per_driver=HHVEHCNT / DRVRCNT,              commute=WHYTRP1S==10, social=WHYTRP1S==50, hhsize=HHSIZE, id=row_number()) %>%
+    slice_sample(n=5000) %>%
+    select(id, carpool, cars_per_driver, hhsize, commute, social) %>%
+    write_csv("data/nhts/carpool.csv")
+```
+
+## WFH Dataset
+
+```{r}
+covidfuture = read_csv("data/covidfuture/covid_pooled_public_w1b_1.1.0b7.csv")
+```
+
+```{r}
+# create the wfh variable
+workers = covidfuture %>%
+    filter(worker_pre == "yes" | worker_now == "yes") %>%
+    mutate(
+        wfh=case_when(
+            wfh_expect == "No" ~ "Unable",
+            wfh_freq_exp %in% c("Never", "A few times/year") ~ "Rarely",
+            wfh_freq_exp %in% c("A few times/month", "Once/week", "A few times/week") ~ "Often",
+            wfh_freq_exp == "Every day" ~ "Always"
+        ),
+        income_100k_plus = hhincome_summary == "$100,000 or more",
+        service_worker=
+            !(case_when(ind_now == "Question not displayed to respondent" ~ ind_pre, T ~ ind_now) %in% c("None of the above", "Seen but unanswered"))
+        ) %>%
+    filter(!is.na(wfh))
+
+select(workers, resp_id, wfh, age, income_100k_plus, service_worker) %>%
+    write_csv("data/covidfuture_wfh.csv")
+```
+
+## Mode choice
+
+From statsmodels
+
+```{r}
+mc = read_delim("data/statsmodels/modechoice.csv", delim=";") %>%
+    mutate(mode=recode(`mode`, `1`="air", `2`="train", `3`="bus", `4`="car")) %>%
+    rename(wait_time=ttme, cost=invc, in_vehicle_time=invt) %>%
+    pivot_wider(id_cols=individual, names_from=mode, values_from=choice:psize) %>%
+    mutate(chosen=case_when(
+        choice_air==1 ~ "air",
+        choice_train==1 ~ "train",
+        choice_bus==1 ~ "bus",
+        choice_car==1 ~ "car"
+    )) %>%
+    select(individual, chosen, starts_with("wait_time"), starts_with("cost"), starts_with("in_vehicle_time"), hinc_car, psize_car) %>%
+    rename(hhincome_thousands="hinc_car", party_size="psize_car") %>%
+    write_csv("data/modechoice.csv")
+```
+

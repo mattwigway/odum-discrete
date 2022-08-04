@@ -1,0 +1,904 @@
+---
+title: Introduction to discrete choice models in R
+author: Matt Bhagat-Conway
+date: August 11, 2022
+institute: Odum Institute<br/>University of North Carolina at Chapel Hill
+format:
+    revealjs:
+        theme: [default, datamatters.scss]
+        width: 1280
+        height: 720
+        logo: dm-logo.png
+execute:
+    cache: true
+bibliography: discrete-choice.bib
+---
+
+## About me
+
+```{r}
+#| echo: false
+#| cache: false
+system2("julia", c("extract_chunks.jl", "discrete-choice.qmd"))
+```
+
+```{r}
+#| include=FALSE
+library(ggplot2)
+bgcolor = "#002e3e"
+fgcolor = "#ffffff"
+linecolor = "#ff0948"
+
+theme_dm = theme_minimal() + theme(
+    panel.background=element_rect(fill=bgcolor, color=fgcolor),
+    panel.grid=element_blank(),
+    plot.background=element_rect(fill=bgcolor, size=0),
+    axis.text=element_text(size=10, color=fgcolor),
+    axis.title=element_text(size=14, color=fgcolor)
+)
+
+update_geom_defaults("point", list(color=linecolor))
+update_geom_defaults("line", list(color=linecolor))
+
+library(knitr)
+```
+
+- Assistant professor of City and Regional Planning
+- Research focus: transportation modeling and simulation
+    - Heavy use of discrete choice models
+- PhD in Geography from Arizona State
+- Three years experience as transportation modeling software developer
+
+
+
+## What are discrete choice models?
+
+- Any model of a variable that takes on discrete values
+- Could be binary (two values), categorical (more than two values), or quantized (e.g., integers)
+
+## Types of discrete choice models
+
+- Random utility models
+    - Logistic regression, multinomial logistic regression, ordered logit, mixed logit
+- Count models
+    - Poisson and negative binomial regression
+- Machine learning
+    - Random forests, support vector machines, _k_ nearest neighbors
+
+## Random utility theory
+
+- Individuals are maximizing the _utility_ of their choices
+- Utility is an abstract concept of value
+- Individuals choose the choice with the highest utility
+- Utility is random because there is a random component to utility
+- We won't know which choice is the highest utility for an individual, only the probabilities that a particular choice will have the highest utility
+
+# Binary logistic regression
+
+## Binary logistic regression
+
+- A very common model for binary (yes/no) outcomes
+- Probably familiar to many
+- Usually presented as a generalized linear model
+
+## Binary logistic regression: Intuition
+
+- Linear functions can take on any value
+- Probabilities need to be between 0 and 1
+- The logit function transforms arbitrary linear values to (0, 1)
+
+## Binary logistic regression: the math
+
+$$
+y^* = \alpha + \beta_1 x_1 + \beta_2 x_2 \cdots + \epsilon
+$$
+
+$$
+\epsilon \thicksim \mathrm{Logistic}
+$$
+$$
+p(y = 1) = p(y^* > 0) = \frac{e^{y^*}}{1 + e^{y^*}}
+$$
+
+
+## The logit function
+
+<!-- run logistic regression -->
+```{r}
+#| fig-alt: Logistic regression, showing sigmoid function
+#| dev: svg
+#| fig-width: 6
+#| fig-height: 3
+#| out-width: 1200px
+#| fig-align: center
+library(ggplot2)
+
+xs = seq(-5.5, 5.5, 0.1)
+ys = exp(xs) / (1 + exp(xs))
+
+data = data.frame(x=xs, y=ys)
+
+ggplot(data, aes(x=x, y=y)) +
+    theme_dm +
+    geom_line() +
+    xlab("Utility") +
+    ylab("Probability") +
+    coord_cartesian(xlim=c(-5, 5))
+
+```
+
+## Logistic regression in R
+
+`nhts-carpool-glm.R`
+
+```{r}
+#| echo: true
+#| output: false
+#| filename: nhts-carpool-glm.R
+library(tidyverse)
+
+data = read_csv("data/nhts/carpool.csv")
+
+glm_model = glm(carpool~hhsize+cars_per_driver+commute+social,
+    family=binomial(link="logit"), data)
+summary(glm_model)
+```
+
+## Logistic regression in R
+
+```{r}
+summary(glm_model)
+```
+
+## Binary logistic regression as a random utility model
+
+- We can treat the linear predictor in logistic regression as the utility of the modeled outcome
+- In this case, the utility of carpooling
+- We also need a utility of not carpooling
+- Decisionmakers will choose the highest utility _alternative_
+
+## Binary logistic regression as a random utility model
+
+- Utilities are only meaningful relative to each other
+- Usual practice is to set utility of one alternative to 0
+
+## Binary logistic regression as a random utility model
+
+$$
+y^* = \alpha + \beta_1 x_1 + \beta_2 x_2 \cdots + \epsilon
+$$
+$$
+p(y = 1) = p(y^* > 0)\\= \frac{e^{y^*}}{1 + e^{y^*}}
+$$
+
+
+
+## Binary logistic regression as a random utility model
+
+$$
+U_{y=1} = \alpha + \beta_1 x_1 + \beta_2 x_2 \cdots + \epsilon_1
+$$
+$$
+U_{y=0} = 0 + \epsilon_0
+$$
+
+$$
+p(y = 1) = p(U_{y=1} > U_{y=0})\\= \frac{e^{U_{y=1}}}{e^{U_{y=0}} + e^{U_{y=1}}}
+$$
+
+## Binary logistic regression as a random utility model in R
+
+```{r}
+#| include: false
+rm(list=setdiff(ls(), c("glm_model"))) # clean environment, keep glm model for comparison
+```
+
+`nhts-carpool-apollo.R`
+```{r}
+#| echo: true
+#| filename: nhts-carpool-apollo.R
+library(apollo)
+library(tidyverse)
+
+# Read data - variable must be called "database"
+database = read_csv("data/nhts/carpool.csv")
+```
+
+---
+
+```{r}
+#| echo: true
+#| filename: nhts-carpool-apollo.R
+
+# Initialize Apollo library
+apollo_initialise()
+
+# set parameters for overall model
+apollo_control = list(
+    modelName="Carpool_binary",
+    indivID="id"
+)
+```
+
+---
+
+
+```{r}
+#| echo: true
+#| filename: nhts-carpool-apollo.R
+
+
+# In Apollo, you specify your utility functions by hand,
+# first telling Apollo what coefficients to estimate
+apollo_beta = c(
+    constant_carpool = 0, # 0 is starting value
+    b_hhsize = 0,
+    b_cars_per_driver = 0,
+    b_commute = 0,
+    b_social = 0
+)
+
+# any parameters that you want to remain constant go here
+apollo_fixed = c()
+```
+
+---
+
+```{r}
+#| echo: true
+#| filename: nhts-carpool-apollo.R
+
+# prepare the inputs to the Apollo estimation code
+apollo_inputs = apollo_validateInputs()
+```
+
+---
+
+
+```{r}
+#| echo: true
+#| filename: nhts-carpool-apollo.R
+
+# this function calculates probabilities of each alternative
+apollo_probabilities = function(apollo_beta, apollo_inputs,
+        functionality="estimate") {
+    # so we can refer to variables by name
+    apollo_attach(apollo_beta, apollo_inputs)
+    on.exit(apollo_detach(apollo_beta, apollo_inputs))
+
+    # This is the list of probabilities for the alternatives
+    # for each observation
+    P = list()
+
+    # Define utility functions
+    V = list()
+    V[["carpool"]] = constant_carpool + b_hhsize * hhsize +
+        b_cars_per_driver * cars_per_driver +
+        b_commute * commute + b_social * social
+    V[["not_carpool"]] = 0
+
+    # associate utility functions with data
+    logit_settings = list(
+        alternatives = c(carpool=T, not_carpool=F),
+        avail        = list(carpool=T, not_carpool=T),
+        choiceVar    = carpool,
+        utilities    = V
+    )
+
+    # compute probabilities
+    P[["model"]] = apollo_mnl(logit_settings, functionality)
+
+    P = apollo_prepareProb(P, apollo_inputs, functionality)
+    return(P)
+}
+```
+
+---
+
+```{r}
+#| echo: true
+#| filename: nhts-carpool-apollo.R
+
+# finally, estimate the model
+model = apollo_estimate(apollo_beta, apollo_fixed,
+    apollo_probabilities, apollo_inputs)
+```
+
+---
+
+```{r}
+#| echo: true
+#| filename: nhts-carpool-apollo.R
+
+# print results
+apollo_modelOutput(model)
+```
+
+## But don't take my word for it...
+
+```{r}
+#| echo: false
+summary(glm_model)
+```
+
+# Questions?
+
+# The multinomial logit model
+
+## What about more than two outcomes?
+
+- Random utility theory doesn't constrain us to two outcomes
+- We can have many outcomes, and decisionmakers choose the one with the highest utility
+- This is known as a _multinomial_ model
+
+## Extending logistic regression to the multinomial case
+
+- Instead of two utilities $U_{y=1}$ and $U_{y=0}$, we have arbitrary number of utility functions $U_i$
+- Decisionmakers choose the option with the highest utility
+- As with binary logistic regression, utility functions are usually linear combinations of parameters
+
+## Multinomial logistic regression: the math
+
+- Probability then becomes
+
+$$
+p(y=i)\\= p(U_i > \mathrm{all~other}~U)\\
+    =\frac{e^{U_i}}{e^{U_1} + e^{U_2} \cdots}\\
+    =\frac{e^{U_i}}{\sum_{j \in I} e^{U_j}}
+$$
+
+## Multinomial logistic regression in R
+
+```{r}
+#| include: false
+rm(list=ls())
+```
+
+- We will build a model of working from home expectation post-pandemic, using data from the [COVID Future](https://covidfuture.org) study.
+- We will estimate four utility functions, for being unable to, rarely, frequently, and always working from home
+- Based on age, income, and job type
+- These utility functions will have the same variables but different coefficients
+- Each will also have a _alternative specific constant_---like a constant in logistic regression that represents the base rate, but for each alternative
+- One utility function will be held at zero
+
+## Multinomial logistic regression in R
+
+`covidfuture-wfh-mnl.R`
+
+```{r}
+#| echo: true
+#| filename: covidfuture-wfh-mnl.R
+library(apollo)
+library(tidyverse)
+
+database = read_csv("data/covidfuture_wfh.csv")
+
+apollo_initialise()
+
+apollo_control = list(
+    modelName="WFH_Postpandemic",
+    indivID="resp_id"
+)
+```
+
+---
+
+```{r}
+#| echo: true
+#| filename: covidfuture-wfh-mnl.R
+
+head(database)
+```
+
+---
+
+```{r}
+#| echo: true
+#| filename: covidfuture-wfh-mnl.R
+
+# now, we must define all the coefficients
+# we have separate sets of coefficients for each utility
+# function, because the utilities need to be different
+apollo_beta = c(
+    asc_rarely = 0,
+    asc_often = 0,
+    asc_always = 0,
+    b_rarely_age = 0,
+    b_often_age = 0,
+    b_always_age = 0,
+    b_rarely_highinc = 0,
+    b_often_highinc = 0,
+    b_always_highinc = 0,
+    b_rarely_service_worker = 0,
+    b_often_service_worker = 0,
+    b_always_service_worker = 0
+)
+```
+---
+
+```{r}
+#| echo: true
+#| filename: covidfuture-wfh-mnl.R
+
+apollo_fixed = c()
+
+apollo_inputs = apollo_validateInputs()
+```
+
+---
+
+```{r}
+#| echo: true
+#| filename: covidfuture-wfh-mnl.R
+
+# Finally, we define the utility functions in apollo_probabilities
+apollo_probabilities = function(apollo_beta, apollo_inputs,
+        functionality="estimate") {
+    apollo_attach(apollo_beta, apollo_inputs)
+    on.exit(apollo_detach(apollo_beta, apollo_inputs))
+
+    P = list()
+
+    # define utility functions
+    V = list()
+    # fix one utility to zero
+    V[["Unable"]] = 0
+    V[["Rarely"]] = asc_rarely + b_rarely_age * age +
+        b_rarely_highinc * income_100k_plus +
+        b_rarely_service_worker * service_worker
+    V[["Often"]] = asc_often + b_often_age * age +
+        b_often_highinc * income_100k_plus +
+        b_often_service_worker * service_worker
+    V[["Always"]] = asc_always + b_always_age * age +
+        b_always_highinc * income_100k_plus +
+        b_always_service_worker * service_worker
+        
+    mnl_settings = list(
+        alternatives = c(Unable="Unable", Rarely="Rarely",
+            Often="Often", Always="Always"),
+        avail = list(Unable=T, Rarely=T, Often=T, Always=T),
+        choiceVar = wfh,
+        utilities = V
+    )
+
+    P[["model"]] = apollo_mnl(mnl_settings, functionality)
+    P = apollo_prepareProb(P, apollo_inputs, functionality)
+    return(P)
+}
+```
+
+---
+
+```{r}
+#| echo: true
+#| filename: covidfuture-wfh-mnl.R
+
+# estimate model
+model = apollo_estimate(apollo_beta, apollo_fixed,
+    apollo_probabilities, apollo_inputs)
+```
+
+---
+
+```{r}
+#| echo: true
+#| filename: covidfuture-wfh-mnl.R
+
+# Print results
+apollo_modelOutput(model)
+```
+
+## Interpreting multinomial logit results
+
+```{r}
+df = data.frame(
+        round(matrix(model$estimate, 4, 3, byrow=T), digits=2),
+        row.names=c("ASC", "Age", "High income", "Service worker")
+)
+names(df) <- c("Rarely", "Often", "Always")
+kable(df)
+```
+
+Note: all variables significant at $p < 0.05$
+
+---
+
+- Relative to being unable to WFH,
+    - Older people are less likely to WFH rarely or often, but more likely to always
+    - Higher income people are much more likely to be able to and choose to WFH
+    - Service workers are less likely to be able to WFH
+    - Scale of age variable is different from others
+
+# Questions?
+
+## Specifying a multinomial logit model
+
+- Multinomial logit models can have independent variables that vary at the individual level (e.g., income)
+- Can also have variables at the alternative level (e.g., travel time)
+- Utilities identified only up to a constant offset
+    - Constant changes to all utilities does not change outcome
+
+## Specifying a multinomial logit model
+- Variables that vary at _individual_ level must have different coefficients for each alternative, and one must be zero
+- Variables that vary at _alternative_ level may or may not have different coefficients for each alternative, and there is no need have one zero coefficient
+    - But you do have to know values for unchosen alternatives
+
+## Specifying a multinomial logit model
+
+```{dot}
+//| fig-width: 12
+//| fig-height: 6
+
+digraph G{
+    bgcolor = "#00000000";
+    node [color = "#ffffff", fontcolor = "#ffffff"];
+    edge [color = "#ffffff"];
+
+    inc [label=Income, shape=box];
+    subgraph clustertt {
+        color = "#00000000";
+    ttw [label="Travel time of walk", shape=box];
+    ttb [label="Travel time of bus", shape=box];
+    ttc [label="Travel time of car", shape=box];
+    }
+
+    uw [label = "Utility of walk"];
+    ub [label = "Utility of bus"];
+    uc [label = "Utility of car"];
+
+    edge [arrowhead = none];
+    node [shape = none, label = "", margin=0, width=0, height=0];
+    inc -> iw;
+    inc -> ib;
+    inc -> ic;
+    ttw -> tw;
+    ttb -> tb;
+    ttc -> tc;
+
+    edge [arrowhead = normal];
+    iw -> uw;
+    ib -> ub;
+    ic -> uc;
+    tw -> uw;
+    tb -> ub;
+    tc -> uc;
+
+    edge [color="#ff0948", arrowhead=none];
+    node [color="#ff0948", shape=none, fontcolor="#ff0948"];
+    md [label = "Must be different,\none must be zero"];
+    cs [label = "Can be same"];
+
+    iw -> md;
+    ic -> md;
+    ib -> md;
+
+    cs -> tw;
+    cs -> tb;
+    cs -> tc;
+
+}
+```
+
+## Estimating a multinomial logit model in R
+
+```{r}
+#| echo: false
+rm(list=ls())
+```
+
+- We're going to build a multinomial logit mode choice model of intercity mode choice between major Australian cities
+- Data from Python `statsmodels` package, originally from @greene_econometric_2011, online table F18-2
+
+## The data
+
+```{r}
+#| echo: false
+kable(read_csv("data/modechoice.csv", n_max=6))
+```
+
+```{r}
+#| include: false
+rm(list=ls())
+```
+
+## Estimation in R
+
+`mode-choice-mnl.R`
+
+```{r}
+#| echo: true
+#| filename: mode-choice-mnl.R
+
+library(apollo)
+library(tidyverse)
+
+database = read_csv("data/modechoice.csv")
+
+apollo_initialise()
+
+apollo_control = list(
+    modelName = "Australia_Mode_Choice",
+    indivID="individual"
+)
+```
+
+---
+
+```{r}
+#| echo: true
+#| filename: mode-choice-mnl.R
+head(database)
+```
+
+---
+
+```{r}
+#| echo: true
+#| filename: mode-choice-mnl.R
+
+apollo_beta = c(
+    asc_air = 0,
+    asc_bus = 0,
+    asc_train = 0,
+    # leaving out an asc_car as base category
+    # wait_time varies across alternatives, so we can have a
+    # single wait_time coefficient
+    b_wait_time = 0,
+    b_cost = 0,
+    b_in_vehicle_time = 0,
+    # income and party_size are individual level variable, so
+    # must be different for different alternatives
+    b_hhincome_air = 0,
+    b_hhincome_bus = 0,
+    b_hhincome_train = 0,
+    b_party_size_air = 0,
+    b_party_size_bus = 0,
+    b_party_size_train = 0
+)
+```
+
+---
+
+```{r}
+#| echo: true
+#| filename: mode-choice-mnl.R
+
+apollo_fixed = c()
+
+apollo_inputs = apollo_validateInputs()
+```
+
+---
+
+```{r}
+#| echo: true
+#| filename: mode-choice-mnl.R
+
+apollo_probabilities = function(apollo_beta, apollo_inputs,
+        functionality="estimate") {
+    apollo_attach(apollo_beta, apollo_inputs)
+    on.exit(apollo_detach(apollo_beta, apollo_inputs))
+
+    P = list()
+
+    # define utility functions
+    V = list()
+    # We can include cost and in-vehicle time here because they vary over
+    # alternatives
+    V[["car"]] = b_cost * cost_car +
+        b_in_vehicle_time * in_vehicle_time_car
+    # Exercise: why can't we include wait time in utility of car?
+
+    V[["air"]] = asc_air +
+        b_cost * cost_air +
+        b_in_vehicle_time * in_vehicle_time_air +
+        b_wait_time * wait_time_air +
+        b_hhincome_air * hhincome_thousands +
+        b_party_size_air * party_size
+
+    V[["train"]] = asc_train +
+        b_cost * cost_train +
+        b_in_vehicle_time * in_vehicle_time_train +
+        b_wait_time * wait_time_train +
+        b_hhincome_train * hhincome_thousands +
+        b_party_size_train * party_size
+
+    V[["bus"]] = asc_bus +
+        b_cost * cost_bus +
+        b_in_vehicle_time * in_vehicle_time_bus +
+        b_wait_time * wait_time_bus +
+        b_hhincome_bus * hhincome_thousands +
+        b_party_size_bus * party_size
+
+    mnl_settings = list(
+        alternatives = c(car="car", air="air", train="train", bus="bus"),
+        avail = list(car=T, air=T, train=T, bus=T),
+        choiceVar = chosen,
+        utilities = V
+    )
+
+    P[["model"]] = apollo_mnl(mnl_settings, functionality)
+    P = apollo_prepareProb(P, apollo_inputs, functionality)
+    return(P)
+}
+```
+
+---
+
+```{r}
+#| echo: true
+#| filename: mode-choice-mnl.R
+
+# estimate model
+model = apollo_estimate(apollo_beta, apollo_fixed,
+    apollo_probabilities, apollo_inputs)
+```
+
+---
+
+```{r}
+#| echo: true
+#| filename: mode-choice-mnl.R
+
+# Print results
+apollo_modelOutput(model)
+```
+
+## Exercise
+
+- People may value in-vehicle time differently on the train vs. plane vs. car vs. bus
+- Modify the model to estimate separate in-vehicle time coefficients for each mode
+- (One) answer in mode-choice-mnl-in-vehicle-answers.R
+
+## Solution
+
+```{r}
+#| include: false
+rm(list=ls())
+```
+
+```{r}
+#| include: false
+#| filename: mode-choice-mnl-in-vehicle-answers.R
+
+library(apollo)
+library(tidyverse)
+
+database = read_csv("data/modechoice.csv")
+
+apollo_initialise()
+
+apollo_control = list(
+    modelName = "Australia_Mode_Choice",
+    indivID="individual"
+)
+
+head(database)
+
+```
+
+
+```{r}
+#| echo: true
+#| filename: mode-choice-mnl-in-vehicle-answers.R
+
+apollo_beta = c(
+    asc_air = 0,
+    asc_bus = 0,
+    asc_train = 0,
+    # leaving out an asc_car as base category
+    b_wait_time=0,
+    b_cost = 0,
+    b_in_vehicle_time_car = 0,
+    b_in_vehicle_time_bus = 0,
+    b_in_vehicle_time_train = 0,
+    b_in_vehicle_time_air = 0,
+    # income and party_size are individual level variable, so
+    # must be different for different alternatives
+    b_hhincome_air = 0,
+    b_hhincome_bus = 0,
+    b_hhincome_train = 0,
+    b_party_size_air = 0,
+    b_party_size_bus = 0,
+    b_party_size_train = 0
+)
+```
+
+---
+
+```{r}
+#| include: false
+#| filename: mode-choice-mnl-in-vehicle-answers.R
+
+apollo_fixed = c()
+
+apollo_inputs = apollo_validateInputs()
+```
+
+```{r}
+#| echo: true
+#| filename: mode-choice-mnl-in-vehicle-answers.R
+
+apollo_probabilities = function(apollo_beta, apollo_inputs,
+        functionality="estimate") {
+    apollo_attach(apollo_beta, apollo_inputs)
+    on.exit(apollo_detach(apollo_beta, apollo_inputs))
+
+    P = list()
+
+    # define utility functions
+    V = list()
+
+    V[["car"]] = b_cost * cost_car +
+        b_in_vehicle_time_car * in_vehicle_time_car
+
+    V[["air"]] = asc_air +
+        b_cost * cost_air +
+        b_in_vehicle_time_air * in_vehicle_time_air +
+        b_wait_time * wait_time_air +
+        b_hhincome_air * hhincome_thousands +
+        b_party_size_air * party_size
+
+    V[["train"]] = asc_train +
+        b_cost * cost_train +
+        b_in_vehicle_time_train * in_vehicle_time_train +
+        b_wait_time * wait_time_train +
+        b_hhincome_train * hhincome_thousands +
+        b_party_size_train * party_size
+
+    V[["bus"]] = asc_bus +
+        b_cost * cost_bus +
+        b_in_vehicle_time_bus * in_vehicle_time_bus +
+        b_wait_time * wait_time_bus +
+        b_hhincome_bus * hhincome_thousands +
+        b_party_size_bus * party_size
+
+    mnl_settings = list(
+        alternatives = c(car="car", air="air",
+            train="train", bus="bus"),
+        avail = list(car=T, air=T, train=T, bus=T),
+        choiceVar = chosen,
+        utilities = V
+    )
+
+    P[["model"]] = apollo_mnl(mnl_settings, functionality)
+    P = apollo_prepareProb(P, apollo_inputs, functionality)
+    return(P)
+}
+```
+
+---
+
+```{r}
+#| filename: mode-choice-mnl-in-vehicle-answers.R
+#| include: false
+
+```
+
+```{r}
+#| filename: mode-choice-mnl-in-vehicle-answers.R
+
+# estimate model
+model = apollo_estimate(apollo_beta, apollo_fixed,
+    apollo_probabilities, apollo_inputs)
+
+# Print results
+apollo_modelOutput(model)
+```
+
+## Interpretation
+
+- People really don't like being on airplanes
+    - Should also consider omitted variable bias, e.g. changes of planes
+
+
+## Independence of irrelevant alternatives
+
+# The probit model
+
+
+
+## References
+
+::: {#refs}
+:::
