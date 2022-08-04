@@ -1,0 +1,11 @@
+/*-- scss:defaults --*/
+$body-bg: #002e3e !default;
+$body-color: #fff !default;
+$font-family-sans-serif: "Open Sans";
+
+/*-- scss:rules --*/
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,700;1,400&display=swap');
+.reveal pre { font-size: .75em }
+// terminal look for output, on white background
+.reveal .cell-output pre code { background-color: #fff; color: #000; }
+.reveal a { color: #88ccff; }
