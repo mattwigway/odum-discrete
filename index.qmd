@@ -1,0 +1,6 @@
+---
+title: Odum Discrete Choice Modeling class
+author: Matt Bhagat-Conway
+---
+
+- [Slides](discrete-choice.html)
