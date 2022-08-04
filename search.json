@@ -1,0 +1,247 @@
+[
+  {
+    "objectID": "prepare-data.html",
+    "href": "prepare-data.html",
+    "title": "Data Matters Discrete Choice Models",
+    "section": "",
+    "text": "For testing logistic regression.\n\nread_csv(\"data/nhts/trippub.csv\") %>%\n    filter(TRPTRANS %in% c(\"03\", \"04\", \"05\", \"06\") & DRVRCNT >= 1) %>%\n    mutate(carpool=NUMONTRP > 1, cars_per_driver=HHVEHCNT / DRVRCNT,              commute=WHYTRP1S==10, social=WHYTRP1S==50, hhsize=HHSIZE, id=row_number()) %>%\n    slice_sample(n=5000) %>%\n    select(id, carpool, cars_per_driver, hhsize, commute, social) %>%\n    write_csv(\"data/nhts/carpool.csv\")\n\nRows: 923572 Columns: 115\n── Column specification ────────────────────────────────────────────────────────\nDelimiter: \",\"\nchr (74): PERSONID, TDTRPNUM, STRTTIME, ENDTIME, TRPTRANS, VEHID, DROP_PRK, ...\ndbl (41): HOUSEID, TRVLCMIN, TRPMILES, TRPACCMP, TRPHHACC, TRWAITTM, NUMTRAN...\n\nℹ Use `spec()` to retrieve the full column specification for this data.\nℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.\n\n\n\n\n\n\ncovidfuture = read_csv(\"data/covidfuture/covid_pooled_public_w1b_1.1.0b7.csv\")\n\nWarning: One or more parsing issues, see `problems()` for details\n\n\nRows: 8152 Columns: 487\n── Column specification ────────────────────────────────────────────────────────\nDelimiter: \",\"\nchr  (448): empl_pre, worker_pre, jobcat_pre, ind_pre, empl_now, worker_now,...\ndbl   (33): resp_id, wfh_now_days, bzvm_now, tr_freq_now_privateveh, tr_freq...\nlgl    (4): yrborn_miss_desc, hhsize_miss_desc, nchildren_miss_desc, Finished\ndate   (2): StartDate, EndDate\n\nℹ Use `spec()` to retrieve the full column specification for this data.\nℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.\n\n\n\n# create the wfh variable\nworkers = covidfuture %>%\n    filter(worker_pre == \"yes\" | worker_now == \"yes\") %>%\n    mutate(\n        wfh=case_when(\n            wfh_expect == \"No\" ~ \"Unable\",\n            wfh_freq_exp %in% c(\"Never\", \"A few times/year\") ~ \"Rarely\",\n            wfh_freq_exp %in% c(\"A few times/month\", \"Once/week\", \"A few times/week\") ~ \"Often\",\n            wfh_freq_exp == \"Every day\" ~ \"Always\"\n        ),\n        income_100k_plus = hhincome_summary == \"$100,000 or more\",\n        service_worker=\n            !(case_when(ind_now == \"Question not displayed to respondent\" ~ ind_pre, T ~ ind_now) %in% c(\"None of the above\", \"Seen but unanswered\"))\n        ) %>%\n    filter(!is.na(wfh))\n\nselect(workers, resp_id, wfh, age, income_100k_plus, service_worker) %>%\n    write_csv(\"data/covidfuture_wfh.csv\")\n\n\n\n\nFrom statsmodels\n\nmc = read_delim(\"data/statsmodels/modechoice.csv\", delim=\";\") %>%\n    mutate(mode=recode(`mode`, `1`=\"air\", `2`=\"train\", `3`=\"bus\", `4`=\"car\")) %>%\n    rename(wait_time=ttme, cost=invc, in_vehicle_time=invt) %>%\n    pivot_wider(id_cols=individual, names_from=mode, values_from=choice:psize) %>%\n    mutate(chosen=case_when(\n        choice_air==1 ~ \"air\",\n        choice_train==1 ~ \"train\",\n        choice_bus==1 ~ \"bus\",\n        choice_car==1 ~ \"car\"\n    )) %>%\n    select(individual, chosen, starts_with(\"wait_time\"), starts_with(\"cost\"), starts_with(\"in_vehicle_time\"), hinc_car, psize_car) %>%\n    rename(hhincome_thousands=\"hinc_car\", party_size=\"psize_car\") %>%\n    write_csv(\"data/modechoice.csv\")\n\nRows: 840 Columns: 9\n── Column specification ────────────────────────────────────────────────────────\nDelimiter: \";\"\ndbl (9): individual, mode, choice, ttme, invc, invt, gc, hinc, psize\n\nℹ Use `spec()` to retrieve the full column specification for this data.\nℹ Specify the column types or set `show_col_types = FALSE` to quiet this message."
+  },
+  {
+    "objectID": "discrete-choice.html#about-me",
+    "href": "discrete-choice.html#about-me",
+    "title": "Introduction to discrete choice models in R",
+    "section": "About me",
+    "text": "About me\n\n\n\n\nAssistant professor of City and Regional Planning\nResearch focus: transportation modeling and simulation\n\nHeavy use of discrete choice models\n\nPhD in Geography from Arizona State\nThree years experience as transportation modeling software developer"
+  },
+  {
+    "objectID": "discrete-choice.html#what-are-discrete-choice-models",
+    "href": "discrete-choice.html#what-are-discrete-choice-models",
+    "title": "Introduction to discrete choice models in R",
+    "section": "What are discrete choice models?",
+    "text": "What are discrete choice models?\n\nAny model of a variable that takes on discrete values\nCould be binary (two values), categorical (more than two values), or quantized (e.g., integers)"
+  },
+  {
+    "objectID": "discrete-choice.html#types-of-discrete-choice-models",
+    "href": "discrete-choice.html#types-of-discrete-choice-models",
+    "title": "Introduction to discrete choice models in R",
+    "section": "Types of discrete choice models",
+    "text": "Types of discrete choice models\n\nRandom utility models\n\nLogistic regression, multinomial logistic regression, ordered logit, mixed logit\n\nCount models\n\nPoisson and negative binomial regression\n\nMachine learning\n\nRandom forests, support vector machines, k nearest neighbors"
+  },
+  {
+    "objectID": "discrete-choice.html#random-utility-theory",
+    "href": "discrete-choice.html#random-utility-theory",
+    "title": "Introduction to discrete choice models in R",
+    "section": "Random utility theory",
+    "text": "Random utility theory\n\nIndividuals are maximizing the utility of their choices\nUtility is an abstract concept of value\nIndividuals choose the choice with the highest utility\nUtility is random because there is a random component to utility\nWe won’t know which choice is the highest utility for an individual, only the probabilities that a particular choice will have the highest utility"
+  },
+  {
+    "objectID": "discrete-choice.html#binary-logistic-regression-1",
+    "href": "discrete-choice.html#binary-logistic-regression-1",
+    "title": "Introduction to discrete choice models in R",
+    "section": "Binary logistic regression",
+    "text": "Binary logistic regression\n\nA very common model for binary (yes/no) outcomes\nProbably familiar to many\nUsually presented as a generalized linear model"
+  },
+  {
+    "objectID": "discrete-choice.html#binary-logistic-regression-intuition",
+    "href": "discrete-choice.html#binary-logistic-regression-intuition",
+    "title": "Introduction to discrete choice models in R",
+    "section": "Binary logistic regression: Intuition",
+    "text": "Binary logistic regression: Intuition\n\nLinear functions can take on any value\nProbabilities need to be between 0 and 1\nThe logit function transforms arbitrary linear values to (0, 1)"
+  },
+  {
+    "objectID": "discrete-choice.html#binary-logistic-regression-the-math",
+    "href": "discrete-choice.html#binary-logistic-regression-the-math",
+    "title": "Introduction to discrete choice models in R",
+    "section": "Binary logistic regression: the math",
+    "text": "Binary logistic regression: the math\n\\[\ny^* = \\alpha + \\beta_1 x_1 + \\beta_2 x_2 \\cdots + \\epsilon\n\\]\n\\[\n\\epsilon \\thicksim \\mathrm{Logistic}\n\\]\n\\[\np(y = 1) = p(y^* > 0) = \\frac{e^{y^*}}{1 + e^{y^*}}\n\\]"
+  },
+  {
+    "objectID": "discrete-choice.html#the-logit-function",
+    "href": "discrete-choice.html#the-logit-function",
+    "title": "Introduction to discrete choice models in R",
+    "section": "The logit function",
+    "text": "The logit function"
+  },
+  {
+    "objectID": "discrete-choice.html#logistic-regression-in-r",
+    "href": "discrete-choice.html#logistic-regression-in-r",
+    "title": "Introduction to discrete choice models in R",
+    "section": "Logistic regression in R",
+    "text": "Logistic regression in R\nnhts-carpool-glm.R\n\nlibrary(tidyverse)\n\ndata = read_csv(\"data/nhts/carpool.csv\")\n\nglm_model = glm(carpool~hhsize+cars_per_driver+commute+social,\n    family=binomial(link=\"logit\"), data)\nsummary(glm_model)"
+  },
+  {
+    "objectID": "discrete-choice.html#logistic-regression-in-r-1",
+    "href": "discrete-choice.html#logistic-regression-in-r-1",
+    "title": "Introduction to discrete choice models in R",
+    "section": "Logistic regression in R",
+    "text": "Logistic regression in R\n\n\n\nCall:\nglm(formula = carpool ~ hhsize + cars_per_driver + commute + \n    social, family = binomial(link = \"logit\"), data = data)\n\nDeviance Residuals: \n    Min       1Q   Median       3Q      Max  \n-2.3582  -1.1265  -0.4481   1.0860   2.1904  \n\nCoefficients:\n                Estimate Std. Error z value Pr(>|z|)    \n(Intercept)     -0.78163    0.10461  -7.472 7.90e-14 ***\nhhsize           0.35814    0.02443  14.661  < 2e-16 ***\ncars_per_driver -0.05554    0.05791  -0.959    0.338    \ncommuteTRUE     -1.76913    0.11542 -15.328  < 2e-16 ***\nsocialTRUE       0.52620    0.09966   5.280 1.29e-07 ***\n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\n(Dispersion parameter for binomial family taken to be 1)\n\n    Null deviance: 6929.4  on 4999  degrees of freedom\nResidual deviance: 6340.2  on 4995  degrees of freedom\nAIC: 6350.2\n\nNumber of Fisher Scoring iterations: 4"
+  },
+  {
+    "objectID": "discrete-choice.html#binary-logistic-regression-as-a-random-utility-model",
+    "href": "discrete-choice.html#binary-logistic-regression-as-a-random-utility-model",
+    "title": "Introduction to discrete choice models in R",
+    "section": "Binary logistic regression as a random utility model",
+    "text": "Binary logistic regression as a random utility model\n\nWe can treat the linear predictor in logistic regression as the utility of the modeled outcome\nIn this case, the utility of carpooling\nWe also need a utility of not carpooling\nDecisionmakers will choose the highest utility alternative"
+  },
+  {
+    "objectID": "discrete-choice.html#binary-logistic-regression-as-a-random-utility-model-1",
+    "href": "discrete-choice.html#binary-logistic-regression-as-a-random-utility-model-1",
+    "title": "Introduction to discrete choice models in R",
+    "section": "Binary logistic regression as a random utility model",
+    "text": "Binary logistic regression as a random utility model\n\nUtilities are only meaningful relative to each other\nUsual practice is to set utility of one alternative to 0"
+  },
+  {
+    "objectID": "discrete-choice.html#binary-logistic-regression-as-a-random-utility-model-2",
+    "href": "discrete-choice.html#binary-logistic-regression-as-a-random-utility-model-2",
+    "title": "Introduction to discrete choice models in R",
+    "section": "Binary logistic regression as a random utility model",
+    "text": "Binary logistic regression as a random utility model\n\\[\ny^* = \\alpha + \\beta_1 x_1 + \\beta_2 x_2 \\cdots + \\epsilon\n\\]\n\\[\np(y = 1) = p(y^* > 0)\\\\= \\frac{e^{y^*}}{1 + e^{y^*}}\n\\]"
+  },
+  {
+    "objectID": "discrete-choice.html#binary-logistic-regression-as-a-random-utility-model-3",
+    "href": "discrete-choice.html#binary-logistic-regression-as-a-random-utility-model-3",
+    "title": "Introduction to discrete choice models in R",
+    "section": "Binary logistic regression as a random utility model",
+    "text": "Binary logistic regression as a random utility model\n\\[\nU_{y=1} = \\alpha + \\beta_1 x_1 + \\beta_2 x_2 \\cdots + \\epsilon_1\n\\]\n\\[\nU_{y=0} = 0 + \\epsilon_0\n\\]\n\\[\np(y = 1) = p(U_{y=1} > U_{y=0})\\\\= \\frac{e^{U_{y=1}}}{e^{U_{y=0}} + e^{U_{y=1}}}\n\\]"
+  },
+  {
+    "objectID": "discrete-choice.html#binary-logistic-regression-as-a-random-utility-model-in-r",
+    "href": "discrete-choice.html#binary-logistic-regression-as-a-random-utility-model-in-r",
+    "title": "Introduction to discrete choice models in R",
+    "section": "Binary logistic regression as a random utility model in R",
+    "text": "Binary logistic regression as a random utility model in R\nnhts-carpool-apollo.R\n\nlibrary(apollo)\nlibrary(tidyverse)\n\n# Read data - variable must be called \"database\"\ndatabase = read_csv(\"data/nhts/carpool.csv\")"
+  },
+  {
+    "objectID": "discrete-choice.html#but-dont-take-my-word-for-it",
+    "href": "discrete-choice.html#but-dont-take-my-word-for-it",
+    "title": "Introduction to discrete choice models in R",
+    "section": "But don’t take my word for it…",
+    "text": "But don’t take my word for it…\n\n\n\nCall:\nglm(formula = carpool ~ hhsize + cars_per_driver + commute + \n    social, family = binomial(link = \"logit\"), data = data)\n\nDeviance Residuals: \n    Min       1Q   Median       3Q      Max  \n-2.3582  -1.1265  -0.4481   1.0860   2.1904  \n\nCoefficients:\n                Estimate Std. Error z value Pr(>|z|)    \n(Intercept)     -0.78163    0.10461  -7.472 7.90e-14 ***\nhhsize           0.35814    0.02443  14.661  < 2e-16 ***\ncars_per_driver -0.05554    0.05791  -0.959    0.338    \ncommuteTRUE     -1.76913    0.11542 -15.328  < 2e-16 ***\nsocialTRUE       0.52620    0.09966   5.280 1.29e-07 ***\n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\n(Dispersion parameter for binomial family taken to be 1)\n\n    Null deviance: 6929.4  on 4999  degrees of freedom\nResidual deviance: 6340.2  on 4995  degrees of freedom\nAIC: 6350.2\n\nNumber of Fisher Scoring iterations: 4"
+  },
+  {
+    "objectID": "discrete-choice.html#what-about-more-than-two-outcomes",
+    "href": "discrete-choice.html#what-about-more-than-two-outcomes",
+    "title": "Introduction to discrete choice models in R",
+    "section": "What about more than two outcomes?",
+    "text": "What about more than two outcomes?\n\nRandom utility theory doesn’t constrain us to two outcomes\nWe can have many outcomes, and decisionmakers choose the one with the highest utility\nThis is known as a multinomial model"
+  },
+  {
+    "objectID": "discrete-choice.html#extending-logistic-regression-to-the-multinomial-case",
+    "href": "discrete-choice.html#extending-logistic-regression-to-the-multinomial-case",
+    "title": "Introduction to discrete choice models in R",
+    "section": "Extending logistic regression to the multinomial case",
+    "text": "Extending logistic regression to the multinomial case\n\nInstead of two utilities \\(U_{y=1}\\) and \\(U_{y=0}\\), we have arbitrary number of utility functions \\(U_i\\)\nDecisionmakers choose the option with the highest utility\nAs with binary logistic regression, utility functions are usually linear combinations of parameters"
+  },
+  {
+    "objectID": "discrete-choice.html#multinomial-logistic-regression-the-math",
+    "href": "discrete-choice.html#multinomial-logistic-regression-the-math",
+    "title": "Introduction to discrete choice models in R",
+    "section": "Multinomial logistic regression: the math",
+    "text": "Multinomial logistic regression: the math\n\nProbability then becomes\n\n\\[\np(y=i)\\\\= p(U_i > \\mathrm{all~other}~U)\\\\\n    =\\frac{e^{U_i}}{e^{U_1} + e^{U_2} \\cdots}\\\\\n    =\\frac{e^{U_i}}{\\sum_{j \\in I} e^{U_j}}\n\\]"
+  },
+  {
+    "objectID": "discrete-choice.html#multinomial-logistic-regression-in-r",
+    "href": "discrete-choice.html#multinomial-logistic-regression-in-r",
+    "title": "Introduction to discrete choice models in R",
+    "section": "Multinomial logistic regression in R",
+    "text": "Multinomial logistic regression in R\n\nWe will build a model of working from home expectation post-pandemic, using data from the COVID Future study.\nWe will estimate four utility functions, for being unable to, rarely, frequently, and always working from home\nBased on age, income, and job type\nThese utility functions will have the same variables but different coefficients\nEach will also have a alternative specific constant—like a constant in logistic regression that represents the base rate, but for each alternative\nOne utility function will be held at zero"
+  },
+  {
+    "objectID": "discrete-choice.html#multinomial-logistic-regression-in-r-1",
+    "href": "discrete-choice.html#multinomial-logistic-regression-in-r-1",
+    "title": "Introduction to discrete choice models in R",
+    "section": "Multinomial logistic regression in R",
+    "text": "Multinomial logistic regression in R\ncovidfuture-wfh-mnl.R\n\nlibrary(apollo)\nlibrary(tidyverse)\n\ndatabase = read_csv(\"data/covidfuture_wfh.csv\")\n\napollo_initialise()\n\napollo_control = list(\n    modelName=\"WFH_Postpandemic\",\n    indivID=\"resp_id\"\n)"
+  },
+  {
+    "objectID": "discrete-choice.html#interpreting-multinomial-logit-results",
+    "href": "discrete-choice.html#interpreting-multinomial-logit-results",
+    "title": "Introduction to discrete choice models in R",
+    "section": "Interpreting multinomial logit results",
+    "text": "Interpreting multinomial logit results\n\n\n\n\n\n\nRarely\nOften\nAlways\n\n\n\n\nASC\n-0.73\n0.50\n-1.37\n\n\nAge\n-0.03\n-0.01\n0.01\n\n\nHigh income\n0.81\n1.01\n0.53\n\n\nService worker\n-0.94\n-1.27\n-1.54\n\n\n\n\n\nNote: all variables significant at \\(p < 0.05\\)"
+  },
+  {
+    "objectID": "discrete-choice.html#specifying-a-multinomial-logit-model",
+    "href": "discrete-choice.html#specifying-a-multinomial-logit-model",
+    "title": "Introduction to discrete choice models in R",
+    "section": "Specifying a multinomial logit model",
+    "text": "Specifying a multinomial logit model\n\nMultinomial logit models can have independent variables that vary at the individual level (e.g., income)\nCan also have variables at the alternative level (e.g., travel time)\nUtilities identified only up to a constant offset\n\nConstant changes to all utilities does not change outcome"
+  },
+  {
+    "objectID": "discrete-choice.html#specifying-a-multinomial-logit-model-1",
+    "href": "discrete-choice.html#specifying-a-multinomial-logit-model-1",
+    "title": "Introduction to discrete choice models in R",
+    "section": "Specifying a multinomial logit model",
+    "text": "Specifying a multinomial logit model\n\nVariables that vary at individual level must have different coefficients for each alternative, and one must be zero\nVariables that vary at alternative level may or may not have different coefficients for each alternative, and there is no need have one zero coefficient\n\nBut you do have to know values for unchosen alternatives"
+  },
+  {
+    "objectID": "discrete-choice.html#specifying-a-multinomial-logit-model-2",
+    "href": "discrete-choice.html#specifying-a-multinomial-logit-model-2",
+    "title": "Introduction to discrete choice models in R",
+    "section": "Specifying a multinomial logit model",
+    "text": "Specifying a multinomial logit model\n\n\n\n\n\n\n\nG\n\n \n\nclustertt\n\n   \n\ninc\n\n Income   \n\niw\n\n  \n\ninc->iw\n\n   \n\nib\n\n  \n\ninc->ib\n\n   \n\nic\n\n  \n\ninc->ic\n\n   \n\nttw\n\n Travel time of walk   \n\ntw\n\n  \n\nttw->tw\n\n   \n\nttb\n\n Travel time of bus   \n\ntb\n\n  \n\nttb->tb\n\n   \n\nttc\n\n Travel time of car   \n\ntc\n\n  \n\nttc->tc\n\n   \n\nuw\n\n Utility of walk   \n\nub\n\n Utility of bus   \n\nuc\n\n Utility of car   \n\niw->uw\n\n    \n\nmd\n\nMust be different, one must be zero   \n\niw->md\n\n   \n\nib->ub\n\n    \n\nib->md\n\n   \n\nic->uc\n\n    \n\nic->md\n\n   \n\ntw->uw\n\n    \n\ntb->ub\n\n    \n\ntc->uc\n\n    \n\ncs\n\nCan be same   \n\ncs->tw\n\n   \n\ncs->tb\n\n   \n\ncs->tc"
+  },
+  {
+    "objectID": "discrete-choice.html#estimating-a-multinomial-logit-model-in-r",
+    "href": "discrete-choice.html#estimating-a-multinomial-logit-model-in-r",
+    "title": "Introduction to discrete choice models in R",
+    "section": "Estimating a multinomial logit model in R",
+    "text": "Estimating a multinomial logit model in R\n\n\n\n\nWe’re going to build a multinomial logit mode choice model of intercity mode choice between major Australian cities\nData from Python statsmodels package, originally from Greene (2011), online table F18-2"
+  },
+  {
+    "objectID": "discrete-choice.html#the-data",
+    "href": "discrete-choice.html#the-data",
+    "title": "Introduction to discrete choice models in R",
+    "section": "The data",
+    "text": "The data\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nindividual\nchosen\nwait_time_air\nwait_time_train\nwait_time_bus\nwait_time_car\ncost_air\ncost_train\ncost_bus\ncost_car\nin_vehicle_time_air\nin_vehicle_time_train\nin_vehicle_time_bus\nin_vehicle_time_car\nhhincome_thousands\nparty_size\n\n\n\n\n1\ncar\n69\n34\n35\n0\n59\n31\n25\n10\n100\n372\n417\n180\n35\n1\n\n\n2\ncar\n64\n44\n53\n0\n58\n31\n25\n11\n68\n354\n399\n255\n30\n2\n\n\n3\ncar\n69\n34\n35\n0\n115\n98\n53\n23\n125\n892\n882\n720\n40\n1\n\n\n4\ncar\n64\n44\n53\n0\n49\n26\n21\n5\n68\n354\n399\n180\n70\n3\n\n\n5\ncar\n64\n44\n53\n0\n60\n32\n26\n8\n144\n404\n449\n600\n45\n2\n\n\n6\ntrain\n69\n40\n35\n0\n59\n20\n13\n12\n100\n345\n417\n284\n20\n1"
+  },
+  {
+    "objectID": "discrete-choice.html#estimation-in-r",
+    "href": "discrete-choice.html#estimation-in-r",
+    "title": "Introduction to discrete choice models in R",
+    "section": "Estimation in R",
+    "text": "Estimation in R\nmode-choice-mnl.R\n\nlibrary(apollo)\nlibrary(tidyverse)\n\ndatabase = read_csv(\"data/modechoice.csv\")\n\napollo_initialise()\n\napollo_control = list(\n    modelName = \"Australia_Mode_Choice\",\n    indivID=\"individual\"\n)"
+  },
+  {
+    "objectID": "discrete-choice.html#exercise",
+    "href": "discrete-choice.html#exercise",
+    "title": "Introduction to discrete choice models in R",
+    "section": "Exercise",
+    "text": "Exercise\n\nPeople may value in-vehicle time differently on the train vs. plane vs. car vs. bus\nModify the model to estimate separate in-vehicle time coefficients for each mode\n(One) answer in mode-choice-mnl-in-vehicle-answers.R"
+  },
+  {
+    "objectID": "discrete-choice.html#solution",
+    "href": "discrete-choice.html#solution",
+    "title": "Introduction to discrete choice models in R",
+    "section": "Solution",
+    "text": "Solution\n\napollo_beta = c(\n    asc_air = 0,\n    asc_bus = 0,\n    asc_train = 0,\n    # leaving out an asc_car as base category\n    b_wait_time=0,\n    b_cost = 0,\n    b_in_vehicle_time_car = 0,\n    b_in_vehicle_time_bus = 0,\n    b_in_vehicle_time_train = 0,\n    b_in_vehicle_time_air = 0,\n    # income and party_size are individual level variable, so\n    # must be different for different alternatives\n    b_hhincome_air = 0,\n    b_hhincome_bus = 0,\n    b_hhincome_train = 0,\n    b_party_size_air = 0,\n    b_party_size_bus = 0,\n    b_party_size_train = 0\n)"
+  },
+  {
+    "objectID": "discrete-choice.html#interpretation",
+    "href": "discrete-choice.html#interpretation",
+    "title": "Introduction to discrete choice models in R",
+    "section": "Interpretation",
+    "text": "Interpretation\n\nPeople really don’t like being on airplanes\n\nShould also consider omitted variable bias, e.g. changes of planes"
+  },
+  {
+    "objectID": "discrete-choice.html#independence-of-irrelevant-alternatives",
+    "href": "discrete-choice.html#independence-of-irrelevant-alternatives",
+    "title": "Introduction to discrete choice models in R",
+    "section": "Independence of irrelevant alternatives",
+    "text": "Independence of irrelevant alternatives"
+  },
+  {
+    "objectID": "discrete-choice.html#references",
+    "href": "discrete-choice.html#references",
+    "title": "Introduction to discrete choice models in R",
+    "section": "References",
+    "text": "References\n\n\nGreene, W. H. 2011. Econometric Analysis. 7th ed. Prentice Hall."
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Odum Discrete Choice Modeling class",
+    "section": "",
+    "text": "Slides"
+  }
+]
