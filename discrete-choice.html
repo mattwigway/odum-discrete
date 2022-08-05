@@ -424,6 +424,17 @@
 <li>Three years experience as transportation modeling software developer</li>
 </ul>
 </section>
+<section id="before-we-go-any-further" class="slide level2">
+<h2>Before we go any further</h2>
+<ul>
+<li>If you haven’t already installed R, RStudio, <code>apollo</code>, and <code>tidyverse</code>, do so now</li>
+<li>R: <a href="https://r-project.org">https://r-project.org</a></li>
+<li>RStudio: <a href="https://rstudio.com">https://rstudio.com</a></li>
+<li><code>apollo</code> and <code>tidyverse</code>: in RStudio console, run:</li>
+</ul>
+<div class="sourceCode" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">install.packages</span>(<span class="st">"tidyverse"</span>)</span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="fu">install.packages</span>(<span class="st">"apollo"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
 <section id="what-are-discrete-choice-models" class="slide level2">
 <h2>What are discrete choice models?</h2>
 <ul>
@@ -500,13 +511,13 @@ p(y = 1) = p(y^* &gt; 0) = \frac{e^{y^*}}{1 + e^{y^*}}
 <h2>Logistic regression in R</h2>
 <p><code>nhts-carpool-glm.R</code></p>
 <div class="cell" data-filename="nhts-carpool-glm.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-4_c4ba8bff9388d0f440b2979b54e7f890">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb1-2"><a href="#cb1-2"></a></span>
-<span id="cb1-3"><a href="#cb1-3"></a>data <span class="ot">=</span> <span class="fu">read_csv</span>(<span class="st">"data/nhts/carpool.csv"</span>)</span>
-<span id="cb1-4"><a href="#cb1-4"></a></span>
-<span id="cb1-5"><a href="#cb1-5"></a>glm_model <span class="ot">=</span> <span class="fu">glm</span>(carpool<span class="sc">~</span>hhsize<span class="sc">+</span>cars_per_driver<span class="sc">+</span>commute<span class="sc">+</span>social,</span>
-<span id="cb1-6"><a href="#cb1-6"></a>    <span class="at">family=</span><span class="fu">binomial</span>(<span class="at">link=</span><span class="st">"logit"</span>), data)</span>
-<span id="cb1-7"><a href="#cb1-7"></a><span class="fu">summary</span>(glm_model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb2-2"><a href="#cb2-2"></a></span>
+<span id="cb2-3"><a href="#cb2-3"></a>data <span class="ot">=</span> <span class="fu">read_csv</span>(<span class="st">"data/nhts/carpool.csv"</span>)</span>
+<span id="cb2-4"><a href="#cb2-4"></a></span>
+<span id="cb2-5"><a href="#cb2-5"></a>glm_model <span class="ot">=</span> <span class="fu">glm</span>(carpool<span class="sc">~</span>hhsize<span class="sc">+</span>cars_per_driver<span class="sc">+</span>commute<span class="sc">+</span>social,</span>
+<span id="cb2-6"><a href="#cb2-6"></a>    <span class="at">family=</span><span class="fu">binomial</span>(<span class="at">link=</span><span class="st">"logit"</span>), data)</span>
+<span id="cb2-7"><a href="#cb2-7"></a><span class="fu">summary</span>(glm_model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="logistic-regression-in-r-1" class="slide level2">
@@ -520,23 +531,23 @@ glm(formula = carpool ~ hhsize + cars_per_driver + commute +
 
 Deviance Residuals: 
     Min       1Q   Median       3Q      Max  
--2.3582  -1.1265  -0.4481   1.0860   2.1904  
+-2.1549  -1.1352   0.5586   1.1124   2.2076  
 
 Coefficients:
                 Estimate Std. Error z value Pr(&gt;|z|)    
-(Intercept)     -0.78163    0.10461  -7.472 7.90e-14 ***
-hhsize           0.35814    0.02443  14.661  &lt; 2e-16 ***
-cars_per_driver -0.05554    0.05791  -0.959    0.338    
-commuteTRUE     -1.76913    0.11542 -15.328  &lt; 2e-16 ***
-socialTRUE       0.52620    0.09966   5.280 1.29e-07 ***
+(Intercept)     -0.67693    0.10222  -6.622 3.54e-11 ***
+hhsize           0.37661    0.02452  15.360  &lt; 2e-16 ***
+cars_per_driver -0.11756    0.05692  -2.065   0.0389 *  
+commuteTRUE     -1.57463    0.11061 -14.237  &lt; 2e-16 ***
+socialTRUE       0.31370    0.09999   3.137   0.0017 ** 
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
 (Dispersion parameter for binomial family taken to be 1)
 
-    Null deviance: 6929.4  on 4999  degrees of freedom
-Residual deviance: 6340.2  on 4995  degrees of freedom
-AIC: 6350.2
+    Null deviance: 6930.5  on 4999  degrees of freedom
+Residual deviance: 6380.7  on 4995  degrees of freedom
+AIC: 6390.7
 
 Number of Fisher Scoring iterations: 4</code></pre>
 </div>
@@ -583,48 +594,48 @@ p(y = 1) = p(U_{y=1} &gt; U_{y=0})\\= \frac{e^{U_{y=1}}}{e^{U_{y=0}} + e^{U_{y=1
 <h2>Binary logistic regression as a random utility model in R</h2>
 <p><code>nhts-carpool-apollo.R</code></p>
 <div class="cell" data-filename="nhts-carpool-apollo.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-7_cd7ca6bc75f24a4f58694445c495ea59">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="fu">library</span>(apollo)</span>
-<span id="cb3-2"><a href="#cb3-2"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb3-3"><a href="#cb3-3"></a></span>
-<span id="cb3-4"><a href="#cb3-4"></a><span class="co"># Read data - variable must be called "database"</span></span>
-<span id="cb3-5"><a href="#cb3-5"></a>database <span class="ot">=</span> <span class="fu">read_csv</span>(<span class="st">"data/nhts/carpool.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="fu">library</span>(apollo)</span>
+<span id="cb4-2"><a href="#cb4-2"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb4-3"><a href="#cb4-3"></a></span>
+<span id="cb4-4"><a href="#cb4-4"></a><span class="co"># Read data - variable must be called "database"</span></span>
+<span id="cb4-5"><a href="#cb4-5"></a>database <span class="ot">=</span> <span class="fu">read_csv</span>(<span class="st">"data/nhts/carpool.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section class="slide level2">
 
 <div class="cell" data-filename="nhts-carpool-apollo.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-8_2d0185790338db8ca615d556e3f847ee">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="co"># Initialize Apollo library</span></span>
-<span id="cb4-2"><a href="#cb4-2"></a><span class="fu">apollo_initialise</span>()</span>
-<span id="cb4-3"><a href="#cb4-3"></a></span>
-<span id="cb4-4"><a href="#cb4-4"></a><span class="co"># set parameters for overall model</span></span>
-<span id="cb4-5"><a href="#cb4-5"></a>apollo_control <span class="ot">=</span> <span class="fu">list</span>(</span>
-<span id="cb4-6"><a href="#cb4-6"></a>    <span class="at">modelName=</span><span class="st">"Carpool_binary"</span>,</span>
-<span id="cb4-7"><a href="#cb4-7"></a>    <span class="at">indivID=</span><span class="st">"id"</span></span>
-<span id="cb4-8"><a href="#cb4-8"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="co"># Initialize Apollo library</span></span>
+<span id="cb5-2"><a href="#cb5-2"></a><span class="fu">apollo_initialise</span>()</span>
+<span id="cb5-3"><a href="#cb5-3"></a></span>
+<span id="cb5-4"><a href="#cb5-4"></a><span class="co"># set parameters for overall model</span></span>
+<span id="cb5-5"><a href="#cb5-5"></a>apollo_control <span class="ot">=</span> <span class="fu">list</span>(</span>
+<span id="cb5-6"><a href="#cb5-6"></a>    <span class="at">modelName=</span><span class="st">"Carpool_binary"</span>,</span>
+<span id="cb5-7"><a href="#cb5-7"></a>    <span class="at">indivID=</span><span class="st">"id"</span></span>
+<span id="cb5-8"><a href="#cb5-8"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section class="slide level2">
 
 <div class="cell" data-filename="nhts-carpool-apollo.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-9_f28fb68482f9797b5522cdd992d81d6e">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="co"># In Apollo, you specify your utility functions by hand,</span></span>
-<span id="cb5-2"><a href="#cb5-2"></a><span class="co"># first telling Apollo what coefficients to estimate</span></span>
-<span id="cb5-3"><a href="#cb5-3"></a>apollo_beta <span class="ot">=</span> <span class="fu">c</span>(</span>
-<span id="cb5-4"><a href="#cb5-4"></a>    <span class="at">constant_carpool =</span> <span class="dv">0</span>, <span class="co"># 0 is starting value</span></span>
-<span id="cb5-5"><a href="#cb5-5"></a>    <span class="at">b_hhsize =</span> <span class="dv">0</span>,</span>
-<span id="cb5-6"><a href="#cb5-6"></a>    <span class="at">b_cars_per_driver =</span> <span class="dv">0</span>,</span>
-<span id="cb5-7"><a href="#cb5-7"></a>    <span class="at">b_commute =</span> <span class="dv">0</span>,</span>
-<span id="cb5-8"><a href="#cb5-8"></a>    <span class="at">b_social =</span> <span class="dv">0</span></span>
-<span id="cb5-9"><a href="#cb5-9"></a>)</span>
-<span id="cb5-10"><a href="#cb5-10"></a></span>
-<span id="cb5-11"><a href="#cb5-11"></a><span class="co"># any parameters that you want to remain constant go here</span></span>
-<span id="cb5-12"><a href="#cb5-12"></a>apollo_fixed <span class="ot">=</span> <span class="fu">c</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="co"># In Apollo, you specify your utility functions by hand,</span></span>
+<span id="cb6-2"><a href="#cb6-2"></a><span class="co"># first telling Apollo what coefficients to estimate</span></span>
+<span id="cb6-3"><a href="#cb6-3"></a>apollo_beta <span class="ot">=</span> <span class="fu">c</span>(</span>
+<span id="cb6-4"><a href="#cb6-4"></a>    <span class="at">constant_carpool =</span> <span class="dv">0</span>, <span class="co"># 0 is starting value</span></span>
+<span id="cb6-5"><a href="#cb6-5"></a>    <span class="at">b_hhsize =</span> <span class="dv">0</span>,</span>
+<span id="cb6-6"><a href="#cb6-6"></a>    <span class="at">b_cars_per_driver =</span> <span class="dv">0</span>,</span>
+<span id="cb6-7"><a href="#cb6-7"></a>    <span class="at">b_commute =</span> <span class="dv">0</span>,</span>
+<span id="cb6-8"><a href="#cb6-8"></a>    <span class="at">b_social =</span> <span class="dv">0</span></span>
+<span id="cb6-9"><a href="#cb6-9"></a>)</span>
+<span id="cb6-10"><a href="#cb6-10"></a></span>
+<span id="cb6-11"><a href="#cb6-11"></a><span class="co"># any parameters that you want to remain constant go here</span></span>
+<span id="cb6-12"><a href="#cb6-12"></a>apollo_fixed <span class="ot">=</span> <span class="fu">c</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section class="slide level2">
 
 <div class="cell" data-filename="nhts-carpool-apollo.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-10_b32393a346d8a9c88c6049d4643c3728">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="co"># prepare the inputs to the Apollo estimation code</span></span>
-<span id="cb6-2"><a href="#cb6-2"></a>apollo_inputs <span class="ot">=</span> <span class="fu">apollo_validateInputs</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a><span class="co"># prepare the inputs to the Apollo estimation code</span></span>
+<span id="cb7-2"><a href="#cb7-2"></a>apollo_inputs <span class="ot">=</span> <span class="fu">apollo_validateInputs</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>All checks on apollo_control completed.
 All checks on database completed.</code></pre>
@@ -634,46 +645,46 @@ All checks on database completed.</code></pre>
 <section class="slide level2">
 
 <div class="cell" data-filename="nhts-carpool-apollo.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-11_2c9669efedb36bc44041eee1003a2817">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="co"># this function calculates probabilities of each alternative</span></span>
-<span id="cb8-2"><a href="#cb8-2"></a>apollo_probabilities <span class="ot">=</span> <span class="cf">function</span>(apollo_beta, apollo_inputs,</span>
-<span id="cb8-3"><a href="#cb8-3"></a>        <span class="at">functionality=</span><span class="st">"estimate"</span>) {</span>
-<span id="cb8-4"><a href="#cb8-4"></a>    <span class="co"># so we can refer to variables by name</span></span>
-<span id="cb8-5"><a href="#cb8-5"></a>    <span class="fu">apollo_attach</span>(apollo_beta, apollo_inputs)</span>
-<span id="cb8-6"><a href="#cb8-6"></a>    <span class="fu">on.exit</span>(<span class="fu">apollo_detach</span>(apollo_beta, apollo_inputs))</span>
-<span id="cb8-7"><a href="#cb8-7"></a></span>
-<span id="cb8-8"><a href="#cb8-8"></a>    <span class="co"># This is the list of probabilities for the alternatives</span></span>
-<span id="cb8-9"><a href="#cb8-9"></a>    <span class="co"># for each observation</span></span>
-<span id="cb8-10"><a href="#cb8-10"></a>    P <span class="ot">=</span> <span class="fu">list</span>()</span>
-<span id="cb8-11"><a href="#cb8-11"></a></span>
-<span id="cb8-12"><a href="#cb8-12"></a>    <span class="co"># Define utility functions</span></span>
-<span id="cb8-13"><a href="#cb8-13"></a>    V <span class="ot">=</span> <span class="fu">list</span>()</span>
-<span id="cb8-14"><a href="#cb8-14"></a>    V[[<span class="st">"carpool"</span>]] <span class="ot">=</span> constant_carpool <span class="sc">+</span> b_hhsize <span class="sc">*</span> hhsize <span class="sc">+</span></span>
-<span id="cb8-15"><a href="#cb8-15"></a>        b_cars_per_driver <span class="sc">*</span> cars_per_driver <span class="sc">+</span></span>
-<span id="cb8-16"><a href="#cb8-16"></a>        b_commute <span class="sc">*</span> commute <span class="sc">+</span> b_social <span class="sc">*</span> social</span>
-<span id="cb8-17"><a href="#cb8-17"></a>    V[[<span class="st">"not_carpool"</span>]] <span class="ot">=</span> <span class="dv">0</span></span>
-<span id="cb8-18"><a href="#cb8-18"></a></span>
-<span id="cb8-19"><a href="#cb8-19"></a>    <span class="co"># associate utility functions with data</span></span>
-<span id="cb8-20"><a href="#cb8-20"></a>    logit_settings <span class="ot">=</span> <span class="fu">list</span>(</span>
-<span id="cb8-21"><a href="#cb8-21"></a>        <span class="at">alternatives =</span> <span class="fu">c</span>(<span class="at">carpool=</span>T, <span class="at">not_carpool=</span>F),</span>
-<span id="cb8-22"><a href="#cb8-22"></a>        <span class="at">avail        =</span> <span class="fu">list</span>(<span class="at">carpool=</span>T, <span class="at">not_carpool=</span>T),</span>
-<span id="cb8-23"><a href="#cb8-23"></a>        <span class="at">choiceVar    =</span> carpool,</span>
-<span id="cb8-24"><a href="#cb8-24"></a>        <span class="at">utilities    =</span> V</span>
-<span id="cb8-25"><a href="#cb8-25"></a>    )</span>
-<span id="cb8-26"><a href="#cb8-26"></a></span>
-<span id="cb8-27"><a href="#cb8-27"></a>    <span class="co"># compute probabilities</span></span>
-<span id="cb8-28"><a href="#cb8-28"></a>    P[[<span class="st">"model"</span>]] <span class="ot">=</span> <span class="fu">apollo_mnl</span>(logit_settings, functionality)</span>
-<span id="cb8-29"><a href="#cb8-29"></a></span>
-<span id="cb8-30"><a href="#cb8-30"></a>    P <span class="ot">=</span> <span class="fu">apollo_prepareProb</span>(P, apollo_inputs, functionality)</span>
-<span id="cb8-31"><a href="#cb8-31"></a>    <span class="fu">return</span>(P)</span>
-<span id="cb8-32"><a href="#cb8-32"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="co"># this function calculates probabilities of each alternative</span></span>
+<span id="cb9-2"><a href="#cb9-2"></a>apollo_probabilities <span class="ot">=</span> <span class="cf">function</span>(apollo_beta, apollo_inputs,</span>
+<span id="cb9-3"><a href="#cb9-3"></a>        <span class="at">functionality=</span><span class="st">"estimate"</span>) {</span>
+<span id="cb9-4"><a href="#cb9-4"></a>    <span class="co"># so we can refer to variables by name</span></span>
+<span id="cb9-5"><a href="#cb9-5"></a>    <span class="fu">apollo_attach</span>(apollo_beta, apollo_inputs)</span>
+<span id="cb9-6"><a href="#cb9-6"></a>    <span class="fu">on.exit</span>(<span class="fu">apollo_detach</span>(apollo_beta, apollo_inputs))</span>
+<span id="cb9-7"><a href="#cb9-7"></a></span>
+<span id="cb9-8"><a href="#cb9-8"></a>    <span class="co"># This is the list of probabilities for the alternatives</span></span>
+<span id="cb9-9"><a href="#cb9-9"></a>    <span class="co"># for each observation</span></span>
+<span id="cb9-10"><a href="#cb9-10"></a>    P <span class="ot">=</span> <span class="fu">list</span>()</span>
+<span id="cb9-11"><a href="#cb9-11"></a></span>
+<span id="cb9-12"><a href="#cb9-12"></a>    <span class="co"># Define utility functions</span></span>
+<span id="cb9-13"><a href="#cb9-13"></a>    V <span class="ot">=</span> <span class="fu">list</span>()</span>
+<span id="cb9-14"><a href="#cb9-14"></a>    V[[<span class="st">"carpool"</span>]] <span class="ot">=</span> constant_carpool <span class="sc">+</span> b_hhsize <span class="sc">*</span> hhsize <span class="sc">+</span></span>
+<span id="cb9-15"><a href="#cb9-15"></a>        b_cars_per_driver <span class="sc">*</span> cars_per_driver <span class="sc">+</span></span>
+<span id="cb9-16"><a href="#cb9-16"></a>        b_commute <span class="sc">*</span> commute <span class="sc">+</span> b_social <span class="sc">*</span> social</span>
+<span id="cb9-17"><a href="#cb9-17"></a>    V[[<span class="st">"not_carpool"</span>]] <span class="ot">=</span> <span class="dv">0</span></span>
+<span id="cb9-18"><a href="#cb9-18"></a></span>
+<span id="cb9-19"><a href="#cb9-19"></a>    <span class="co"># associate utility functions with data</span></span>
+<span id="cb9-20"><a href="#cb9-20"></a>    logit_settings <span class="ot">=</span> <span class="fu">list</span>(</span>
+<span id="cb9-21"><a href="#cb9-21"></a>        <span class="at">alternatives =</span> <span class="fu">c</span>(<span class="at">carpool=</span>T, <span class="at">not_carpool=</span>F),</span>
+<span id="cb9-22"><a href="#cb9-22"></a>        <span class="at">avail        =</span> <span class="fu">list</span>(<span class="at">carpool=</span>T, <span class="at">not_carpool=</span>T),</span>
+<span id="cb9-23"><a href="#cb9-23"></a>        <span class="at">choiceVar    =</span> carpool,</span>
+<span id="cb9-24"><a href="#cb9-24"></a>        <span class="at">utilities    =</span> V</span>
+<span id="cb9-25"><a href="#cb9-25"></a>    )</span>
+<span id="cb9-26"><a href="#cb9-26"></a></span>
+<span id="cb9-27"><a href="#cb9-27"></a>    <span class="co"># compute probabilities</span></span>
+<span id="cb9-28"><a href="#cb9-28"></a>    P[[<span class="st">"model"</span>]] <span class="ot">=</span> <span class="fu">apollo_mnl</span>(logit_settings, functionality)</span>
+<span id="cb9-29"><a href="#cb9-29"></a></span>
+<span id="cb9-30"><a href="#cb9-30"></a>    P <span class="ot">=</span> <span class="fu">apollo_prepareProb</span>(P, apollo_inputs, functionality)</span>
+<span id="cb9-31"><a href="#cb9-31"></a>    <span class="fu">return</span>(P)</span>
+<span id="cb9-32"><a href="#cb9-32"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section class="slide level2">
 
 <div class="cell" data-filename="nhts-carpool-apollo.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-12_705bc9d05dee3c9118bb81a54e8e8792">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="co"># finally, estimate the model</span></span>
-<span id="cb9-2"><a href="#cb9-2"></a>model <span class="ot">=</span> <span class="fu">apollo_estimate</span>(apollo_beta, apollo_fixed,</span>
-<span id="cb9-3"><a href="#cb9-3"></a>    apollo_probabilities, apollo_inputs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a><span class="co"># finally, estimate the model</span></span>
+<span id="cb10-2"><a href="#cb10-2"></a>model <span class="ot">=</span> <span class="fu">apollo_estimate</span>(apollo_beta, apollo_fixed,</span>
+<span id="cb10-3"><a href="#cb10-3"></a>    apollo_probabilities, apollo_inputs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Preparing user-defined functions.
 
@@ -681,10 +692,10 @@ Testing likelihood function...
 
 Overview of choices for MNL model component :
                                  carpool not_carpool
-Times available                  5000.00     5000.00
-Times chosen                     2449.00     2551.00
-Percentage chosen overall          48.98       51.02
-Percentage chosen when available   48.98       51.02
+Times available                   5000.0      5000.0
+Times chosen                      2535.0      2465.0
+Percentage chosen overall           50.7        49.3
+Percentage chosen when available    50.7        49.3
 
 Pre-processing likelihood function...
 
@@ -693,41 +704,40 @@ Starting main estimation
 Initial function value: -3465.736 
 Initial gradient value:
  constant_carpool          b_hhsize b_cars_per_driver         b_commute 
-         -51.0000          571.0000         -122.0976         -205.0000 
+         35.00000         852.00000         -45.93929        -175.00000 
          b_social 
-          68.0000 
+         58.00000 
 initial  value 3465.735903 
-iter   2 value 3446.588026
-iter   3 value 3358.330977
-iter   4 value 3211.398678
-iter   5 value 3207.502206
-iter   6 value 3201.293172
-iter   7 value 3180.955435
-iter   8 value 3170.129035
-iter   9 value 3170.083431
-iter  10 value 3170.082859
-iter  10 value 3170.082854
-iter  10 value 3170.082854
-final  value 3170.082854 
+iter   2 value 3432.622012
+iter   3 value 3307.741025
+iter   4 value 3204.155864
+iter   5 value 3202.592363
+iter   6 value 3200.242615
+iter   7 value 3192.478779
+iter   8 value 3190.335277
+iter   9 value 3190.333251
+iter   9 value 3190.333216
+iter   9 value 3190.333216
+final  value 3190.333216 
 converged
 Additional convergence test using scaled estimation. Parameters will be
   scaled by their current estimates and additional iterations will be
   performed.
-initial  value 3170.082854 
-iter   1 value 3170.082854
-final  value 3170.082854 
+initial  value 3190.333216 
+iter   1 value 3190.333216
+final  value 3190.333216 
 converged
 Estimated parameters:
                      Estimate
-constant_carpool     -0.78163
-b_hhsize              0.35814
-b_cars_per_driver    -0.05555
-b_commute            -1.76913
-b_social              0.52620
+constant_carpool      -0.6770
+b_hhsize               0.3766
+b_cars_per_driver     -0.1176
+b_commute             -1.5746
+b_social               0.3137
 
 Computing covariance matrix using analytical gradient.
  0%....25%....50%...100%
-Negative definite Hessian with maximum eigenvalue: -70.293381
+Negative definite Hessian with maximum eigenvalue: -75.088512
 Computing score matrix...
 Calculating LL(0) for applicable models...
 Calculating LL(c) for applicable models...
@@ -738,15 +748,15 @@ Calculating LL of each model component...</code></pre>
 <section class="slide level2">
 
 <div class="cell" data-filename="nhts-carpool-apollo.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-13_1ebb222e7e4ffa6c08217ed33c97e081">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a><span class="co"># print results</span></span>
-<span id="cb11-2"><a href="#cb11-2"></a><span class="fu">apollo_modelOutput</span>(model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a><span class="co"># print results</span></span>
+<span id="cb12-2"><a href="#cb12-2"></a><span class="fu">apollo_modelOutput</span>(model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Model run by mwbc using Apollo 0.2.7 on R 4.2.1 for Darwin.
 www.ApolloChoiceModelling.com
 
 Model name                       : Carpool_binary
 Model description                : No model description provided in apollo_control
-Model run at                     : 2022-08-03 11:07:26
+Model run at                     : 2022-08-05 11:11:26
 Estimation method                : bfgs
 Model diagnosis                  : successful convergence 
 Number of individuals            : 5000
@@ -758,32 +768,32 @@ Model without mixing
 
 LL(start)                        : -3465.74
 LL(0)                            : -3465.74
-LL(C)                            : -3464.7
-LL(final)                        : -3170.08
-Rho-square (0)                   :  0.0853 
-Adj.Rho-square (0)               :  0.0839 
-Rho-square (C)                   :  0.085 
-Adj.Rho-square (C)               :  0.0836 
-AIC                              :  6350.17 
-BIC                              :  6382.75 
+LL(C)                            : -3465.25
+LL(final)                        : -3190.33
+Rho-square (0)                   :  0.0795 
+Adj.Rho-square (0)               :  0.078 
+Rho-square (C)                   :  0.0793 
+Adj.Rho-square (C)               :  0.0779 
+AIC                              :  6390.67 
+BIC                              :  6423.25 
 
 Estimated parameters             :  5
-Time taken (hh:mm:ss)            :  00:00:0.47 
-     pre-estimation              :  00:00:0.25 
+Time taken (hh:mm:ss)            :  00:00:0.46 
+     pre-estimation              :  00:00:0.24 
      estimation                  :  00:00:0.06 
-     post-estimation             :  00:00:0.16 
-Iterations                       :  14  
-Min abs eigenvalue of Hessian    :  70.29338 
+     post-estimation             :  00:00:0.15 
+Iterations                       :  13  
+Min abs eigenvalue of Hessian    :  75.08851 
 
 Unconstrained optimisation.
 
 Estimates:
                      Estimate        s.e.   t.rat.(0)    Rob.s.e. Rob.t.rat.(0)
-constant_carpool     -0.78163     0.10461     -7.4720     0.10465       -7.4693
-b_hhsize              0.35814     0.02443     14.6606     0.02487       14.3984
-b_cars_per_driver    -0.05555     0.05791     -0.9592     0.05768       -0.9630
-b_commute            -1.76913     0.11542    -15.3280     0.12041      -14.6922
-b_social              0.52620     0.09966      5.2800     0.09726        5.4104</code></pre>
+constant_carpool      -0.6770     0.10222      -6.623     0.10192        -6.642
+b_hhsize               0.3766     0.02452      15.360     0.02501        15.062
+b_cars_per_driver     -0.1176     0.05692      -2.066     0.05726        -2.053
+b_commute             -1.5746     0.11061     -14.237     0.11384       -13.832
+b_social               0.3137     0.09999       3.137     0.09735         3.222</code></pre>
 </div>
 </div>
 </section>
@@ -798,23 +808,23 @@ glm(formula = carpool ~ hhsize + cars_per_driver + commute +
 
 Deviance Residuals: 
     Min       1Q   Median       3Q      Max  
--2.3582  -1.1265  -0.4481   1.0860   2.1904  
+-2.1549  -1.1352   0.5586   1.1124   2.2076  
 
 Coefficients:
                 Estimate Std. Error z value Pr(&gt;|z|)    
-(Intercept)     -0.78163    0.10461  -7.472 7.90e-14 ***
-hhsize           0.35814    0.02443  14.661  &lt; 2e-16 ***
-cars_per_driver -0.05554    0.05791  -0.959    0.338    
-commuteTRUE     -1.76913    0.11542 -15.328  &lt; 2e-16 ***
-socialTRUE       0.52620    0.09966   5.280 1.29e-07 ***
+(Intercept)     -0.67693    0.10222  -6.622 3.54e-11 ***
+hhsize           0.37661    0.02452  15.360  &lt; 2e-16 ***
+cars_per_driver -0.11756    0.05692  -2.065   0.0389 *  
+commuteTRUE     -1.57463    0.11061 -14.237  &lt; 2e-16 ***
+socialTRUE       0.31370    0.09999   3.137   0.0017 ** 
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
 (Dispersion parameter for binomial family taken to be 1)
 
-    Null deviance: 6929.4  on 4999  degrees of freedom
-Residual deviance: 6340.2  on 4995  degrees of freedom
-AIC: 6350.2
+    Null deviance: 6930.5  on 4999  degrees of freedom
+Residual deviance: 6380.7  on 4995  degrees of freedom
+AIC: 6390.7
 
 Number of Fisher Scoring iterations: 4</code></pre>
 </div>
@@ -872,23 +882,23 @@ p(y=i)\\= p(U_i &gt; \mathrm{all~other}~U)\\
 <h2>Multinomial logistic regression in R</h2>
 <p><code>covidfuture-wfh-mnl.R</code></p>
 <div class="cell" data-filename="covidfuture-wfh-mnl.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-16_1975716c4e3657f6d7a731744f183479">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a><span class="fu">library</span>(apollo)</span>
-<span id="cb14-2"><a href="#cb14-2"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb14-3"><a href="#cb14-3"></a></span>
-<span id="cb14-4"><a href="#cb14-4"></a>database <span class="ot">=</span> <span class="fu">read_csv</span>(<span class="st">"data/covidfuture_wfh.csv"</span>)</span>
-<span id="cb14-5"><a href="#cb14-5"></a></span>
-<span id="cb14-6"><a href="#cb14-6"></a><span class="fu">apollo_initialise</span>()</span>
-<span id="cb14-7"><a href="#cb14-7"></a></span>
-<span id="cb14-8"><a href="#cb14-8"></a>apollo_control <span class="ot">=</span> <span class="fu">list</span>(</span>
-<span id="cb14-9"><a href="#cb14-9"></a>    <span class="at">modelName=</span><span class="st">"WFH_Postpandemic"</span>,</span>
-<span id="cb14-10"><a href="#cb14-10"></a>    <span class="at">indivID=</span><span class="st">"resp_id"</span></span>
-<span id="cb14-11"><a href="#cb14-11"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a><span class="fu">library</span>(apollo)</span>
+<span id="cb15-2"><a href="#cb15-2"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb15-3"><a href="#cb15-3"></a></span>
+<span id="cb15-4"><a href="#cb15-4"></a>database <span class="ot">=</span> <span class="fu">read_csv</span>(<span class="st">"data/covidfuture_wfh.csv"</span>)</span>
+<span id="cb15-5"><a href="#cb15-5"></a></span>
+<span id="cb15-6"><a href="#cb15-6"></a><span class="fu">apollo_initialise</span>()</span>
+<span id="cb15-7"><a href="#cb15-7"></a></span>
+<span id="cb15-8"><a href="#cb15-8"></a>apollo_control <span class="ot">=</span> <span class="fu">list</span>(</span>
+<span id="cb15-9"><a href="#cb15-9"></a>    <span class="at">modelName=</span><span class="st">"WFH_Postpandemic"</span>,</span>
+<span id="cb15-10"><a href="#cb15-10"></a>    <span class="at">indivID=</span><span class="st">"resp_id"</span></span>
+<span id="cb15-11"><a href="#cb15-11"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section class="slide level2">
 
 <div class="cell" data-filename="covidfuture-wfh-mnl.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-17_593bb5eea6c6a9be8f5eb8776231798d">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a><span class="fu">head</span>(database)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a><span class="fu">head</span>(database)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 6 × 5
   resp_id wfh      age income_100k_plus service_worker
@@ -905,31 +915,31 @@ p(y=i)\\= p(U_i &gt; \mathrm{all~other}~U)\\
 <section class="slide level2">
 
 <div class="cell" data-filename="covidfuture-wfh-mnl.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-18_2481b50b0e0dc83a626018381cae9dc5">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a><span class="co"># now, we must define all the coefficients</span></span>
-<span id="cb17-2"><a href="#cb17-2"></a><span class="co"># we have separate sets of coefficients for each utility</span></span>
-<span id="cb17-3"><a href="#cb17-3"></a><span class="co"># function, because the utilities need to be different</span></span>
-<span id="cb17-4"><a href="#cb17-4"></a>apollo_beta <span class="ot">=</span> <span class="fu">c</span>(</span>
-<span id="cb17-5"><a href="#cb17-5"></a>    <span class="at">asc_rarely =</span> <span class="dv">0</span>,</span>
-<span id="cb17-6"><a href="#cb17-6"></a>    <span class="at">asc_often =</span> <span class="dv">0</span>,</span>
-<span id="cb17-7"><a href="#cb17-7"></a>    <span class="at">asc_always =</span> <span class="dv">0</span>,</span>
-<span id="cb17-8"><a href="#cb17-8"></a>    <span class="at">b_rarely_age =</span> <span class="dv">0</span>,</span>
-<span id="cb17-9"><a href="#cb17-9"></a>    <span class="at">b_often_age =</span> <span class="dv">0</span>,</span>
-<span id="cb17-10"><a href="#cb17-10"></a>    <span class="at">b_always_age =</span> <span class="dv">0</span>,</span>
-<span id="cb17-11"><a href="#cb17-11"></a>    <span class="at">b_rarely_highinc =</span> <span class="dv">0</span>,</span>
-<span id="cb17-12"><a href="#cb17-12"></a>    <span class="at">b_often_highinc =</span> <span class="dv">0</span>,</span>
-<span id="cb17-13"><a href="#cb17-13"></a>    <span class="at">b_always_highinc =</span> <span class="dv">0</span>,</span>
-<span id="cb17-14"><a href="#cb17-14"></a>    <span class="at">b_rarely_service_worker =</span> <span class="dv">0</span>,</span>
-<span id="cb17-15"><a href="#cb17-15"></a>    <span class="at">b_often_service_worker =</span> <span class="dv">0</span>,</span>
-<span id="cb17-16"><a href="#cb17-16"></a>    <span class="at">b_always_service_worker =</span> <span class="dv">0</span></span>
-<span id="cb17-17"><a href="#cb17-17"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1"></a><span class="co"># now, we must define all the coefficients</span></span>
+<span id="cb18-2"><a href="#cb18-2"></a><span class="co"># we have separate sets of coefficients for each utility</span></span>
+<span id="cb18-3"><a href="#cb18-3"></a><span class="co"># function, because the utilities need to be different</span></span>
+<span id="cb18-4"><a href="#cb18-4"></a>apollo_beta <span class="ot">=</span> <span class="fu">c</span>(</span>
+<span id="cb18-5"><a href="#cb18-5"></a>    <span class="at">asc_rarely =</span> <span class="dv">0</span>,</span>
+<span id="cb18-6"><a href="#cb18-6"></a>    <span class="at">asc_often =</span> <span class="dv">0</span>,</span>
+<span id="cb18-7"><a href="#cb18-7"></a>    <span class="at">asc_always =</span> <span class="dv">0</span>,</span>
+<span id="cb18-8"><a href="#cb18-8"></a>    <span class="at">b_rarely_age =</span> <span class="dv">0</span>,</span>
+<span id="cb18-9"><a href="#cb18-9"></a>    <span class="at">b_often_age =</span> <span class="dv">0</span>,</span>
+<span id="cb18-10"><a href="#cb18-10"></a>    <span class="at">b_always_age =</span> <span class="dv">0</span>,</span>
+<span id="cb18-11"><a href="#cb18-11"></a>    <span class="at">b_rarely_highinc =</span> <span class="dv">0</span>,</span>
+<span id="cb18-12"><a href="#cb18-12"></a>    <span class="at">b_often_highinc =</span> <span class="dv">0</span>,</span>
+<span id="cb18-13"><a href="#cb18-13"></a>    <span class="at">b_always_highinc =</span> <span class="dv">0</span>,</span>
+<span id="cb18-14"><a href="#cb18-14"></a>    <span class="at">b_rarely_service_worker =</span> <span class="dv">0</span>,</span>
+<span id="cb18-15"><a href="#cb18-15"></a>    <span class="at">b_often_service_worker =</span> <span class="dv">0</span>,</span>
+<span id="cb18-16"><a href="#cb18-16"></a>    <span class="at">b_always_service_worker =</span> <span class="dv">0</span></span>
+<span id="cb18-17"><a href="#cb18-17"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section class="slide level2">
 
 <div class="cell" data-filename="covidfuture-wfh-mnl.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-19_4c414ff5c701503ba382873d0627de80">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1"></a>apollo_fixed <span class="ot">=</span> <span class="fu">c</span>()</span>
-<span id="cb18-2"><a href="#cb18-2"></a></span>
-<span id="cb18-3"><a href="#cb18-3"></a>apollo_inputs <span class="ot">=</span> <span class="fu">apollo_validateInputs</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a>apollo_fixed <span class="ot">=</span> <span class="fu">c</span>()</span>
+<span id="cb19-2"><a href="#cb19-2"></a></span>
+<span id="cb19-3"><a href="#cb19-3"></a>apollo_inputs <span class="ot">=</span> <span class="fu">apollo_validateInputs</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>All checks on apollo_control completed.
 All checks on database completed.</code></pre>
@@ -939,48 +949,48 @@ All checks on database completed.</code></pre>
 <section class="slide level2">
 
 <div class="cell" data-filename="covidfuture-wfh-mnl.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-20_e278037bc92e3c3144023ad892f2fb39">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1"></a><span class="co"># Finally, we define the utility functions in apollo_probabilities</span></span>
-<span id="cb20-2"><a href="#cb20-2"></a>apollo_probabilities <span class="ot">=</span> <span class="cf">function</span>(apollo_beta, apollo_inputs,</span>
-<span id="cb20-3"><a href="#cb20-3"></a>        <span class="at">functionality=</span><span class="st">"estimate"</span>) {</span>
-<span id="cb20-4"><a href="#cb20-4"></a>    <span class="fu">apollo_attach</span>(apollo_beta, apollo_inputs)</span>
-<span id="cb20-5"><a href="#cb20-5"></a>    <span class="fu">on.exit</span>(<span class="fu">apollo_detach</span>(apollo_beta, apollo_inputs))</span>
-<span id="cb20-6"><a href="#cb20-6"></a></span>
-<span id="cb20-7"><a href="#cb20-7"></a>    P <span class="ot">=</span> <span class="fu">list</span>()</span>
-<span id="cb20-8"><a href="#cb20-8"></a></span>
-<span id="cb20-9"><a href="#cb20-9"></a>    <span class="co"># define utility functions</span></span>
-<span id="cb20-10"><a href="#cb20-10"></a>    V <span class="ot">=</span> <span class="fu">list</span>()</span>
-<span id="cb20-11"><a href="#cb20-11"></a>    <span class="co"># fix one utility to zero</span></span>
-<span id="cb20-12"><a href="#cb20-12"></a>    V[[<span class="st">"Unable"</span>]] <span class="ot">=</span> <span class="dv">0</span></span>
-<span id="cb20-13"><a href="#cb20-13"></a>    V[[<span class="st">"Rarely"</span>]] <span class="ot">=</span> asc_rarely <span class="sc">+</span> b_rarely_age <span class="sc">*</span> age <span class="sc">+</span></span>
-<span id="cb20-14"><a href="#cb20-14"></a>        b_rarely_highinc <span class="sc">*</span> income_100k_plus <span class="sc">+</span></span>
-<span id="cb20-15"><a href="#cb20-15"></a>        b_rarely_service_worker <span class="sc">*</span> service_worker</span>
-<span id="cb20-16"><a href="#cb20-16"></a>    V[[<span class="st">"Often"</span>]] <span class="ot">=</span> asc_often <span class="sc">+</span> b_often_age <span class="sc">*</span> age <span class="sc">+</span></span>
-<span id="cb20-17"><a href="#cb20-17"></a>        b_often_highinc <span class="sc">*</span> income_100k_plus <span class="sc">+</span></span>
-<span id="cb20-18"><a href="#cb20-18"></a>        b_often_service_worker <span class="sc">*</span> service_worker</span>
-<span id="cb20-19"><a href="#cb20-19"></a>    V[[<span class="st">"Always"</span>]] <span class="ot">=</span> asc_always <span class="sc">+</span> b_always_age <span class="sc">*</span> age <span class="sc">+</span></span>
-<span id="cb20-20"><a href="#cb20-20"></a>        b_always_highinc <span class="sc">*</span> income_100k_plus <span class="sc">+</span></span>
-<span id="cb20-21"><a href="#cb20-21"></a>        b_always_service_worker <span class="sc">*</span> service_worker</span>
-<span id="cb20-22"><a href="#cb20-22"></a>        </span>
-<span id="cb20-23"><a href="#cb20-23"></a>    mnl_settings <span class="ot">=</span> <span class="fu">list</span>(</span>
-<span id="cb20-24"><a href="#cb20-24"></a>        <span class="at">alternatives =</span> <span class="fu">c</span>(<span class="at">Unable=</span><span class="st">"Unable"</span>, <span class="at">Rarely=</span><span class="st">"Rarely"</span>,</span>
-<span id="cb20-25"><a href="#cb20-25"></a>            <span class="at">Often=</span><span class="st">"Often"</span>, <span class="at">Always=</span><span class="st">"Always"</span>),</span>
-<span id="cb20-26"><a href="#cb20-26"></a>        <span class="at">avail =</span> <span class="fu">list</span>(<span class="at">Unable=</span>T, <span class="at">Rarely=</span>T, <span class="at">Often=</span>T, <span class="at">Always=</span>T),</span>
-<span id="cb20-27"><a href="#cb20-27"></a>        <span class="at">choiceVar =</span> wfh,</span>
-<span id="cb20-28"><a href="#cb20-28"></a>        <span class="at">utilities =</span> V</span>
-<span id="cb20-29"><a href="#cb20-29"></a>    )</span>
-<span id="cb20-30"><a href="#cb20-30"></a></span>
-<span id="cb20-31"><a href="#cb20-31"></a>    P[[<span class="st">"model"</span>]] <span class="ot">=</span> <span class="fu">apollo_mnl</span>(mnl_settings, functionality)</span>
-<span id="cb20-32"><a href="#cb20-32"></a>    P <span class="ot">=</span> <span class="fu">apollo_prepareProb</span>(P, apollo_inputs, functionality)</span>
-<span id="cb20-33"><a href="#cb20-33"></a>    <span class="fu">return</span>(P)</span>
-<span id="cb20-34"><a href="#cb20-34"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a><span class="co"># Finally, we define the utility functions in apollo_probabilities</span></span>
+<span id="cb21-2"><a href="#cb21-2"></a>apollo_probabilities <span class="ot">=</span> <span class="cf">function</span>(apollo_beta, apollo_inputs,</span>
+<span id="cb21-3"><a href="#cb21-3"></a>        <span class="at">functionality=</span><span class="st">"estimate"</span>) {</span>
+<span id="cb21-4"><a href="#cb21-4"></a>    <span class="fu">apollo_attach</span>(apollo_beta, apollo_inputs)</span>
+<span id="cb21-5"><a href="#cb21-5"></a>    <span class="fu">on.exit</span>(<span class="fu">apollo_detach</span>(apollo_beta, apollo_inputs))</span>
+<span id="cb21-6"><a href="#cb21-6"></a></span>
+<span id="cb21-7"><a href="#cb21-7"></a>    P <span class="ot">=</span> <span class="fu">list</span>()</span>
+<span id="cb21-8"><a href="#cb21-8"></a></span>
+<span id="cb21-9"><a href="#cb21-9"></a>    <span class="co"># define utility functions</span></span>
+<span id="cb21-10"><a href="#cb21-10"></a>    V <span class="ot">=</span> <span class="fu">list</span>()</span>
+<span id="cb21-11"><a href="#cb21-11"></a>    <span class="co"># fix one utility to zero</span></span>
+<span id="cb21-12"><a href="#cb21-12"></a>    V[[<span class="st">"Unable"</span>]] <span class="ot">=</span> <span class="dv">0</span></span>
+<span id="cb21-13"><a href="#cb21-13"></a>    V[[<span class="st">"Rarely"</span>]] <span class="ot">=</span> asc_rarely <span class="sc">+</span> b_rarely_age <span class="sc">*</span> age <span class="sc">+</span></span>
+<span id="cb21-14"><a href="#cb21-14"></a>        b_rarely_highinc <span class="sc">*</span> income_100k_plus <span class="sc">+</span></span>
+<span id="cb21-15"><a href="#cb21-15"></a>        b_rarely_service_worker <span class="sc">*</span> service_worker</span>
+<span id="cb21-16"><a href="#cb21-16"></a>    V[[<span class="st">"Often"</span>]] <span class="ot">=</span> asc_often <span class="sc">+</span> b_often_age <span class="sc">*</span> age <span class="sc">+</span></span>
+<span id="cb21-17"><a href="#cb21-17"></a>        b_often_highinc <span class="sc">*</span> income_100k_plus <span class="sc">+</span></span>
+<span id="cb21-18"><a href="#cb21-18"></a>        b_often_service_worker <span class="sc">*</span> service_worker</span>
+<span id="cb21-19"><a href="#cb21-19"></a>    V[[<span class="st">"Always"</span>]] <span class="ot">=</span> asc_always <span class="sc">+</span> b_always_age <span class="sc">*</span> age <span class="sc">+</span></span>
+<span id="cb21-20"><a href="#cb21-20"></a>        b_always_highinc <span class="sc">*</span> income_100k_plus <span class="sc">+</span></span>
+<span id="cb21-21"><a href="#cb21-21"></a>        b_always_service_worker <span class="sc">*</span> service_worker</span>
+<span id="cb21-22"><a href="#cb21-22"></a>        </span>
+<span id="cb21-23"><a href="#cb21-23"></a>    mnl_settings <span class="ot">=</span> <span class="fu">list</span>(</span>
+<span id="cb21-24"><a href="#cb21-24"></a>        <span class="at">alternatives =</span> <span class="fu">c</span>(<span class="at">Unable=</span><span class="st">"Unable"</span>, <span class="at">Rarely=</span><span class="st">"Rarely"</span>,</span>
+<span id="cb21-25"><a href="#cb21-25"></a>            <span class="at">Often=</span><span class="st">"Often"</span>, <span class="at">Always=</span><span class="st">"Always"</span>),</span>
+<span id="cb21-26"><a href="#cb21-26"></a>        <span class="at">avail =</span> <span class="fu">list</span>(<span class="at">Unable=</span>T, <span class="at">Rarely=</span>T, <span class="at">Often=</span>T, <span class="at">Always=</span>T),</span>
+<span id="cb21-27"><a href="#cb21-27"></a>        <span class="at">choiceVar =</span> wfh,</span>
+<span id="cb21-28"><a href="#cb21-28"></a>        <span class="at">utilities =</span> V</span>
+<span id="cb21-29"><a href="#cb21-29"></a>    )</span>
+<span id="cb21-30"><a href="#cb21-30"></a></span>
+<span id="cb21-31"><a href="#cb21-31"></a>    P[[<span class="st">"model"</span>]] <span class="ot">=</span> <span class="fu">apollo_mnl</span>(mnl_settings, functionality)</span>
+<span id="cb21-32"><a href="#cb21-32"></a>    P <span class="ot">=</span> <span class="fu">apollo_prepareProb</span>(P, apollo_inputs, functionality)</span>
+<span id="cb21-33"><a href="#cb21-33"></a>    <span class="fu">return</span>(P)</span>
+<span id="cb21-34"><a href="#cb21-34"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section class="slide level2">
 
 <div class="cell" data-filename="covidfuture-wfh-mnl.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-21_f1e0c3cc8b8738877068f80533371a6e">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a><span class="co"># estimate model</span></span>
-<span id="cb21-2"><a href="#cb21-2"></a>model <span class="ot">=</span> <span class="fu">apollo_estimate</span>(apollo_beta, apollo_fixed,</span>
-<span id="cb21-3"><a href="#cb21-3"></a>    apollo_probabilities, apollo_inputs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1"></a><span class="co"># estimate model</span></span>
+<span id="cb22-2"><a href="#cb22-2"></a>model <span class="ot">=</span> <span class="fu">apollo_estimate</span>(apollo_beta, apollo_fixed,</span>
+<span id="cb22-3"><a href="#cb22-3"></a>    apollo_probabilities, apollo_inputs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Preparing user-defined functions.
 
@@ -1066,15 +1076,15 @@ Calculating LL of each model component...</code></pre>
 <section class="slide level2">
 
 <div class="cell" data-filename="covidfuture-wfh-mnl.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-22_d3aecc5a1ad16b53352f211be47fda19">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1"></a><span class="co"># Print results</span></span>
-<span id="cb23-2"><a href="#cb23-2"></a><span class="fu">apollo_modelOutput</span>(model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1"></a><span class="co"># Print results</span></span>
+<span id="cb24-2"><a href="#cb24-2"></a><span class="fu">apollo_modelOutput</span>(model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Model run by mwbc using Apollo 0.2.7 on R 4.2.1 for Darwin.
 www.ApolloChoiceModelling.com
 
 Model name                       : WFH_Postpandemic
 Model description                : No model description provided in apollo_control
-Model run at                     : 2022-08-03 11:07:26
+Model run at                     : 2022-08-05 11:11:27
 Estimation method                : bfgs
 Model diagnosis                  : successful convergence 
 Number of individuals            : 4895
@@ -1096,10 +1106,10 @@ AIC                              :  10181.4
 BIC                              :  10259.35 
 
 Estimated parameters             :  12
-Time taken (hh:mm:ss)            :  00:00:0.6 
+Time taken (hh:mm:ss)            :  00:00:0.74 
      pre-estimation              :  00:00:0.24 
-     estimation                  :  00:00:0.13 
-     post-estimation             :  00:00:0.22 
+     estimation                  :  00:00:0.14 
+     post-estimation             :  00:00:0.35 
 Iterations                       :  24  
 Min abs eigenvalue of Hessian    :  16.46684 
 
@@ -1377,8 +1387,8 @@ cs-&gt;tc
 
 </div>
 <ul>
-<li>We’re going to build a multinomial logit mode choice model of intercity mode choice between major Australian cities</li>
-<li>Data from Python <code>statsmodels</code> package, originally from <span class="citation" data-cites="greene_econometric_2011">Greene (<a href="#/ref-greene_econometric_2011" role="doc-biblioref" onclick="return false;">2011</a>)</span>, online table F18-2</li>
+<li>We’re going to build a multinomial logit mode choice model of intercity mode choice</li>
+<li>Data from Apollo examples</li>
 </ul>
 </section>
 <section id="the-data" class="slide level2">
@@ -1541,212 +1551,199 @@ cs-&gt;tc
 <section id="estimation-in-r" class="slide level2">
 <h2>Estimation in R</h2>
 <p><code>mode-choice-mnl.R</code></p>
-<div class="cell" data-filename="mode-choice-mnl.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-28_2d3aca11321335f2d378834c7953a079">
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1"></a><span class="fu">library</span>(apollo)</span>
-<span id="cb25-2"><a href="#cb25-2"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb25-3"><a href="#cb25-3"></a></span>
-<span id="cb25-4"><a href="#cb25-4"></a>database <span class="ot">=</span> <span class="fu">read_csv</span>(<span class="st">"data/modechoice.csv"</span>)</span>
-<span id="cb25-5"><a href="#cb25-5"></a></span>
-<span id="cb25-6"><a href="#cb25-6"></a><span class="fu">apollo_initialise</span>()</span>
-<span id="cb25-7"><a href="#cb25-7"></a></span>
-<span id="cb25-8"><a href="#cb25-8"></a>apollo_control <span class="ot">=</span> <span class="fu">list</span>(</span>
-<span id="cb25-9"><a href="#cb25-9"></a>    <span class="at">modelName =</span> <span class="st">"Australia_Mode_Choice"</span>,</span>
-<span id="cb25-10"><a href="#cb25-10"></a>    <span class="at">indivID=</span><span class="st">"individual"</span></span>
-<span id="cb25-11"><a href="#cb25-11"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-filename="mode-choice-mnl.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-28_ebfff9d328756b15f8371886811af2da">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1"></a><span class="fu">library</span>(apollo)</span>
+<span id="cb26-2"><a href="#cb26-2"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb26-3"><a href="#cb26-3"></a></span>
+<span id="cb26-4"><a href="#cb26-4"></a>database <span class="ot">=</span> <span class="fu">read_csv</span>(<span class="st">"data/modechoice_apollo.csv"</span>)</span>
+<span id="cb26-5"><a href="#cb26-5"></a></span>
+<span id="cb26-6"><a href="#cb26-6"></a><span class="fu">apollo_initialise</span>()</span>
+<span id="cb26-7"><a href="#cb26-7"></a></span>
+<span id="cb26-8"><a href="#cb26-8"></a>apollo_control <span class="ot">=</span> <span class="fu">list</span>(</span>
+<span id="cb26-9"><a href="#cb26-9"></a>    <span class="at">modelName =</span> <span class="st">"Apollo_Mode_Choice"</span>,</span>
+<span id="cb26-10"><a href="#cb26-10"></a>    <span class="at">indivID=</span><span class="st">"ID"</span></span>
+<span id="cb26-11"><a href="#cb26-11"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section class="slide level2">
 
 <div class="cell" data-filename="mode-choice-mnl.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-29_f9165a440c74cb29d19a42855dc993c3">
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1"></a><span class="fu">head</span>(database)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1"></a><span class="fu">head</span>(database)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 6 × 16
-  indiv…¹ chosen wait_…² wait_…³ wait_…⁴ wait_…⁵ cost_…⁶ cost_…⁷ cost_…⁸ cost_…⁹
-    &lt;dbl&gt; &lt;chr&gt;    &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;
-1       1 car         69      34      35       0      59      31      25      10
-2       2 car         64      44      53       0      58      31      25      11
-3       3 car         69      34      35       0     115      98      53      23
-4       4 car         64      44      53       0      49      26      21       5
-5       5 car         64      44      53       0      60      32      26       8
-6       6 train       69      40      35       0      59      20      13      12
-# … with 6 more variables: in_vehicle_time_air &lt;dbl&gt;,
-#   in_vehicle_time_train &lt;dbl&gt;, in_vehicle_time_bus &lt;dbl&gt;,
-#   in_vehicle_time_car &lt;dbl&gt;, hhincome_thousands &lt;dbl&gt;, party_size &lt;dbl&gt;, and
-#   abbreviated variable names ¹​individual, ²​wait_time_air, ³​wait_time_train,
-#   ⁴​wait_time_bus, ⁵​wait_time_car, ⁶​cost_air, ⁷​cost_train, ⁸​cost_bus,
-#   ⁹​cost_car
+<pre><code># A tibble: 6 × 22
+     ID av_car av_bus av_air av_rail time_car cost_car time_bus cost_bus acces…¹
+  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;   &lt;dbl&gt;
+1     1      0      0      1       1        0        0        0        0       0
+2     1      0      0      1       1        0        0        0        0       0
+3     2      1      1      0       1      345       40      345       30      15
+4     2      1      1      0       1      345       45      345       25      20
+5     3      0      0      1       1        0        0        0        0       0
+6     3      0      0      1       1        0        0        0        0       0
+# … with 12 more variables: time_air &lt;dbl&gt;, cost_air &lt;dbl&gt;, access_air &lt;dbl&gt;,
+#   service_air &lt;dbl&gt;, time_rail &lt;dbl&gt;, cost_rail &lt;dbl&gt;, access_rail &lt;dbl&gt;,
+#   service_rail &lt;dbl&gt;, female &lt;dbl&gt;, business &lt;dbl&gt;, income &lt;dbl&gt;,
+#   choice &lt;dbl&gt;, and abbreviated variable name ¹​access_bus
 # ℹ Use `colnames()` to see all variable names</code></pre>
 </div>
 </div>
 </section>
 <section class="slide level2">
 
-<div class="cell" data-filename="mode-choice-mnl.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-30_fb9fae05fad632b4c0902de82d3f1c01">
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1"></a>apollo_beta <span class="ot">=</span> <span class="fu">c</span>(</span>
-<span id="cb28-2"><a href="#cb28-2"></a>    <span class="at">asc_air =</span> <span class="dv">0</span>,</span>
-<span id="cb28-3"><a href="#cb28-3"></a>    <span class="at">asc_bus =</span> <span class="dv">0</span>,</span>
-<span id="cb28-4"><a href="#cb28-4"></a>    <span class="at">asc_train =</span> <span class="dv">0</span>,</span>
-<span id="cb28-5"><a href="#cb28-5"></a>    <span class="co"># leaving out an asc_car as base category</span></span>
-<span id="cb28-6"><a href="#cb28-6"></a>    <span class="co"># wait_time varies across alternatives, so we can have a</span></span>
-<span id="cb28-7"><a href="#cb28-7"></a>    <span class="co"># single wait_time coefficient</span></span>
-<span id="cb28-8"><a href="#cb28-8"></a>    <span class="at">b_wait_time =</span> <span class="dv">0</span>,</span>
-<span id="cb28-9"><a href="#cb28-9"></a>    <span class="at">b_cost =</span> <span class="dv">0</span>,</span>
-<span id="cb28-10"><a href="#cb28-10"></a>    <span class="at">b_in_vehicle_time =</span> <span class="dv">0</span>,</span>
-<span id="cb28-11"><a href="#cb28-11"></a>    <span class="co"># income and party_size are individual level variable, so</span></span>
-<span id="cb28-12"><a href="#cb28-12"></a>    <span class="co"># must be different for different alternatives</span></span>
-<span id="cb28-13"><a href="#cb28-13"></a>    <span class="at">b_hhincome_air =</span> <span class="dv">0</span>,</span>
-<span id="cb28-14"><a href="#cb28-14"></a>    <span class="at">b_hhincome_bus =</span> <span class="dv">0</span>,</span>
-<span id="cb28-15"><a href="#cb28-15"></a>    <span class="at">b_hhincome_train =</span> <span class="dv">0</span>,</span>
-<span id="cb28-16"><a href="#cb28-16"></a>    <span class="at">b_party_size_air =</span> <span class="dv">0</span>,</span>
-<span id="cb28-17"><a href="#cb28-17"></a>    <span class="at">b_party_size_bus =</span> <span class="dv">0</span>,</span>
-<span id="cb28-18"><a href="#cb28-18"></a>    <span class="at">b_party_size_train =</span> <span class="dv">0</span></span>
-<span id="cb28-19"><a href="#cb28-19"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-filename="mode-choice-mnl.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-30_efe2359fc8b4c2713589996e7881837c">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1"></a>apollo_beta <span class="ot">=</span> <span class="fu">c</span>(</span>
+<span id="cb29-2"><a href="#cb29-2"></a>    <span class="at">asc_air =</span> <span class="dv">0</span>,</span>
+<span id="cb29-3"><a href="#cb29-3"></a>    <span class="at">asc_bus =</span> <span class="dv">0</span>,</span>
+<span id="cb29-4"><a href="#cb29-4"></a>    <span class="at">asc_rail =</span> <span class="dv">0</span>,</span>
+<span id="cb29-5"><a href="#cb29-5"></a>    <span class="co"># leaving out an asc_car as base category</span></span>
+<span id="cb29-6"><a href="#cb29-6"></a>    <span class="at">b_cost =</span> <span class="dv">0</span>,</span>
+<span id="cb29-7"><a href="#cb29-7"></a>    <span class="at">b_access_time =</span> <span class="dv">0</span>,</span>
+<span id="cb29-8"><a href="#cb29-8"></a>    <span class="at">b_in_vehicle_time =</span> <span class="dv">0</span>,</span>
+<span id="cb29-9"><a href="#cb29-9"></a>    <span class="co"># income and party_size are individual level variable, so</span></span>
+<span id="cb29-10"><a href="#cb29-10"></a>    <span class="co"># must be different for different alternatives</span></span>
+<span id="cb29-11"><a href="#cb29-11"></a>    <span class="at">b_income_air =</span> <span class="dv">0</span>,</span>
+<span id="cb29-12"><a href="#cb29-12"></a>    <span class="at">b_income_bus =</span> <span class="dv">0</span>,</span>
+<span id="cb29-13"><a href="#cb29-13"></a>    <span class="at">b_income_rail =</span> <span class="dv">0</span></span>
+<span id="cb29-14"><a href="#cb29-14"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section class="slide level2">
 
 <div class="cell" data-filename="mode-choice-mnl.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-31_1d461819ab8278daddfc92716458c0b1">
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1"></a>apollo_fixed <span class="ot">=</span> <span class="fu">c</span>()</span>
-<span id="cb29-2"><a href="#cb29-2"></a></span>
-<span id="cb29-3"><a href="#cb29-3"></a>apollo_inputs <span class="ot">=</span> <span class="fu">apollo_validateInputs</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1"></a>apollo_fixed <span class="ot">=</span> <span class="fu">c</span>()</span>
+<span id="cb30-2"><a href="#cb30-2"></a></span>
+<span id="cb30-3"><a href="#cb30-3"></a>apollo_inputs <span class="ot">=</span> <span class="fu">apollo_validateInputs</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>All checks on apollo_control completed.
+<pre><code>Several observations per individual detected based on the value of ID.
+  Setting panelData in apollo_control set to TRUE.
+All checks on apollo_control completed.
 All checks on database completed.</code></pre>
 </div>
 </div>
 </section>
 <section class="slide level2">
 
-<div class="cell" data-filename="mode-choice-mnl.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-32_a66c2a6050dd8f4144ffbd5b77bf9c62">
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1"></a>apollo_probabilities <span class="ot">=</span> <span class="cf">function</span>(apollo_beta, apollo_inputs,</span>
-<span id="cb31-2"><a href="#cb31-2"></a>        <span class="at">functionality=</span><span class="st">"estimate"</span>) {</span>
-<span id="cb31-3"><a href="#cb31-3"></a>    <span class="fu">apollo_attach</span>(apollo_beta, apollo_inputs)</span>
-<span id="cb31-4"><a href="#cb31-4"></a>    <span class="fu">on.exit</span>(<span class="fu">apollo_detach</span>(apollo_beta, apollo_inputs))</span>
-<span id="cb31-5"><a href="#cb31-5"></a></span>
-<span id="cb31-6"><a href="#cb31-6"></a>    P <span class="ot">=</span> <span class="fu">list</span>()</span>
-<span id="cb31-7"><a href="#cb31-7"></a></span>
-<span id="cb31-8"><a href="#cb31-8"></a>    <span class="co"># define utility functions</span></span>
-<span id="cb31-9"><a href="#cb31-9"></a>    V <span class="ot">=</span> <span class="fu">list</span>()</span>
-<span id="cb31-10"><a href="#cb31-10"></a>    <span class="co"># We can include cost and in-vehicle time here because they vary over</span></span>
-<span id="cb31-11"><a href="#cb31-11"></a>    <span class="co"># alternatives</span></span>
-<span id="cb31-12"><a href="#cb31-12"></a>    V[[<span class="st">"car"</span>]] <span class="ot">=</span> b_cost <span class="sc">*</span> cost_car <span class="sc">+</span></span>
-<span id="cb31-13"><a href="#cb31-13"></a>        b_in_vehicle_time <span class="sc">*</span> in_vehicle_time_car</span>
-<span id="cb31-14"><a href="#cb31-14"></a>    <span class="co"># Exercise: why can't we include wait time in utility of car?</span></span>
-<span id="cb31-15"><a href="#cb31-15"></a></span>
-<span id="cb31-16"><a href="#cb31-16"></a>    V[[<span class="st">"air"</span>]] <span class="ot">=</span> asc_air <span class="sc">+</span></span>
-<span id="cb31-17"><a href="#cb31-17"></a>        b_cost <span class="sc">*</span> cost_air <span class="sc">+</span></span>
-<span id="cb31-18"><a href="#cb31-18"></a>        b_in_vehicle_time <span class="sc">*</span> in_vehicle_time_air <span class="sc">+</span></span>
-<span id="cb31-19"><a href="#cb31-19"></a>        b_wait_time <span class="sc">*</span> wait_time_air <span class="sc">+</span></span>
-<span id="cb31-20"><a href="#cb31-20"></a>        b_hhincome_air <span class="sc">*</span> hhincome_thousands <span class="sc">+</span></span>
-<span id="cb31-21"><a href="#cb31-21"></a>        b_party_size_air <span class="sc">*</span> party_size</span>
-<span id="cb31-22"><a href="#cb31-22"></a></span>
-<span id="cb31-23"><a href="#cb31-23"></a>    V[[<span class="st">"train"</span>]] <span class="ot">=</span> asc_train <span class="sc">+</span></span>
-<span id="cb31-24"><a href="#cb31-24"></a>        b_cost <span class="sc">*</span> cost_train <span class="sc">+</span></span>
-<span id="cb31-25"><a href="#cb31-25"></a>        b_in_vehicle_time <span class="sc">*</span> in_vehicle_time_train <span class="sc">+</span></span>
-<span id="cb31-26"><a href="#cb31-26"></a>        b_wait_time <span class="sc">*</span> wait_time_train <span class="sc">+</span></span>
-<span id="cb31-27"><a href="#cb31-27"></a>        b_hhincome_train <span class="sc">*</span> hhincome_thousands <span class="sc">+</span></span>
-<span id="cb31-28"><a href="#cb31-28"></a>        b_party_size_train <span class="sc">*</span> party_size</span>
-<span id="cb31-29"><a href="#cb31-29"></a></span>
-<span id="cb31-30"><a href="#cb31-30"></a>    V[[<span class="st">"bus"</span>]] <span class="ot">=</span> asc_bus <span class="sc">+</span></span>
-<span id="cb31-31"><a href="#cb31-31"></a>        b_cost <span class="sc">*</span> cost_bus <span class="sc">+</span></span>
-<span id="cb31-32"><a href="#cb31-32"></a>        b_in_vehicle_time <span class="sc">*</span> in_vehicle_time_bus <span class="sc">+</span></span>
-<span id="cb31-33"><a href="#cb31-33"></a>        b_wait_time <span class="sc">*</span> wait_time_bus <span class="sc">+</span></span>
-<span id="cb31-34"><a href="#cb31-34"></a>        b_hhincome_bus <span class="sc">*</span> hhincome_thousands <span class="sc">+</span></span>
-<span id="cb31-35"><a href="#cb31-35"></a>        b_party_size_bus <span class="sc">*</span> party_size</span>
-<span id="cb31-36"><a href="#cb31-36"></a></span>
-<span id="cb31-37"><a href="#cb31-37"></a>    mnl_settings <span class="ot">=</span> <span class="fu">list</span>(</span>
-<span id="cb31-38"><a href="#cb31-38"></a>        <span class="at">alternatives =</span> <span class="fu">c</span>(<span class="at">car=</span><span class="st">"car"</span>, <span class="at">air=</span><span class="st">"air"</span>, <span class="at">train=</span><span class="st">"train"</span>, <span class="at">bus=</span><span class="st">"bus"</span>),</span>
-<span id="cb31-39"><a href="#cb31-39"></a>        <span class="at">avail =</span> <span class="fu">list</span>(<span class="at">car=</span>T, <span class="at">air=</span>T, <span class="at">train=</span>T, <span class="at">bus=</span>T),</span>
-<span id="cb31-40"><a href="#cb31-40"></a>        <span class="at">choiceVar =</span> chosen,</span>
-<span id="cb31-41"><a href="#cb31-41"></a>        <span class="at">utilities =</span> V</span>
-<span id="cb31-42"><a href="#cb31-42"></a>    )</span>
-<span id="cb31-43"><a href="#cb31-43"></a></span>
-<span id="cb31-44"><a href="#cb31-44"></a>    P[[<span class="st">"model"</span>]] <span class="ot">=</span> <span class="fu">apollo_mnl</span>(mnl_settings, functionality)</span>
-<span id="cb31-45"><a href="#cb31-45"></a>    P <span class="ot">=</span> <span class="fu">apollo_prepareProb</span>(P, apollo_inputs, functionality)</span>
-<span id="cb31-46"><a href="#cb31-46"></a>    <span class="fu">return</span>(P)</span>
-<span id="cb31-47"><a href="#cb31-47"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-filename="mode-choice-mnl.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-32_2b9a32514be0d30d4bbce487ab326f3e">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1"></a>apollo_probabilities <span class="ot">=</span> <span class="cf">function</span>(apollo_beta, apollo_inputs,</span>
+<span id="cb32-2"><a href="#cb32-2"></a>        <span class="at">functionality=</span><span class="st">"estimate"</span>) {</span>
+<span id="cb32-3"><a href="#cb32-3"></a>    <span class="fu">apollo_attach</span>(apollo_beta, apollo_inputs)</span>
+<span id="cb32-4"><a href="#cb32-4"></a>    <span class="fu">on.exit</span>(<span class="fu">apollo_detach</span>(apollo_beta, apollo_inputs))</span>
+<span id="cb32-5"><a href="#cb32-5"></a></span>
+<span id="cb32-6"><a href="#cb32-6"></a>    P <span class="ot">=</span> <span class="fu">list</span>()</span>
+<span id="cb32-7"><a href="#cb32-7"></a></span>
+<span id="cb32-8"><a href="#cb32-8"></a>    <span class="co"># define utility functions</span></span>
+<span id="cb32-9"><a href="#cb32-9"></a>    V <span class="ot">=</span> <span class="fu">list</span>()</span>
+<span id="cb32-10"><a href="#cb32-10"></a>    <span class="co"># We can include cost and in-vehicle time here because they vary over</span></span>
+<span id="cb32-11"><a href="#cb32-11"></a>    <span class="co"># alternatives</span></span>
+<span id="cb32-12"><a href="#cb32-12"></a>    V[[<span class="st">"car"</span>]] <span class="ot">=</span> b_cost <span class="sc">*</span> cost_car <span class="sc">+</span></span>
+<span id="cb32-13"><a href="#cb32-13"></a>        b_in_vehicle_time <span class="sc">*</span> time_car</span>
+<span id="cb32-14"><a href="#cb32-14"></a></span>
+<span id="cb32-15"><a href="#cb32-15"></a>    V[[<span class="st">"air"</span>]] <span class="ot">=</span> asc_air <span class="sc">+</span></span>
+<span id="cb32-16"><a href="#cb32-16"></a>        b_cost <span class="sc">*</span> cost_air <span class="sc">+</span></span>
+<span id="cb32-17"><a href="#cb32-17"></a>        b_in_vehicle_time <span class="sc">*</span> time_air <span class="sc">+</span></span>
+<span id="cb32-18"><a href="#cb32-18"></a>        b_access_time <span class="sc">*</span> access_air <span class="sc">+</span></span>
+<span id="cb32-19"><a href="#cb32-19"></a>        b_income_air <span class="sc">*</span> income</span>
+<span id="cb32-20"><a href="#cb32-20"></a></span>
+<span id="cb32-21"><a href="#cb32-21"></a>    V[[<span class="st">"rail"</span>]] <span class="ot">=</span> asc_rail <span class="sc">+</span></span>
+<span id="cb32-22"><a href="#cb32-22"></a>        b_cost <span class="sc">*</span> cost_rail <span class="sc">+</span></span>
+<span id="cb32-23"><a href="#cb32-23"></a>        b_in_vehicle_time <span class="sc">*</span> time_rail <span class="sc">+</span></span>
+<span id="cb32-24"><a href="#cb32-24"></a>        b_access_time <span class="sc">*</span> access_rail <span class="sc">+</span></span>
+<span id="cb32-25"><a href="#cb32-25"></a>        b_income_rail <span class="sc">*</span> income</span>
+<span id="cb32-26"><a href="#cb32-26"></a></span>
+<span id="cb32-27"><a href="#cb32-27"></a>    V[[<span class="st">"bus"</span>]] <span class="ot">=</span> asc_bus <span class="sc">+</span></span>
+<span id="cb32-28"><a href="#cb32-28"></a>        b_cost <span class="sc">*</span> cost_bus <span class="sc">+</span></span>
+<span id="cb32-29"><a href="#cb32-29"></a>        b_in_vehicle_time <span class="sc">*</span> time_bus <span class="sc">+</span></span>
+<span id="cb32-30"><a href="#cb32-30"></a>        b_access_time <span class="sc">*</span> access_bus <span class="sc">+</span></span>
+<span id="cb32-31"><a href="#cb32-31"></a>        b_income_bus <span class="sc">*</span> income</span>
+<span id="cb32-32"><a href="#cb32-32"></a></span>
+<span id="cb32-33"><a href="#cb32-33"></a>    mnl_settings <span class="ot">=</span> <span class="fu">list</span>(</span>
+<span id="cb32-34"><a href="#cb32-34"></a>        <span class="at">alternatives =</span> <span class="fu">c</span>(<span class="at">car=</span><span class="dv">1</span>, <span class="at">air=</span><span class="dv">3</span>, <span class="at">rail=</span><span class="dv">4</span>, <span class="at">bus=</span><span class="dv">2</span>),</span>
+<span id="cb32-35"><a href="#cb32-35"></a>        <span class="at">avail =</span> <span class="fu">list</span>(<span class="at">car=</span>av_car, <span class="at">air=</span>av_air, <span class="at">rail=</span>av_rail, <span class="at">bus=</span>av_bus),</span>
+<span id="cb32-36"><a href="#cb32-36"></a>        <span class="at">choiceVar =</span> choice,</span>
+<span id="cb32-37"><a href="#cb32-37"></a>        <span class="at">utilities =</span> V</span>
+<span id="cb32-38"><a href="#cb32-38"></a>    )</span>
+<span id="cb32-39"><a href="#cb32-39"></a></span>
+<span id="cb32-40"><a href="#cb32-40"></a>    P[[<span class="st">"model"</span>]] <span class="ot">=</span> <span class="fu">apollo_mnl</span>(mnl_settings, functionality)</span>
+<span id="cb32-41"><a href="#cb32-41"></a></span>
+<span id="cb32-42"><a href="#cb32-42"></a>    <span class="co"># For panel data, this multiplies observations for single individuals</span></span>
+<span id="cb32-43"><a href="#cb32-43"></a>    <span class="co"># together - no effect in multinomial logit but still required.</span></span>
+<span id="cb32-44"><a href="#cb32-44"></a>    P <span class="ot">=</span> <span class="fu">apollo_panelProd</span>(P, apollo_inputs, functionality)</span>
+<span id="cb32-45"><a href="#cb32-45"></a>    P <span class="ot">=</span> <span class="fu">apollo_prepareProb</span>(P, apollo_inputs, functionality)</span>
+<span id="cb32-46"><a href="#cb32-46"></a>    <span class="fu">return</span>(P)</span>
+<span id="cb32-47"><a href="#cb32-47"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section class="slide level2">
 
 <div class="cell" data-filename="mode-choice-mnl.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-33_ffa5a34c2adadaa4f3b17f6196893753">
-<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1"></a><span class="co"># estimate model</span></span>
-<span id="cb32-2"><a href="#cb32-2"></a>model <span class="ot">=</span> <span class="fu">apollo_estimate</span>(apollo_beta, apollo_fixed,</span>
-<span id="cb32-3"><a href="#cb32-3"></a>    apollo_probabilities, apollo_inputs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1"></a><span class="co"># estimate model</span></span>
+<span id="cb33-2"><a href="#cb33-2"></a>model <span class="ot">=</span> <span class="fu">apollo_estimate</span>(apollo_beta, apollo_fixed,</span>
+<span id="cb33-3"><a href="#cb33-3"></a>    apollo_probabilities, apollo_inputs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Preparing user-defined functions.
 
 Testing likelihood function...
 
 Overview of choices for MNL model component :
-                                   car    air train    bus
-Times available                  210.0 210.00   210 210.00
-Times chosen                      59.0  58.00    63  30.00
-Percentage chosen overall         28.1  27.62    30  14.29
-Percentage chosen when available  28.1  27.62    30  14.29
+                                    car    air   rail    bus
+Times available                  778.00 752.00 874.00 902.00
+Times chosen                     332.00 215.00 327.00 126.00
+Percentage chosen overall         33.20  21.50  32.70  12.60
+Percentage chosen when available  42.67  28.59  37.41  13.97
 
 Pre-processing likelihood function...
+Analytical gradient is different to numerical one. Numerical gradients
+  will be used.
 
-Testing influence of parameters
+Testing influence of parameters.........
 Starting main estimation
-Initial function value: -291.1218 
+Initial function value: -1170.86 
 Initial gradient value:
-           asc_air            asc_bus          asc_train        b_wait_time 
-              5.50             -22.50              10.50           -2011.75 
-            b_cost  b_in_vehicle_time     b_hhincome_air     b_hhincome_bus 
-            -75.75          -11616.75             606.25            -922.75 
-  b_hhincome_train   b_party_size_air   b_party_size_bus b_party_size_train 
-           -360.75              -0.50             -51.50              13.50 
-initial  value 291.121816 
-iter   2 value 285.343059
-iter   3 value 272.537477
-iter   4 value 265.888973
-iter   5 value 259.175938
-iter   6 value 257.466476
-iter   7 value 256.991462
-iter   8 value 232.234270
-iter   9 value 202.805178
-iter  10 value 194.529095
-iter  11 value 183.139055
-iter  12 value 180.360384
-iter  13 value 177.540693
-iter  14 value 174.085437
-iter  15 value 172.859153
-iter  16 value 172.497123
-iter  17 value 172.470410
-iter  18 value 172.468399
-iter  19 value 172.467987
-iter  20 value 172.467963
-iter  21 value 172.467953
-iter  21 value 172.467952
-iter  21 value 172.467952
-final  value 172.467952 
+          asc_air           asc_bus          asc_rail            b_cost 
+    -8.000002e+00     -1.536667e+02      5.966667e+01     -1.329167e+02 
+    b_access_time b_in_vehicle_time      b_income_air      b_income_bus 
+    -1.810417e+03     -1.898042e+04      3.114006e+05     -7.703172e+06 
+    b_income_rail 
+     2.710651e+06 
+initial  value 1170.860076 
+iter   2 value 1112.061643
+iter   3 value 1098.117019
+iter   4 value 1096.280213
+iter   5 value 1088.850808
+iter   6 value 1044.655722
+iter   7 value 1043.621915
+iter   8 value 1037.024630
+iter   9 value 1027.797450
+iter  10 value 1026.422719
+iter  11 value 1021.845626
+iter  12 value 1020.058229
+iter  13 value 1020.002110
+iter  14 value 1019.999301
+iter  14 value 1019.999286
+iter  14 value 1019.999286
+final  value 1019.999286 
 converged
 Additional convergence test using scaled estimation. Parameters will be
   scaled by their current estimates and additional iterations will be
   performed.
-initial  value 172.467952 
-iter   1 value 172.467952
-final  value 172.467952 
+initial  value 1019.999286 
+iter   1 value 1019.999286
+final  value 1019.999286 
 converged
 Estimated parameters:
-                      Estimate
-asc_air               6.035501
-asc_bus               4.504865
-asc_train             5.573686
-b_wait_time          -0.101182
-b_cost               -0.008672
-b_in_vehicle_time    -0.004131
-b_hhincome_air        0.007481
-b_hhincome_bus       -0.020900
-b_hhincome_train     -0.059226
-b_party_size_air     -0.922436
-b_party_size_bus     -0.147937
-b_party_size_train    0.216259
+                     Estimate
+asc_air             -0.922580
+asc_bus             -0.369843
+asc_rail            -0.679845
+b_cost              -0.032032
+b_access_time       -0.006419
+b_in_vehicle_time   -0.006126
+b_income_air        1.045e-05
+b_income_bus       -2.252e-05
+b_income_rail       6.963e-07
 
-Computing covariance matrix using analytical gradient.
+Computing covariance matrix using numerical methods (numDeriv).
  0%....25%....50%....75%....100%
-Negative definite Hessian with maximum eigenvalue: -0.582195
+Negative definite Hessian with maximum eigenvalue: -3.070863
 Computing score matrix...
 Calculating LL(0) for applicable models...
 Calculating LL(c) for applicable models...
@@ -1757,72 +1754,109 @@ Calculating LL of each model component...</code></pre>
 <section class="slide level2">
 
 <div class="cell" data-filename="mode-choice-mnl.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-34_96a32ef44c930ed91abb230fd63261fc">
-<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1"></a><span class="co"># Print results</span></span>
-<span id="cb34-2"><a href="#cb34-2"></a><span class="fu">apollo_modelOutput</span>(model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1"></a><span class="co"># Print results</span></span>
+<span id="cb35-2"><a href="#cb35-2"></a><span class="fu">apollo_modelOutput</span>(model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Model run by mwbc using Apollo 0.2.7 on R 4.2.1 for Darwin.
 www.ApolloChoiceModelling.com
 
-Model name                       : Australia_Mode_Choice
+Model name                       : Apollo_Mode_Choice
 Model description                : No model description provided in apollo_control
-Model run at                     : 2022-08-03 14:57:48
+Model run at                     : 2022-08-05 11:11:28
 Estimation method                : bfgs
 Model diagnosis                  : successful convergence 
-Number of individuals            : 210
-Number of rows in database       : 210
-Number of modelled outcomes      : 210
+Number of individuals            : 500
+Number of rows in database       : 1000
+Number of modelled outcomes      : 1000
 
 Number of cores used             :  1 
 Model without mixing
 
-LL(start)                        : -291.12
-LL(0)                            : -291.12
-LL(C)                            : -283.76
-LL(final)                        : -172.47
-Rho-square (0)                   :  0.4076 
-Adj.Rho-square (0)               :  0.3664 
-Rho-square (C)                   :  0.3922 
-Adj.Rho-square (C)               :  0.3499 
-AIC                              :  368.94 
-BIC                              :  409.1 
+LL(start)                        : -1170.86
+LL(0)                            : -1170.86
+LL(C)                            : -1085.14
+LL(final)                        : -1020
+Rho-square (0)                   :  0.1288 
+Adj.Rho-square (0)               :  0.1212 
+Rho-square (C)                   :  0.06 
+Adj.Rho-square (C)               :  0.0517 
+AIC                              :  2058 
+BIC                              :  2102.17 
 
-Estimated parameters             :  12
-Time taken (hh:mm:ss)            :  00:00:0.36 
-     pre-estimation              :  00:00:0.21 
-     estimation                  :  00:00:0.05 
-     post-estimation             :  00:00:0.1 
-Iterations                       :  25  
-Min abs eigenvalue of Hessian    :  0.582195 
+Estimated parameters             :  9
+Time taken (hh:mm:ss)            :  00:00:0.65 
+     pre-estimation              :  00:00:0.15 
+     estimation                  :  00:00:0.27 
+     post-estimation             :  00:00:0.24 
+Iterations                       :  20  
+Min abs eigenvalue of Hessian    :  3.070863 
 
 Unconstrained optimisation.
 
 Estimates:
-                      Estimate        s.e.   t.rat.(0)    Rob.s.e.
-asc_air               6.035501    1.138208      5.3026    1.263984
-asc_bus               4.504865    0.795808      5.6607    0.688790
-asc_train             5.573686    0.711303      7.8359    0.714765
-b_wait_time          -0.101182    0.011143     -9.0807    0.014612
-b_cost               -0.008672    0.007876     -1.1010    0.008818
-b_in_vehicle_time    -0.004131  8.9283e-04     -4.6266    0.001038
-b_hhincome_air        0.007481    0.013203      0.5666    0.012228
-b_hhincome_bus       -0.020900    0.016351     -1.2782    0.013541
-b_hhincome_train     -0.059226    0.014892     -3.9769    0.016318
-b_party_size_air     -0.922436    0.258509     -3.5683    0.266101
-b_party_size_bus     -0.147937    0.342779     -0.4316    0.265416
-b_party_size_train    0.216259    0.233639      0.9256    0.210993
-                   Rob.t.rat.(0)
-asc_air                   4.7750
-asc_bus                   6.5403
-asc_train                 7.7979
-b_wait_time              -6.9247
-b_cost                   -0.9835
-b_in_vehicle_time        -3.9785
-b_hhincome_air            0.6118
-b_hhincome_bus           -1.5435
-b_hhincome_train         -3.6295
-b_party_size_air         -3.4665
-b_party_size_bus         -0.5574
-b_party_size_train        1.0250</code></pre>
+                     Estimate        s.e.   t.rat.(0)    Rob.s.e. Rob.t.rat.(0)
+asc_air             -0.922580    0.502076     -1.8375    0.497421       -1.8547
+asc_bus             -0.369843    0.315033     -1.1740    0.306346       -1.2073
+asc_rail            -0.679845    0.332292     -2.0459    0.342767       -1.9834
+b_cost              -0.032032    0.003242     -9.8796    0.003168      -10.1112
+b_access_time       -0.006419    0.005974     -1.0744    0.005835       -1.1001
+b_in_vehicle_time   -0.006126    0.001295     -4.7290    0.001368       -4.4792
+b_income_air        1.045e-05   5.899e-06      1.7707   6.025e-06        1.7338
+b_income_bus       -2.252e-05   6.741e-06     -3.3408   6.534e-06       -3.4463
+b_income_rail       6.963e-07   5.090e-06      0.1368   5.216e-06        0.1335</code></pre>
+</div>
+</div>
+</section>
+<section id="valuation-using-discrete-choice-models" class="slide level2">
+<h2>Valuation using discrete choice models</h2>
+<ul>
+<li>A common use for discrete choice models is to calculate willingness-to-pay</li>
+<li>The linear-in-parameters utility function puts everything in terms of utility</li>
+<li>If we have a cost parameter, we can use the model to put everything else in monetary units</li>
+</ul>
+</section>
+<section id="valuation-using-discrete-choice-models-1" class="slide level2">
+<h2>Valuation using discrete choice models</h2>
+<ul>
+<li>The coefficients of the model are how much of <code>x</code> one unit of utility is worth
+<ul>
+<li>i.e.&nbsp;partial derivatives of utility with respect to <code>x</code></li>
+</ul></li>
+<li>We want value of time, i.e.&nbsp;dollars / hour</li>
+<li>Travel time coefficient is utility / minute</li>
+<li>Cost coefficient is utility / dollar</li>
+<li>If <span class="math inline">\(u\)</span> is utility, <span class="math inline">\(c\)</span> is cost, and <span class="math inline">\(t\)</span> is in-vehicle time, <span class="math inline">\(\frac{\beta_t}{\beta_{c}} = \frac{\frac{\delta u}{\delta t}}{\frac{\delta u}{\delta c}} = \frac{\delta c}{\delta t}\)</span></li>
+</ul>
+</section>
+<section id="valuation-using-discrete-choice-models-2" class="slide level2">
+<h2>Valuation using discrete choice models</h2>
+<p><span class="math display">\[\beta_c = -0.032\]</span></p>
+<p><span class="math display">\[\beta_t = -0.0061\]</span></p>
+<p><span class="math display">\[ \frac{\beta_t}{\beta_c} = \frac{-0.0061}{-0.032} = {£0.191}/\mathrm{minute} = {£11.46}/\mathrm{hour} \]</span></p>
+</section>
+<section id="confidence-intervals-for-valuation" class="slide level2">
+<h2>Confidence intervals for valuation</h2>
+<ul>
+<li>We can use the Delta method to calculate standard errors for combinations of parameters <span class="citation" data-cites="daly_estimating_2020">(<a href="#/ref-daly_estimating_2020" role="doc-biblioref" onclick="return false;">Daly, Hess, and Ortúzar 2020</a>)</span></li>
+<li>Implemented in Apollo using <code>apollo_deltaMethod</code> function</li>
+</ul>
+</section>
+<section class="slide level2">
+
+<div class="cell" data-filename="mode-choice-mnl.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-36_cf54228e4a760c2fabfb9ce60ed6ee39">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1"></a><span class="fu">apollo_deltaMethod</span>(model, <span class="at">deltaMethod_settings=</span><span class="fu">list</span>(</span>
+<span id="cb37-2"><a href="#cb37-2"></a>    <span class="at">operation=</span><span class="st">"ratio"</span>,</span>
+<span id="cb37-3"><a href="#cb37-3"></a>    <span class="at">parName1=</span><span class="st">"b_in_vehicle_time"</span>,</span>
+<span id="cb37-4"><a href="#cb37-4"></a>    <span class="at">parName2=</span><span class="st">"b_cost"</span>,</span>
+<span id="cb37-5"><a href="#cb37-5"></a>    <span class="at">multPar1=</span><span class="dv">60</span></span>
+<span id="cb37-6"><a href="#cb37-6"></a>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Running Delta method computations
+                                                           Value Robust s.e.
+Ratio of b_in_vehicle_time (multiplied by 60) and b_cost:  11.47       2.443
+                                                           Rob t-ratio (0)
+Ratio of b_in_vehicle_time (multiplied by 60) and b_cost:            4.696</code></pre>
 </div>
 </div>
 </section>
@@ -1830,89 +1864,85 @@ b_party_size_train        1.0250</code></pre>
 <h2>Exercise</h2>
 <ul>
 <li>People may value in-vehicle time differently on the train vs.&nbsp;plane vs.&nbsp;car vs.&nbsp;bus</li>
-<li>Modify the model to estimate separate in-vehicle time coefficients for each mode</li>
+<li>Modify the model to estimate separate in-vehicle time coefficients for each mode, and calculate willingness-to-pay for each</li>
 <li>(One) answer in mode-choice-mnl-in-vehicle-answers.R</li>
 </ul>
 </section>
 <section id="solution" class="slide level2">
 <h2>Solution</h2>
-<div class="cell" data-filename="mode-choice-mnl-in-vehicle-answers.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-37_b287ef7db7e470d59a18a2fcd491f958">
-<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1"></a>apollo_beta <span class="ot">=</span> <span class="fu">c</span>(</span>
-<span id="cb36-2"><a href="#cb36-2"></a>    <span class="at">asc_air =</span> <span class="dv">0</span>,</span>
-<span id="cb36-3"><a href="#cb36-3"></a>    <span class="at">asc_bus =</span> <span class="dv">0</span>,</span>
-<span id="cb36-4"><a href="#cb36-4"></a>    <span class="at">asc_train =</span> <span class="dv">0</span>,</span>
-<span id="cb36-5"><a href="#cb36-5"></a>    <span class="co"># leaving out an asc_car as base category</span></span>
-<span id="cb36-6"><a href="#cb36-6"></a>    <span class="at">b_wait_time=</span><span class="dv">0</span>,</span>
-<span id="cb36-7"><a href="#cb36-7"></a>    <span class="at">b_cost =</span> <span class="dv">0</span>,</span>
-<span id="cb36-8"><a href="#cb36-8"></a>    <span class="at">b_in_vehicle_time_car =</span> <span class="dv">0</span>,</span>
-<span id="cb36-9"><a href="#cb36-9"></a>    <span class="at">b_in_vehicle_time_bus =</span> <span class="dv">0</span>,</span>
-<span id="cb36-10"><a href="#cb36-10"></a>    <span class="at">b_in_vehicle_time_train =</span> <span class="dv">0</span>,</span>
-<span id="cb36-11"><a href="#cb36-11"></a>    <span class="at">b_in_vehicle_time_air =</span> <span class="dv">0</span>,</span>
-<span id="cb36-12"><a href="#cb36-12"></a>    <span class="co"># income and party_size are individual level variable, so</span></span>
-<span id="cb36-13"><a href="#cb36-13"></a>    <span class="co"># must be different for different alternatives</span></span>
-<span id="cb36-14"><a href="#cb36-14"></a>    <span class="at">b_hhincome_air =</span> <span class="dv">0</span>,</span>
-<span id="cb36-15"><a href="#cb36-15"></a>    <span class="at">b_hhincome_bus =</span> <span class="dv">0</span>,</span>
-<span id="cb36-16"><a href="#cb36-16"></a>    <span class="at">b_hhincome_train =</span> <span class="dv">0</span>,</span>
-<span id="cb36-17"><a href="#cb36-17"></a>    <span class="at">b_party_size_air =</span> <span class="dv">0</span>,</span>
-<span id="cb36-18"><a href="#cb36-18"></a>    <span class="at">b_party_size_bus =</span> <span class="dv">0</span>,</span>
-<span id="cb36-19"><a href="#cb36-19"></a>    <span class="at">b_party_size_train =</span> <span class="dv">0</span></span>
-<span id="cb36-20"><a href="#cb36-20"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-filename="mode-choice-mnl-in-vehicle-answers.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-39_b1a97eab5759f37741a85c31fa829edf">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1"></a>apollo_beta <span class="ot">=</span> <span class="fu">c</span>(</span>
+<span id="cb39-2"><a href="#cb39-2"></a>    <span class="at">asc_air =</span> <span class="dv">0</span>,</span>
+<span id="cb39-3"><a href="#cb39-3"></a>    <span class="at">asc_bus =</span> <span class="dv">0</span>,</span>
+<span id="cb39-4"><a href="#cb39-4"></a>    <span class="at">asc_train =</span> <span class="dv">0</span>,</span>
+<span id="cb39-5"><a href="#cb39-5"></a>    <span class="co"># leaving out an asc_car as base category</span></span>
+<span id="cb39-6"><a href="#cb39-6"></a>    <span class="at">b_cost =</span> <span class="dv">0</span>,</span>
+<span id="cb39-7"><a href="#cb39-7"></a>    <span class="at">b_in_vehicle_time_car =</span> <span class="dv">0</span>,</span>
+<span id="cb39-8"><a href="#cb39-8"></a>    <span class="at">b_in_vehicle_time_bus =</span> <span class="dv">0</span>,</span>
+<span id="cb39-9"><a href="#cb39-9"></a>    <span class="at">b_in_vehicle_time_train =</span> <span class="dv">0</span>,</span>
+<span id="cb39-10"><a href="#cb39-10"></a>    <span class="at">b_in_vehicle_time_air =</span> <span class="dv">0</span>,</span>
+<span id="cb39-11"><a href="#cb39-11"></a>    <span class="co"># income and party_size are individual level variable, so</span></span>
+<span id="cb39-12"><a href="#cb39-12"></a>    <span class="co"># must be different for different alternatives</span></span>
+<span id="cb39-13"><a href="#cb39-13"></a>    <span class="at">b_hhincome_air =</span> <span class="dv">0</span>,</span>
+<span id="cb39-14"><a href="#cb39-14"></a>    <span class="at">b_hhincome_bus =</span> <span class="dv">0</span>,</span>
+<span id="cb39-15"><a href="#cb39-15"></a>    <span class="at">b_hhincome_train =</span> <span class="dv">0</span>,</span>
+<span id="cb39-16"><a href="#cb39-16"></a>    <span class="at">b_party_size_air =</span> <span class="dv">0</span>,</span>
+<span id="cb39-17"><a href="#cb39-17"></a>    <span class="at">b_party_size_bus =</span> <span class="dv">0</span>,</span>
+<span id="cb39-18"><a href="#cb39-18"></a>    <span class="at">b_party_size_train =</span> <span class="dv">0</span></span>
+<span id="cb39-19"><a href="#cb39-19"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section class="slide level2">
 
-<div class="cell" data-filename="mode-choice-mnl-in-vehicle-answers.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-39_06bb30c1802b96803398c01826493966">
-<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1"></a>apollo_probabilities <span class="ot">=</span> <span class="cf">function</span>(apollo_beta, apollo_inputs,</span>
-<span id="cb37-2"><a href="#cb37-2"></a>        <span class="at">functionality=</span><span class="st">"estimate"</span>) {</span>
-<span id="cb37-3"><a href="#cb37-3"></a>    <span class="fu">apollo_attach</span>(apollo_beta, apollo_inputs)</span>
-<span id="cb37-4"><a href="#cb37-4"></a>    <span class="fu">on.exit</span>(<span class="fu">apollo_detach</span>(apollo_beta, apollo_inputs))</span>
-<span id="cb37-5"><a href="#cb37-5"></a></span>
-<span id="cb37-6"><a href="#cb37-6"></a>    P <span class="ot">=</span> <span class="fu">list</span>()</span>
-<span id="cb37-7"><a href="#cb37-7"></a></span>
-<span id="cb37-8"><a href="#cb37-8"></a>    <span class="co"># define utility functions</span></span>
-<span id="cb37-9"><a href="#cb37-9"></a>    V <span class="ot">=</span> <span class="fu">list</span>()</span>
-<span id="cb37-10"><a href="#cb37-10"></a></span>
-<span id="cb37-11"><a href="#cb37-11"></a>    V[[<span class="st">"car"</span>]] <span class="ot">=</span> b_cost <span class="sc">*</span> cost_car <span class="sc">+</span></span>
-<span id="cb37-12"><a href="#cb37-12"></a>        b_in_vehicle_time_car <span class="sc">*</span> in_vehicle_time_car</span>
-<span id="cb37-13"><a href="#cb37-13"></a></span>
-<span id="cb37-14"><a href="#cb37-14"></a>    V[[<span class="st">"air"</span>]] <span class="ot">=</span> asc_air <span class="sc">+</span></span>
-<span id="cb37-15"><a href="#cb37-15"></a>        b_cost <span class="sc">*</span> cost_air <span class="sc">+</span></span>
-<span id="cb37-16"><a href="#cb37-16"></a>        b_in_vehicle_time_air <span class="sc">*</span> in_vehicle_time_air <span class="sc">+</span></span>
-<span id="cb37-17"><a href="#cb37-17"></a>        b_wait_time <span class="sc">*</span> wait_time_air <span class="sc">+</span></span>
-<span id="cb37-18"><a href="#cb37-18"></a>        b_hhincome_air <span class="sc">*</span> hhincome_thousands <span class="sc">+</span></span>
-<span id="cb37-19"><a href="#cb37-19"></a>        b_party_size_air <span class="sc">*</span> party_size</span>
-<span id="cb37-20"><a href="#cb37-20"></a></span>
-<span id="cb37-21"><a href="#cb37-21"></a>    V[[<span class="st">"train"</span>]] <span class="ot">=</span> asc_train <span class="sc">+</span></span>
-<span id="cb37-22"><a href="#cb37-22"></a>        b_cost <span class="sc">*</span> cost_train <span class="sc">+</span></span>
-<span id="cb37-23"><a href="#cb37-23"></a>        b_in_vehicle_time_train <span class="sc">*</span> in_vehicle_time_train <span class="sc">+</span></span>
-<span id="cb37-24"><a href="#cb37-24"></a>        b_wait_time <span class="sc">*</span> wait_time_train <span class="sc">+</span></span>
-<span id="cb37-25"><a href="#cb37-25"></a>        b_hhincome_train <span class="sc">*</span> hhincome_thousands <span class="sc">+</span></span>
-<span id="cb37-26"><a href="#cb37-26"></a>        b_party_size_train <span class="sc">*</span> party_size</span>
-<span id="cb37-27"><a href="#cb37-27"></a></span>
-<span id="cb37-28"><a href="#cb37-28"></a>    V[[<span class="st">"bus"</span>]] <span class="ot">=</span> asc_bus <span class="sc">+</span></span>
-<span id="cb37-29"><a href="#cb37-29"></a>        b_cost <span class="sc">*</span> cost_bus <span class="sc">+</span></span>
-<span id="cb37-30"><a href="#cb37-30"></a>        b_in_vehicle_time_bus <span class="sc">*</span> in_vehicle_time_bus <span class="sc">+</span></span>
-<span id="cb37-31"><a href="#cb37-31"></a>        b_wait_time <span class="sc">*</span> wait_time_bus <span class="sc">+</span></span>
-<span id="cb37-32"><a href="#cb37-32"></a>        b_hhincome_bus <span class="sc">*</span> hhincome_thousands <span class="sc">+</span></span>
-<span id="cb37-33"><a href="#cb37-33"></a>        b_party_size_bus <span class="sc">*</span> party_size</span>
-<span id="cb37-34"><a href="#cb37-34"></a></span>
-<span id="cb37-35"><a href="#cb37-35"></a>    mnl_settings <span class="ot">=</span> <span class="fu">list</span>(</span>
-<span id="cb37-36"><a href="#cb37-36"></a>        <span class="at">alternatives =</span> <span class="fu">c</span>(<span class="at">car=</span><span class="st">"car"</span>, <span class="at">air=</span><span class="st">"air"</span>,</span>
-<span id="cb37-37"><a href="#cb37-37"></a>            <span class="at">train=</span><span class="st">"train"</span>, <span class="at">bus=</span><span class="st">"bus"</span>),</span>
-<span id="cb37-38"><a href="#cb37-38"></a>        <span class="at">avail =</span> <span class="fu">list</span>(<span class="at">car=</span>T, <span class="at">air=</span>T, <span class="at">train=</span>T, <span class="at">bus=</span>T),</span>
-<span id="cb37-39"><a href="#cb37-39"></a>        <span class="at">choiceVar =</span> chosen,</span>
-<span id="cb37-40"><a href="#cb37-40"></a>        <span class="at">utilities =</span> V</span>
-<span id="cb37-41"><a href="#cb37-41"></a>    )</span>
-<span id="cb37-42"><a href="#cb37-42"></a></span>
-<span id="cb37-43"><a href="#cb37-43"></a>    P[[<span class="st">"model"</span>]] <span class="ot">=</span> <span class="fu">apollo_mnl</span>(mnl_settings, functionality)</span>
-<span id="cb37-44"><a href="#cb37-44"></a>    P <span class="ot">=</span> <span class="fu">apollo_prepareProb</span>(P, apollo_inputs, functionality)</span>
-<span id="cb37-45"><a href="#cb37-45"></a>    <span class="fu">return</span>(P)</span>
-<span id="cb37-46"><a href="#cb37-46"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-filename="mode-choice-mnl-in-vehicle-answers.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-41_9d045aa75fd111b426a373b8ad39fa6b">
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1"></a>apollo_probabilities <span class="ot">=</span> <span class="cf">function</span>(apollo_beta, apollo_inputs,</span>
+<span id="cb40-2"><a href="#cb40-2"></a>        <span class="at">functionality=</span><span class="st">"estimate"</span>) {</span>
+<span id="cb40-3"><a href="#cb40-3"></a>    <span class="fu">apollo_attach</span>(apollo_beta, apollo_inputs)</span>
+<span id="cb40-4"><a href="#cb40-4"></a>    <span class="fu">on.exit</span>(<span class="fu">apollo_detach</span>(apollo_beta, apollo_inputs))</span>
+<span id="cb40-5"><a href="#cb40-5"></a></span>
+<span id="cb40-6"><a href="#cb40-6"></a>    P <span class="ot">=</span> <span class="fu">list</span>()</span>
+<span id="cb40-7"><a href="#cb40-7"></a></span>
+<span id="cb40-8"><a href="#cb40-8"></a>    <span class="co"># define utility functions</span></span>
+<span id="cb40-9"><a href="#cb40-9"></a>    V <span class="ot">=</span> <span class="fu">list</span>()</span>
+<span id="cb40-10"><a href="#cb40-10"></a></span>
+<span id="cb40-11"><a href="#cb40-11"></a>    V[[<span class="st">"car"</span>]] <span class="ot">=</span> b_cost <span class="sc">*</span> cost_car <span class="sc">+</span></span>
+<span id="cb40-12"><a href="#cb40-12"></a>        b_in_vehicle_time_car <span class="sc">*</span> in_vehicle_time_car</span>
+<span id="cb40-13"><a href="#cb40-13"></a></span>
+<span id="cb40-14"><a href="#cb40-14"></a>    V[[<span class="st">"air"</span>]] <span class="ot">=</span> asc_air <span class="sc">+</span></span>
+<span id="cb40-15"><a href="#cb40-15"></a>        b_cost <span class="sc">*</span> cost_air <span class="sc">+</span></span>
+<span id="cb40-16"><a href="#cb40-16"></a>        b_in_vehicle_time_air <span class="sc">*</span> in_vehicle_time_air <span class="sc">+</span></span>
+<span id="cb40-17"><a href="#cb40-17"></a>        b_hhincome_air <span class="sc">*</span> hhincome_thousands <span class="sc">+</span></span>
+<span id="cb40-18"><a href="#cb40-18"></a>        b_party_size_air <span class="sc">*</span> party_size</span>
+<span id="cb40-19"><a href="#cb40-19"></a></span>
+<span id="cb40-20"><a href="#cb40-20"></a>    V[[<span class="st">"train"</span>]] <span class="ot">=</span> asc_train <span class="sc">+</span></span>
+<span id="cb40-21"><a href="#cb40-21"></a>        b_cost <span class="sc">*</span> cost_train <span class="sc">+</span></span>
+<span id="cb40-22"><a href="#cb40-22"></a>        b_in_vehicle_time_train <span class="sc">*</span> in_vehicle_time_train <span class="sc">+</span></span>
+<span id="cb40-23"><a href="#cb40-23"></a>        b_hhincome_train <span class="sc">*</span> hhincome_thousands <span class="sc">+</span></span>
+<span id="cb40-24"><a href="#cb40-24"></a>        b_party_size_train <span class="sc">*</span> party_size</span>
+<span id="cb40-25"><a href="#cb40-25"></a></span>
+<span id="cb40-26"><a href="#cb40-26"></a>    V[[<span class="st">"bus"</span>]] <span class="ot">=</span> asc_bus <span class="sc">+</span></span>
+<span id="cb40-27"><a href="#cb40-27"></a>        b_cost <span class="sc">*</span> cost_bus <span class="sc">+</span></span>
+<span id="cb40-28"><a href="#cb40-28"></a>        b_in_vehicle_time_bus <span class="sc">*</span> in_vehicle_time_bus <span class="sc">+</span></span>
+<span id="cb40-29"><a href="#cb40-29"></a>        b_hhincome_bus <span class="sc">*</span> hhincome_thousands <span class="sc">+</span></span>
+<span id="cb40-30"><a href="#cb40-30"></a>        b_party_size_bus <span class="sc">*</span> party_size</span>
+<span id="cb40-31"><a href="#cb40-31"></a></span>
+<span id="cb40-32"><a href="#cb40-32"></a>    mnl_settings <span class="ot">=</span> <span class="fu">list</span>(</span>
+<span id="cb40-33"><a href="#cb40-33"></a>        <span class="at">alternatives =</span> <span class="fu">c</span>(<span class="at">car=</span><span class="st">"car"</span>, <span class="at">air=</span><span class="st">"air"</span>,</span>
+<span id="cb40-34"><a href="#cb40-34"></a>            <span class="at">train=</span><span class="st">"train"</span>, <span class="at">bus=</span><span class="st">"bus"</span>),</span>
+<span id="cb40-35"><a href="#cb40-35"></a>        <span class="at">avail =</span> <span class="fu">list</span>(<span class="at">car=</span>T, <span class="at">air=</span>T, <span class="at">train=</span>T, <span class="at">bus=</span>T),</span>
+<span id="cb40-36"><a href="#cb40-36"></a>        <span class="at">choiceVar =</span> chosen,</span>
+<span id="cb40-37"><a href="#cb40-37"></a>        <span class="at">utilities =</span> V</span>
+<span id="cb40-38"><a href="#cb40-38"></a>    )</span>
+<span id="cb40-39"><a href="#cb40-39"></a></span>
+<span id="cb40-40"><a href="#cb40-40"></a>    P[[<span class="st">"model"</span>]] <span class="ot">=</span> <span class="fu">apollo_mnl</span>(mnl_settings, functionality)</span>
+<span id="cb40-41"><a href="#cb40-41"></a>    P <span class="ot">=</span> <span class="fu">apollo_prepareProb</span>(P, apollo_inputs, functionality)</span>
+<span id="cb40-42"><a href="#cb40-42"></a>    <span class="fu">return</span>(P)</span>
+<span id="cb40-43"><a href="#cb40-43"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section class="slide level2">
 
-<div class="cell" data-filename="mode-choice-mnl-in-vehicle-answers.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-41_5a95a811f43a07f53d42b50bcec70a1f">
+<div class="cell" data-filename="mode-choice-mnl-in-vehicle-answers.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-43_ef19293c870d63d8d7f1cf4d15272eb9">
 <div class="cell-output cell-output-stdout">
 <pre><code>Preparing user-defined functions.
 
@@ -1933,69 +1963,65 @@ Initial function value: -291.1218
 Initial gradient value:
                 asc_air                 asc_bus               asc_train 
                    5.50                  -22.50                   10.50 
-            b_wait_time                  b_cost   b_in_vehicle_time_car 
-               -2011.75                  -75.75                 1021.75 
-  b_in_vehicle_time_bus b_in_vehicle_time_train   b_in_vehicle_time_air 
-              -14481.75                 1623.00                  220.25 
-         b_hhincome_air          b_hhincome_bus        b_hhincome_train 
-                 606.25                 -922.75                 -360.75 
-       b_party_size_air        b_party_size_bus      b_party_size_train 
-                  -0.50                  -51.50                   13.50 
+                 b_cost   b_in_vehicle_time_car   b_in_vehicle_time_bus 
+                 -75.75                 1021.75               -14481.75 
+b_in_vehicle_time_train   b_in_vehicle_time_air          b_hhincome_air 
+                1623.00                  220.25                  606.25 
+         b_hhincome_bus        b_hhincome_train        b_party_size_air 
+                -922.75                 -360.75                   -0.50 
+       b_party_size_bus      b_party_size_train 
+                 -51.50                   13.50 
 initial  value 291.121816 
-iter   2 value 286.488725
-iter   3 value 284.049053
-iter   4 value 283.967760
-iter   5 value 233.485890
-iter   6 value 213.808477
-iter   7 value 212.596332
-iter   8 value 212.157101
-iter   9 value 211.904938
-iter  10 value 211.691162
-iter  11 value 200.768071
-iter  12 value 189.163750
-iter  13 value 183.997591
-iter  14 value 177.472048
-iter  15 value 170.802266
-iter  16 value 163.466240
-iter  17 value 162.855006
-iter  18 value 162.804466
-iter  19 value 162.791685
-iter  20 value 162.789372
-iter  21 value 162.789091
-iter  22 value 162.789052
-iter  23 value 162.789044
-iter  23 value 162.789043
-iter  23 value 162.789043
-final  value 162.789043 
+iter   2 value 286.827739
+iter   3 value 284.905716
+iter   4 value 284.335420
+iter   5 value 253.520800
+iter   6 value 249.639101
+iter   7 value 249.207780
+iter   8 value 248.929673
+iter   9 value 248.832091
+iter  10 value 242.881136
+iter  11 value 238.454014
+iter  12 value 231.373793
+iter  13 value 227.934210
+iter  14 value 226.264661
+iter  15 value 224.102763
+iter  16 value 224.022848
+iter  17 value 224.011599
+iter  18 value 224.010585
+iter  19 value 224.010466
+iter  20 value 224.010420
+iter  20 value 224.010419
+iter  20 value 224.010419
+final  value 224.010419 
 converged
 Additional convergence test using scaled estimation. Parameters will be
   scaled by their current estimates and additional iterations will be
   performed.
-initial  value 162.789043 
-iter   1 value 162.789043
-final  value 162.789043 
+initial  value 224.010419 
+iter   1 value 224.010419
+final  value 224.010419 
 converged
 Estimated parameters:
                            Estimate
-asc_air                    7.539418
-asc_bus                    4.208361
-asc_train                  5.415281
-b_wait_time               -0.097388
-b_cost                    -0.005894
-b_in_vehicle_time_car     -0.007064
-b_in_vehicle_time_bus     -0.006769
-b_in_vehicle_time_train   -0.006941
-b_in_vehicle_time_air     -0.032988
-b_hhincome_air             0.016326
-b_hhincome_bus            -0.017029
-b_hhincome_train          -0.056424
-b_party_size_air          -1.001990
-b_party_size_bus          -0.196395
-b_party_size_train         0.175188
+asc_air                    1.828293
+asc_bus                    2.084246
+asc_train                  2.955379
+b_cost                    -0.004399
+b_in_vehicle_time_car     -0.006614
+b_in_vehicle_time_bus     -0.006695
+b_in_vehicle_time_train   -0.007417
+b_in_vehicle_time_air     -0.036470
+b_hhincome_air             0.018821
+b_hhincome_bus            -0.023865
+b_hhincome_train          -0.045148
+b_party_size_air          -0.777100
+b_party_size_bus          -0.853354
+b_party_size_train        -0.321296
 
 Computing covariance matrix using analytical gradient.
- 0%....25%....50%....75%..100%
-Negative definite Hessian with maximum eigenvalue: -0.455522
+ 0%....25%....50%....75%...100%
+Negative definite Hessian with maximum eigenvalue: -0.785733
 Computing score matrix...
 Calculating LL(0) for applicable models...
 Calculating LL(c) for applicable models...
@@ -2007,7 +2033,7 @@ www.ApolloChoiceModelling.com
 
 Model name                       : Australia_Mode_Choice
 Model description                : No model description provided in apollo_control
-Model run at                     : 2022-08-04 10:50:22
+Model run at                     : 2022-08-05 12:46:49
 Estimation method                : bfgs
 Model diagnosis                  : successful convergence 
 Number of individuals            : 210
@@ -2020,57 +2046,55 @@ Model without mixing
 LL(start)                        : -291.12
 LL(0)                            : -291.12
 LL(C)                            : -283.76
-LL(final)                        : -162.79
-Rho-square (0)                   :  0.4408 
-Adj.Rho-square (0)               :  0.3893 
-Rho-square (C)                   :  0.4263 
-Adj.Rho-square (C)               :  0.3735 
-AIC                              :  355.58 
-BIC                              :  405.78 
+LL(final)                        : -224.01
+Rho-square (0)                   :  0.2305 
+Adj.Rho-square (0)               :  0.1824 
+Rho-square (C)                   :  0.2106 
+Adj.Rho-square (C)               :  0.1612 
+AIC                              :  476.02 
+BIC                              :  522.88 
 
-Estimated parameters             :  15
-Time taken (hh:mm:ss)            :  00:00:0.37 
-     pre-estimation              :  00:00:0.22 
+Estimated parameters             :  14
+Time taken (hh:mm:ss)            :  00:00:0.33 
+     pre-estimation              :  00:00:0.19 
      estimation                  :  00:00:0.06 
-     post-estimation             :  00:00:0.09 
-Iterations                       :  27  
-Min abs eigenvalue of Hessian    :  0.455522 
+     post-estimation             :  00:00:0.08 
+Iterations                       :  24  
+Min abs eigenvalue of Hessian    :  0.785733 
 
 Unconstrained optimisation.
 
 Estimates:
                            Estimate        s.e.   t.rat.(0)    Rob.s.e.
-asc_air                    7.539418    1.258564      5.9905    1.393317
-asc_bus                    4.208361    1.084034      3.8821    1.172754
-asc_train                  5.415281    0.895831      6.0450    0.977338
-b_wait_time               -0.097388    0.011301     -8.6181    0.014439
-b_cost                    -0.005894    0.008692     -0.6781    0.010852
-b_in_vehicle_time_car     -0.007064    0.001287     -5.4880    0.002061
-b_in_vehicle_time_bus     -0.006769    0.001656     -4.0873    0.002246
-b_in_vehicle_time_train   -0.006941    0.001386     -5.0090    0.001684
-b_in_vehicle_time_air     -0.032988    0.007277     -4.5331    0.010890
-b_hhincome_air             0.016326    0.014109      1.1571    0.014256
-b_hhincome_bus            -0.017029    0.016607     -1.0254    0.013393
-b_hhincome_train          -0.056424    0.015229     -3.7049    0.016425
-b_party_size_air          -1.001990    0.275480     -3.6372    0.301329
-b_party_size_bus          -0.196395    0.359259     -0.5467    0.287998
-b_party_size_train         0.175188    0.246727      0.7100    0.239590
+asc_air                    1.828293    0.890241      2.0537    1.071983
+asc_bus                    2.084246    0.895129      2.3284    1.009098
+asc_train                  2.955379    0.716501      4.1247    0.715215
+b_cost                    -0.004399    0.007031     -0.6257    0.008005
+b_in_vehicle_time_car     -0.006614    0.001148     -5.7622    0.001816
+b_in_vehicle_time_bus     -0.006695    0.001359     -4.9258    0.001829
+b_in_vehicle_time_train   -0.007417    0.001191     -6.2274    0.001548
+b_in_vehicle_time_air     -0.036470    0.006805     -5.3590    0.010955
+b_hhincome_air             0.018821    0.011653      1.6151    0.012980
+b_hhincome_bus            -0.023865    0.013325     -1.7909    0.010639
+b_hhincome_train          -0.045148    0.012311     -3.6673    0.012100
+b_party_size_air          -0.777100    0.228254     -3.4045    0.278790
+b_party_size_bus          -0.853354    0.335632     -2.5425    0.335189
+b_party_size_train        -0.321296    0.214387     -1.4987    0.181520
                         Rob.t.rat.(0)
-asc_air                        5.4111
-asc_bus                        3.5884
-asc_train                      5.5408
-b_wait_time                   -6.7449
-b_cost                        -0.5431
-b_in_vehicle_time_car         -3.4271
-b_in_vehicle_time_bus         -3.0130
-b_in_vehicle_time_train       -4.1223
-b_in_vehicle_time_air         -3.0294
-b_hhincome_air                 1.1452
-b_hhincome_bus                -1.2714
-b_hhincome_train              -3.4352
-b_party_size_air              -3.3252
-b_party_size_bus              -0.6819
-b_party_size_train             0.7312</code></pre>
+asc_air                        1.7055
+asc_bus                        2.0655
+asc_train                      4.1322
+b_cost                        -0.5496
+b_in_vehicle_time_car         -3.6411
+b_in_vehicle_time_bus         -3.6599
+b_in_vehicle_time_train       -4.7925
+b_in_vehicle_time_air         -3.3290
+b_hhincome_air                 1.4499
+b_hhincome_bus                -2.2432
+b_hhincome_train              -3.7311
+b_party_size_air              -2.7874
+b_party_size_bus              -2.5459
+b_party_size_train            -1.7700</code></pre>
 </div>
 </div>
 </section>
@@ -2094,8 +2118,8 @@ b_party_size_train             0.7312</code></pre>
 <section id="references" class="slide level2 smaller scrollable">
 <h2>References</h2>
 <div id="refs" class="references csl-bib-body hanging-indent" role="doc-bibliography">
-<div id="ref-greene_econometric_2011" class="csl-entry" role="doc-biblioentry">
-Greene, W. H. 2011. <em>Econometric Analysis</em>. 7th ed. Prentice Hall.
+<div id="ref-daly_estimating_2020" class="csl-entry" role="doc-biblioentry">
+Daly, Andrew, Stephane Hess, and Juan de Dios Ortúzar. 2020. <span>“Estimating Willingness-to-Pay from Discrete Choice Models: Setting the Record Straight.”</span> <a href="http://www.stephanehess.me.uk/papers/working_papers/Daly_Hess_Ortuzar_2020.pdf">http://www.stephanehess.me.uk/papers/working_papers/Daly_Hess_Ortuzar_2020.pdf</a>.
 </div>
 </div>
 

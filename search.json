@@ -4,7 +4,7 @@
     "href": "prepare-data.html",
     "title": "Data Matters Discrete Choice Models",
     "section": "",
-    "text": "For testing logistic regression.\n\nread_csv(\"data/nhts/trippub.csv\") %>%\n    filter(TRPTRANS %in% c(\"03\", \"04\", \"05\", \"06\") & DRVRCNT >= 1) %>%\n    mutate(carpool=NUMONTRP > 1, cars_per_driver=HHVEHCNT / DRVRCNT,              commute=WHYTRP1S==10, social=WHYTRP1S==50, hhsize=HHSIZE, id=row_number()) %>%\n    slice_sample(n=5000) %>%\n    select(id, carpool, cars_per_driver, hhsize, commute, social) %>%\n    write_csv(\"data/nhts/carpool.csv\")\n\nRows: 923572 Columns: 115\n── Column specification ────────────────────────────────────────────────────────\nDelimiter: \",\"\nchr (74): PERSONID, TDTRPNUM, STRTTIME, ENDTIME, TRPTRANS, VEHID, DROP_PRK, ...\ndbl (41): HOUSEID, TRVLCMIN, TRPMILES, TRPACCMP, TRPHHACC, TRWAITTM, NUMTRAN...\n\nℹ Use `spec()` to retrieve the full column specification for this data.\nℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.\n\n\n\n\n\n\ncovidfuture = read_csv(\"data/covidfuture/covid_pooled_public_w1b_1.1.0b7.csv\")\n\nWarning: One or more parsing issues, see `problems()` for details\n\n\nRows: 8152 Columns: 487\n── Column specification ────────────────────────────────────────────────────────\nDelimiter: \",\"\nchr  (448): empl_pre, worker_pre, jobcat_pre, ind_pre, empl_now, worker_now,...\ndbl   (33): resp_id, wfh_now_days, bzvm_now, tr_freq_now_privateveh, tr_freq...\nlgl    (4): yrborn_miss_desc, hhsize_miss_desc, nchildren_miss_desc, Finished\ndate   (2): StartDate, EndDate\n\nℹ Use `spec()` to retrieve the full column specification for this data.\nℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.\n\n\n\n# create the wfh variable\nworkers = covidfuture %>%\n    filter(worker_pre == \"yes\" | worker_now == \"yes\") %>%\n    mutate(\n        wfh=case_when(\n            wfh_expect == \"No\" ~ \"Unable\",\n            wfh_freq_exp %in% c(\"Never\", \"A few times/year\") ~ \"Rarely\",\n            wfh_freq_exp %in% c(\"A few times/month\", \"Once/week\", \"A few times/week\") ~ \"Often\",\n            wfh_freq_exp == \"Every day\" ~ \"Always\"\n        ),\n        income_100k_plus = hhincome_summary == \"$100,000 or more\",\n        service_worker=\n            !(case_when(ind_now == \"Question not displayed to respondent\" ~ ind_pre, T ~ ind_now) %in% c(\"None of the above\", \"Seen but unanswered\"))\n        ) %>%\n    filter(!is.na(wfh))\n\nselect(workers, resp_id, wfh, age, income_100k_plus, service_worker) %>%\n    write_csv(\"data/covidfuture_wfh.csv\")\n\n\n\n\nFrom statsmodels\n\nmc = read_delim(\"data/statsmodels/modechoice.csv\", delim=\";\") %>%\n    mutate(mode=recode(`mode`, `1`=\"air\", `2`=\"train\", `3`=\"bus\", `4`=\"car\")) %>%\n    rename(wait_time=ttme, cost=invc, in_vehicle_time=invt) %>%\n    pivot_wider(id_cols=individual, names_from=mode, values_from=choice:psize) %>%\n    mutate(chosen=case_when(\n        choice_air==1 ~ \"air\",\n        choice_train==1 ~ \"train\",\n        choice_bus==1 ~ \"bus\",\n        choice_car==1 ~ \"car\"\n    )) %>%\n    select(individual, chosen, starts_with(\"wait_time\"), starts_with(\"cost\"), starts_with(\"in_vehicle_time\"), hinc_car, psize_car) %>%\n    rename(hhincome_thousands=\"hinc_car\", party_size=\"psize_car\") %>%\n    write_csv(\"data/modechoice.csv\")\n\nRows: 840 Columns: 9\n── Column specification ────────────────────────────────────────────────────────\nDelimiter: \";\"\ndbl (9): individual, mode, choice, ttme, invc, invt, gc, hinc, psize\n\nℹ Use `spec()` to retrieve the full column specification for this data.\nℹ Specify the column types or set `show_col_types = FALSE` to quiet this message."
+    "text": "For testing logistic regression.\n\nread_csv(\"data/nhts/trippub.csv\") %>%\n    filter(TRPTRANS %in% c(\"03\", \"04\", \"05\", \"06\") & DRVRCNT >= 1) %>%\n    mutate(carpool=NUMONTRP > 1, cars_per_driver=HHVEHCNT / DRVRCNT,              commute=WHYTRP1S==10, social=WHYTRP1S==50, hhsize=HHSIZE, id=row_number()) %>%\n    slice_sample(n=5000) %>%\n    select(id, carpool, cars_per_driver, hhsize, commute, social) %>%\n    write_csv(\"data/nhts/carpool.csv\")\n\nRows: 923572 Columns: 115\n── Column specification ────────────────────────────────────────────────────────\nDelimiter: \",\"\nchr (74): PERSONID, TDTRPNUM, STRTTIME, ENDTIME, TRPTRANS, VEHID, DROP_PRK, ...\ndbl (41): HOUSEID, TRVLCMIN, TRPMILES, TRPACCMP, TRPHHACC, TRWAITTM, NUMTRAN...\n\nℹ Use `spec()` to retrieve the full column specification for this data.\nℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.\n\n\n\n\n\n\ncovidfuture = read_csv(\"data/covidfuture/covid_pooled_public_w1b_1.1.0b7.csv\")\n\nWarning: One or more parsing issues, see `problems()` for details\n\n\nRows: 8152 Columns: 487\n── Column specification ────────────────────────────────────────────────────────\nDelimiter: \",\"\nchr  (448): empl_pre, worker_pre, jobcat_pre, ind_pre, empl_now, worker_now,...\ndbl   (33): resp_id, wfh_now_days, bzvm_now, tr_freq_now_privateveh, tr_freq...\nlgl    (4): yrborn_miss_desc, hhsize_miss_desc, nchildren_miss_desc, Finished\ndate   (2): StartDate, EndDate\n\nℹ Use `spec()` to retrieve the full column specification for this data.\nℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.\n\n\n\n# create the wfh variable\nworkers = covidfuture %>%\n    filter(worker_pre == \"yes\" | worker_now == \"yes\") %>%\n    mutate(\n        wfh=case_when(\n            wfh_expect == \"No\" ~ \"Unable\",\n            wfh_freq_exp %in% c(\"Never\", \"A few times/year\") ~ \"Rarely\",\n            wfh_freq_exp %in% c(\"A few times/month\", \"Once/week\", \"A few times/week\") ~ \"Often\",\n            wfh_freq_exp == \"Every day\" ~ \"Always\"\n        ),\n        income_100k_plus = hhincome_summary == \"$100,000 or more\",\n        service_worker=\n            !(case_when(ind_now == \"Question not displayed to respondent\" ~ ind_pre, T ~ ind_now) %in% c(\"None of the above\", \"Seen but unanswered\"))\n        ) %>%\n    filter(!is.na(wfh))\n\nselect(workers, resp_id, wfh, age, income_100k_plus, service_worker) %>%\n    write_csv(\"data/covidfuture_wfh.csv\")\n\n\n\n\nFrom apollo\n\nread_csv(\"data/apollo_modeChoiceData.csv\") %>%\n    filter(RP == 1) %>%\n    select(-c(RP, SP, RP_journey, SP_task)) %>%\n    write_csv(\"modechoice_apollo.csv\")\n\nRows: 8000 Columns: 26\n── Column specification ────────────────────────────────────────────────────────\nDelimiter: \",\"\ndbl (26): ID, RP, SP, RP_journey, SP_task, av_car, av_bus, av_air, av_rail, ...\n\nℹ Use `spec()` to retrieve the full column specification for this data.\nℹ Specify the column types or set `show_col_types = FALSE` to quiet this message."
   },
   {
     "objectID": "discrete-choice.html#about-me",
@@ -12,6 +12,13 @@
     "title": "Introduction to discrete choice models in R",
     "section": "About me",
     "text": "About me\n\n\n\n\nAssistant professor of City and Regional Planning\nResearch focus: transportation modeling and simulation\n\nHeavy use of discrete choice models\n\nPhD in Geography from Arizona State\nThree years experience as transportation modeling software developer"
+  },
+  {
+    "objectID": "discrete-choice.html#before-we-go-any-further",
+    "href": "discrete-choice.html#before-we-go-any-further",
+    "title": "Introduction to discrete choice models in R",
+    "section": "Before we go any further",
+    "text": "Before we go any further\n\nIf you haven’t already installed R, RStudio, apollo, and tidyverse, do so now\nR: https://r-project.org\nRStudio: https://rstudio.com\napollo and tidyverse: in RStudio console, run:\n\ninstall.packages(\"tidyverse\")\ninstall.packages(\"apollo\")"
   },
   {
     "objectID": "discrete-choice.html#what-are-discrete-choice-models",
@@ -74,7 +81,7 @@
     "href": "discrete-choice.html#logistic-regression-in-r-1",
     "title": "Introduction to discrete choice models in R",
     "section": "Logistic regression in R",
-    "text": "Logistic regression in R\n\n\n\nCall:\nglm(formula = carpool ~ hhsize + cars_per_driver + commute + \n    social, family = binomial(link = \"logit\"), data = data)\n\nDeviance Residuals: \n    Min       1Q   Median       3Q      Max  \n-2.3582  -1.1265  -0.4481   1.0860   2.1904  \n\nCoefficients:\n                Estimate Std. Error z value Pr(>|z|)    \n(Intercept)     -0.78163    0.10461  -7.472 7.90e-14 ***\nhhsize           0.35814    0.02443  14.661  < 2e-16 ***\ncars_per_driver -0.05554    0.05791  -0.959    0.338    \ncommuteTRUE     -1.76913    0.11542 -15.328  < 2e-16 ***\nsocialTRUE       0.52620    0.09966   5.280 1.29e-07 ***\n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\n(Dispersion parameter for binomial family taken to be 1)\n\n    Null deviance: 6929.4  on 4999  degrees of freedom\nResidual deviance: 6340.2  on 4995  degrees of freedom\nAIC: 6350.2\n\nNumber of Fisher Scoring iterations: 4"
+    "text": "Logistic regression in R\n\n\n\nCall:\nglm(formula = carpool ~ hhsize + cars_per_driver + commute + \n    social, family = binomial(link = \"logit\"), data = data)\n\nDeviance Residuals: \n    Min       1Q   Median       3Q      Max  \n-2.1549  -1.1352   0.5586   1.1124   2.2076  \n\nCoefficients:\n                Estimate Std. Error z value Pr(>|z|)    \n(Intercept)     -0.67693    0.10222  -6.622 3.54e-11 ***\nhhsize           0.37661    0.02452  15.360  < 2e-16 ***\ncars_per_driver -0.11756    0.05692  -2.065   0.0389 *  \ncommuteTRUE     -1.57463    0.11061 -14.237  < 2e-16 ***\nsocialTRUE       0.31370    0.09999   3.137   0.0017 ** \n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\n(Dispersion parameter for binomial family taken to be 1)\n\n    Null deviance: 6930.5  on 4999  degrees of freedom\nResidual deviance: 6380.7  on 4995  degrees of freedom\nAIC: 6390.7\n\nNumber of Fisher Scoring iterations: 4"
   },
   {
     "objectID": "discrete-choice.html#binary-logistic-regression-as-a-random-utility-model",
@@ -116,7 +123,7 @@
     "href": "discrete-choice.html#but-dont-take-my-word-for-it",
     "title": "Introduction to discrete choice models in R",
     "section": "But don’t take my word for it…",
-    "text": "But don’t take my word for it…\n\n\n\nCall:\nglm(formula = carpool ~ hhsize + cars_per_driver + commute + \n    social, family = binomial(link = \"logit\"), data = data)\n\nDeviance Residuals: \n    Min       1Q   Median       3Q      Max  \n-2.3582  -1.1265  -0.4481   1.0860   2.1904  \n\nCoefficients:\n                Estimate Std. Error z value Pr(>|z|)    \n(Intercept)     -0.78163    0.10461  -7.472 7.90e-14 ***\nhhsize           0.35814    0.02443  14.661  < 2e-16 ***\ncars_per_driver -0.05554    0.05791  -0.959    0.338    \ncommuteTRUE     -1.76913    0.11542 -15.328  < 2e-16 ***\nsocialTRUE       0.52620    0.09966   5.280 1.29e-07 ***\n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\n(Dispersion parameter for binomial family taken to be 1)\n\n    Null deviance: 6929.4  on 4999  degrees of freedom\nResidual deviance: 6340.2  on 4995  degrees of freedom\nAIC: 6350.2\n\nNumber of Fisher Scoring iterations: 4"
+    "text": "But don’t take my word for it…\n\n\n\nCall:\nglm(formula = carpool ~ hhsize + cars_per_driver + commute + \n    social, family = binomial(link = \"logit\"), data = data)\n\nDeviance Residuals: \n    Min       1Q   Median       3Q      Max  \n-2.1549  -1.1352   0.5586   1.1124   2.2076  \n\nCoefficients:\n                Estimate Std. Error z value Pr(>|z|)    \n(Intercept)     -0.67693    0.10222  -6.622 3.54e-11 ***\nhhsize           0.37661    0.02452  15.360  < 2e-16 ***\ncars_per_driver -0.11756    0.05692  -2.065   0.0389 *  \ncommuteTRUE     -1.57463    0.11061 -14.237  < 2e-16 ***\nsocialTRUE       0.31370    0.09999   3.137   0.0017 ** \n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\n(Dispersion parameter for binomial family taken to be 1)\n\n    Null deviance: 6930.5  on 4999  degrees of freedom\nResidual deviance: 6380.7  on 4995  degrees of freedom\nAIC: 6390.7\n\nNumber of Fisher Scoring iterations: 4"
   },
   {
     "objectID": "discrete-choice.html#what-about-more-than-two-outcomes",
@@ -186,7 +193,7 @@
     "href": "discrete-choice.html#estimating-a-multinomial-logit-model-in-r",
     "title": "Introduction to discrete choice models in R",
     "section": "Estimating a multinomial logit model in R",
-    "text": "Estimating a multinomial logit model in R\n\n\n\n\nWe’re going to build a multinomial logit mode choice model of intercity mode choice between major Australian cities\nData from Python statsmodels package, originally from Greene (2011), online table F18-2"
+    "text": "Estimating a multinomial logit model in R\n\n\n\n\nWe’re going to build a multinomial logit mode choice model of intercity mode choice\nData from Apollo examples"
   },
   {
     "objectID": "discrete-choice.html#the-data",
@@ -200,21 +207,49 @@
     "href": "discrete-choice.html#estimation-in-r",
     "title": "Introduction to discrete choice models in R",
     "section": "Estimation in R",
-    "text": "Estimation in R\nmode-choice-mnl.R\n\nlibrary(apollo)\nlibrary(tidyverse)\n\ndatabase = read_csv(\"data/modechoice.csv\")\n\napollo_initialise()\n\napollo_control = list(\n    modelName = \"Australia_Mode_Choice\",\n    indivID=\"individual\"\n)"
+    "text": "Estimation in R\nmode-choice-mnl.R\n\nlibrary(apollo)\nlibrary(tidyverse)\n\ndatabase = read_csv(\"data/modechoice_apollo.csv\")\n\napollo_initialise()\n\napollo_control = list(\n    modelName = \"Apollo_Mode_Choice\",\n    indivID=\"ID\"\n)"
+  },
+  {
+    "objectID": "discrete-choice.html#valuation-using-discrete-choice-models",
+    "href": "discrete-choice.html#valuation-using-discrete-choice-models",
+    "title": "Introduction to discrete choice models in R",
+    "section": "Valuation using discrete choice models",
+    "text": "Valuation using discrete choice models\n\nA common use for discrete choice models is to calculate willingness-to-pay\nThe linear-in-parameters utility function puts everything in terms of utility\nIf we have a cost parameter, we can use the model to put everything else in monetary units"
+  },
+  {
+    "objectID": "discrete-choice.html#valuation-using-discrete-choice-models-1",
+    "href": "discrete-choice.html#valuation-using-discrete-choice-models-1",
+    "title": "Introduction to discrete choice models in R",
+    "section": "Valuation using discrete choice models",
+    "text": "Valuation using discrete choice models\n\nThe coefficients of the model are how much of x one unit of utility is worth\n\ni.e. partial derivatives of utility with respect to x\n\nWe want value of time, i.e. dollars / hour\nTravel time coefficient is utility / minute\nCost coefficient is utility / dollar\nIf \\(u\\) is utility, \\(c\\) is cost, and \\(t\\) is in-vehicle time, \\(\\frac{\\beta_t}{\\beta_{c}} = \\frac{\\frac{\\delta u}{\\delta t}}{\\frac{\\delta u}{\\delta c}} = \\frac{\\delta c}{\\delta t}\\)"
+  },
+  {
+    "objectID": "discrete-choice.html#valuation-using-discrete-choice-models-2",
+    "href": "discrete-choice.html#valuation-using-discrete-choice-models-2",
+    "title": "Introduction to discrete choice models in R",
+    "section": "Valuation using discrete choice models",
+    "text": "Valuation using discrete choice models\n\\[\\beta_c = -0.032\\]\n\\[\\beta_t = -0.0061\\]\n\\[ \\frac{\\beta_t}{\\beta_c} = \\frac{-0.0061}{-0.032} = {£0.191}/\\mathrm{minute} = {£11.46}/\\mathrm{hour} \\]"
+  },
+  {
+    "objectID": "discrete-choice.html#confidence-intervals-for-valuation",
+    "href": "discrete-choice.html#confidence-intervals-for-valuation",
+    "title": "Introduction to discrete choice models in R",
+    "section": "Confidence intervals for valuation",
+    "text": "Confidence intervals for valuation\n\nWe can use the Delta method to calculate standard errors for combinations of parameters (Daly, Hess, and Ortúzar 2020)\nImplemented in Apollo using apollo_deltaMethod function"
   },
   {
     "objectID": "discrete-choice.html#exercise",
     "href": "discrete-choice.html#exercise",
     "title": "Introduction to discrete choice models in R",
     "section": "Exercise",
-    "text": "Exercise\n\nPeople may value in-vehicle time differently on the train vs. plane vs. car vs. bus\nModify the model to estimate separate in-vehicle time coefficients for each mode\n(One) answer in mode-choice-mnl-in-vehicle-answers.R"
+    "text": "Exercise\n\nPeople may value in-vehicle time differently on the train vs. plane vs. car vs. bus\nModify the model to estimate separate in-vehicle time coefficients for each mode, and calculate willingness-to-pay for each\n(One) answer in mode-choice-mnl-in-vehicle-answers.R"
   },
   {
     "objectID": "discrete-choice.html#solution",
     "href": "discrete-choice.html#solution",
     "title": "Introduction to discrete choice models in R",
     "section": "Solution",
-    "text": "Solution\n\napollo_beta = c(\n    asc_air = 0,\n    asc_bus = 0,\n    asc_train = 0,\n    # leaving out an asc_car as base category\n    b_wait_time=0,\n    b_cost = 0,\n    b_in_vehicle_time_car = 0,\n    b_in_vehicle_time_bus = 0,\n    b_in_vehicle_time_train = 0,\n    b_in_vehicle_time_air = 0,\n    # income and party_size are individual level variable, so\n    # must be different for different alternatives\n    b_hhincome_air = 0,\n    b_hhincome_bus = 0,\n    b_hhincome_train = 0,\n    b_party_size_air = 0,\n    b_party_size_bus = 0,\n    b_party_size_train = 0\n)"
+    "text": "Solution\n\napollo_beta = c(\n    asc_air = 0,\n    asc_bus = 0,\n    asc_train = 0,\n    # leaving out an asc_car as base category\n    b_cost = 0,\n    b_in_vehicle_time_car = 0,\n    b_in_vehicle_time_bus = 0,\n    b_in_vehicle_time_train = 0,\n    b_in_vehicle_time_air = 0,\n    # income and party_size are individual level variable, so\n    # must be different for different alternatives\n    b_hhincome_air = 0,\n    b_hhincome_bus = 0,\n    b_hhincome_train = 0,\n    b_party_size_air = 0,\n    b_party_size_bus = 0,\n    b_party_size_train = 0\n)"
   },
   {
     "objectID": "discrete-choice.html#interpretation",
@@ -235,7 +270,7 @@
     "href": "discrete-choice.html#references",
     "title": "Introduction to discrete choice models in R",
     "section": "References",
-    "text": "References\n\n\nGreene, W. H. 2011. Econometric Analysis. 7th ed. Prentice Hall."
+    "text": "References\n\n\nDaly, Andrew, Stephane Hess, and Juan de Dios Ortúzar. 2020. “Estimating Willingness-to-Pay from Discrete Choice Models: Setting the Record Straight.” http://www.stephanehess.me.uk/papers/working_papers/Daly_Hess_Ortuzar_2020.pdf."
   },
   {
     "objectID": "index.html",

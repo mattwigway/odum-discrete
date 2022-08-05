@@ -213,26 +213,17 @@ date   (2): StartDate, EndDate
 </section>
 <section id="mode-choice" class="level2">
 <h2 class="anchored" data-anchor-id="mode-choice">Mode choice</h2>
-<p>From statsmodels</p>
+<p>From apollo</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>mc <span class="ot">=</span> <span class="fu">read_delim</span>(<span class="st">"data/statsmodels/modechoice.csv"</span>, <span class="at">delim=</span><span class="st">";"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">mode=</span><span class="fu">recode</span>(<span class="st">`</span><span class="at">mode</span><span class="st">`</span>, <span class="st">`</span><span class="at">1</span><span class="st">`</span><span class="ot">=</span><span class="st">"air"</span>, <span class="st">`</span><span class="at">2</span><span class="st">`</span><span class="ot">=</span><span class="st">"train"</span>, <span class="st">`</span><span class="at">3</span><span class="st">`</span><span class="ot">=</span><span class="st">"bus"</span>, <span class="st">`</span><span class="at">4</span><span class="st">`</span><span class="ot">=</span><span class="st">"car"</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">rename</span>(<span class="at">wait_time=</span>ttme, <span class="at">cost=</span>invc, <span class="at">in_vehicle_time=</span>invt) <span class="sc">%&gt;%</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">pivot_wider</span>(<span class="at">id_cols=</span>individual, <span class="at">names_from=</span>mode, <span class="at">values_from=</span>choice<span class="sc">:</span>psize) <span class="sc">%&gt;%</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">chosen=</span><span class="fu">case_when</span>(</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>        choice_air<span class="sc">==</span><span class="dv">1</span> <span class="sc">~</span> <span class="st">"air"</span>,</span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>        choice_train<span class="sc">==</span><span class="dv">1</span> <span class="sc">~</span> <span class="st">"train"</span>,</span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>        choice_bus<span class="sc">==</span><span class="dv">1</span> <span class="sc">~</span> <span class="st">"bus"</span>,</span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>        choice_car<span class="sc">==</span><span class="dv">1</span> <span class="sc">~</span> <span class="st">"car"</span></span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    )) <span class="sc">%&gt;%</span></span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>(individual, chosen, <span class="fu">starts_with</span>(<span class="st">"wait_time"</span>), <span class="fu">starts_with</span>(<span class="st">"cost"</span>), <span class="fu">starts_with</span>(<span class="st">"in_vehicle_time"</span>), hinc_car, psize_car) <span class="sc">%&gt;%</span></span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">rename</span>(<span class="at">hhincome_thousands=</span><span class="st">"hinc_car"</span>, <span class="at">party_size=</span><span class="st">"psize_car"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">write_csv</span>(<span class="st">"data/modechoice.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">read_csv</span>(<span class="st">"data/apollo_modeChoiceData.csv"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(RP <span class="sc">==</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>(<span class="sc">-</span><span class="fu">c</span>(RP, SP, RP_journey, SP_task)) <span class="sc">%&gt;%</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">write_csv</span>(<span class="st">"modechoice_apollo.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Rows: 840 Columns: 9
+<pre><code>Rows: 8000 Columns: 26
 ── Column specification ────────────────────────────────────────────────────────
-Delimiter: ";"
-dbl (9): individual, mode, choice, ttme, invc, invt, gc, hinc, psize
+Delimiter: ","
+dbl (26): ID, RP, SP, RP_journey, SP_task, av_car, av_bus, av_air, av_rail, ...
 
 ℹ Use `spec()` to retrieve the full column specification for this data.
 ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
