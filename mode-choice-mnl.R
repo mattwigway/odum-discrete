@@ -20,7 +20,7 @@ apollo_beta = c(
     b_cost = 0,
     b_access_time = 0,
     b_in_vehicle_time = 0,
-    # income and party_size are individual level variable, so
+    # income is an individual level variable, so
     # must be different for different alternatives
     b_income_air = 0,
     b_income_bus = 0,

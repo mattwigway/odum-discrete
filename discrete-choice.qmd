@@ -39,6 +39,7 @@ theme_dm = theme_minimal() + theme(
 
 update_geom_defaults("point", list(color=linecolor))
 update_geom_defaults("line", list(color=linecolor))
+update_geom_defaults("col", list(color=linecolor, fill=linecolor))
 
 library(knitr)
 ```
@@ -604,7 +605,7 @@ rm(list=ls())
 
 ```{r}
 #| echo: false
-kable(read_csv("data/modechoice.csv", n_max=6))
+kable(read_csv("data/modechoice_apollo.csv", n_max=6))
 ```
 
 ```{r}
@@ -655,7 +656,7 @@ apollo_beta = c(
     b_cost = 0,
     b_access_time = 0,
     b_in_vehicle_time = 0,
-    # income and party_size are individual level variable, so
+    # income is an individual level variable, so
     # must be different for different alternatives
     b_income_air = 0,
     b_income_bus = 0,
@@ -799,12 +800,10 @@ apollo_deltaMethod(model, deltaMethod_settings=list(
 ))
 ```
 
-
-
 ## Exercise
 
 - People may value in-vehicle time differently on the train vs. plane vs. car vs. bus
-- Modify the model to estimate separate in-vehicle time coefficients for each mode
+- Modify the model to estimate separate in-vehicle time coefficients for each mode, and calculate willingness-to-pay for each
 - (One) answer in mode-choice-mnl-in-vehicle-answers.R
 
 ## Solution
@@ -821,13 +820,13 @@ rm(list=ls())
 library(apollo)
 library(tidyverse)
 
-database = read_csv("data/modechoice.csv")
+database = read_csv("data/modechoice_apollo.csv")
 
 apollo_initialise()
 
 apollo_control = list(
-    modelName = "Australia_Mode_Choice",
-    indivID="individual"
+    modelName = "Apollo_Mode_Choice",
+    indivID="ID"
 )
 
 head(database)
@@ -842,21 +841,19 @@ head(database)
 apollo_beta = c(
     asc_air = 0,
     asc_bus = 0,
-    asc_train = 0,
+    asc_rail = 0,
     # leaving out an asc_car as base category
     b_cost = 0,
-    b_in_vehicle_time_car = 0,
-    b_in_vehicle_time_bus = 0,
-    b_in_vehicle_time_train = 0,
+    b_access_time = 0,
     b_in_vehicle_time_air = 0,
+    b_in_vehicle_time_bus = 0,
+    b_in_vehicle_time_car = 0,
+    b_in_vehicle_time_rail = 0,
     # income and party_size are individual level variable, so
     # must be different for different alternatives
-    b_hhincome_air = 0,
-    b_hhincome_bus = 0,
-    b_hhincome_train = 0,
-    b_party_size_air = 0,
-    b_party_size_bus = 0,
-    b_party_size_train = 0
+    b_income_air = 0,
+    b_income_bus = 0,
+    b_income_rail = 0
 )
 ```
 
@@ -884,49 +881,47 @@ apollo_probabilities = function(apollo_beta, apollo_inputs,
 
     # define utility functions
     V = list()
-
+    # We can include cost and in-vehicle time here because they vary over
+    # alternatives
     V[["car"]] = b_cost * cost_car +
-        b_in_vehicle_time_car * in_vehicle_time_car
+        b_in_vehicle_time_car * time_car
 
     V[["air"]] = asc_air +
         b_cost * cost_air +
-        b_in_vehicle_time_air * in_vehicle_time_air +
-        b_hhincome_air * hhincome_thousands +
-        b_party_size_air * party_size
+        b_in_vehicle_time_air * time_air +
+        b_access_time * access_air +
+        b_income_air * income
 
-    V[["train"]] = asc_train +
-        b_cost * cost_train +
-        b_in_vehicle_time_train * in_vehicle_time_train +
-        b_hhincome_train * hhincome_thousands +
-        b_party_size_train * party_size
+    V[["rail"]] = asc_rail +
+        b_cost * cost_rail +
+        b_in_vehicle_time_rail * time_rail +
+        b_access_time * access_rail +
+        b_income_rail * income
 
     V[["bus"]] = asc_bus +
         b_cost * cost_bus +
-        b_in_vehicle_time_bus * in_vehicle_time_bus +
-        b_hhincome_bus * hhincome_thousands +
-        b_party_size_bus * party_size
+        b_in_vehicle_time_bus * time_bus +
+        b_access_time * access_bus +
+        b_income_bus * income
 
     mnl_settings = list(
-        alternatives = c(car="car", air="air",
-            train="train", bus="bus"),
-        avail = list(car=T, air=T, train=T, bus=T),
-        choiceVar = chosen,
+        alternatives = c(car=1, air=3, rail=4, bus=2),
+        avail = list(car=av_car, air=av_air, rail=av_rail, bus=av_bus),
+        choiceVar = choice,
         utilities = V
     )
 
     P[["model"]] = apollo_mnl(mnl_settings, functionality)
+
+    # For panel data, this multiplies observations for single individuals
+    # together - no effect in multinomial logit but still required.
+    P = apollo_panelProd(P, apollo_inputs, functionality)
     P = apollo_prepareProb(P, apollo_inputs, functionality)
     return(P)
 }
 ```
 
 ---
-
-```{r}
-#| filename: mode-choice-mnl-in-vehicle-answers.R
-#| include: false
-
-```
 
 ```{r}
 #| filename: mode-choice-mnl-in-vehicle-answers.R
@@ -939,17 +934,177 @@ model = apollo_estimate(apollo_beta, apollo_fixed,
 apollo_modelOutput(model)
 ```
 
+---
+
+```{r}
+#| echo: true
+#| filename: mode-choice-mnl-in-vehicle-answers.R
+
+
+apollo_deltaMethod(model, deltaMethod_settings=list(
+    operation="ratio",
+    parName1="b_in_vehicle_time_car",
+    parName2="b_cost",
+    multPar1=60
+))
+```
+
+---
+
+```{r}
+#| echo: true
+#| filename: mode-choice-mnl-in-vehicle-answers.R
+
+
+apollo_deltaMethod(model, deltaMethod_settings=list(
+    operation="ratio",
+    parName1="b_in_vehicle_time_air",
+    parName2="b_cost",
+    multPar1=60
+))
+```
+
+---
+
+```{r}
+#| echo: true
+#| filename: mode-choice-mnl-in-vehicle-answers.R
+
+
+apollo_deltaMethod(model, deltaMethod_settings=list(
+    operation="ratio",
+    parName1="b_in_vehicle_time_bus",
+    parName2="b_cost",
+    multPar1=60
+))
+```
+
+---
+
+```{r}
+#| echo: true
+#| filename: mode-choice-mnl-in-vehicle-answers.R
+
+
+dm = apollo_deltaMethod(model, deltaMethod_settings=list(
+    operation="ratio",
+    parName1="b_in_vehicle_time_rail",
+    parName2="b_cost",
+    multPar1=60
+))
+```
+
 ## Interpretation
 
-- People really don't like being on airplanes
-    - Should also consider omitted variable bias, e.g. changes of planes
+```{r}
+#| include: false
+car_vtt = apollo_deltaMethod(model, deltaMethod_settings=list(
+    operation="ratio",
+    parName1="b_in_vehicle_time_car",
+    parName2="b_cost",
+    multPar1=60
+))[1,1]
 
+air_vtt = apollo_deltaMethod(model, deltaMethod_settings=list(
+    operation="ratio",
+    parName1="b_in_vehicle_time_air",
+    parName2="b_cost",
+    multPar1=60
+))[1,1]
+
+bus_vtt = apollo_deltaMethod(model, deltaMethod_settings=list(
+    operation="ratio",
+    parName1="b_in_vehicle_time_bus",
+    parName2="b_cost",
+    multPar1=60
+))[1,1]
+
+rail_vtt = apollo_deltaMethod(model, deltaMethod_settings=list(
+    operation="ratio",
+    parName1="b_in_vehicle_time_rail",
+    parName2="b_cost",
+    multPar1=60
+))[1,1]
+
+df = tibble(lab=c("Car", "Air", "Bus", "Rail"), vtt=c(car_vtt, air_vtt, bus_vtt, rail_vtt))
+```
+```{r}
+#| fig-alt: Bar plot of values of travel time for car, air, bus, and rail
+#| dev: svg
+#| fig-width: 6
+#| fig-height: 3
+#| out-width: 1200px
+#| fig-align: center
+
+ggplot(df, aes(x=lab, y=vtt)) +
+    theme_dm +
+    geom_col() +
+    xlab("") +
+    ylab("Value of travel time (£/hour)")
+
+```
+
+- People really don't like being on airplanes
+
+## Correlation does not imply causation
+
+[![XKCD cartoon demonstrating that correlation does not imply causation](correlation_2x.png)](https://xkcd.com/552/)
+
+## Correlation does not imply causation
+
+- Of course we can't interpret model coefficients as causal
+- Valuation estimates are derived from coefficients
+- Any bias in coefficients may affect valuation
+
+## Correlation does not imply causation
+
+- Often, prices will be correlated with unobserved positive aspects, biasing the value of time down
+    - For example, legroom or class of service in the air travel case
+- Other variable may be biased too
+    - We don't have number of connections in our model. How might this bias the value of time for air travel?
+
+## Questions?
 
 ## Independence of irrelevant alternatives
 
-# The probit model
+- When the utility of one alternative is increased, the probabilities of the other alternatives decrease in proportion to their probabilities
+    - And vice-versa
+    - Similarly when an alternative is added or removed
 
+## Independence of irrelevant alternatives: the red bus/blue bus problem
 
+- Suppose you have a model of mode choice, with two alternatives: driving and a red bus
+- One individual has a 50% probability of choosing each alternative
+- Suppose you paint half the buses red but don't change anything about the service
+
+## Independence of irrelevant alternatives: the red bus/blue bus problem
+
+- You'd expect this individual to now have probabilities 25% red bus, 25% blue bus, and 50% drive
+- But, half of the probability has to come from each other alternative
+- So, if blue bus has 25% probability, existing choices must all reduce by the same factor
+- Red bus: 50% * .75 = 37.5%
+- Same for car
+
+## Independence of irrelevant alternatives: the math
+
+$$ \frac{\delta p(b)}{\delta U_r}$$
+$$
+= \frac{
+    e^{U_b}}{
+        e^{U_r} + e^{U_b} + e^{U_c}}
+    \frac{\delta}{\delta U_r}
+$$
+
+$$
+    = e^{U_b} ( e^{U_r} + e^{U_b} + e^{U_c} \big)^{-2}
+        \big[(e^{U_r} + e^{U_b} + e^{U_c}) \frac{\delta}{\delta U_r}\big]
+$$
+
+$$
+    = e^{U_b} \big[ ( e^{U_r} + e^{U_b} + e^{U_c} \big)^{-2} e^{U_r} \big]
+$$
+
+# Nested logit model
 
 ## References
 
