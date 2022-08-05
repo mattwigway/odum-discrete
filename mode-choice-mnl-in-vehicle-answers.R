@@ -17,7 +17,6 @@ apollo_beta = c(
     asc_bus = 0,
     asc_train = 0,
     # leaving out an asc_car as base category
-    b_wait_time=0,
     b_cost = 0,
     b_in_vehicle_time_car = 0,
     b_in_vehicle_time_bus = 0,
@@ -53,21 +52,18 @@ apollo_probabilities = function(apollo_beta, apollo_inputs,
     V[["air"]] = asc_air +
         b_cost * cost_air +
         b_in_vehicle_time_air * in_vehicle_time_air +
-        b_wait_time * wait_time_air +
         b_hhincome_air * hhincome_thousands +
         b_party_size_air * party_size
 
     V[["train"]] = asc_train +
         b_cost * cost_train +
         b_in_vehicle_time_train * in_vehicle_time_train +
-        b_wait_time * wait_time_train +
         b_hhincome_train * hhincome_thousands +
         b_party_size_train * party_size
 
     V[["bus"]] = asc_bus +
         b_cost * cost_bus +
         b_in_vehicle_time_bus * in_vehicle_time_bus +
-        b_wait_time * wait_time_bus +
         b_hhincome_bus * hhincome_thousands +
         b_party_size_bus * party_size
 

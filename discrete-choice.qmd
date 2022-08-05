@@ -49,6 +49,17 @@ library(knitr)
 - PhD in Geography from Arizona State
 - Three years experience as transportation modeling software developer
 
+## Before we go any further
+
+- If you haven't already installed R, RStudio, `apollo`, and `tidyverse`, do so now
+- R: [https://r-project.org](https://r-project.org)
+- RStudio: [https://rstudio.com](https://rstudio.com)
+- `apollo` and `tidyverse`: in RStudio console, run:
+```r
+install.packages("tidyverse")
+install.packages("apollo")
+```
+
 
 
 ## What are discrete choice models?
@@ -641,9 +652,6 @@ apollo_beta = c(
     asc_bus = 0,
     asc_train = 0,
     # leaving out an asc_car as base category
-    # wait_time varies across alternatives, so we can have a
-    # single wait_time coefficient
-    b_wait_time = 0,
     b_cost = 0,
     b_in_vehicle_time = 0,
     # income and party_size are individual level variable, so
@@ -692,21 +700,18 @@ apollo_probabilities = function(apollo_beta, apollo_inputs,
     V[["air"]] = asc_air +
         b_cost * cost_air +
         b_in_vehicle_time * in_vehicle_time_air +
-        b_wait_time * wait_time_air +
         b_hhincome_air * hhincome_thousands +
         b_party_size_air * party_size
 
     V[["train"]] = asc_train +
         b_cost * cost_train +
         b_in_vehicle_time * in_vehicle_time_train +
-        b_wait_time * wait_time_train +
         b_hhincome_train * hhincome_thousands +
         b_party_size_train * party_size
 
     V[["bus"]] = asc_bus +
         b_cost * cost_bus +
         b_in_vehicle_time * in_vehicle_time_bus +
-        b_wait_time * wait_time_bus +
         b_hhincome_bus * hhincome_thousands +
         b_party_size_bus * party_size
 
@@ -743,6 +748,25 @@ model = apollo_estimate(apollo_beta, apollo_fixed,
 # Print results
 apollo_modelOutput(model)
 ```
+
+## Valuation using discrete choice models
+
+- A common use for discrete choice models is to calculate willingness-to-pay
+- The linear-in-parameters utility function puts everything in terms of utility
+- If we have a cost parameter, we can use the model to put everything else in monetary units
+
+## Valuation using discrete choice models
+
+- The coefficients of the model are how much of `x` one unit of utility is worth
+    - i.e. partial derivatives of utility with respect to `x`
+- We want value of time, i.e. dollars / hour
+- Travel time coefficient is utility / minute
+- Cost coefficient is utility / dollar
+- (utility / minute) / (utility / dollar) = (dollar / minute)
+
+## Valuation using discrete choice models
+
+$ -0.0036 / -0.0078 * 60 = AUD 28 / hour$
 
 ## Exercise
 
@@ -787,7 +811,6 @@ apollo_beta = c(
     asc_bus = 0,
     asc_train = 0,
     # leaving out an asc_car as base category
-    b_wait_time=0,
     b_cost = 0,
     b_in_vehicle_time_car = 0,
     b_in_vehicle_time_bus = 0,
@@ -835,21 +858,18 @@ apollo_probabilities = function(apollo_beta, apollo_inputs,
     V[["air"]] = asc_air +
         b_cost * cost_air +
         b_in_vehicle_time_air * in_vehicle_time_air +
-        b_wait_time * wait_time_air +
         b_hhincome_air * hhincome_thousands +
         b_party_size_air * party_size
 
     V[["train"]] = asc_train +
         b_cost * cost_train +
         b_in_vehicle_time_train * in_vehicle_time_train +
-        b_wait_time * wait_time_train +
         b_hhincome_train * hhincome_thousands +
         b_party_size_train * party_size
 
     V[["bus"]] = asc_bus +
         b_cost * cost_bus +
         b_in_vehicle_time_bus * in_vehicle_time_bus +
-        b_wait_time * wait_time_bus +
         b_hhincome_bus * hhincome_thousands +
         b_party_size_bus * party_size
 
