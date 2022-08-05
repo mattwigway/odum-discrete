@@ -597,8 +597,8 @@ digraph G{
 rm(list=ls())
 ```
 
-- We're going to build a multinomial logit mode choice model of intercity mode choice between major Australian cities
-- Data from Python `statsmodels` package, originally from @greene_econometric_2011, online table F18-2
+- We're going to build a multinomial logit mode choice model of intercity mode choice
+- Data from Apollo examples
 
 ## The data
 
@@ -623,13 +623,13 @@ rm(list=ls())
 library(apollo)
 library(tidyverse)
 
-database = read_csv("data/modechoice.csv")
+database = read_csv("data/modechoice_apollo.csv")
 
 apollo_initialise()
 
 apollo_control = list(
-    modelName = "Australia_Mode_Choice",
-    indivID="individual"
+    modelName = "Apollo_Mode_Choice",
+    indivID="ID"
 )
 ```
 
@@ -650,18 +650,16 @@ head(database)
 apollo_beta = c(
     asc_air = 0,
     asc_bus = 0,
-    asc_train = 0,
+    asc_rail = 0,
     # leaving out an asc_car as base category
     b_cost = 0,
+    b_access_time = 0,
     b_in_vehicle_time = 0,
     # income and party_size are individual level variable, so
     # must be different for different alternatives
-    b_hhincome_air = 0,
-    b_hhincome_bus = 0,
-    b_hhincome_train = 0,
-    b_party_size_air = 0,
-    b_party_size_bus = 0,
-    b_party_size_train = 0
+    b_income_air = 0,
+    b_income_bus = 0,
+    b_income_rail = 0
 )
 ```
 
@@ -694,35 +692,38 @@ apollo_probabilities = function(apollo_beta, apollo_inputs,
     # We can include cost and in-vehicle time here because they vary over
     # alternatives
     V[["car"]] = b_cost * cost_car +
-        b_in_vehicle_time * in_vehicle_time_car
-    # Exercise: why can't we include wait time in utility of car?
+        b_in_vehicle_time * time_car
 
     V[["air"]] = asc_air +
         b_cost * cost_air +
-        b_in_vehicle_time * in_vehicle_time_air +
-        b_hhincome_air * hhincome_thousands +
-        b_party_size_air * party_size
+        b_in_vehicle_time * time_air +
+        b_access_time * access_air +
+        b_income_air * income
 
-    V[["train"]] = asc_train +
-        b_cost * cost_train +
-        b_in_vehicle_time * in_vehicle_time_train +
-        b_hhincome_train * hhincome_thousands +
-        b_party_size_train * party_size
+    V[["rail"]] = asc_rail +
+        b_cost * cost_rail +
+        b_in_vehicle_time * time_rail +
+        b_access_time * access_rail +
+        b_income_rail * income
 
     V[["bus"]] = asc_bus +
         b_cost * cost_bus +
-        b_in_vehicle_time * in_vehicle_time_bus +
-        b_hhincome_bus * hhincome_thousands +
-        b_party_size_bus * party_size
+        b_in_vehicle_time * time_bus +
+        b_access_time * access_bus +
+        b_income_bus * income
 
     mnl_settings = list(
-        alternatives = c(car="car", air="air", train="train", bus="bus"),
-        avail = list(car=T, air=T, train=T, bus=T),
-        choiceVar = chosen,
+        alternatives = c(car=1, air=3, rail=4, bus=2),
+        avail = list(car=av_car, air=av_air, rail=av_rail, bus=av_bus),
+        choiceVar = choice,
         utilities = V
     )
 
     P[["model"]] = apollo_mnl(mnl_settings, functionality)
+
+    # For panel data, this multiplies observations for single individuals
+    # together - no effect in multinomial logit but still required.
+    P = apollo_panelProd(P, apollo_inputs, functionality)
     P = apollo_prepareProb(P, apollo_inputs, functionality)
     return(P)
 }
@@ -762,11 +763,43 @@ apollo_modelOutput(model)
 - We want value of time, i.e. dollars / hour
 - Travel time coefficient is utility / minute
 - Cost coefficient is utility / dollar
-- (utility / minute) / (utility / dollar) = (dollar / minute)
+- If $u$ is utility, $c$ is cost, and $t$ is in-vehicle time,
+$\frac{\beta_t}{\beta_{c}} = \frac{\frac{\delta u}{\delta t}}{\frac{\delta u}{\delta c}} = \frac{\delta c}{\delta t}$
 
 ## Valuation using discrete choice models
 
-$ -0.0036 / -0.0078 * 60 = AUD 28 / hour$
+```{r}
+#| include: false
+bc = round(model$estimate[["b_cost"]], digits=4)
+bt = round(model$estimate[["b_in_vehicle_time"]], digits=4)
+vtt = round(model$estimate[["b_in_vehicle_time"]] / model$estimate[["b_cost"]], digits=3)
+```
+
+$$\beta_c = `r bc`$$
+$$\beta_t = `r bt`$$
+
+$$ \frac{\beta_t}{\beta_c} = \frac{`r bt`}{`r bc`} = {£`r vtt`}/\mathrm{minute} = {£`r vtt * 60`}/\mathrm{hour} $$
+
+## Confidence intervals for valuation
+
+- We can use the Delta method to calculate standard errors for combinations of parameters [@daly_estimating_2020]
+- Implemented in Apollo using `apollo_deltaMethod` function
+
+---
+
+```{r}
+#| echo: true
+#| filename: mode-choice-mnl.R
+
+apollo_deltaMethod(model, deltaMethod_settings=list(
+    operation="ratio",
+    parName1="b_in_vehicle_time",
+    parName2="b_cost",
+    multPar1=60
+))
+```
+
+
 
 ## Exercise
 

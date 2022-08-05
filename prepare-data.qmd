@@ -47,21 +47,12 @@ select(workers, resp_id, wfh, age, income_100k_plus, service_worker) %>%
 
 ## Mode choice
 
-From statsmodels
+From apollo
 
 ```{r}
-mc = read_delim("data/statsmodels/modechoice.csv", delim=";") %>%
-    mutate(mode=recode(`mode`, `1`="air", `2`="train", `3`="bus", `4`="car")) %>%
-    rename(wait_time=ttme, cost=invc, in_vehicle_time=invt) %>%
-    pivot_wider(id_cols=individual, names_from=mode, values_from=choice:psize) %>%
-    mutate(chosen=case_when(
-        choice_air==1 ~ "air",
-        choice_train==1 ~ "train",
-        choice_bus==1 ~ "bus",
-        choice_car==1 ~ "car"
-    )) %>%
-    select(individual, chosen, starts_with("wait_time"), starts_with("cost"), starts_with("in_vehicle_time"), hinc_car, psize_car) %>%
-    rename(hhincome_thousands="hinc_car", party_size="psize_car") %>%
-    write_csv("data/modechoice.csv")
+read_csv("data/apollo_modeChoiceData.csv") %>%
+    filter(RP == 1) %>%
+    select(-c(RP, SP, RP_journey, SP_task)) %>%
+    write_csv("modechoice_apollo.csv")
 ```
 
