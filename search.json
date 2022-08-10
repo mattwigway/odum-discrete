@@ -81,7 +81,7 @@
     "href": "discrete-choice.html#logistic-regression-in-r-1",
     "title": "Introduction to discrete choice models in R",
     "section": "Logistic regression in R",
-    "text": "Logistic regression in R\n\n\n\nCall:\nglm(formula = carpool ~ hhsize + cars_per_driver + commute + \n    social, family = binomial(link = \"logit\"), data = data)\n\nDeviance Residuals: \n    Min       1Q   Median       3Q      Max  \n-2.1549  -1.1352   0.5586   1.1124   2.2076  \n\nCoefficients:\n                Estimate Std. Error z value Pr(>|z|)    \n(Intercept)     -0.67693    0.10222  -6.622 3.54e-11 ***\nhhsize           0.37661    0.02452  15.360  < 2e-16 ***\ncars_per_driver -0.11756    0.05692  -2.065   0.0389 *  \ncommuteTRUE     -1.57463    0.11061 -14.237  < 2e-16 ***\nsocialTRUE       0.31370    0.09999   3.137   0.0017 ** \n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\n(Dispersion parameter for binomial family taken to be 1)\n\n    Null deviance: 6930.5  on 4999  degrees of freedom\nResidual deviance: 6380.7  on 4995  degrees of freedom\nAIC: 6390.7\n\nNumber of Fisher Scoring iterations: 4"
+    "text": "Logistic regression in R\n\n\n\nCall:\nglm(formula = carpool ~ hhsize + cars_per_driver + commute + \n    social, family = binomial(link = \"logit\"), data = data)\n\nDeviance Residuals: \n    Min       1Q   Median       3Q      Max  \n-2.4758  -1.1048  -0.5243   1.0966   2.2147  \n\nCoefficients:\n                Estimate Std. Error z value Pr(>|z|)    \n(Intercept)     -0.87316    0.10310  -8.469  < 2e-16 ***\nhhsize           0.39877    0.02468  16.156  < 2e-16 ***\ncars_per_driver -0.09750    0.05659  -1.723   0.0849 .  \ncommuteTRUE     -1.59549    0.11134 -14.330  < 2e-16 ***\nsocialTRUE       0.41292    0.10269   4.021 5.79e-05 ***\n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\n(Dispersion parameter for binomial family taken to be 1)\n\n    Null deviance: 6925.6  on 4999  degrees of freedom\nResidual deviance: 6334.1  on 4995  degrees of freedom\nAIC: 6344.1\n\nNumber of Fisher Scoring iterations: 4"
   },
   {
     "objectID": "discrete-choice.html#binary-logistic-regression-as-a-random-utility-model",
@@ -123,7 +123,7 @@
     "href": "discrete-choice.html#but-dont-take-my-word-for-it",
     "title": "Introduction to discrete choice models in R",
     "section": "But don’t take my word for it…",
-    "text": "But don’t take my word for it…\n\n\n\nCall:\nglm(formula = carpool ~ hhsize + cars_per_driver + commute + \n    social, family = binomial(link = \"logit\"), data = data)\n\nDeviance Residuals: \n    Min       1Q   Median       3Q      Max  \n-2.1549  -1.1352   0.5586   1.1124   2.2076  \n\nCoefficients:\n                Estimate Std. Error z value Pr(>|z|)    \n(Intercept)     -0.67693    0.10222  -6.622 3.54e-11 ***\nhhsize           0.37661    0.02452  15.360  < 2e-16 ***\ncars_per_driver -0.11756    0.05692  -2.065   0.0389 *  \ncommuteTRUE     -1.57463    0.11061 -14.237  < 2e-16 ***\nsocialTRUE       0.31370    0.09999   3.137   0.0017 ** \n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\n(Dispersion parameter for binomial family taken to be 1)\n\n    Null deviance: 6930.5  on 4999  degrees of freedom\nResidual deviance: 6380.7  on 4995  degrees of freedom\nAIC: 6390.7\n\nNumber of Fisher Scoring iterations: 4"
+    "text": "But don’t take my word for it…\n\n\n\nCall:\nglm(formula = carpool ~ hhsize + cars_per_driver + commute + \n    social, family = binomial(link = \"logit\"), data = data)\n\nDeviance Residuals: \n    Min       1Q   Median       3Q      Max  \n-2.4758  -1.1048  -0.5243   1.0966   2.2147  \n\nCoefficients:\n                Estimate Std. Error z value Pr(>|z|)    \n(Intercept)     -0.87316    0.10310  -8.469  < 2e-16 ***\nhhsize           0.39877    0.02468  16.156  < 2e-16 ***\ncars_per_driver -0.09750    0.05659  -1.723   0.0849 .  \ncommuteTRUE     -1.59549    0.11134 -14.330  < 2e-16 ***\nsocialTRUE       0.41292    0.10269   4.021 5.79e-05 ***\n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\n(Dispersion parameter for binomial family taken to be 1)\n\n    Null deviance: 6925.6  on 4999  degrees of freedom\nResidual deviance: 6334.1  on 4995  degrees of freedom\nAIC: 6344.1\n\nNumber of Fisher Scoring iterations: 4"
   },
   {
     "objectID": "discrete-choice.html#what-about-more-than-two-outcomes",
@@ -168,6 +168,13 @@
     "text": "Interpreting multinomial logit results\n\n\n\n\n\n\nRarely\nOften\nAlways\n\n\n\n\nASC\n-0.73\n0.50\n-1.37\n\n\nAge\n-0.03\n-0.01\n0.01\n\n\nHigh income\n0.81\n1.01\n0.53\n\n\nService worker\n-0.94\n-1.27\n-1.54\n\n\n\n\n\nNote: all variables significant at \\(p < 0.05\\)"
   },
   {
+    "objectID": "discrete-choice.html#questions-1",
+    "href": "discrete-choice.html#questions-1",
+    "title": "Introduction to discrete choice models in R",
+    "section": "Questions?",
+    "text": "Questions?"
+  },
+  {
     "objectID": "discrete-choice.html#specifying-a-multinomial-logit-model",
     "href": "discrete-choice.html#specifying-a-multinomial-logit-model",
     "title": "Introduction to discrete choice models in R",
@@ -200,7 +207,7 @@
     "href": "discrete-choice.html#the-data",
     "title": "Introduction to discrete choice models in R",
     "section": "The data",
-    "text": "The data\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nindividual\nchosen\nwait_time_air\nwait_time_train\nwait_time_bus\nwait_time_car\ncost_air\ncost_train\ncost_bus\ncost_car\nin_vehicle_time_air\nin_vehicle_time_train\nin_vehicle_time_bus\nin_vehicle_time_car\nhhincome_thousands\nparty_size\n\n\n\n\n1\ncar\n69\n34\n35\n0\n59\n31\n25\n10\n100\n372\n417\n180\n35\n1\n\n\n2\ncar\n64\n44\n53\n0\n58\n31\n25\n11\n68\n354\n399\n255\n30\n2\n\n\n3\ncar\n69\n34\n35\n0\n115\n98\n53\n23\n125\n892\n882\n720\n40\n1\n\n\n4\ncar\n64\n44\n53\n0\n49\n26\n21\n5\n68\n354\n399\n180\n70\n3\n\n\n5\ncar\n64\n44\n53\n0\n60\n32\n26\n8\n144\n404\n449\n600\n45\n2\n\n\n6\ntrain\n69\n40\n35\n0\n59\n20\n13\n12\n100\n345\n417\n284\n20\n1"
+    "text": "The data\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nID\nav_car\nav_bus\nav_air\nav_rail\ntime_car\ncost_car\ntime_bus\ncost_bus\naccess_bus\ntime_air\ncost_air\naccess_air\nservice_air\ntime_rail\ncost_rail\naccess_rail\nservice_rail\nfemale\nbusiness\nincome\nchoice\n\n\n\n\n1\n0\n0\n1\n1\n0\n0\n0\n0\n0\n50\n80\n55\n0\n140\n55\n5\n0\n0\n0\n46705\n4\n\n\n1\n0\n0\n1\n1\n0\n0\n0\n0\n0\n70\n80\n45\n0\n170\n45\n20\n0\n0\n0\n46705\n4\n\n\n2\n1\n1\n0\n1\n345\n40\n345\n30\n15\n0\n0\n0\n0\n130\n55\n20\n0\n1\n0\n50123\n2\n\n\n2\n1\n1\n0\n1\n345\n45\n345\n25\n20\n0\n0\n0\n0\n130\n45\n10\n0\n1\n0\n50123\n2\n\n\n3\n0\n0\n1\n1\n0\n0\n0\n0\n0\n90\n65\n40\n0\n130\n35\n20\n0\n1\n0\n67589\n4\n\n\n3\n0\n0\n1\n1\n0\n0\n0\n0\n0\n60\n110\n40\n0\n170\n35\n15\n0\n1\n0\n67589\n4"
   },
   {
     "objectID": "discrete-choice.html#estimation-in-r",
@@ -249,28 +256,266 @@
     "href": "discrete-choice.html#solution",
     "title": "Introduction to discrete choice models in R",
     "section": "Solution",
-    "text": "Solution\n\napollo_beta = c(\n    asc_air = 0,\n    asc_bus = 0,\n    asc_train = 0,\n    # leaving out an asc_car as base category\n    b_cost = 0,\n    b_in_vehicle_time_car = 0,\n    b_in_vehicle_time_bus = 0,\n    b_in_vehicle_time_train = 0,\n    b_in_vehicle_time_air = 0,\n    # income and party_size are individual level variable, so\n    # must be different for different alternatives\n    b_hhincome_air = 0,\n    b_hhincome_bus = 0,\n    b_hhincome_train = 0,\n    b_party_size_air = 0,\n    b_party_size_bus = 0,\n    b_party_size_train = 0\n)"
+    "text": "Solution\n\napollo_beta = c(\n    asc_air = 0,\n    asc_bus = 0,\n    asc_rail = 0,\n    # leaving out an asc_car as base category\n    b_cost = 0,\n    b_access_time = 0,\n    b_in_vehicle_time_air = 0,\n    b_in_vehicle_time_bus = 0,\n    b_in_vehicle_time_car = 0,\n    b_in_vehicle_time_rail = 0,\n    # income and party_size are individual level variable, so\n    # must be different for different alternatives\n    b_income_air = 0,\n    b_income_bus = 0,\n    b_income_rail = 0\n)"
   },
   {
     "objectID": "discrete-choice.html#interpretation",
     "href": "discrete-choice.html#interpretation",
     "title": "Introduction to discrete choice models in R",
     "section": "Interpretation",
-    "text": "Interpretation\n\nPeople really don’t like being on airplanes\n\nShould also consider omitted variable bias, e.g. changes of planes"
+    "text": "Interpretation\n\n\nPeople really don’t like being on airplanes"
+  },
+  {
+    "objectID": "discrete-choice.html#correlation-does-not-imply-causation",
+    "href": "discrete-choice.html#correlation-does-not-imply-causation",
+    "title": "Introduction to discrete choice models in R",
+    "section": "Correlation does not imply causation",
+    "text": "Correlation does not imply causation\n\nXKCD cartoon demonstrating that correlation does not imply causation"
+  },
+  {
+    "objectID": "discrete-choice.html#correlation-does-not-imply-causation-1",
+    "href": "discrete-choice.html#correlation-does-not-imply-causation-1",
+    "title": "Introduction to discrete choice models in R",
+    "section": "Correlation does not imply causation",
+    "text": "Correlation does not imply causation\n\nOf course we can’t interpret model coefficients as causal\nValuation estimates are derived from coefficients\nAny bias in coefficients may affect valuation"
+  },
+  {
+    "objectID": "discrete-choice.html#correlation-does-not-imply-causation-2",
+    "href": "discrete-choice.html#correlation-does-not-imply-causation-2",
+    "title": "Introduction to discrete choice models in R",
+    "section": "Correlation does not imply causation",
+    "text": "Correlation does not imply causation\n\nOften, prices will be correlated with unobserved positive aspects, biasing the value of time down\n\nFor example, legroom or class of service in the air travel case\n\nOther variable may be biased too\n\nWe don’t have number of connections in our model. How might this bias the value of time for air travel?"
+  },
+  {
+    "objectID": "discrete-choice.html#questions-2",
+    "href": "discrete-choice.html#questions-2",
+    "title": "Introduction to discrete choice models in R",
+    "section": "Questions?",
+    "text": "Questions?"
+  },
+  {
+    "objectID": "discrete-choice.html#how-logit-models-are-estimated",
+    "href": "discrete-choice.html#how-logit-models-are-estimated",
+    "title": "Introduction to discrete choice models in R",
+    "section": "How logit models are estimated",
+    "text": "How logit models are estimated\n\nUnlike linear regression, there is no closed-form solution\n\ni.e. one you can just calculate\n\nInstead, we use maximum likelihood\nWe define a likelihood function which tells us how likely we are to observe the data we have, given a set of coefficients\nWe then choose a set of coefficients, the starting values, and adjust them until we find the best fit—the maximum of the likelihood function"
+  },
+  {
+    "objectID": "discrete-choice.html#likelihood-function-for-a-discrete-choice-model",
+    "href": "discrete-choice.html#likelihood-function-for-a-discrete-choice-model",
+    "title": "Introduction to discrete choice models in R",
+    "section": "Likelihood function for a discrete choice model",
+    "text": "Likelihood function for a discrete choice model\n\nThe likelihood function for a discrete choice model is the joint probability of all the chosen values\nIf you had three people, who chose car, car, and bus to get to work, likelihood is the probability that the first person chose car multiplied by the probability the second person chose car multiplied by the probability the third person chose bus"
+  },
+  {
+    "objectID": "discrete-choice.html#likelihood-function-for-a-discrete-choice-model-the-math",
+    "href": "discrete-choice.html#likelihood-function-for-a-discrete-choice-model-the-math",
+    "title": "Introduction to discrete choice models in R",
+    "section": "Likelihood function for a discrete choice model: the math",
+    "text": "Likelihood function for a discrete choice model: the math\n\nIn math:\n\n\\[\n\\prod_n P(y_n | x_n)\\\\\n= \\prod_n \\frac{e^{U_{y_n}}}{\\sum_j e^{U_{j_n}}}\n\\]"
+  },
+  {
+    "objectID": "discrete-choice.html#likelihood-function-for-a-discrete-choice-model-the-math-1",
+    "href": "discrete-choice.html#likelihood-function-for-a-discrete-choice-model-the-math-1",
+    "title": "Introduction to discrete choice models in R",
+    "section": "Likelihood function for a discrete choice model: the math",
+    "text": "Likelihood function for a discrete choice model: the math\n\nThis is a vanishingly small number\n\nIn our mode choice example, something like \\(10^{-440}\\)\n\nGenerally too small to be represented in a computer\n\n\n10^-440\n\n[1] 0"
+  },
+  {
+    "objectID": "discrete-choice.html#likelihood-function-for-a-discrete-choice-model-the-math-2",
+    "href": "discrete-choice.html#likelihood-function-for-a-discrete-choice-model-the-math-2",
+    "title": "Introduction to discrete choice models in R",
+    "section": "Likelihood function for a discrete choice model: the math",
+    "text": "Likelihood function for a discrete choice model: the math\n\nInstead, computers use the logarithm of likelihood (log-likelihood)\n\n\\[\n\\mathrm{ln} \\prod_n P(y_n | x_n)\\\\\n= \\sum_n \\mathrm{ln} \\frac{e^{U_{y_n}}}{\\sum_j e^{U_{j_n}}}\n\\]\n\nIn our example above, this is -1014"
+  },
+  {
+    "objectID": "discrete-choice.html#comparing-logistic-models-to-each-other",
+    "href": "discrete-choice.html#comparing-logistic-models-to-each-other",
+    "title": "Introduction to discrete choice models in R",
+    "section": "Comparing logistic models to each other",
+    "text": "Comparing logistic models to each other\n\nWe can use the log-likelihood to compare two models using a likelihood-ratio test\nThis only works if the two models are nested\n\nThat is, one is a subset of the other, or you can make one into the other by constraining parameters\nNot to be confused with nested logit models which use a different error structure"
+  },
+  {
+    "objectID": "discrete-choice.html#comparing-logistic-models-to-each-other-1",
+    "href": "discrete-choice.html#comparing-logistic-models-to-each-other-1",
+    "title": "Introduction to discrete choice models in R",
+    "section": "Comparing logistic models to each other",
+    "text": "Comparing logistic models to each other\n\nLikelihood ratio test statistic is\n\n\\[\n-2(\\ell_1 - \\ell_2)\n\\]\nwhere \\(\\ell_1\\) is the likelihood of the less flexible model and \\(\\ell_2\\) the more flexible model - This is \\(\\chi^2\\)-distributed with degrees of freedom equal to the number of additional parameters in the more flexible model - Don’t need to remember order, just put them in the order that makes test statistic positive"
+  },
+  {
+    "objectID": "discrete-choice.html#comparing-logistic-models-to-each-other-2",
+    "href": "discrete-choice.html#comparing-logistic-models-to-each-other-2",
+    "title": "Introduction to discrete choice models in R",
+    "section": "Comparing logistic models to each other",
+    "text": "Comparing logistic models to each other\n\n\n\nModel\nLog-likelihood\n\n\n\n\nSame in-vehicle time coefficient\n-1020\n\n\nDifferent in-vehicle time coefficients\n-1014.74\n\n\nTest statistic\n10.52\n\n\nDegrees of freedom\n3"
+  },
+  {
+    "objectID": "discrete-choice.html#comparing-logistic-regression-models-to-each-other",
+    "href": "discrete-choice.html#comparing-logistic-regression-models-to-each-other",
+    "title": "Introduction to discrete choice models in R",
+    "section": "Comparing logistic regression models to each other",
+    "text": "Comparing logistic regression models to each other\n\n1 - pchisq(10.52, 3)\n\n[1] 0.01462584"
+  },
+  {
+    "objectID": "discrete-choice.html#comparing-logistic-regreession-models-to-each-other",
+    "href": "discrete-choice.html#comparing-logistic-regreession-models-to-each-other",
+    "title": "Introduction to discrete choice models in R",
+    "section": "Comparing logistic regreession models to each other",
+    "text": "Comparing logistic regreession models to each other"
+  },
+  {
+    "objectID": "discrete-choice.html#goodness-of-fit-metrics-for-logistic-regression-models",
+    "href": "discrete-choice.html#goodness-of-fit-metrics-for-logistic-regression-models",
+    "title": "Introduction to discrete choice models in R",
+    "section": "Goodness of fit metrics for logistic regression models",
+    "text": "Goodness of fit metrics for logistic regression models\n\nUnlike linear regression, there is no \\(R^2\\) for a logistic regression"
+  },
+  {
+    "objectID": "discrete-choice.html#marginal-effects",
+    "href": "discrete-choice.html#marginal-effects",
+    "title": "Introduction to discrete choice models in R",
+    "section": "Marginal effects",
+    "text": "Marginal effects"
   },
   {
     "objectID": "discrete-choice.html#independence-of-irrelevant-alternatives",
     "href": "discrete-choice.html#independence-of-irrelevant-alternatives",
     "title": "Introduction to discrete choice models in R",
     "section": "Independence of irrelevant alternatives",
-    "text": "Independence of irrelevant alternatives"
+    "text": "Independence of irrelevant alternatives\n\nWhen the utility of one alternative is increased, the probabilities of the other alternatives decrease in proportion to their probabilities\n\nAnd vice-versa\nSimilarly when an alternative is added or removed"
+  },
+  {
+    "objectID": "discrete-choice.html#independence-of-irrelevant-alternatives-the-red-busblue-bus-problem",
+    "href": "discrete-choice.html#independence-of-irrelevant-alternatives-the-red-busblue-bus-problem",
+    "title": "Introduction to discrete choice models in R",
+    "section": "Independence of irrelevant alternatives: the red bus/blue bus problem",
+    "text": "Independence of irrelevant alternatives: the red bus/blue bus problem\n\nSuppose you have a model of mode choice, with two alternatives: driving and a red bus\nOne individual has a 50% probability of choosing each alternative\nSuppose you paint half the buses red but don’t change anything about the service"
+  },
+  {
+    "objectID": "discrete-choice.html#independence-of-irrelevant-alternatives-the-red-busblue-bus-problem-1",
+    "href": "discrete-choice.html#independence-of-irrelevant-alternatives-the-red-busblue-bus-problem-1",
+    "title": "Introduction to discrete choice models in R",
+    "section": "Independence of irrelevant alternatives: the red bus/blue bus problem",
+    "text": "Independence of irrelevant alternatives: the red bus/blue bus problem\n\nYou’d expect this individual to now have probabilities 25% red bus, 25% blue bus, and 50% drive\nBut, half of the probability has to come from each other alternative\nSo, if blue bus has 25% probability, existing choices must all reduce by the same factor\nRed bus: 50% * .75 = 37.5%\nSame for car"
+  },
+  {
+    "objectID": "discrete-choice.html#independence-of-irrelevant-alternatives-the-red-busblue-bus-problem-2",
+    "href": "discrete-choice.html#independence-of-irrelevant-alternatives-the-red-busblue-bus-problem-2",
+    "title": "Introduction to discrete choice models in R",
+    "section": "Independence of irrelevant alternatives: the red bus/blue bus problem",
+    "text": "Independence of irrelevant alternatives: the red bus/blue bus problem\n\nThis is true at the individual level, not the level of market shares (Ben-Akiva and Lerman 1985, 109–11)"
+  },
+  {
+    "objectID": "discrete-choice.html#independence-of-irrelevant-alternatives-the-math",
+    "href": "discrete-choice.html#independence-of-irrelevant-alternatives-the-math",
+    "title": "Introduction to discrete choice models in R",
+    "section": "Independence of irrelevant alternatives: the math",
+    "text": "Independence of irrelevant alternatives: the math\n\\[ \\frac{\\delta p(b)}{\\delta U_r}\\]\n\\[\n= \\frac{\n    e^{U_b}}{\n        e^{U_r} + e^{U_b} + e^{U_c}}\n    \\frac{\\delta}{\\delta U_r}\n\\]\n\\[\n    = e^{U_b} ( e^{U_r} + e^{U_b} + e^{U_c} \\big)^{-2}\n        \\big[(e^{U_r} + e^{U_b} + e^{U_c}) \\frac{\\delta}{\\delta U_r}\\big]\n\\]\n\\[\n    = e^{U_b} \\big[ ( e^{U_r} + e^{U_b} + e^{U_c} \\big)^{-2} e^{U_r} \\big]\n\\]"
+  },
+  {
+    "objectID": "discrete-choice.html#questions-3",
+    "href": "discrete-choice.html#questions-3",
+    "title": "Introduction to discrete choice models in R",
+    "section": "Questions?",
+    "text": "Questions?"
+  },
+  {
+    "objectID": "discrete-choice.html#motivation",
+    "href": "discrete-choice.html#motivation",
+    "title": "Introduction to discrete choice models in R",
+    "section": "Motivation",
+    "text": "Motivation\n\nThe independence of irrelevant alternatives property of MNL derives from the assumed error distribution\n\nWhich is also how the probability function is derived\n\nNested logit allows correlation within “nests” of alternatives\nOften used in mode choice or joint choice"
+  },
+  {
+    "objectID": "discrete-choice.html#model-form",
+    "href": "discrete-choice.html#model-form",
+    "title": "Introduction to discrete choice models in R",
+    "section": "Model form",
+    "text": "Model form\n\n\n\n\nflowchart LR\n    mc[Mode choice]\n    car[Car]\n    air[Air]\n    bus[Bus]\n    train[Train]\n\n    mc --> car\n    mc --> air\n    mc --> bus\n    mc --> train"
+  },
+  {
+    "objectID": "discrete-choice.html#model-form-1",
+    "href": "discrete-choice.html#model-form-1",
+    "title": "Introduction to discrete choice models in R",
+    "section": "Model form",
+    "text": "Model form\n\n\n\n\nflowchart LR\n    mc[Mode choice]\n    car[Car]\n    air[Air]\n    transit[Transit]\n    bus[Bus]\n    train[Train]\n\n    mc --> car\n    mc --> air\n    mc --> transit\n    transit --> bus\n    transit --> train"
+  },
+  {
+    "objectID": "discrete-choice.html#model-form-2",
+    "href": "discrete-choice.html#model-form-2",
+    "title": "Introduction to discrete choice models in R",
+    "section": "Model form",
+    "text": "Model form\n\nOften used to represent hierarchical or joint choice\nUsed when there are shared unobserved attributes between alternatives\n\nIn the red bus/blue bus problem, attributes of the bus\n\nDoes not have to, just represents correlation in error term between alternatives"
+  },
+  {
+    "objectID": "discrete-choice.html#nested-logit-the-math",
+    "href": "discrete-choice.html#nested-logit-the-math",
+    "title": "Introduction to discrete choice models in R",
+    "section": "Nested logit: the math",
+    "text": "Nested logit: the math\n\\[\nU_i = \\alpha_i + \\beta_{ix} x_i + \\cdots + \\epsilon_{nest} + \\epsilon_{i}\n\\]\n\n\\(\\epsilon_{nest}\\) allows correlation of error terms at the nest level"
+  },
+  {
+    "objectID": "discrete-choice.html#why-do-correlated-error-terms-solve-the-red-busblue-bus-problem",
+    "href": "discrete-choice.html#why-do-correlated-error-terms-solve-the-red-busblue-bus-problem",
+    "title": "Introduction to discrete choice models in R",
+    "section": "Why do correlated error terms solve the red bus/blue bus problem?",
+    "text": "Why do correlated error terms solve the red bus/blue bus problem?\n\nEasier to reason through than to do the math\nDefinition of a random-utility model is that whatever alternative has the highest utility is chosen\nUtility has a random component \\(\\epsilon\\), so whether an alternative has highest utility is probabilistic"
+  },
+  {
+    "objectID": "discrete-choice.html#why-do-correlated-error-terms-solve-the-red-busblue-bus-problem-1",
+    "href": "discrete-choice.html#why-do-correlated-error-terms-solve-the-red-busblue-bus-problem-1",
+    "title": "Introduction to discrete choice models in R",
+    "section": "Why do correlated error terms solve the red bus/blue bus problem?",
+    "text": "Why do correlated error terms solve the red bus/blue bus problem?\n\nSuppose we are modeling the probability of auto vs. red bus vs. blue bus, and the systematic utilities are all 0\nSo whichever alternative has the highest random error will be chosen\nSuppose we draw the error terms at random from a hat containing numbers 1–10\nThe probability that any one error term is the largest is 1/3"
+  },
+  {
+    "objectID": "discrete-choice.html#why-do-correlated-error-terms-solve-the-red-busblue-bus-problem-2",
+    "href": "discrete-choice.html#why-do-correlated-error-terms-solve-the-red-busblue-bus-problem-2",
+    "title": "Introduction to discrete choice models in R",
+    "section": "Why do correlated error terms solve the red bus/blue bus problem?",
+    "text": "Why do correlated error terms solve the red bus/blue bus problem?\n\nBut suppose we think that the unobserved attributes of the red bus and blue bus are the same\nThen we will draw one number for cars, and the same number twice for the red and blue buses\nSince the error terms for the buses are the same, there is now a 50% chance that car will have highest utility, and 50% that the buses will"
+  },
+  {
+    "objectID": "discrete-choice.html#nested-logit-additional-parameters",
+    "href": "discrete-choice.html#nested-logit-additional-parameters",
+    "title": "Introduction to discrete choice models in R",
+    "section": "Nested logit: additional parameters",
+    "text": "Nested logit: additional parameters\n\nThe nested logit adds one additional parameter per nest, the inclusive value parameter\nAlso called \\(\\theta\\), \\(\\lambda\\), \\(\\frac{\\mu_m}{\\mu_d}\\), \\(\\frac{1}{\\mu_d}\\), logsum parameter\nInclusive value parameters define how much correlation there is in the alternatives within a nest"
+  },
+  {
+    "objectID": "discrete-choice.html#nested-logit-interpreting-the-inclusive-value-parameter",
+    "href": "discrete-choice.html#nested-logit-interpreting-the-inclusive-value-parameter",
+    "title": "Introduction to discrete choice models in R",
+    "section": "Nested logit: interpreting the inclusive value parameter",
+    "text": "Nested logit: interpreting the inclusive value parameter\n\nInclusive value parameters should be between 0 and 1 to align with utility theory\nLarger inclusive value parameters mean less correlation between alternatives in that nest\nInclusive value parameters of 1—same as multinomial logit"
+  },
+  {
+    "objectID": "discrete-choice.html#nested-logit-caution",
+    "href": "discrete-choice.html#nested-logit-caution",
+    "title": "Introduction to discrete choice models in R",
+    "section": "Nested logit: caution",
+    "text": "Nested logit: caution\n\nIn order to interpret coefficients from different nests relative to each other, you must use a random utility nested logit model (RUMNL)\nThese normalize the coefficients in each nest to be comparable to each other, by dividing by the inclusive value parameter\nNon-normalized nested logit (NNNL) does not perform this normalization\nRUMNL is default in Apollo, NNNL is default in Stata"
+  },
+  {
+    "objectID": "discrete-choice.html#nested-logit-caution-1",
+    "href": "discrete-choice.html#nested-logit-caution-1",
+    "title": "Introduction to discrete choice models in R",
+    "section": "Nested logit: caution",
+    "text": "Nested logit: caution\n\nNested logit inclusive value parameters should be tested with a null hypothesis that they are 1, not 0\nMany statistical packages (including Apollo) don’t do this\nThus, t-values and p-values will be incorrect"
+  },
+  {
+    "objectID": "discrete-choice.html#nested-logit-in-r",
+    "href": "discrete-choice.html#nested-logit-in-r",
+    "title": "Introduction to discrete choice models in R",
+    "section": "Nested logit in R",
+    "text": "Nested logit in R\n\nlibrary(apollo)\nlibrary(tidyverse)\n\ndatabase = read_csv(\"data/modechoice_apollo.csv\")\n\napollo_initialise()\n\napollo_control = list(\n    modelName = \"Nested_Mode_Choice\",\n    indivID=\"ID\"\n)"
   },
   {
     "objectID": "discrete-choice.html#references",
     "href": "discrete-choice.html#references",
     "title": "Introduction to discrete choice models in R",
     "section": "References",
-    "text": "References\n\n\nDaly, Andrew, Stephane Hess, and Juan de Dios Ortúzar. 2020. “Estimating Willingness-to-Pay from Discrete Choice Models: Setting the Record Straight.” http://www.stephanehess.me.uk/papers/working_papers/Daly_Hess_Ortuzar_2020.pdf."
+    "text": "References\n\n\nBen-Akiva, Moshe, and Stephen R Lerman. 1985. Discrete Choice Analysis: Theory and Application to Travel Demand. MIT Press.\n\n\nDaly, Andrew, Stephane Hess, and Juan de Dios Ortúzar. 2020. “Estimating Willingness-to-Pay from Discrete Choice Models: Setting the Record Straight.” http://www.stephanehess.me.uk/papers/working_papers/Daly_Hess_Ortuzar_2020.pdf."
   },
   {
     "objectID": "index.html",
