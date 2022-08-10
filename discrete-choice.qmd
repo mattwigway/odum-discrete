@@ -60,8 +60,7 @@ clear = function () {
 
 ## Before we go any further
 
-- Example code and data at [https://files.indicatrix.org/odum_discrete_class_files.zip](https://files.indicatrix.org/odum_discrete_class_files.zip)
-- These slides at [https://projects.indicatrix.org/odum-discrete/discrete-choice.html](https://projects.indicatrix.org/odum-discrete/discrete-choice.html)
+- Slides, code, and data at [https://projects.indicatrix.org/odum-discrete/](https://projects.indicatrix.org/odum-discrete/)
 
 ## Before we go any further
 
