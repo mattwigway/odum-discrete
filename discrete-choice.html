@@ -883,12 +883,13 @@ p(y=i)\\= p(U_i &gt; \mathrm{all~other}~U)\\
 <li>We will build a model of working from home expectation post-pandemic, using data from the <a href="https://covidfuture.org">COVID Future</a> study.</li>
 <li>We will estimate four utility functions, for being unable to, rarely, frequently, and always working from home</li>
 <li>Based on age, income, and job type</li>
-<li>These utility functions will have the same variables but different coefficients</li>
-<li>Each will also have a <em>alternative specific constant</em>—like a constant in logistic regression that represents the base rate, but for each alternative</li>
-<li>One utility function will be held at zero</li>
 </ul>
 </section>
 <section id="multinomial-logistic-regression-in-r-1" class="slide level2">
+<h2>Multinomial logistic regression in R</h2>
+<p>` - These utility functions will have the same variables but different coefficients - Each will also have a <em>alternative specific constant</em>—like a constant in logistic regression that represents the base rate, but for each alternative - One utility function will be held at zero</p>
+</section>
+<section id="multinomial-logistic-regression-in-r-2" class="slide level2">
 <h2>Multinomial logistic regression in R</h2>
 <p><code>covidfuture-wfh-mnl.R</code></p>
 <div class="cell" data-filename="covidfuture-wfh-mnl.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-16_1975716c4e3657f6d7a731744f183479">
@@ -1865,11 +1866,19 @@ b_income_rail       6.963e-07   5.090e-06      0.1368   5.216e-06        0.1335<
 </section>
 <section class="slide level2">
 
-<div class="cell" data-filename="mode-choice-mnl.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-35_a2b2dc877192d85e9360002c68307995">
-<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1"></a><span class="co"># save results in current directory, using model name specified above</span></span>
-<span id="cb37-2"><a href="#cb37-2"></a><span class="fu">apollo_saveOutput</span>(model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-filename="mode-choice-mnl.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-35_f4fa5d9343be990a4b1ba73ce0e3b848">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1"></a><span class="co"># save results in current directory,</span></span>
+<span id="cb37-2"><a href="#cb37-2"></a><span class="co"># using model name specified above</span></span>
+<span id="cb37-3"><a href="#cb37-3"></a><span class="fu">apollo_saveOutput</span>(model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Model output saved to /Users/mwbc/Library/CloudStorage/OneDrive-UniversityofNorthCarolinaatChapelHill/teaching/odum-discrete/Apollo_Mode_Choice_output.txt 
+<pre><code>
+Old result file "/Users/mwbc/Library/CloudStorage/OneDrive-UniversityofNorthCarolinaatChapelHill/teaching/odum-discrete/Apollo_Mode_Choice_output.txt" 
+ renamed to: "/Users/mwbc/Library/CloudStorage/OneDrive-UniversityofNorthCarolinaatChapelHill/teaching/odum-discrete/Apollo_Mode_Choice_OLD1_output.txt"
+Old result file "/Users/mwbc/Library/CloudStorage/OneDrive-UniversityofNorthCarolinaatChapelHill/teaching/odum-discrete/Apollo_Mode_Choice_estimates.csv" 
+ renamed to: "/Users/mwbc/Library/CloudStorage/OneDrive-UniversityofNorthCarolinaatChapelHill/teaching/odum-discrete/Apollo_Mode_Choice_OLD1_estimates.csv"
+Old result file "/Users/mwbc/Library/CloudStorage/OneDrive-UniversityofNorthCarolinaatChapelHill/teaching/odum-discrete/Apollo_Mode_Choice_model.rds" 
+ renamed to: "/Users/mwbc/Library/CloudStorage/OneDrive-UniversityofNorthCarolinaatChapelHill/teaching/odum-discrete/Apollo_Mode_Choice_OLD1_model.rds"
+Model output saved to /Users/mwbc/Library/CloudStorage/OneDrive-UniversityofNorthCarolinaatChapelHill/teaching/odum-discrete/Apollo_Mode_Choice_output.txt 
 Estimates saved to /Users/mwbc/Library/CloudStorage/OneDrive-UniversityofNorthCarolinaatChapelHill/teaching/odum-discrete/Apollo_Mode_Choice_estimates.csv 
 Model object saved to /Users/mwbc/Library/CloudStorage/OneDrive-UniversityofNorthCarolinaatChapelHill/teaching/odum-discrete/Apollo_Mode_Choice.rds </code></pre>
 </div>
@@ -2165,11 +2174,19 @@ b_income_rail               -0.01545</code></pre>
 </section>
 <section class="slide level2">
 
-<div class="cell" data-filename="mode-choice-mnl-in-vehicle-answers.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-45_9fb89bf39f8c026ca0b02bdec99e7205">
-<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1"></a><span class="co"># save results in current directory, using model name specified above</span></span>
-<span id="cb47-2"><a href="#cb47-2"></a><span class="fu">apollo_saveOutput</span>(model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-filename="mode-choice-mnl-in-vehicle-answers.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-45_ac09e7594e8144df060f2cc9330b0e0a">
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1"></a><span class="co"># save results in current directory,</span></span>
+<span id="cb47-2"><a href="#cb47-2"></a><span class="co"># using model name specified above</span></span>
+<span id="cb47-3"><a href="#cb47-3"></a><span class="fu">apollo_saveOutput</span>(model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Model output saved to /Users/mwbc/Library/CloudStorage/OneDrive-UniversityofNorthCarolinaatChapelHill/teaching/odum-discrete/Apollo_Mode_Choice_Flexible_output.txt 
+<pre><code>
+Old result file "/Users/mwbc/Library/CloudStorage/OneDrive-UniversityofNorthCarolinaatChapelHill/teaching/odum-discrete/Apollo_Mode_Choice_Flexible_output.txt" 
+ renamed to: "/Users/mwbc/Library/CloudStorage/OneDrive-UniversityofNorthCarolinaatChapelHill/teaching/odum-discrete/Apollo_Mode_Choice_Flexible_OLD1_output.txt"
+Old result file "/Users/mwbc/Library/CloudStorage/OneDrive-UniversityofNorthCarolinaatChapelHill/teaching/odum-discrete/Apollo_Mode_Choice_Flexible_estimates.csv" 
+ renamed to: "/Users/mwbc/Library/CloudStorage/OneDrive-UniversityofNorthCarolinaatChapelHill/teaching/odum-discrete/Apollo_Mode_Choice_Flexible_OLD1_estimates.csv"
+Old result file "/Users/mwbc/Library/CloudStorage/OneDrive-UniversityofNorthCarolinaatChapelHill/teaching/odum-discrete/Apollo_Mode_Choice_Flexible_model.rds" 
+ renamed to: "/Users/mwbc/Library/CloudStorage/OneDrive-UniversityofNorthCarolinaatChapelHill/teaching/odum-discrete/Apollo_Mode_Choice_Flexible_OLD1_model.rds"
+Model output saved to /Users/mwbc/Library/CloudStorage/OneDrive-UniversityofNorthCarolinaatChapelHill/teaching/odum-discrete/Apollo_Mode_Choice_Flexible_output.txt 
 Estimates saved to /Users/mwbc/Library/CloudStorage/OneDrive-UniversityofNorthCarolinaatChapelHill/teaching/odum-discrete/Apollo_Mode_Choice_Flexible_estimates.csv 
 Model object saved to /Users/mwbc/Library/CloudStorage/OneDrive-UniversityofNorthCarolinaatChapelHill/teaching/odum-discrete/Apollo_Mode_Choice_Flexible.rds </code></pre>
 </div>
@@ -2278,9 +2295,10 @@ Model object saved to /Users/mwbc/Library/CloudStorage/OneDrive-UniversityofNort
 </section>
 <section id="predictions-and-market-shares-in-r" class="slide level2">
 <h2>Predictions and market shares in R</h2>
-<div class="cell" data-filename="prediction.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-53_8cdcfdb1211f75ada52cf13eec667284">
+<div class="cell" data-filename="prediction.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-53_b896f74d5c03c3e01e30dd6e10846eb2">
 <div class="sourceCode cell-code" id="cb57"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1"></a><span class="co"># Make predictions for the existing dataset</span></span>
-<span id="cb57-2"><a href="#cb57-2"></a>predictions <span class="ot">=</span> <span class="fu">apollo_prediction</span>(model, apollo_probabilities, apollo_inputs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb57-2"><a href="#cb57-2"></a>predictions <span class="ot">=</span></span>
+<span id="cb57-3"><a href="#cb57-3"></a>    <span class="fu">apollo_prediction</span>(model, apollo_probabilities, apollo_inputs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Running predictions from model using parameter estimates...
 Prediction at model estimates
@@ -2325,7 +2343,7 @@ The output from apollo_prediction is a matrix containing the
 </section>
 <section class="slide level2">
 
-<div class="cell" data-filename="prediction.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-55_80e02967ad64acdad94d9687d36b0d81">
+<div class="cell" data-filename="prediction.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-55_f58e5851ece16881e7c37749ff841b8d">
 <div class="sourceCode cell-code" id="cb60"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1"></a><span class="co"># now that we have a new variable called "database," we run</span></span>
 <span id="cb60-2"><a href="#cb60-2"></a><span class="co"># apollo_validateInputs again, and then apollo_probabilities</span></span>
 <span id="cb60-3"><a href="#cb60-3"></a><span class="co"># apollo_validateInputs will always use the variable called</span></span>
@@ -2337,7 +2355,8 @@ The output from apollo_prediction is a matrix containing the
 All checks on apollo_control completed.
 All checks on database completed.</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1"></a>tax_predictions <span class="ot">=</span> <span class="fu">apollo_prediction</span>(model, apollo_probabilities, apollo_inputs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1"></a>tax_predictions <span class="ot">=</span></span>
+<span id="cb62-2"><a href="#cb62-2"></a>    <span class="fu">apollo_prediction</span>(model, apollo_probabilities, apollo_inputs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Running predictions from model using parameter estimates...
 Prediction at model estimates
@@ -2352,11 +2371,15 @@ The output from apollo_prediction is a matrix containing the
 </section>
 <section class="slide level2">
 
-<div class="cell" data-filename="prediction.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-56_707a058ec28ab5c3b3b4aa4be3d212e4">
+<div class="cell" data-filename="prediction.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-56_c0d0cf198af832fb8dafe67b69503b1f">
 <div class="sourceCode cell-code" id="cb64"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1"></a><span class="co"># now, we can use the two predictions to compute changes in market shares</span></span>
 <span id="cb64-2"><a href="#cb64-2"></a><span class="co"># first, original market shares</span></span>
-<span id="cb64-3"><a href="#cb64-3"></a>orig_mktshares <span class="ot">=</span> <span class="fu">apply</span>(predictions[,<span class="fu">c</span>(<span class="st">"car"</span>, <span class="st">"rail"</span>, <span class="st">"air"</span>, <span class="st">"bus"</span>)], <span class="dv">2</span>, mean)</span>
-<span id="cb64-4"><a href="#cb64-4"></a>orig_mktshares</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb64-3"><a href="#cb64-3"></a>orig_mktshares <span class="ot">=</span> <span class="fu">apply</span>(</span>
+<span id="cb64-4"><a href="#cb64-4"></a>    predictions[,<span class="fu">c</span>(<span class="st">"car"</span>, <span class="st">"rail"</span>, <span class="st">"air"</span>, <span class="st">"bus"</span>)],</span>
+<span id="cb64-5"><a href="#cb64-5"></a>    <span class="dv">2</span>,</span>
+<span id="cb64-6"><a href="#cb64-6"></a>    mean</span>
+<span id="cb64-7"><a href="#cb64-7"></a>)</span>
+<span id="cb64-8"><a href="#cb64-8"></a>orig_mktshares</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>      car      rail       air       bus 
 0.3319992 0.3269988 0.2149990 0.1260030 </code></pre>
@@ -2365,10 +2388,14 @@ The output from apollo_prediction is a matrix containing the
 </section>
 <section class="slide level2">
 
-<div class="cell" data-filename="prediction.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-57_309af95dc6d368d10d7891b63a393e27">
+<div class="cell" data-filename="prediction.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-57_cff3db594de3a421de4e5cf71d450b8e">
 <div class="sourceCode cell-code" id="cb66"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1"></a><span class="co"># next, taxed market shares</span></span>
-<span id="cb66-2"><a href="#cb66-2"></a>tax_mktshares <span class="ot">=</span> <span class="fu">apply</span>(tax_predictions[,<span class="fu">c</span>(<span class="st">"car"</span>, <span class="st">"rail"</span>, <span class="st">"air"</span>, <span class="st">"bus"</span>)], <span class="dv">2</span>, mean)</span>
-<span id="cb66-3"><a href="#cb66-3"></a>tax_mktshares</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb66-2"><a href="#cb66-2"></a>tax_mktshares <span class="ot">=</span> <span class="fu">apply</span>(</span>
+<span id="cb66-3"><a href="#cb66-3"></a>    tax_predictions[,<span class="fu">c</span>(<span class="st">"car"</span>, <span class="st">"rail"</span>, <span class="st">"air"</span>, <span class="st">"bus"</span>)],</span>
+<span id="cb66-4"><a href="#cb66-4"></a>    <span class="dv">2</span>,</span>
+<span id="cb66-5"><a href="#cb66-5"></a>    mean</span>
+<span id="cb66-6"><a href="#cb66-6"></a>)</span>
+<span id="cb66-7"><a href="#cb66-7"></a>tax_mktshares</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>      car      rail       air       bus 
 0.3674632 0.3666085 0.1210767 0.1448517 </code></pre>
@@ -2436,10 +2463,14 @@ The output from apollo_prediction is a matrix containing the
 </section>
 <section class="slide level2">
 
-<div class="cell" data-filename="prediction-answers.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-61_54b72581d3ae2dee80f1456607621470">
+<div class="cell" data-filename="prediction-answers.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-61_e8e0a46e6df02699323b8aa2433c8c2d">
 <div class="sourceCode cell-code" id="cb74"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb74-1"><a href="#cb74-1"></a><span class="co"># compute market shares</span></span>
-<span id="cb74-2"><a href="#cb74-2"></a>fast_rail_mktshares <span class="ot">=</span> <span class="fu">apply</span>(fast_rail_predictions[,<span class="fu">c</span>(<span class="st">"car"</span>, <span class="st">"rail"</span>, <span class="st">"air"</span>, <span class="st">"bus"</span>)], <span class="dv">2</span>, mean)</span>
-<span id="cb74-3"><a href="#cb74-3"></a>fast_rail_mktshares</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb74-2"><a href="#cb74-2"></a>fast_rail_mktshares <span class="ot">=</span> <span class="fu">apply</span>(</span>
+<span id="cb74-3"><a href="#cb74-3"></a>    fast_rail_predictions[,<span class="fu">c</span>(<span class="st">"car"</span>, <span class="st">"rail"</span>, <span class="st">"air"</span>, <span class="st">"bus"</span>)],</span>
+<span id="cb74-4"><a href="#cb74-4"></a>    <span class="dv">2</span>,</span>
+<span id="cb74-5"><a href="#cb74-5"></a>    mean</span>
+<span id="cb74-6"><a href="#cb74-6"></a>)</span>
+<span id="cb74-7"><a href="#cb74-7"></a>fast_rail_mktshares</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>      car      rail       air       bus 
 0.2941170 0.4043091 0.1913297 0.1102442 </code></pre>
@@ -2459,7 +2490,6 @@ The output from apollo_prediction is a matrix containing the
 </div>
 </div>
 </section></section>
-<section>
 <section id="logit-model-estimation-maximum-likelihood" class="title-slide slide level1 center">
 <h1>Logit model estimation: maximum likelihood</h1>
 <ul>
@@ -2469,6 +2499,13 @@ The output from apollo_prediction is a matrix containing the
 </ul></li>
 <li>Instead, we use <em>maximum likelihood</em></li>
 <li>We define a <em>likelihood function</em> which tells us how likely we are to observe the data we have, given a set of coefficients</li>
+</ul>
+</section>
+
+<section>
+<section id="logit-model-estimation-maximum-likelihood-1" class="title-slide slide level1 center">
+<h1>Logit model estimation: maximum likelihood</h1>
+<ul>
 <li>We then choose a set of coefficients, the <em>starting values</em>, and adjust them until we find the best fit—the maximum of the likelihood function</li>
 </ul>
 </section>
@@ -2538,12 +2575,15 @@ The output from apollo_prediction is a matrix containing the
 -2(\ell_1 - \ell_2)
 \]</span></p>
 <p>where <span class="math inline">\(\ell_1\)</span> is the likelihood of the less flexible model and <span class="math inline">\(\ell_2\)</span> the more flexible model</p>
+</section>
+<section id="comparing-logistic-models-to-each-other-2" class="slide level2">
+<h2>Comparing logistic models to each other</h2>
 <ul>
 <li>This is <span class="math inline">\(\chi^2\)</span>-distributed with degrees of freedom equal to the number of additional parameters in the more flexible model</li>
 <li>Don’t need to remember order, just put them in the order that makes test statistic positive</li>
 </ul>
 </section>
-<section id="comparing-logistic-models-to-each-other-2" class="slide level2">
+<section id="comparing-logistic-models-to-each-other-3" class="slide level2">
 <h2>Comparing logistic models to each other</h2>
 <table>
 <thead>
@@ -2639,7 +2679,7 @@ LL(final)                        : -1020</code></pre>
 <section id="comparing-coefficients-of-logistic-regression-models" class="slide level2">
 <h2>Comparing coefficients of logistic regression models</h2>
 <ul>
-<li>In general, you <em>can’t directly compare coefficients from different logistic regression</em></li>
+<li>In general, you <em>can’t directly compare coefficients from different logistic regressions</em></li>
 <li>They may be scaled differently</li>
 <li>In a linear regression, the coefficients have the same scale as the dependent variable</li>
 <li>But in logistic regression, utility is scaleless</li>
@@ -2750,6 +2790,7 @@ The output from apollo_prediction is a matrix containing the
 <h2>Considerations when using marginal effects</h2>
 <ul>
 <li>Dummy variables - may want to perform prediction with all dummies set to zero and one, rather than adding 0.01 to a dummy variable</li>
+<li>May want to use weights if your data have them, even if model is unweighted</li>
 <li>Elasticities are also a possibility, computing relative change in probability for a relative change in variables</li>
 </ul>
 </section>
@@ -2868,16 +2909,16 @@ The output from apollo_prediction is a matrix containing the
 </ul></li>
 </ul>
 </section>
-<section id="independence-of-irrelevant-alternatives-the-red-busblue-bus-problem" class="slide level2">
-<h2>Independence of irrelevant alternatives: the red bus/blue bus problem</h2>
+<section id="the-red-busblue-bus-problem" class="slide level2">
+<h2>The red bus/blue bus problem</h2>
 <ul>
 <li>Suppose you have a model of mode choice, with two alternatives: driving and a red bus</li>
 <li>One individual has a 50% probability of choosing each alternative</li>
 <li>Suppose you paint half the buses red but don’t change anything about the service</li>
 </ul>
 </section>
-<section id="independence-of-irrelevant-alternatives-the-red-busblue-bus-problem-1" class="slide level2">
-<h2>Independence of irrelevant alternatives: the red bus/blue bus problem</h2>
+<section id="the-red-busblue-bus-problem-1" class="slide level2">
+<h2>The red bus/blue bus problem</h2>
 <ul>
 <li>You’d expect this individual to now have probabilities 25% red bus, 25% blue bus, and 50% drive</li>
 <li>But, half of the probability has to come from each other alternative</li>
@@ -2886,7 +2927,7 @@ The output from apollo_prediction is a matrix containing the
 <li>Same for car</li>
 </ul>
 </section>
-<section id="independence-of-irrelevant-alternatives-the-red-busblue-bus-problem-2" class="slide level2">
+<section id="independence-of-irrelevant-alternatives-the-red-busblue-bus-problem" class="slide level2">
 <h2>Independence of irrelevant alternatives: the red bus/blue bus problem</h2>
 <ul>
 <li>This is true at the individual level, not the level of market shares <span class="citation" data-cites="ben-akiva_discrete_1985">(<a href="#/ref-ben-akiva_discrete_1985" role="doc-biblioref" onclick="return false;">Ben-Akiva and Lerman 1985, 109–11</a>)</span></li>
@@ -3114,7 +3155,7 @@ All checks on database completed.</code></pre>
 </section>
 <section class="slide level2">
 
-<div class="cell" data-filename="nested-logit-mode-choice.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-78_71777702d01a039d8a783d0666df99a4">
+<div class="cell" data-filename="nested-logit-mode-choice.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-78_e975beddcf21e4eab795b428e4b6dc6e">
 <div class="sourceCode cell-code" id="cb101"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb101-1"><a href="#cb101-1"></a>apollo_probabilities <span class="ot">=</span> <span class="cf">function</span>(apollo_beta, apollo_inputs,</span>
 <span id="cb101-2"><a href="#cb101-2"></a>        <span class="at">functionality=</span><span class="st">"estimate"</span>) {</span>
 <span id="cb101-3"><a href="#cb101-3"></a>    <span class="fu">apollo_attach</span>(apollo_beta, apollo_inputs)</span>
@@ -3124,8 +3165,8 @@ All checks on database completed.</code></pre>
 <span id="cb101-7"><a href="#cb101-7"></a></span>
 <span id="cb101-8"><a href="#cb101-8"></a>    <span class="co"># define utility functions</span></span>
 <span id="cb101-9"><a href="#cb101-9"></a>    V <span class="ot">=</span> <span class="fu">list</span>()</span>
-<span id="cb101-10"><a href="#cb101-10"></a>    <span class="co"># We can include cost and in-vehicle time here because they vary over</span></span>
-<span id="cb101-11"><a href="#cb101-11"></a>    <span class="co"># alternatives</span></span>
+<span id="cb101-10"><a href="#cb101-10"></a>    <span class="co"># We can include cost and in-vehicle time here because</span></span>
+<span id="cb101-11"><a href="#cb101-11"></a>    <span class="co"># they vary over alternatives</span></span>
 <span id="cb101-12"><a href="#cb101-12"></a>    V[[<span class="st">"car"</span>]] <span class="ot">=</span> b_cost <span class="sc">*</span> cost_car <span class="sc">+</span></span>
 <span id="cb101-13"><a href="#cb101-13"></a>        b_in_vehicle_time <span class="sc">*</span> time_car</span>
 <span id="cb101-14"><a href="#cb101-14"></a></span>
@@ -3177,8 +3218,9 @@ All checks on database completed.</code></pre>
 </section>
 <section class="slide level2">
 
-<div class="cell" data-filename="nested-logit-mode-choice.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-79_d54545e5eda6b063a5a3216e0d45f4ee">
-<div class="sourceCode cell-code" id="cb102"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb102-1"><a href="#cb102-1"></a>model <span class="ot">=</span> <span class="fu">apollo_estimate</span>(apollo_beta, apollo_fixed, apollo_probabilities, apollo_inputs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-filename="nested-logit-mode-choice.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-79_41a9f2863759c1a42f2dd98ee01314d8">
+<div class="sourceCode cell-code" id="cb102"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb102-1"><a href="#cb102-1"></a>model <span class="ot">=</span></span>
+<span id="cb102-2"><a href="#cb102-2"></a>    <span class="fu">apollo_estimate</span>(apollo_beta, apollo_fixed, apollo_probabilities, apollo_inputs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Preparing user-defined functions.
 ###############################################################################
@@ -3355,6 +3397,9 @@ Model object saved to /Users/mwbc/Library/CloudStorage/OneDrive-UniversityofNort
 <ul>
 <li>We can perform a likelihood-ratio test, since constraining the inclusive value parameter to 1 would be the same as a multinomial logit model</li>
 </ul>
+</section>
+<section class="slide level2">
+
 <div class="cell" data-filename="nested-logit-mode-choice.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-82_0844d5d96628214a1f1366a6f429c2a5">
 <div class="sourceCode cell-code" id="cb108"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb108-1"><a href="#cb108-1"></a><span class="fu">apollo_lrTest</span>(<span class="st">"Nested_Mode_Choice"</span>, <span class="st">"Apollo_Mode_Choice"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">

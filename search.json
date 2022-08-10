@@ -158,11 +158,18 @@
     "href": "discrete-choice.html#multinomial-logistic-regression-in-r",
     "title": "Introduction to discrete choice models in R",
     "section": "Multinomial logistic regression in R",
-    "text": "Multinomial logistic regression in R\n\nWe will build a model of working from home expectation post-pandemic, using data from the COVID Future study.\nWe will estimate four utility functions, for being unable to, rarely, frequently, and always working from home\nBased on age, income, and job type\nThese utility functions will have the same variables but different coefficients\nEach will also have a alternative specific constant—like a constant in logistic regression that represents the base rate, but for each alternative\nOne utility function will be held at zero"
+    "text": "Multinomial logistic regression in R\n\nWe will build a model of working from home expectation post-pandemic, using data from the COVID Future study.\nWe will estimate four utility functions, for being unable to, rarely, frequently, and always working from home\nBased on age, income, and job type"
   },
   {
     "objectID": "discrete-choice.html#multinomial-logistic-regression-in-r-1",
     "href": "discrete-choice.html#multinomial-logistic-regression-in-r-1",
+    "title": "Introduction to discrete choice models in R",
+    "section": "Multinomial logistic regression in R",
+    "text": "Multinomial logistic regression in R\n` - These utility functions will have the same variables but different coefficients - Each will also have a alternative specific constant—like a constant in logistic regression that represents the base rate, but for each alternative - One utility function will be held at zero"
+  },
+  {
+    "objectID": "discrete-choice.html#multinomial-logistic-regression-in-r-2",
+    "href": "discrete-choice.html#multinomial-logistic-regression-in-r-2",
     "title": "Introduction to discrete choice models in R",
     "section": "Multinomial logistic regression in R",
     "text": "Multinomial logistic regression in R\ncovidfuture-wfh-mnl.R\n\nlibrary(apollo)\nlibrary(tidyverse)\n\ndatabase = read_csv(\"data/covidfuture_wfh.csv\")\n\napollo_initialise()\n\napollo_control = list(\n    modelName=\"WFH_Postpandemic\",\n    indivID=\"resp_id\"\n)"
@@ -305,7 +312,7 @@
     "href": "discrete-choice.html#predictions-and-market-shares-in-r",
     "title": "Introduction to discrete choice models in R",
     "section": "Predictions and market shares in R",
-    "text": "Predictions and market shares in R\n\n# Make predictions for the existing dataset\npredictions = apollo_prediction(model, apollo_probabilities, apollo_inputs)\n\nRunning predictions from model using parameter estimates...\nPrediction at model estimates\n             car    air   rail    bus\nAggregate 332.00 215.00 327.00 126.00\nAverage     0.33   0.21   0.33   0.13\n\nThe output from apollo_prediction is a matrix containing the\n  predictions at the estimated values."
+    "text": "Predictions and market shares in R\n\n# Make predictions for the existing dataset\npredictions =\n    apollo_prediction(model, apollo_probabilities, apollo_inputs)\n\nRunning predictions from model using parameter estimates...\nPrediction at model estimates\n             car    air   rail    bus\nAggregate 332.00 215.00 327.00 126.00\nAverage     0.33   0.21   0.33   0.13\n\nThe output from apollo_prediction is a matrix containing the\n  predictions at the estimated values."
   },
   {
     "objectID": "discrete-choice.html#predictions-and-market-shares-in-r-1",
@@ -382,11 +389,18 @@
     "href": "discrete-choice.html#comparing-logistic-models-to-each-other-1",
     "title": "Introduction to discrete choice models in R",
     "section": "Comparing logistic models to each other",
-    "text": "Comparing logistic models to each other\n\nLikelihood ratio test statistic is\n\n\\[\n-2(\\ell_1 - \\ell_2)\n\\]\nwhere \\(\\ell_1\\) is the likelihood of the less flexible model and \\(\\ell_2\\) the more flexible model\n\nThis is \\(\\chi^2\\)-distributed with degrees of freedom equal to the number of additional parameters in the more flexible model\nDon’t need to remember order, just put them in the order that makes test statistic positive"
+    "text": "Comparing logistic models to each other\n\nLikelihood ratio test statistic is\n\n\\[\n-2(\\ell_1 - \\ell_2)\n\\]\nwhere \\(\\ell_1\\) is the likelihood of the less flexible model and \\(\\ell_2\\) the more flexible model"
   },
   {
     "objectID": "discrete-choice.html#comparing-logistic-models-to-each-other-2",
     "href": "discrete-choice.html#comparing-logistic-models-to-each-other-2",
+    "title": "Introduction to discrete choice models in R",
+    "section": "Comparing logistic models to each other",
+    "text": "Comparing logistic models to each other\n\nThis is \\(\\chi^2\\)-distributed with degrees of freedom equal to the number of additional parameters in the more flexible model\nDon’t need to remember order, just put them in the order that makes test statistic positive"
+  },
+  {
+    "objectID": "discrete-choice.html#comparing-logistic-models-to-each-other-3",
+    "href": "discrete-choice.html#comparing-logistic-models-to-each-other-3",
     "title": "Introduction to discrete choice models in R",
     "section": "Comparing logistic models to each other",
     "text": "Comparing logistic models to each other\n\n\n\nModel\nLog-likelihood\n\n\n\n\nSame in-vehicle time coefficient\n-1020\n\n\nDifferent in-vehicle time coefficients\n-1014.74\n\n\nTest statistic\n10.52\n\n\nDegrees of freedom\n3"
@@ -438,7 +452,7 @@
     "href": "discrete-choice.html#comparing-coefficients-of-logistic-regression-models",
     "title": "Introduction to discrete choice models in R",
     "section": "Comparing coefficients of logistic regression models",
-    "text": "Comparing coefficients of logistic regression models\n\nIn general, you can’t directly compare coefficients from different logistic regression\nThey may be scaled differently\nIn a linear regression, the coefficients have the same scale as the dependent variable\nBut in logistic regression, utility is scaleless"
+    "text": "Comparing coefficients of logistic regression models\n\nIn general, you can’t directly compare coefficients from different logistic regressions\nThey may be scaled differently\nIn a linear regression, the coefficients have the same scale as the dependent variable\nBut in logistic regression, utility is scaleless"
   },
   {
     "objectID": "discrete-choice.html#how-is-the-scale-set-in-logistic-regression",
@@ -480,7 +494,7 @@
     "href": "discrete-choice.html#considerations-when-using-marginal-effects",
     "title": "Introduction to discrete choice models in R",
     "section": "Considerations when using marginal effects",
-    "text": "Considerations when using marginal effects\n\nDummy variables - may want to perform prediction with all dummies set to zero and one, rather than adding 0.01 to a dummy variable\nElasticities are also a possibility, computing relative change in probability for a relative change in variables"
+    "text": "Considerations when using marginal effects\n\nDummy variables - may want to perform prediction with all dummies set to zero and one, rather than adding 0.01 to a dummy variable\nMay want to use weights if your data have them, even if model is unweighted\nElasticities are also a possibility, computing relative change in probability for a relative change in variables"
   },
   {
     "objectID": "discrete-choice.html#exercise-2",
@@ -525,22 +539,22 @@
     "text": "Pitfalls of Apollo\n\nApollo works with global variables in R and expects some variables to have specific names\n\ne.g. database\n\nThis means that settings and data may “leak” between models if you don’t clear your environment between estimations"
   },
   {
+    "objectID": "discrete-choice.html#the-red-busblue-bus-problem",
+    "href": "discrete-choice.html#the-red-busblue-bus-problem",
+    "title": "Introduction to discrete choice models in R",
+    "section": "The red bus/blue bus problem",
+    "text": "The red bus/blue bus problem\n\nSuppose you have a model of mode choice, with two alternatives: driving and a red bus\nOne individual has a 50% probability of choosing each alternative\nSuppose you paint half the buses red but don’t change anything about the service"
+  },
+  {
+    "objectID": "discrete-choice.html#the-red-busblue-bus-problem-1",
+    "href": "discrete-choice.html#the-red-busblue-bus-problem-1",
+    "title": "Introduction to discrete choice models in R",
+    "section": "The red bus/blue bus problem",
+    "text": "The red bus/blue bus problem\n\nYou’d expect this individual to now have probabilities 25% red bus, 25% blue bus, and 50% drive\nBut, half of the probability has to come from each other alternative\nSo, if blue bus has 25% probability, existing choices must all reduce by the same factor\nRed bus: 50% * .75 = 37.5%\nSame for car"
+  },
+  {
     "objectID": "discrete-choice.html#independence-of-irrelevant-alternatives-the-red-busblue-bus-problem",
     "href": "discrete-choice.html#independence-of-irrelevant-alternatives-the-red-busblue-bus-problem",
-    "title": "Introduction to discrete choice models in R",
-    "section": "Independence of irrelevant alternatives: the red bus/blue bus problem",
-    "text": "Independence of irrelevant alternatives: the red bus/blue bus problem\n\nSuppose you have a model of mode choice, with two alternatives: driving and a red bus\nOne individual has a 50% probability of choosing each alternative\nSuppose you paint half the buses red but don’t change anything about the service"
-  },
-  {
-    "objectID": "discrete-choice.html#independence-of-irrelevant-alternatives-the-red-busblue-bus-problem-1",
-    "href": "discrete-choice.html#independence-of-irrelevant-alternatives-the-red-busblue-bus-problem-1",
-    "title": "Introduction to discrete choice models in R",
-    "section": "Independence of irrelevant alternatives: the red bus/blue bus problem",
-    "text": "Independence of irrelevant alternatives: the red bus/blue bus problem\n\nYou’d expect this individual to now have probabilities 25% red bus, 25% blue bus, and 50% drive\nBut, half of the probability has to come from each other alternative\nSo, if blue bus has 25% probability, existing choices must all reduce by the same factor\nRed bus: 50% * .75 = 37.5%\nSame for car"
-  },
-  {
-    "objectID": "discrete-choice.html#independence-of-irrelevant-alternatives-the-red-busblue-bus-problem-2",
-    "href": "discrete-choice.html#independence-of-irrelevant-alternatives-the-red-busblue-bus-problem-2",
     "title": "Introduction to discrete choice models in R",
     "section": "Independence of irrelevant alternatives: the red bus/blue bus problem",
     "text": "Independence of irrelevant alternatives: the red bus/blue bus problem\n\nThis is true at the individual level, not the level of market shares (Ben-Akiva and Lerman 1985, 109–11)"
@@ -655,7 +669,7 @@
     "href": "discrete-choice.html#likelihood-ratio-tests-of-the-nested-logit-model",
     "title": "Introduction to discrete choice models in R",
     "section": "Likelihood-ratio tests of the nested logit model",
-    "text": "Likelihood-ratio tests of the nested logit model\n\nWe can perform a likelihood-ratio test, since constraining the inclusive value parameter to 1 would be the same as a multinomial logit model\n\n\napollo_lrTest(\"Nested_Mode_Choice\", \"Apollo_Mode_Choice\")\n\nThe order of your two models will be reversed in the output as model 1\n  has better fit than model 2.\n\n                        LL par\nApollo_Mode_Choice -1020.0   9\nNested_Mode_Choice -1016.4  10\nDifference             3.6   1\n\nLikelihood ratio test-value:    7.2 \nDegrees of freedom:             1 \nLikelihood ratio test p-value:  0.00729"
+    "text": "Likelihood-ratio tests of the nested logit model\n\nWe can perform a likelihood-ratio test, since constraining the inclusive value parameter to 1 would be the same as a multinomial logit model"
   },
   {
     "objectID": "discrete-choice.html#an-alternative-to-nested-logit-mixed-logit",
