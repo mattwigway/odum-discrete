@@ -29,19 +29,27 @@ bgcolor = "#002e3e"
 fgcolor = "#ffffff"
 linecolor = "#ff0948"
 
-theme_dm = theme_minimal() + theme(
+theme_dm = function () {
+    return(theme_minimal() + theme(
     panel.background=element_rect(fill=bgcolor, color=fgcolor),
     panel.grid=element_blank(),
     plot.background=element_rect(fill=bgcolor, size=0),
     axis.text=element_text(size=10, color=fgcolor),
-    axis.title=element_text(size=14, color=fgcolor)
-)
+    axis.title=element_text(size=14, color=fgcolor))
+)}
 
 update_geom_defaults("point", list(color=linecolor))
 update_geom_defaults("line", list(color=linecolor))
 update_geom_defaults("col", list(color=linecolor, fill=linecolor))
 
 library(knitr)
+
+clear = function () {
+    rm(list=setdiff(ls(), c("theme_dm", "fgcolor", "bgcolor", "linecolor", "clear")))
+    update_geom_defaults("point", list(color=linecolor))
+    update_geom_defaults("line", list(color=linecolor))
+    update_geom_defaults("col", list(color=linecolor, fill=linecolor))
+}
 ```
 
 - Assistant professor of City and Regional Planning
@@ -131,7 +139,7 @@ ys = exp(xs) / (1 + exp(xs))
 data = data.frame(x=xs, y=ys)
 
 ggplot(data, aes(x=x, y=y)) +
-    theme_dm +
+    theme_dm() +
     geom_line() +
     xlab("Utility") +
     ylab("Probability") +
@@ -202,7 +210,7 @@ $$
 
 ```{r}
 #| include: false
-rm(list=setdiff(ls(), c("glm_model"))) # clean environment, keep glm model for comparison
+rm(list=setdiff(ls(), c("glm_model", "theme_dm", "clear", "fgcolor", "bgcolor", "linecolor"))) # clean environment, keep glm model for comparison
 ```
 
 `nhts-carpool-apollo.R`
@@ -363,7 +371,7 @@ $$
 
 ```{r}
 #| include: false
-rm(list=ls())
+clear()
 ```
 
 - We will build a model of working from home expectation post-pandemic, using data from the [COVID Future](https://covidfuture.org) study.
@@ -521,7 +529,7 @@ Note: all variables significant at $p < 0.05$
     - Service workers are less likely to be able to WFH
     - Scale of age variable is different from others
 
-# Questions?
+## Questions?
 
 ## Specifying a multinomial logit model
 
@@ -595,7 +603,7 @@ digraph G{
 
 ```{r}
 #| echo: false
-rm(list=ls())
+clear()
 ```
 
 - We're going to build a multinomial logit mode choice model of intercity mode choice
@@ -610,7 +618,7 @@ kable(read_csv("data/modechoice_apollo.csv", n_max=6))
 
 ```{r}
 #| include: false
-rm(list=ls())
+clear()
 ```
 
 ## Estimation in R
@@ -751,6 +759,16 @@ model = apollo_estimate(apollo_beta, apollo_fixed,
 apollo_modelOutput(model)
 ```
 
+---
+
+```{r}
+#| echo: true
+#| filename: mode-choice-mnl.R
+
+# save results in current directory, using model name specified above
+apollo_saveOutput(model)
+```
+
 ## Valuation using discrete choice models
 
 - A common use for discrete choice models is to calculate willingness-to-pay
@@ -793,10 +811,7 @@ $$ \frac{\beta_t}{\beta_c} = \frac{`r bt`}{`r bc`} = {£`r vtt`}/\mathrm{minute}
 #| filename: mode-choice-mnl.R
 
 apollo_deltaMethod(model, deltaMethod_settings=list(
-    operation="ratio",
-    parName1="b_in_vehicle_time",
-    parName2="b_cost",
-    multPar1=60
+    expression="b_in_vehicle_time * 60 / b_cost"
 ))
 ```
 
@@ -810,7 +825,7 @@ apollo_deltaMethod(model, deltaMethod_settings=list(
 
 ```{r}
 #| include: false
-rm(list=ls())
+clear()
 ```
 
 ```{r}
@@ -825,7 +840,7 @@ database = read_csv("data/modechoice_apollo.csv")
 apollo_initialise()
 
 apollo_control = list(
-    modelName = "Apollo_Mode_Choice",
+    modelName = "Apollo_Mode_Choice_Flexible",
     indivID="ID"
 )
 
@@ -924,11 +939,19 @@ apollo_probabilities = function(apollo_beta, apollo_inputs,
 ---
 
 ```{r}
+#| echo: true
 #| filename: mode-choice-mnl-in-vehicle-answers.R
 
 # estimate model
 model = apollo_estimate(apollo_beta, apollo_fixed,
     apollo_probabilities, apollo_inputs)
+```
+
+---
+
+```{r}
+#| echo: true
+#| filename: mode-choice-mnl-in-vehicle-answers.R
 
 # Print results
 apollo_modelOutput(model)
@@ -940,12 +963,19 @@ apollo_modelOutput(model)
 #| echo: true
 #| filename: mode-choice-mnl-in-vehicle-answers.R
 
+# save results in current directory, using model name specified above
+apollo_saveOutput(model)
+```
+
+---
+
+```{r}
+#| echo: true
+#| filename: mode-choice-mnl-in-vehicle-answers.R
+
 
 apollo_deltaMethod(model, deltaMethod_settings=list(
-    operation="ratio",
-    parName1="b_in_vehicle_time_car",
-    parName2="b_cost",
-    multPar1=60
+    expression="b_in_vehicle_time_car * 60 / b_cost"
 ))
 ```
 
@@ -957,10 +987,7 @@ apollo_deltaMethod(model, deltaMethod_settings=list(
 
 
 apollo_deltaMethod(model, deltaMethod_settings=list(
-    operation="ratio",
-    parName1="b_in_vehicle_time_air",
-    parName2="b_cost",
-    multPar1=60
+    expression="b_in_vehicle_time_air * 60 / b_cost"
 ))
 ```
 
@@ -972,10 +999,7 @@ apollo_deltaMethod(model, deltaMethod_settings=list(
 
 
 apollo_deltaMethod(model, deltaMethod_settings=list(
-    operation="ratio",
-    parName1="b_in_vehicle_time_bus",
-    parName2="b_cost",
-    multPar1=60
+    expression="b_in_vehicle_time_bus * 60 / b_cost"
 ))
 ```
 
@@ -987,10 +1011,7 @@ apollo_deltaMethod(model, deltaMethod_settings=list(
 
 
 dm = apollo_deltaMethod(model, deltaMethod_settings=list(
-    operation="ratio",
-    parName1="b_in_vehicle_time_rail",
-    parName2="b_cost",
-    multPar1=60
+    expression="b_in_vehicle_time_rail * 60 / b_cost"
 ))
 ```
 
@@ -1028,6 +1049,7 @@ rail_vtt = apollo_deltaMethod(model, deltaMethod_settings=list(
 
 df = tibble(lab=c("Car", "Air", "Bus", "Rail"), vtt=c(car_vtt, air_vtt, bus_vtt, rail_vtt))
 ```
+
 ```{r}
 #| fig-alt: Bar plot of values of travel time for car, air, bus, and rail
 #| dev: svg
@@ -1037,7 +1059,7 @@ df = tibble(lab=c("Car", "Air", "Bus", "Rail"), vtt=c(car_vtt, air_vtt, bus_vtt,
 #| fig-align: center
 
 ggplot(df, aes(x=lab, y=vtt)) +
-    theme_dm +
+    theme_dm() +
     geom_col() +
     xlab("") +
     ylab("Value of travel time (£/hour)")
@@ -1065,7 +1087,441 @@ ggplot(df, aes(x=lab, y=vtt)) +
 
 ## Questions?
 
-## Independence of irrelevant alternatives
+# Predictions and market shares
+
+- Often, you will want to use your model to make some prediction
+- For example, maybe we want to reduce use of air travel for climate reasons, so we decide to add a £25 tax
+- Mathematically, we can use the formulas above to calculate probabilities for any 
+- We can use the `apollo_prediction` function to do predictions within Apollo
+
+## Predictions and market shares in R
+
+```{r}
+#| include: false
+#| filename: prediction.R
+
+# Run this file after running mode-choice-mnl-in-vehicle-answers.R
+```
+
+```{r}
+#| echo: true
+#| filename: prediction.R
+
+# Make predictions for the existing dataset
+predictions = apollo_prediction(model, apollo_probabilities, apollo_inputs)
+```
+
+## Predictions and market shares in R
+
+- `predictions` is now a matrix with one row per observation and one column per outcome
+- These contain the predicted probabilities for each observation, based on the estimation dataset
+
+## Predictions and market shares in R
+
+- Most often, you will want to make a prediction for a _counterfactual_ scenario, i.e. a change to the data
+- This is kind of clunky in Apollo; you modify the database directly, and then re-run `apollo_validateInputs` and `apollo_prediction`
+
+## Predictions and market shares in R
+
+`predictions.R`
+
+```{r}
+#| echo: true
+#| filename: prediction.R
+
+# Now, make predictions in a counterfactual scenario
+# First, we will give the original database a new name
+original_database = database
+
+# then, we will adjust the cost_air column to add a 25 pound tax
+# any time air is available
+database = mutate(
+    original_database,
+    cost_air=ifelse(av_air, cost_air + 25, cost_air)
+    )
+```
+
+---
+
+```{r}
+#| echo: true
+#| filename: prediction.R
+
+# now that we have a new variable called "database," we run
+# apollo_validateInputs again, and then apollo_probabilities
+# apollo_validateInputs will always use the variable called
+# "database"
+apollo_inputs = apollo_validateInputs()
+tax_predictions = apollo_prediction(model, apollo_probabilities, apollo_inputs)
+```
+
+---
+
+```{r}
+#| echo: true
+#| filename: prediction.R
+
+# now, we can use the two predictions to compute changes in market shares
+# first, original market shares
+orig_mktshares = apply(predictions[,c("car", "rail", "air", "bus")], 2, mean)
+orig_mktshares
+```
+
+---
+
+```{r}
+#| echo: true
+#| filename: prediction.R
+
+# next, taxed market shares
+tax_mktshares = apply(tax_predictions[,c("car", "rail", "air", "bus")], 2, mean)
+tax_mktshares
+```
+
+---
+
+```{r}
+#| echo: true
+#| filename: prediction.R
+
+# and finally, their difference. Is this the change we
+# expect to see?
+tax_mktshares - orig_mktshares
+```
+
+## Exercise
+
+- How would new rail infrastructure that reduces journey times 25% affect market shares?
+    - Remember to restore original database, and run `apollo_validateInputs` every time you change the database!
+- My solution in `prediction-answers.R`
+
+## Answers
+
+```{r}
+#| echo: true
+#| filename: prediction-answers.R
+
+# adjust travel times
+database = mutate(
+    original_database,
+    time_rail=time_rail*0.75
+    )
+
+# re-load inputs
+apollo_inputs = apollo_validateInputs()
+```
+
+---
+
+```{r}
+#| echo: true
+#| filename: prediction-answers.R
+
+# Make predictions
+fast_rail_predictions =
+    apollo_prediction(model, apollo_probabilities, apollo_inputs)
+```
+
+---
+
+```{r}
+#| echo: true
+#| filename: prediction-answers.R
+
+# compute market shares
+fast_rail_mktshares = apply(fast_rail_predictions[,c("car", "rail", "air", "bus")], 2, mean)
+fast_rail_mktshares
+```
+
+---
+
+```{r}
+#| echo: true
+#| filename: prediction-answers.R
+
+# compute differences
+# if you need to recalculate orig_mktshares, make sure
+# you re-run apollo_validateInputs before calculating
+fast_rail_mktshares - orig_mktshares
+```
+
+# Logit model estimation: maximum likelihood
+
+- Unlike linear regression, there is no closed-form solution
+    - i.e. one you can just calculate
+- Instead, we use _maximum likelihood_
+- We define a _likelihood function_ which tells us how likely we are to observe the data we have, given a set of coefficients
+- We then choose a set of coefficients, the _starting values_, and adjust them until we find the best fit---the maximum of the likelihood function
+
+## Likelihood function for a discrete choice model
+
+- The likelihood function for a discrete choice model is the joint probability of all the chosen values
+- If you had three people, who chose car, car, and bus to get to work, likelihood is the probability that the first person chose car multiplied by the probability the second person chose car multiplied by the probability the third person chose bus
+
+## Likelihood function for a discrete choice model: the math
+- In math:
+$$
+\prod_n P(y_n | x_n)\\
+= \prod_n \frac{e^{U_{y_n}}}{\sum_j e^{U_{j_n}}}
+$$
+
+## Likelihood function for a discrete choice model: the math
+- This is a vanishingly small number
+    - In our mode choice example, something like $10^{-440}$
+- Generally too small to be represented in a computer
+```{r}
+#| echo: true
+10^-440
+```
+
+## Likelihood function for a discrete choice model: the math
+
+- Instead, computers use the logarithm of likelihood (log-likelihood)
+$$
+\mathrm{ln} \prod_n P(y_n | x_n)\\
+= \sum_n \mathrm{ln} \frac{e^{U_{y_n}}}{\sum_j e^{U_{j_n}}}
+$$
+- In our example above, this is -1014
+
+## Comparing logistic models to each other
+
+- We can use the log-likelihood to compare two models using a likelihood-ratio test
+- This only works if the two models are _nested_
+    - That is, one is a subset of the other, or you can make one into the other by constraining parameters
+    - Not to be confused with _nested logit models_ which use a different error structure
+
+## Comparing logistic models to each other
+
+- Likelihood ratio test statistic is
+$$
+-2(\ell_1 - \ell_2)
+$$
+where $\ell_1$ is the likelihood of the less flexible model and $\ell_2$ the more flexible model
+
+- This is $\chi^2$-distributed with degrees of freedom equal to the number of additional parameters in the more flexible model
+- Don't need to remember order, just put them in the order that makes test statistic positive
+
+## Comparing logistic models to each other
+
+| Model | Log-likelihood |
+|-------|----------------|
+| Same in-vehicle time coefficient | -1020 |
+| Different in-vehicle time coefficients | -1014.74 |
+| Test statistic | 10.52 |
+| Degrees of freedom | 3 |
+
+## Comparing logistic regression models to each other
+
+```{r}
+#| echo: true
+
+1 - pchisq(10.52, 3)
+```
+
+## Comparing logistic regreession models to each other with Apollo
+
+- If we have given our models unique names and run `apollo_saveOutput`, Apollo can do the test for us
+
+```{r}
+#| echo: true
+
+apollo_lrTest("Apollo_Mode_Choice", "Apollo_Mode_Choice_Flexible")
+```
+
+## Goodness of fit metrics for logistic regression models
+
+- Unlike linear regression, there is no $R^2$ for a logistic regression
+- We can compare multiple models using a likelihood-ratio test
+- But what if we don't have multiple models?
+
+## Goodness of fit metrics for logistic regression models
+
+- We do have the log-likelihood with all coefficients at 0 [LL(0)], and with only ASCs [LL(C)]
+
+```
+LL(0)                            : -1170.86
+LL(C)                            : -1085.14
+LL(final)                        : -1020
+```
+
+## Goodness of fit metrics for logistic regression models
+
+- Many authors have created pseudo-$R^2$ metrics based on how much the model improves loglikelihood relative to these "base" log-likelihoods
+- Most common is probably McFadden's, $1 - \frac{\ell}{\ell_C}$
+- Or McFadden's adjusted, $1 - \frac{\ell - K}{\ell_C}$ where $K$ is number of estimated coefficients, which attempts to correct for overfitting
+
+## Goodness of fit metrics for logistic regression models
+
+- These range from 0 to 1, like an $R^2$, with higher values being better fit
+- They can be relative to log-likelihood at constants or log-likelihood at zero
+    - Former is more like the $R^2$ you've seen in linear models, which is usually relative to the mean of $y$
+- Anecdotally, pseudo-$R^2$ statistics tend to be fairly low
+
+## Comparing coefficients of logistic regression models
+
+- In general, you _can't directly compare coefficients from different logistic regression_
+- They may be scaled differently
+- In a linear regression, the coefficients have the same scale as the dependent variable
+- But in logistic regression, utility is scaleless
+
+## How is the scale set in logistic regression?
+
+- The scale of coefficients is arbitrary, but the larger the coefficients are the larger the variance of the error term must be to produce the same predictions
+- Multinomial logistic regression has a "scale parameter" which controls the scale of the error and thus the scale of the coefficients, usually assumed to equal 1
+- But if you add predictors to a model so that there is less unexplained variation, the scale of the error term is fixed, so scale of other coefficients will change
+
+## Marginal effects
+
+- One solution to this problem is to use _marginal effects_—the average change in probability for a unit change in an independent variable
+- This has a scale - the probability scale
+- The marginal effect of a variable depends on the value of that and all other variables due to nonlinearities
+- Hence, the _average marginal effect_
+    - Usually, the marginal effect averaged over the entire sample
+    - Sometimes, the marginal effect at mean values for all covariates
+
+## Marginal effects in Apollo
+
+- Apollo doesn't have a function to directly calculate marginal effects
+- But, we can use prediction function to calculate on our own
+- Let's calculate the marginal effect of in-vehicle travel time by car on all modes
+
+## Marginal effects in Apollo
+
+- We'll add a small amount to `time_car` and recalculate probabilities
+- We'll then divide the change by that small amount to estimate the marginal effect
+- This is a basic finite-differences approximation of the marginal effect
+
+---
+
+`margins.R`
+
+```{r}
+#| echo: true
+#| filename: margins.R
+
+# Run this after running mode-choice-mnl-in-vehicle-answers.R and predictions.R
+
+# First, we will add 0.01 to the in-vehicle travel time by car
+database =
+    mutate(original_database, time_car=ifelse(av_car, time_car + 0.01, time_car))
+
+# re-read inputs
+apollo_inputs = apollo_validateInputs()
+```
+
+---
+
+```{r}
+#| echo: true
+#| filename: margins.R
+
+meff_predictions =
+    apollo_prediction(model, apollo_probabilities, apollo_inputs)
+```
+
+---
+
+```{r}
+#| echo: true
+#| filename: margins.R
+
+# now, we can compute the per-observation marginal effect
+# We divide by 0.01 to scale the marginal effects to a unit
+# change in the independent variable, because this is the
+# amount we added above
+obs_meff = (meff_predictions - predictions) / 0.01
+
+# now, we average to get the average marginal effect
+apply(obs_meff[,c("car", "bus", "rail", "air")], 2, mean)
+```
+
+## Interpreting marginal effects
+
+- Increasing travel time by car has a large negative effect on probability of choosing car
+- Users are diverted primarily to rail, to air and bus to a lesser extent
+- These are in probability units, so we can compare between models
+- They are small, but they are per additional minute of travel time
+- These marginal effects are dependent on the distribution of covariates in our sample
+
+## Considerations when using marginal effects
+
+- Dummy variables - may want to perform prediction with all dummies set to zero and one, rather than adding 0.01 to a dummy variable
+- Elasticities are also a possibility, computing relative change in probability for a relative change in variables
+
+## Exercise
+
+- Compute and interpret marginal effects for income
+    - My solution: `margins-answers.R`
+
+## Answers
+
+```{r}
+#| echo: true
+#| filename: margins-answers.R
+
+# Run this after running mode-choice-mnl-in-vehicle-answers.R and predictions.R
+
+# First, we will add 0.01 to the income
+database =
+    mutate(original_database, income=ifelse(av_car, income + 0.01, income))
+
+# re-read inputs
+apollo_inputs = apollo_validateInputs()
+```
+
+---
+
+```{r}
+#| echo: true
+#| filename: margins-answers.R
+# now, do the predictions
+meff_predictions =
+    apollo_prediction(model, apollo_probabilities, apollo_inputs)
+```
+
+---
+
+```{r}
+#| echo: true
+#| filename: margins-answers.R
+
+# now, we can compute the per-observation marginal effect
+# We divide by 0.01 to scale the marginal effects to a unit
+# change in the independent variable, because this is the
+# amount we added above
+obs_meff = (meff_predictions - predictions) / 0.01
+
+# now, we average to get the average marginal effect
+apply(obs_meff[,c("car", "bus", "rail", "air")], 2, mean)
+```
+
+# Practical application of choice models
+
+## Data acquisition
+
+- Data acquisition is very difficult if you want to include attributes of the alternatives
+    - You don't _have_ to include attributes of alternatives, depends on your research question
+- You need information not only on people did do, but what they could have done but chose not to
+
+## Data acquisition
+
+- One option is to do stated-preference surveys
+- You can include _choice experiments_ where you present aspects of alternatives and ask respondents to choose
+- Then you have all the alternative attributes
+- But you still need to make sure they're reasonable, and standard stated-preference caveats apply (e.g. social desirability bias)
+
+## Data acquisition
+
+- For revealed preference, you need to come up with alternative attributes yourself
+- In transport, we often use trip planning software to do this (e.g. Google Maps, OSRM, r5r)
+
+## Pitfalls of _Apollo_
+
+- Apollo works with global variables in R and expects some variables to have specific names
+    - e.g. `database`
+- This means that settings and data may "leak" between models if you don't clear your environment between estimations
+
+# Independence of irrelevant alternatives
 
 - When the utility of one alternative is increased, the probabilities of the other alternatives decrease in proportion to their probabilities
     - And vice-versa
@@ -1084,6 +1540,10 @@ ggplot(df, aes(x=lab, y=vtt)) +
 - So, if blue bus has 25% probability, existing choices must all reduce by the same factor
 - Red bus: 50% * .75 = 37.5%
 - Same for car
+
+## Independence of irrelevant alternatives: the red bus/blue bus problem
+
+- This is true at the individual level, not the level of market shares [@ben-akiva_discrete_1985, p. 109--11]
 
 ## Independence of irrelevant alternatives: the math
 
@@ -1104,7 +1564,323 @@ $$
     = e^{U_b} \big[ ( e^{U_r} + e^{U_b} + e^{U_c} \big)^{-2} e^{U_r} \big]
 $$
 
+## Questions?
+
 # Nested logit model
+
+## Motivation
+
+- The independence of irrelevant alternatives property of MNL derives from the assumed error distribution
+    - Which is also how the probability function is derived
+- Nested logit allows correlation within "nests" of alternatives
+- Often used in mode choice or joint choice
+
+## Model form
+
+```{mermaid}
+flowchart LR
+    mc[Mode choice]
+    car[Car]
+    air[Air]
+    bus[Bus]
+    train[Train]
+
+    mc --> car
+    mc --> air
+    mc --> bus
+    mc --> train
+
+```
+
+## Model form
+
+```{mermaid}
+flowchart LR
+    mc[Mode choice]
+    car[Car]
+    air[Air]
+    transit[Transit]
+    bus[Bus]
+    train[Train]
+
+    mc --> car
+    mc --> air
+    mc --> transit
+    transit --> bus
+    transit --> train
+```
+
+## Model form
+
+- Often used to represent hierarchical or joint choice
+- Used when there are _shared unobserved attributes_ between alternatives
+    - In the red bus/blue bus problem, attributes of the bus
+- Does not have to, just represents correlation in error term between alternatives
+
+## Nested logit: the math
+
+$$
+U_i = \alpha_i + \beta_{ix} x_i + \cdots + \epsilon_{nest} + \epsilon_{i}
+$$
+
+- $\epsilon_{nest}$ allows correlation of error terms at the nest level
+
+## Why do correlated error terms solve the red bus/blue bus problem?
+
+- Easier to reason through than to do the math
+- Definition of a random-utility model is that whatever alternative has the highest utility is chosen
+- Utility has a random component $\epsilon$, so whether an alternative has highest utility is probabilistic
+
+## Why do correlated error terms solve the red bus/blue bus problem?
+
+- Suppose we are modeling the probability of auto vs. red bus vs. blue bus, and the systematic utilities are all 0
+- So whichever alternative has the highest random error will be chosen
+- Suppose we draw the error terms at random from a hat containing numbers 1--10
+- The probability that any one error term is the largest is 1/3
+
+## Why do correlated error terms solve the red bus/blue bus problem?
+
+- But suppose we think that the unobserved attributes of the red bus and blue bus are the same
+- Then we will draw one number for cars, and the _same number twice_ for the red and blue buses
+- Since the error terms for the buses are the same, there is now a 50% chance that car will have highest utility, and 50% that the buses will
+
+## Nested logit: additional parameters
+
+- The nested logit adds one additional parameter per nest, the _inclusive value_ parameter
+- Also called $\theta$, $\lambda$, $\frac{\mu_m}{\mu_d}$, $\frac{1}{\mu_d}$, logsum parameter
+- Inclusive value parameters define how much correlation there is in the alternatives within a nest
+
+## Nested logit: interpreting the inclusive value parameter
+
+- Inclusive value parameters _should_ be between 0 and 1 to align with utility theory
+- Larger inclusive value parameters mean _less_ correlation between alternatives in that nest
+- Inclusive value parameters of 1---same as multinomial logit
+
+## Nested logit: caution
+
+- In order to interpret coefficients from different nests relative to each other, you must use a random utility nested logit model (RUMNL)
+- These normalize the coefficients in each nest to be comparable to each other, by dividing by the inclusive value parameter
+- Non-normalized nested logit (NNNL) does not perform this normalization
+- RUMNL is default in Apollo, NNNL is default in Stata
+
+## Nested logit: caution
+
+- Nested logit inclusive value parameters should be tested with a null hypothesis that they are 1, not 0
+- Many statistical packages (including Apollo) don't do this
+- Thus, t-values and p-values will be incorrect
+
+## Nested logit in R
+
+```{r}
+#| include: false
+clear()
+```
+
+```{r}
+#| echo: true
+#| filename: nested-logit-mode-choice.R
+
+library(apollo)
+library(tidyverse)
+
+database = read_csv("data/modechoice_apollo.csv")
+
+apollo_initialise()
+
+apollo_control = list(
+    modelName = "Nested_Mode_Choice",
+    indivID="ID"
+)
+```
+
+---
+
+```{r}
+#| echo: true
+#| filename: nested-logit-mode-choice.R
+
+apollo_beta = c(
+    asc_air = 0,
+    asc_bus = 0,
+    asc_rail = 0,
+    # leaving out an asc_car as base category
+    b_cost = 0,
+    b_access_time = 0,
+    b_in_vehicle_time = 0,
+    # income and party_size are individual level variable, so
+    # must be different for different alternatives
+    b_income_air = 0,
+    b_income_bus = 0,
+    b_income_rail = 0,
+    # This is the "nesting parameter" which captures how much variation
+    # occurs at each level
+    lambda_shared = 1
+)
+```
+
+---
+
+```{r}
+#| echo: true
+#| filename: nested-logit-mode-choice.R
+
+apollo_fixed = c()
+apollo_inputs = apollo_validateInputs()
+```
+
+---
+
+```{r}
+#| echo: true
+#| filename: nested-logit-mode-choice.R
+
+apollo_probabilities = function(apollo_beta, apollo_inputs,
+        functionality="estimate") {
+    apollo_attach(apollo_beta, apollo_inputs)
+    on.exit(apollo_detach(apollo_beta, apollo_inputs))
+
+    P = list()
+
+    # define utility functions
+    V = list()
+    # We can include cost and in-vehicle time here because they vary over
+    # alternatives
+    V[["car"]] = b_cost * cost_car +
+        b_in_vehicle_time * time_car
+
+    V[["air"]] = asc_air +
+        b_cost * cost_air +
+        b_in_vehicle_time * time_air +
+        b_access_time * access_air +
+        b_income_air * income
+
+    V[["rail"]] = asc_rail +
+        b_cost * cost_rail +
+        b_in_vehicle_time * time_rail +
+        b_access_time * access_rail +
+        b_income_rail * income
+
+    V[["bus"]] = asc_bus +
+        b_cost * cost_bus +
+        b_in_vehicle_time * time_bus +
+        b_access_time * access_bus +
+        b_income_bus * income
+
+    ## Now, we specify the nesting structure. First, we tell Apollo what
+    ## nests we are using and their inclusive value parameters.
+    nlNests = c(root=1, shared=lambda_shared)
+
+    nlStructure = list(
+        root=c("car", "shared"),
+        shared=c("rail", "bus", "air")
+    )
+
+    nl_settings = list(
+        alternatives = c(car=1, air=3, rail=4, bus=2),
+        avail = list(car=av_car, air=av_air, rail=av_rail, bus=av_bus),
+        choiceVar = choice,
+        utilities = V,
+        nlNests = nlNests,
+        nlStructure = nlStructure
+    )
+
+    P[["model"]] = apollo_nl(nl_settings, functionality)
+
+    # For panel data, this multiplies observations for single individuals
+    # together - no effect in multinomial logit but still required.
+    P = apollo_panelProd(P, apollo_inputs, functionality)
+    P = apollo_prepareProb(P, apollo_inputs, functionality)
+    return(P)
+}
+```
+
+---
+
+```{r}
+#| echo: true
+#| filename: nested-logit-mode-choice.R
+
+model = apollo_estimate(apollo_beta, apollo_fixed, apollo_probabilities, apollo_inputs)
+```
+
+---
+
+```{r}
+#| echo: true
+#| filename: nested-logit-mode-choice.R
+
+apollo_modelOutput(model)
+```
+
+---
+
+```{r}
+#| echo: true
+#| filename: nested-logit-mode-choice.R
+
+apollo_saveOutput(model)
+```
+
+## Likelihood-ratio tests of the nested logit model
+
+- We can perform a likelihood-ratio test, since constraining the inclusive value parameter to 1 would be the same as a multinomial logit model
+
+```{r}
+#| echo: true
+#| filename: nested-logit-mode-choice.R
+
+apollo_lrTest("Nested_Mode_Choice", "Apollo_Mode_Choice")
+```
+
+## An alternative to nested logit: mixed logit
+
+- In multinomial logit and nested logit models, parameters are assumed to be constant across the population
+- Mixed logit allows (a subset of) coefficients to vary across individuals
+- By creating random coefficients that enter multiple utility functions as constants, correlations can be created
+- Basically, using random coefficients as additional shared error terms
+
+## Mixed logit
+
+We might write our nested model above as
+
+$$
+U_{car} = X_{car}B_{car} + \epsilon_{car}
+$$
+
+$$
+U_{bus} = X_{bus}B_{bus} + \mu'_{shared} + \epsilon_{bus}
+$$
+
+$$
+U_{rail} = X_{rail}B_{rail} + \mu'_{shared} + \epsilon_{rail}
+$$
+
+$$
+U_{air} = X_{air}B_{air} + \mu'_{shared} + \epsilon_{air}
+$$
+
+$\mu'_{shared}$ is a random value which acts as a common error term for the shared modes
+
+## Mixed logit
+
+- Mixed logit can also have coefficients that vary
+- Common use is value of time - we know this varies a lot across the population 
+- When using mixed logits, be careful of taking ratios for valuation
+    - Ratio of two normally-distributed coefficients is Cauchy distributed, which has no mean
+    - You can simulate a mean, it will just be unstable and change each time you run your code.
+
+## An alternative to nested logit: mixed logit
+
+- Estimating mixed logit models is beyond the scope of this course
+- For more information on mixed logit models, see @train_discrete_2009 (free ebook available) and the Apollo manual
+
+## Questions and contact
+
+Matt Bhagat-Conway
+
+[mwbc@unc.edu](mailto:mwbc@unc.edu)
+
+[&#64;mattwigway](https://twitter.com/mattwigway)
 
 ## References
 
