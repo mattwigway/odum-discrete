@@ -1583,13 +1583,9 @@ $$
 $$
 
 $$
-    = e^{U_b} ( e^{U_r} + e^{U_b} + e^{U_c} \big)^{-2}
-        \big[(e^{U_r} + e^{U_b} + e^{U_c}) \frac{\delta}{\delta U_r}\big]
+    = e^{U_b} \big[ ( e^{U_r} + e^{U_b} + e^{U_c} \big)^{-1} \frac{\delta}{\delta U_r} \big]
 $$
 
-$$
-    = e^{U_b} \big[ ( e^{U_r} + e^{U_b} + e^{U_c} \big)^{-2} e^{U_r} \big]
-$$
 
 ## Questions?
 
@@ -1862,10 +1858,15 @@ apollo_saveOutput(model)
 apollo_lrTest("Nested_Mode_Choice", "Apollo_Mode_Choice")
 ```
 
-## An alternative to nested logit: mixed logit
+# Mixed logit
+
+## Mixed logit
 
 - In multinomial logit and nested logit models, parameters are assumed to be constant across the population
 - Mixed logit allows (a subset of) coefficients to vary across individuals
+
+## Mixed logit as an alternative to nested logit
+
 - By creating random coefficients that enter multiple utility functions as constants, correlations can be created
 - Basically, using random coefficients as additional shared error terms
 
@@ -1891,18 +1892,258 @@ $$
 
 $\mu'_{shared}$ is a random value which acts as a common error term for the shared modes
 
+## Mixed logit: probabilities
+
+- The mixed logit probability is the same as the multinomial logit probability, but integrated over the random coefficients
+- This is usually done through simulation
+    - Random draws are taken from the coefficient distribution, the likelihood is calculated for each, and then they are averaged together
+
 ## Mixed logit
 
-- Mixed logit can also have coefficients that vary
+- Mixed logit can also have coefficients that vary randomly
 - Common use is value of time - we know this varies a lot across the population 
-- When using mixed logits, be careful of taking ratios for valuation
-    - Ratio of two normally-distributed coefficients is Cauchy distributed, which has no mean
-    - You can simulate a mean, it will just be unstable and change each time you run your code.
-
-## An alternative to nested logit: mixed logit
-
-- Estimating mixed logit models is beyond the scope of this course
 - For more information on mixed logit models, see @train_discrete_2009 (free ebook available) and the Apollo manual
+
+## Mixed logit in R
+
+
+```{r}
+#| include: false
+clear()
+```
+
+```{r}
+#| echo: true
+#| filename: mixed-logit-mode-choice.R
+
+library(apollo)
+library(tidyverse)
+
+database = read_csv("data/modechoice_apollo.csv")
+
+apollo_initialise()
+
+apollo_control = list(
+    modelName = "Mixed_Mode_Choice",
+    indivID="ID",
+    mixing = T
+)
+```
+
+---
+
+```{r}
+#| echo: true
+#| filename: mixed-logit-mode-choice.R
+
+apollo_beta = c(
+    asc_air = 0,
+    asc_bus = 0,
+    asc_rail = 0,
+    # leaving out an asc_car as base category
+    b_cost = 0,
+    b_access_time = 0,
+    b_in_vehicle_time = 0,
+    # income and party_size are individual level variable, so
+    # must be different for different alternatives
+    b_income_air = 0,
+    b_income_bus = 0,
+    b_income_rail = 0,
+    # This is the standard deviation of the shared error component
+    # random term, which will be normally distributed.
+    sd_shared = 1
+)
+```
+
+---
+
+## Defining draws
+
+- We need to tell Apollo what random variable we have
+- Since log-likelihood is simulated, these are called "draws"
+- Halton draws are common since they provide good distribution
+- Most often in panel data, draws vary at the individual level
+    - i.e. an individual has the same random coefficient for all choices
+
+---
+
+```{r}
+#| echo: true
+#| filename: mixed-logit-mode-choice.R
+
+apollo_draws = list(
+    interDrawsType="halton",
+    # number of draws - more is slower but more accurate
+    interNDraws=500,
+    # no uniformly-distributed random variables
+    interUnifDraws=c(),
+    # one normally-distributed random variable
+    interNormDraws=c("draws_shared_mode_error")
+    # can also use intraNDraws etc. for intra-individual draws
+    # (less common)
+)
+```
+
+---
+
+## Defining random coefficients
+
+- Based on the draws, we then define an `apollo_randCoeff` function that transforms them as needed to the desired form
+
+---
+
+```{r}
+#| echo: true
+#| filename: mixed-logit-mode-choice.R
+
+apollo_randCoeff = function (apollo_beta, apollo_inputs) {
+    randcoeff = list()
+    # error term has mean zero, so we multiply by standard deviation
+    # but do not add an offset
+    # anything we add to this list will be available in apollo_probabilities
+    randcoeff[["shared_mode_error"]] = sd_shared * draws_shared_mode_error
+
+    return(randcoeff)
+}
+
+```
+
+
+```{r}
+#| echo: true
+#| filename: mixed-logit-mode-choice.R
+
+apollo_fixed = c()
+apollo_inputs = apollo_validateInputs()
+```
+
+---
+
+```{r}
+#| echo: true
+#| filename: mixed-logit-mode-choice.R
+
+apollo_probabilities = function(apollo_beta, apollo_inputs,
+        functionality="estimate") {
+    apollo_attach(apollo_beta, apollo_inputs)
+    on.exit(apollo_detach(apollo_beta, apollo_inputs))
+
+    P = list()
+
+    # define utility functions
+    V = list()
+    # We can include cost and in-vehicle time here because
+    # they vary over alternatives
+    V[["car"]] = b_cost * cost_car +
+        b_in_vehicle_time * time_car
+
+    V[["air"]] = asc_air +
+        b_cost * cost_air +
+        b_in_vehicle_time * time_air +
+        b_access_time * access_air +
+        b_income_air * income +
+        shared_mode_error
+
+    V[["rail"]] = asc_rail +
+        b_cost * cost_rail +
+        b_in_vehicle_time * time_rail +
+        b_access_time * access_rail +
+        b_income_rail * income +
+        shared_mode_error
+
+    V[["bus"]] = asc_bus +
+        b_cost * cost_bus +
+        b_in_vehicle_time * time_bus +
+        b_access_time * access_bus +
+        b_income_bus * income +
+        shared_mode_error
+
+    # mathematically, this is still a multinomial logit model,
+    # just integrated over our random variables
+    mnl_settings = list(
+        alternatives = c(car=1, air=3, rail=4, bus=2),
+        avail = list(car=av_car, air=av_air, rail=av_rail, bus=av_bus),
+        choiceVar = choice,
+        utilities = V
+    )
+
+    P[["model"]] = apollo_mnl(mnl_settings, functionality)
+
+    # we need to average the draws together. Because of the structure of the
+    # mixed logit model, intra-individual draws need to be averaged before
+    # joint choices in a panel are multiplied together, while inter-individual
+    # need to be averaged after. If we had intra-individual draws, the line below
+    # would average them. But since we don't, it's commented out.
+    # P = apollo_avgIntraDraws(P, apollo_inputs, functionality)
+
+    # For panel data, this multiplies observations for single individuals
+    # together - no effect in multinomial logit but still required.
+    P = apollo_panelProd(P, apollo_inputs, functionality)
+
+    # now average across inter-individual draws
+    P = apollo_avgInterDraws(P, apollo_inputs, functionality)
+
+    P = apollo_prepareProb(P, apollo_inputs, functionality)
+    return(P)
+}
+```
+
+---
+
+```{r}
+#| echo: true
+#| filename: mixed-logit-mode-choice.R
+
+model =
+    apollo_estimate(apollo_beta, apollo_fixed, apollo_probabilities, apollo_inputs)
+```
+
+---
+
+```{r}
+#| echo: true
+#| filename: mixed-logit-mode-choice.R
+
+apollo_modelOutput(model)
+```
+
+---
+
+```{r}
+#| echo: true
+#| filename: mixed-logit-mode-choice.R
+
+apollo_saveOutput(model)
+```
+
+## Likelihood-ratio test for mixed logit
+
+- Cannot compare to nested logit (why?)
+ . . .
+  - Models are non-nested, cannot reduce this mixed logit model to nested logit
+- Can compare to multinomial logit (with what constraint?)
+ . . . 
+  - Constrain standard deviation to zero
+
+---
+
+```{r}
+apollo_lrTest("Mixed_Mode_Choice", "Apollo_Mode_Choice")
+```
+
+## Interpreting mixed logit models
+
+- Error components model: standard deviations of error terms and their significance is proportional to correlation between alternatives
+    - opposite of nested logit, where smaller inclusive value parameters mean more correlation
+- Can also have random coefficients
+    - Usually a mean is added to the coefficients in this case
+    - Often used for value of time
+
+## Interpreting mixed logit models
+- Be careful with valuation
+    - Ratio of normally distributed coefficients is Cauchy distributed
+    - Known as a "pathological" distribution - no mean
+    - Probably not economically consistent; even Jeff Bezos doesn't have infinite value of time
 
 ## Questions and contact
 
