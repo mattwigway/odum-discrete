@@ -564,7 +564,7 @@
     "href": "discrete-choice.html#independence-of-irrelevant-alternatives-the-math",
     "title": "Introduction to discrete choice models in R",
     "section": "Independence of irrelevant alternatives: the math",
-    "text": "Independence of irrelevant alternatives: the math\n\\[ \\frac{\\delta p(b)}{\\delta U_r}\\]\n\\[\n= \\frac{\n    e^{U_b}}{\n        e^{U_r} + e^{U_b} + e^{U_c}}\n    \\frac{\\delta}{\\delta U_r}\n\\]\n\\[\n    = e^{U_b} ( e^{U_r} + e^{U_b} + e^{U_c} \\big)^{-2}\n        \\big[(e^{U_r} + e^{U_b} + e^{U_c}) \\frac{\\delta}{\\delta U_r}\\big]\n\\]\n\\[\n    = e^{U_b} \\big[ ( e^{U_r} + e^{U_b} + e^{U_c} \\big)^{-2} e^{U_r} \\big]\n\\]"
+    "text": "Independence of irrelevant alternatives: the math\n\\[ \\frac{\\delta p(b)}{\\delta U_r}\\]\n\\[\n= \\frac{\n    e^{U_b}}{\n        e^{U_r} + e^{U_b} + e^{U_c}}\n    \\frac{\\delta}{\\delta U_r}\n\\]\n\\[\n    = e^{U_b} \\big[ ( e^{U_r} + e^{U_b} + e^{U_c} \\big)^{-1} \\frac{\\delta}{\\delta U_r} \\big]\n\\]"
   },
   {
     "objectID": "discrete-choice.html#questions-3",
