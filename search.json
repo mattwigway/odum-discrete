@@ -18,6 +18,13 @@
     "href": "discrete-choice.html#before-we-go-any-further",
     "title": "Introduction to discrete choice models in R",
     "section": "Before we go any further",
+    "text": "Before we go any further\n\nExample code and data at https://files.indicatrix.org/odum_discrete_class_files.zip\nThese slides at https://projects.indicatrix.org/odum-discrete/discrete-choice.html"
+  },
+  {
+    "objectID": "discrete-choice.html#before-we-go-any-further-1",
+    "href": "discrete-choice.html#before-we-go-any-further-1",
+    "title": "Introduction to discrete choice models in R",
+    "section": "Before we go any further",
     "text": "Before we go any further\n\nIf you haven’t already installed R, RStudio, apollo, and tidyverse, do so now\nR: https://r-project.org\nRStudio: https://rstudio.com\napollo and tidyverse: in RStudio console, run:\n\ninstall.packages(\"tidyverse\")\ninstall.packages(\"apollo\")"
   },
   {
@@ -81,7 +88,7 @@
     "href": "discrete-choice.html#logistic-regression-in-r-1",
     "title": "Introduction to discrete choice models in R",
     "section": "Logistic regression in R",
-    "text": "Logistic regression in R\n\n\n\nCall:\nglm(formula = carpool ~ hhsize + cars_per_driver + commute + \n    social, family = binomial(link = \"logit\"), data = data)\n\nDeviance Residuals: \n    Min       1Q   Median       3Q      Max  \n-2.4758  -1.1048  -0.5243   1.0966   2.2147  \n\nCoefficients:\n                Estimate Std. Error z value Pr(>|z|)    \n(Intercept)     -0.87316    0.10310  -8.469  < 2e-16 ***\nhhsize           0.39877    0.02468  16.156  < 2e-16 ***\ncars_per_driver -0.09750    0.05659  -1.723   0.0849 .  \ncommuteTRUE     -1.59549    0.11134 -14.330  < 2e-16 ***\nsocialTRUE       0.41292    0.10269   4.021 5.79e-05 ***\n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\n(Dispersion parameter for binomial family taken to be 1)\n\n    Null deviance: 6925.6  on 4999  degrees of freedom\nResidual deviance: 6334.1  on 4995  degrees of freedom\nAIC: 6344.1\n\nNumber of Fisher Scoring iterations: 4"
+    "text": "Logistic regression in R\n\n\n\nCall:\nglm(formula = carpool ~ hhsize + cars_per_driver + commute + \n    social, family = binomial(link = \"logit\"), data = data)\n\nDeviance Residuals: \n    Min       1Q   Median       3Q      Max  \n-2.5103  -1.1182  -0.4432   1.1021   2.2223  \n\nCoefficients:\n                Estimate Std. Error z value Pr(>|z|)    \n(Intercept)     -0.87064    0.10399  -8.372  < 2e-16 ***\nhhsize           0.40598    0.02471  16.431  < 2e-16 ***\ncars_per_driver -0.05475    0.05786  -0.946  0.34405    \ncommuteTRUE     -1.75187    0.11251 -15.571  < 2e-16 ***\nsocialTRUE       0.29309    0.10381   2.823  0.00475 ** \n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\n(Dispersion parameter for binomial family taken to be 1)\n\n    Null deviance: 6929.7  on 4999  degrees of freedom\nResidual deviance: 6301.6  on 4995  degrees of freedom\nAIC: 6311.6\n\nNumber of Fisher Scoring iterations: 4"
   },
   {
     "objectID": "discrete-choice.html#binary-logistic-regression-as-a-random-utility-model",
@@ -123,7 +130,7 @@
     "href": "discrete-choice.html#but-dont-take-my-word-for-it",
     "title": "Introduction to discrete choice models in R",
     "section": "But don’t take my word for it…",
-    "text": "But don’t take my word for it…\n\n\n\nCall:\nglm(formula = carpool ~ hhsize + cars_per_driver + commute + \n    social, family = binomial(link = \"logit\"), data = data)\n\nDeviance Residuals: \n    Min       1Q   Median       3Q      Max  \n-2.4758  -1.1048  -0.5243   1.0966   2.2147  \n\nCoefficients:\n                Estimate Std. Error z value Pr(>|z|)    \n(Intercept)     -0.87316    0.10310  -8.469  < 2e-16 ***\nhhsize           0.39877    0.02468  16.156  < 2e-16 ***\ncars_per_driver -0.09750    0.05659  -1.723   0.0849 .  \ncommuteTRUE     -1.59549    0.11134 -14.330  < 2e-16 ***\nsocialTRUE       0.41292    0.10269   4.021 5.79e-05 ***\n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\n(Dispersion parameter for binomial family taken to be 1)\n\n    Null deviance: 6925.6  on 4999  degrees of freedom\nResidual deviance: 6334.1  on 4995  degrees of freedom\nAIC: 6344.1\n\nNumber of Fisher Scoring iterations: 4"
+    "text": "But don’t take my word for it…\n\n\n\nCall:\nglm(formula = carpool ~ hhsize + cars_per_driver + commute + \n    social, family = binomial(link = \"logit\"), data = data)\n\nDeviance Residuals: \n    Min       1Q   Median       3Q      Max  \n-2.5103  -1.1182  -0.4432   1.1021   2.2223  \n\nCoefficients:\n                Estimate Std. Error z value Pr(>|z|)    \n(Intercept)     -0.87064    0.10399  -8.372  < 2e-16 ***\nhhsize           0.40598    0.02471  16.431  < 2e-16 ***\ncars_per_driver -0.05475    0.05786  -0.946  0.34405    \ncommuteTRUE     -1.75187    0.11251 -15.571  < 2e-16 ***\nsocialTRUE       0.29309    0.10381   2.823  0.00475 ** \n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\n(Dispersion parameter for binomial family taken to be 1)\n\n    Null deviance: 6929.7  on 4999  degrees of freedom\nResidual deviance: 6301.6  on 4995  degrees of freedom\nAIC: 6311.6\n\nNumber of Fisher Scoring iterations: 4"
   },
   {
     "objectID": "discrete-choice.html#what-about-more-than-two-outcomes",
@@ -294,11 +301,46 @@
     "text": "Questions?"
   },
   {
-    "objectID": "discrete-choice.html#how-logit-models-are-estimated",
-    "href": "discrete-choice.html#how-logit-models-are-estimated",
+    "objectID": "discrete-choice.html#predictions-and-market-shares-in-r",
+    "href": "discrete-choice.html#predictions-and-market-shares-in-r",
     "title": "Introduction to discrete choice models in R",
-    "section": "How logit models are estimated",
-    "text": "How logit models are estimated\n\nUnlike linear regression, there is no closed-form solution\n\ni.e. one you can just calculate\n\nInstead, we use maximum likelihood\nWe define a likelihood function which tells us how likely we are to observe the data we have, given a set of coefficients\nWe then choose a set of coefficients, the starting values, and adjust them until we find the best fit—the maximum of the likelihood function"
+    "section": "Predictions and market shares in R",
+    "text": "Predictions and market shares in R\n\n# Make predictions for the existing dataset\npredictions = apollo_prediction(model, apollo_probabilities, apollo_inputs)\n\nRunning predictions from model using parameter estimates...\nPrediction at model estimates\n             car    air   rail    bus\nAggregate 332.00 215.00 327.00 126.00\nAverage     0.33   0.21   0.33   0.13\n\nThe output from apollo_prediction is a matrix containing the\n  predictions at the estimated values."
+  },
+  {
+    "objectID": "discrete-choice.html#predictions-and-market-shares-in-r-1",
+    "href": "discrete-choice.html#predictions-and-market-shares-in-r-1",
+    "title": "Introduction to discrete choice models in R",
+    "section": "Predictions and market shares in R",
+    "text": "Predictions and market shares in R\n\npredictions is now a matrix with one row per observation and one column per outcome\nThese contain the predicted probabilities for each observation, based on the estimation dataset"
+  },
+  {
+    "objectID": "discrete-choice.html#predictions-and-market-shares-in-r-2",
+    "href": "discrete-choice.html#predictions-and-market-shares-in-r-2",
+    "title": "Introduction to discrete choice models in R",
+    "section": "Predictions and market shares in R",
+    "text": "Predictions and market shares in R\n\nMost often, you will want to make a prediction for a counterfactual scenario, i.e. a change to the data\nThis is kind of clunky in Apollo; you modify the database directly, and then re-run apollo_validateInputs and apollo_prediction"
+  },
+  {
+    "objectID": "discrete-choice.html#predictions-and-market-shares-in-r-3",
+    "href": "discrete-choice.html#predictions-and-market-shares-in-r-3",
+    "title": "Introduction to discrete choice models in R",
+    "section": "Predictions and market shares in R",
+    "text": "Predictions and market shares in R\npredictions.R\n\n# Now, make predictions in a counterfactual scenario\n# First, we will give the original database a new name\noriginal_database = database\n\n# then, we will adjust the cost_air column to add a 25 pound tax\n# any time air is available\ndatabase = mutate(\n    original_database,\n    cost_air=ifelse(av_air, cost_air + 25, cost_air)\n    )"
+  },
+  {
+    "objectID": "discrete-choice.html#exercise-1",
+    "href": "discrete-choice.html#exercise-1",
+    "title": "Introduction to discrete choice models in R",
+    "section": "Exercise",
+    "text": "Exercise\n\nHow would new rail infrastructure that reduces journey times 25% affect market shares?\n\nRemember to restore original database, and run apollo_validateInputs every time you change the database!\n\nMy solution in prediction-answers.R"
+  },
+  {
+    "objectID": "discrete-choice.html#answers",
+    "href": "discrete-choice.html#answers",
+    "title": "Introduction to discrete choice models in R",
+    "section": "Answers",
+    "text": "Answers\n\n# adjust travel times\ndatabase = mutate(\n    original_database,\n    time_rail=time_rail*0.75\n    )\n\n# re-load inputs\napollo_inputs = apollo_validateInputs()\n\nSeveral observations per individual detected based on the value of ID.\n  Setting panelData in apollo_control set to TRUE.\nAll checks on apollo_control completed.\nAll checks on database completed."
   },
   {
     "objectID": "discrete-choice.html#likelihood-function-for-a-discrete-choice-model",
@@ -340,7 +382,7 @@
     "href": "discrete-choice.html#comparing-logistic-models-to-each-other-1",
     "title": "Introduction to discrete choice models in R",
     "section": "Comparing logistic models to each other",
-    "text": "Comparing logistic models to each other\n\nLikelihood ratio test statistic is\n\n\\[\n-2(\\ell_1 - \\ell_2)\n\\]\nwhere \\(\\ell_1\\) is the likelihood of the less flexible model and \\(\\ell_2\\) the more flexible model - This is \\(\\chi^2\\)-distributed with degrees of freedom equal to the number of additional parameters in the more flexible model - Don’t need to remember order, just put them in the order that makes test statistic positive"
+    "text": "Comparing logistic models to each other\n\nLikelihood ratio test statistic is\n\n\\[\n-2(\\ell_1 - \\ell_2)\n\\]\nwhere \\(\\ell_1\\) is the likelihood of the less flexible model and \\(\\ell_2\\) the more flexible model\n\nThis is \\(\\chi^2\\)-distributed with degrees of freedom equal to the number of additional parameters in the more flexible model\nDon’t need to remember order, just put them in the order that makes test statistic positive"
   },
   {
     "objectID": "discrete-choice.html#comparing-logistic-models-to-each-other-2",
@@ -357,32 +399,130 @@
     "text": "Comparing logistic regression models to each other\n\n1 - pchisq(10.52, 3)\n\n[1] 0.01462584"
   },
   {
-    "objectID": "discrete-choice.html#comparing-logistic-regreession-models-to-each-other",
-    "href": "discrete-choice.html#comparing-logistic-regreession-models-to-each-other",
+    "objectID": "discrete-choice.html#comparing-logistic-regreession-models-to-each-other-with-apollo",
+    "href": "discrete-choice.html#comparing-logistic-regreession-models-to-each-other-with-apollo",
     "title": "Introduction to discrete choice models in R",
-    "section": "Comparing logistic regreession models to each other",
-    "text": "Comparing logistic regreession models to each other"
+    "section": "Comparing logistic regreession models to each other with Apollo",
+    "text": "Comparing logistic regreession models to each other with Apollo\n\nIf we have given our models unique names and run apollo_saveOutput, Apollo can do the test for us\n\n\napollo_lrTest(\"Apollo_Mode_Choice\", \"Apollo_Mode_Choice_Flexible\")\n\n                                  LL par\nApollo_Mode_Choice          -1020.00   9\nApollo_Mode_Choice_Flexible -1014.74  12\nDifference                      5.26   3\n\nLikelihood ratio test-value:    10.52 \nDegrees of freedom:             3 \nLikelihood ratio test p-value:  0.01463"
   },
   {
     "objectID": "discrete-choice.html#goodness-of-fit-metrics-for-logistic-regression-models",
     "href": "discrete-choice.html#goodness-of-fit-metrics-for-logistic-regression-models",
     "title": "Introduction to discrete choice models in R",
     "section": "Goodness of fit metrics for logistic regression models",
-    "text": "Goodness of fit metrics for logistic regression models\n\nUnlike linear regression, there is no \\(R^2\\) for a logistic regression"
+    "text": "Goodness of fit metrics for logistic regression models\n\nUnlike linear regression, there is no \\(R^2\\) for a logistic regression\nWe can compare multiple models using a likelihood-ratio test\nBut what if we don’t have multiple models?"
+  },
+  {
+    "objectID": "discrete-choice.html#goodness-of-fit-metrics-for-logistic-regression-models-1",
+    "href": "discrete-choice.html#goodness-of-fit-metrics-for-logistic-regression-models-1",
+    "title": "Introduction to discrete choice models in R",
+    "section": "Goodness of fit metrics for logistic regression models",
+    "text": "Goodness of fit metrics for logistic regression models\n\nWe do have the log-likelihood with all coefficients at 0 [LL(0)], and with only ASCs [LL(C)]\n\nLL(0)                            : -1170.86\nLL(C)                            : -1085.14\nLL(final)                        : -1020"
+  },
+  {
+    "objectID": "discrete-choice.html#goodness-of-fit-metrics-for-logistic-regression-models-2",
+    "href": "discrete-choice.html#goodness-of-fit-metrics-for-logistic-regression-models-2",
+    "title": "Introduction to discrete choice models in R",
+    "section": "Goodness of fit metrics for logistic regression models",
+    "text": "Goodness of fit metrics for logistic regression models\n\nMany authors have created pseudo-\\(R^2\\) metrics based on how much the model improves loglikelihood relative to these “base” log-likelihoods\nMost common is probably McFadden’s, \\(1 - \\frac{\\ell}{\\ell_C}\\)\nOr McFadden’s adjusted, \\(1 - \\frac{\\ell - K}{\\ell_C}\\) where \\(K\\) is number of estimated coefficients, which attempts to correct for overfitting"
+  },
+  {
+    "objectID": "discrete-choice.html#goodness-of-fit-metrics-for-logistic-regression-models-3",
+    "href": "discrete-choice.html#goodness-of-fit-metrics-for-logistic-regression-models-3",
+    "title": "Introduction to discrete choice models in R",
+    "section": "Goodness of fit metrics for logistic regression models",
+    "text": "Goodness of fit metrics for logistic regression models\n\nThese range from 0 to 1, like an \\(R^2\\), with higher values being better fit\nThey can be relative to log-likelihood at constants or log-likelihood at zero\n\nFormer is more like the \\(R^2\\) you’ve seen in linear models, which is usually relative to the mean of \\(y\\)\n\nAnecdotally, pseudo-\\(R^2\\) statistics tend to be fairly low"
+  },
+  {
+    "objectID": "discrete-choice.html#comparing-coefficients-of-logistic-regression-models",
+    "href": "discrete-choice.html#comparing-coefficients-of-logistic-regression-models",
+    "title": "Introduction to discrete choice models in R",
+    "section": "Comparing coefficients of logistic regression models",
+    "text": "Comparing coefficients of logistic regression models\n\nIn general, you can’t directly compare coefficients from different logistic regression\nThey may be scaled differently\nIn a linear regression, the coefficients have the same scale as the dependent variable\nBut in logistic regression, utility is scaleless"
+  },
+  {
+    "objectID": "discrete-choice.html#how-is-the-scale-set-in-logistic-regression",
+    "href": "discrete-choice.html#how-is-the-scale-set-in-logistic-regression",
+    "title": "Introduction to discrete choice models in R",
+    "section": "How is the scale set in logistic regression?",
+    "text": "How is the scale set in logistic regression?\n\nThe scale of coefficients is arbitrary, but the larger the coefficients are the larger the variance of the error term must be to produce the same predictions\nMultinomial logistic regression has a “scale parameter” which controls the scale of the error and thus the scale of the coefficients, usually assumed to equal 1\nBut if you add predictors to a model so that there is less unexplained variation, the scale of the error term is fixed, so scale of other coefficients will change"
   },
   {
     "objectID": "discrete-choice.html#marginal-effects",
     "href": "discrete-choice.html#marginal-effects",
     "title": "Introduction to discrete choice models in R",
     "section": "Marginal effects",
-    "text": "Marginal effects"
+    "text": "Marginal effects\n\nOne solution to this problem is to use marginal effects—the average change in probability for a unit change in an independent variable\nThis has a scale - the probability scale\nThe marginal effect of a variable depends on the value of that and all other variables due to nonlinearities\nHence, the average marginal effect\n\nUsually, the marginal effect averaged over the entire sample\nSometimes, the marginal effect at mean values for all covariates"
   },
   {
-    "objectID": "discrete-choice.html#independence-of-irrelevant-alternatives",
-    "href": "discrete-choice.html#independence-of-irrelevant-alternatives",
+    "objectID": "discrete-choice.html#marginal-effects-in-apollo",
+    "href": "discrete-choice.html#marginal-effects-in-apollo",
     "title": "Introduction to discrete choice models in R",
-    "section": "Independence of irrelevant alternatives",
-    "text": "Independence of irrelevant alternatives\n\nWhen the utility of one alternative is increased, the probabilities of the other alternatives decrease in proportion to their probabilities\n\nAnd vice-versa\nSimilarly when an alternative is added or removed"
+    "section": "Marginal effects in Apollo",
+    "text": "Marginal effects in Apollo\n\nApollo doesn’t have a function to directly calculate marginal effects\nBut, we can use prediction function to calculate on our own\nLet’s calculate the marginal effect of in-vehicle travel time by car on all modes"
+  },
+  {
+    "objectID": "discrete-choice.html#marginal-effects-in-apollo-1",
+    "href": "discrete-choice.html#marginal-effects-in-apollo-1",
+    "title": "Introduction to discrete choice models in R",
+    "section": "Marginal effects in Apollo",
+    "text": "Marginal effects in Apollo\n\nWe’ll add a small amount to time_car and recalculate probabilities\nWe’ll then divide the change by that small amount to estimate the marginal effect\nThis is a basic finite-differences approximation of the marginal effect"
+  },
+  {
+    "objectID": "discrete-choice.html#interpreting-marginal-effects",
+    "href": "discrete-choice.html#interpreting-marginal-effects",
+    "title": "Introduction to discrete choice models in R",
+    "section": "Interpreting marginal effects",
+    "text": "Interpreting marginal effects\n\nIncreasing travel time by car has a large negative effect on probability of choosing car\nUsers are diverted primarily to rail, to air and bus to a lesser extent\nThese are in probability units, so we can compare between models\nThey are small, but they are per additional minute of travel time\nThese marginal effects are dependent on the distribution of covariates in our sample"
+  },
+  {
+    "objectID": "discrete-choice.html#considerations-when-using-marginal-effects",
+    "href": "discrete-choice.html#considerations-when-using-marginal-effects",
+    "title": "Introduction to discrete choice models in R",
+    "section": "Considerations when using marginal effects",
+    "text": "Considerations when using marginal effects\n\nDummy variables - may want to perform prediction with all dummies set to zero and one, rather than adding 0.01 to a dummy variable\nElasticities are also a possibility, computing relative change in probability for a relative change in variables"
+  },
+  {
+    "objectID": "discrete-choice.html#exercise-2",
+    "href": "discrete-choice.html#exercise-2",
+    "title": "Introduction to discrete choice models in R",
+    "section": "Exercise",
+    "text": "Exercise\n\nCompute and interpret marginal effects for income\n\nMy solution: margins-answers.R"
+  },
+  {
+    "objectID": "discrete-choice.html#answers-1",
+    "href": "discrete-choice.html#answers-1",
+    "title": "Introduction to discrete choice models in R",
+    "section": "Answers",
+    "text": "Answers\n\n# Run this after running mode-choice-mnl-in-vehicle-answers.R and predictions.R\n\n# First, we will add 0.01 to the income\ndatabase =\n    mutate(original_database, income=ifelse(av_car, income + 0.01, income))\n\n# re-read inputs\napollo_inputs = apollo_validateInputs()\n\nSeveral observations per individual detected based on the value of ID.\n  Setting panelData in apollo_control set to TRUE.\nAll checks on apollo_control completed.\nAll checks on database completed."
+  },
+  {
+    "objectID": "discrete-choice.html#data-acquisition",
+    "href": "discrete-choice.html#data-acquisition",
+    "title": "Introduction to discrete choice models in R",
+    "section": "Data acquisition",
+    "text": "Data acquisition\n\nData acquisition is very difficult if you want to include attributes of the alternatives\n\nYou don’t have to include attributes of alternatives, depends on your research question\n\nYou need information not only on people did do, but what they could have done but chose not to"
+  },
+  {
+    "objectID": "discrete-choice.html#data-acquisition-1",
+    "href": "discrete-choice.html#data-acquisition-1",
+    "title": "Introduction to discrete choice models in R",
+    "section": "Data acquisition",
+    "text": "Data acquisition\n\nOne option is to do stated-preference surveys\nYou can include choice experiments where you present aspects of alternatives and ask respondents to choose\nThen you have all the alternative attributes\nBut you still need to make sure they’re reasonable, and standard stated-preference caveats apply (e.g. social desirability bias)"
+  },
+  {
+    "objectID": "discrete-choice.html#data-acquisition-2",
+    "href": "discrete-choice.html#data-acquisition-2",
+    "title": "Introduction to discrete choice models in R",
+    "section": "Data acquisition",
+    "text": "Data acquisition\n\nFor revealed preference, you need to come up with alternative attributes yourself\nIn transport, we often use trip planning software to do this (e.g. Google Maps, OSRM, r5r)"
+  },
+  {
+    "objectID": "discrete-choice.html#pitfalls-of-apollo",
+    "href": "discrete-choice.html#pitfalls-of-apollo",
+    "title": "Introduction to discrete choice models in R",
+    "section": "Pitfalls of Apollo",
+    "text": "Pitfalls of Apollo\n\nApollo works with global variables in R and expects some variables to have specific names\n\ne.g. database\n\nThis means that settings and data may “leak” between models if you don’t clear your environment between estimations"
   },
   {
     "objectID": "discrete-choice.html#independence-of-irrelevant-alternatives-the-red-busblue-bus-problem",
@@ -511,11 +651,53 @@
     "text": "Nested logit in R\n\nlibrary(apollo)\nlibrary(tidyverse)\n\ndatabase = read_csv(\"data/modechoice_apollo.csv\")\n\napollo_initialise()\n\napollo_control = list(\n    modelName = \"Nested_Mode_Choice\",\n    indivID=\"ID\"\n)"
   },
   {
+    "objectID": "discrete-choice.html#likelihood-ratio-tests-of-the-nested-logit-model",
+    "href": "discrete-choice.html#likelihood-ratio-tests-of-the-nested-logit-model",
+    "title": "Introduction to discrete choice models in R",
+    "section": "Likelihood-ratio tests of the nested logit model",
+    "text": "Likelihood-ratio tests of the nested logit model\n\nWe can perform a likelihood-ratio test, since constraining the inclusive value parameter to 1 would be the same as a multinomial logit model\n\n\napollo_lrTest(\"Nested_Mode_Choice\", \"Apollo_Mode_Choice\")\n\nThe order of your two models will be reversed in the output as model 1\n  has better fit than model 2.\n\n                        LL par\nApollo_Mode_Choice -1020.0   9\nNested_Mode_Choice -1016.4  10\nDifference             3.6   1\n\nLikelihood ratio test-value:    7.2 \nDegrees of freedom:             1 \nLikelihood ratio test p-value:  0.00729"
+  },
+  {
+    "objectID": "discrete-choice.html#an-alternative-to-nested-logit-mixed-logit",
+    "href": "discrete-choice.html#an-alternative-to-nested-logit-mixed-logit",
+    "title": "Introduction to discrete choice models in R",
+    "section": "An alternative to nested logit: mixed logit",
+    "text": "An alternative to nested logit: mixed logit\n\nIn multinomial logit and nested logit models, parameters are assumed to be constant across the population\nMixed logit allows (a subset of) coefficients to vary across individuals\nBy creating random coefficients that enter multiple utility functions as constants, correlations can be created\nBasically, using random coefficients as additional shared error terms"
+  },
+  {
+    "objectID": "discrete-choice.html#mixed-logit",
+    "href": "discrete-choice.html#mixed-logit",
+    "title": "Introduction to discrete choice models in R",
+    "section": "Mixed logit",
+    "text": "Mixed logit\nWe might write our nested model above as\n\\[\nU_{car} = X_{car}B_{car} + \\epsilon_{car}\n\\]\n\\[\nU_{bus} = X_{bus}B_{bus} + \\mu'_{shared} + \\epsilon_{bus}\n\\]\n\\[\nU_{rail} = X_{rail}B_{rail} + \\mu'_{shared} + \\epsilon_{rail}\n\\]\n\\[\nU_{air} = X_{air}B_{air} + \\mu'_{shared} + \\epsilon_{air}\n\\]\n\\(\\mu'_{shared}\\) is a random value which acts as a common error term for the shared modes"
+  },
+  {
+    "objectID": "discrete-choice.html#mixed-logit-1",
+    "href": "discrete-choice.html#mixed-logit-1",
+    "title": "Introduction to discrete choice models in R",
+    "section": "Mixed logit",
+    "text": "Mixed logit\n\nMixed logit can also have coefficients that vary\nCommon use is value of time - we know this varies a lot across the population\nWhen using mixed logits, be careful of taking ratios for valuation\n\nRatio of two normally-distributed coefficients is Cauchy distributed, which has no mean\nYou can simulate a mean, it will just be unstable and change each time you run your code."
+  },
+  {
+    "objectID": "discrete-choice.html#an-alternative-to-nested-logit-mixed-logit-1",
+    "href": "discrete-choice.html#an-alternative-to-nested-logit-mixed-logit-1",
+    "title": "Introduction to discrete choice models in R",
+    "section": "An alternative to nested logit: mixed logit",
+    "text": "An alternative to nested logit: mixed logit\n\nEstimating mixed logit models is beyond the scope of this course\nFor more information on mixed logit models, see Train (2009) (free ebook available) and the Apollo manual"
+  },
+  {
+    "objectID": "discrete-choice.html#questions-and-contact",
+    "href": "discrete-choice.html#questions-and-contact",
+    "title": "Introduction to discrete choice models in R",
+    "section": "Questions and contact",
+    "text": "Questions and contact\nMatt Bhagat-Conway\nmwbc@unc.edu\n@mattwigway"
+  },
+  {
     "objectID": "discrete-choice.html#references",
     "href": "discrete-choice.html#references",
     "title": "Introduction to discrete choice models in R",
     "section": "References",
-    "text": "References\n\n\nBen-Akiva, Moshe, and Stephen R Lerman. 1985. Discrete Choice Analysis: Theory and Application to Travel Demand. MIT Press.\n\n\nDaly, Andrew, Stephane Hess, and Juan de Dios Ortúzar. 2020. “Estimating Willingness-to-Pay from Discrete Choice Models: Setting the Record Straight.” http://www.stephanehess.me.uk/papers/working_papers/Daly_Hess_Ortuzar_2020.pdf."
+    "text": "References\n\n\nBen-Akiva, Moshe, and Stephen R Lerman. 1985. Discrete Choice Analysis: Theory and Application to Travel Demand. MIT Press.\n\n\nDaly, Andrew, Stephane Hess, and Juan de Dios Ortúzar. 2020. “Estimating Willingness-to-Pay from Discrete Choice Models: Setting the Record Straight.” http://www.stephanehess.me.uk/papers/working_papers/Daly_Hess_Ortuzar_2020.pdf.\n\n\nTrain, Kenneth. 2009. Discrete Choice Methods with Simulation. Cambridge, UK: Cambridge University Press."
   },
   {
     "objectID": "index.html",
