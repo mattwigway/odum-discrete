@@ -12,7 +12,11 @@ fast_rail_predictions =
     apollo_prediction(model, apollo_probabilities, apollo_inputs)
 
 # compute market shares
-fast_rail_mktshares = apply(fast_rail_predictions[,c("car", "rail", "air", "bus")], 2, mean)
+fast_rail_mktshares = apply(
+    fast_rail_predictions[,c("car", "rail", "air", "bus")],
+    2,
+    mean
+)
 fast_rail_mktshares
 
 # compute differences

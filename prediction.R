@@ -1,7 +1,8 @@
 # Run this file after running mode-choice-mnl-in-vehicle-answers.R
 
 # Make predictions for the existing dataset
-predictions = apollo_prediction(model, apollo_probabilities, apollo_inputs)
+predictions =
+    apollo_prediction(model, apollo_probabilities, apollo_inputs)
 
 # Now, make predictions in a counterfactual scenario
 # First, we will give the original database a new name
@@ -19,15 +20,24 @@ database = mutate(
 # apollo_validateInputs will always use the variable called
 # "database"
 apollo_inputs = apollo_validateInputs()
-tax_predictions = apollo_prediction(model, apollo_probabilities, apollo_inputs)
+tax_predictions =
+    apollo_prediction(model, apollo_probabilities, apollo_inputs)
 
 # now, we can use the two predictions to compute changes in market shares
 # first, original market shares
-orig_mktshares = apply(predictions[,c("car", "rail", "air", "bus")], 2, mean)
+orig_mktshares = apply(
+    predictions[,c("car", "rail", "air", "bus")],
+    2,
+    mean
+)
 orig_mktshares
 
 # next, taxed market shares
-tax_mktshares = apply(tax_predictions[,c("car", "rail", "air", "bus")], 2, mean)
+tax_mktshares = apply(
+    tax_predictions[,c("car", "rail", "air", "bus")],
+    2,
+    mean
+)
 tax_mktshares
 
 # and finally, their difference. Is this the change we

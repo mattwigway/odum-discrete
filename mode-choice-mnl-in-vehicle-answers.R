@@ -89,7 +89,8 @@ model = apollo_estimate(apollo_beta, apollo_fixed,
 # Print results
 apollo_modelOutput(model)
 
-# save results in current directory, using model name specified above
+# save results in current directory,
+# using model name specified above
 apollo_saveOutput(model)
 
 apollo_deltaMethod(model, deltaMethod_settings=list(

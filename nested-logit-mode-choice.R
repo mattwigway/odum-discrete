@@ -40,8 +40,8 @@ apollo_probabilities = function(apollo_beta, apollo_inputs,
 
     # define utility functions
     V = list()
-    # We can include cost and in-vehicle time here because they vary over
-    # alternatives
+    # We can include cost and in-vehicle time here because
+    # they vary over alternatives
     V[["car"]] = b_cost * cost_car +
         b_in_vehicle_time * time_car
 
@@ -90,7 +90,8 @@ apollo_probabilities = function(apollo_beta, apollo_inputs,
     return(P)
 }
 
-model = apollo_estimate(apollo_beta, apollo_fixed, apollo_probabilities, apollo_inputs)
+model =
+    apollo_estimate(apollo_beta, apollo_fixed, apollo_probabilities, apollo_inputs)
 
 apollo_modelOutput(model)
 
