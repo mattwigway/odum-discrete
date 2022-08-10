@@ -88,7 +88,7 @@
     "href": "discrete-choice.html#logistic-regression-in-r-1",
     "title": "Introduction to discrete choice models in R",
     "section": "Logistic regression in R",
-    "text": "Logistic regression in R\n\n\n\nCall:\nglm(formula = carpool ~ hhsize + cars_per_driver + commute + \n    social, family = binomial(link = \"logit\"), data = data)\n\nDeviance Residuals: \n    Min       1Q   Median       3Q      Max  \n-2.5103  -1.1182  -0.4432   1.1021   2.2223  \n\nCoefficients:\n                Estimate Std. Error z value Pr(>|z|)    \n(Intercept)     -0.87064    0.10399  -8.372  < 2e-16 ***\nhhsize           0.40598    0.02471  16.431  < 2e-16 ***\ncars_per_driver -0.05475    0.05786  -0.946  0.34405    \ncommuteTRUE     -1.75187    0.11251 -15.571  < 2e-16 ***\nsocialTRUE       0.29309    0.10381   2.823  0.00475 ** \n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\n(Dispersion parameter for binomial family taken to be 1)\n\n    Null deviance: 6929.7  on 4999  degrees of freedom\nResidual deviance: 6301.6  on 4995  degrees of freedom\nAIC: 6311.6\n\nNumber of Fisher Scoring iterations: 4"
+    "text": "Logistic regression in R\n\n\n\nCall:\nglm(formula = carpool ~ hhsize + cars_per_driver + commute + \n    social, family = binomial(link = \"logit\"), data = data)\n\nDeviance Residuals: \n    Min       1Q   Median       3Q      Max  \n-2.1680  -1.1291  -0.4298   1.1035   2.3704  \n\nCoefficients:\n                Estimate Std. Error z value Pr(>|z|)    \n(Intercept)     -0.69705    0.10562  -6.600 4.12e-11 ***\nhhsize           0.39411    0.02483  15.872  < 2e-16 ***\ncars_per_driver -0.20591    0.06124  -3.362 0.000773 ***\ncommuteTRUE     -1.82661    0.11851 -15.413  < 2e-16 ***\nsocialTRUE       0.36877    0.09771   3.774 0.000161 ***\n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\n(Dispersion parameter for binomial family taken to be 1)\n\n    Null deviance: 6927.6  on 4999  degrees of freedom\nResidual deviance: 6301.9  on 4995  degrees of freedom\nAIC: 6311.9\n\nNumber of Fisher Scoring iterations: 4"
   },
   {
     "objectID": "discrete-choice.html#binary-logistic-regression-as-a-random-utility-model",
@@ -130,7 +130,7 @@
     "href": "discrete-choice.html#but-dont-take-my-word-for-it",
     "title": "Introduction to discrete choice models in R",
     "section": "But don’t take my word for it…",
-    "text": "But don’t take my word for it…\n\n\n\nCall:\nglm(formula = carpool ~ hhsize + cars_per_driver + commute + \n    social, family = binomial(link = \"logit\"), data = data)\n\nDeviance Residuals: \n    Min       1Q   Median       3Q      Max  \n-2.5103  -1.1182  -0.4432   1.1021   2.2223  \n\nCoefficients:\n                Estimate Std. Error z value Pr(>|z|)    \n(Intercept)     -0.87064    0.10399  -8.372  < 2e-16 ***\nhhsize           0.40598    0.02471  16.431  < 2e-16 ***\ncars_per_driver -0.05475    0.05786  -0.946  0.34405    \ncommuteTRUE     -1.75187    0.11251 -15.571  < 2e-16 ***\nsocialTRUE       0.29309    0.10381   2.823  0.00475 ** \n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\n(Dispersion parameter for binomial family taken to be 1)\n\n    Null deviance: 6929.7  on 4999  degrees of freedom\nResidual deviance: 6301.6  on 4995  degrees of freedom\nAIC: 6311.6\n\nNumber of Fisher Scoring iterations: 4"
+    "text": "But don’t take my word for it…\n\n\n\nCall:\nglm(formula = carpool ~ hhsize + cars_per_driver + commute + \n    social, family = binomial(link = \"logit\"), data = data)\n\nDeviance Residuals: \n    Min       1Q   Median       3Q      Max  \n-2.1680  -1.1291  -0.4298   1.1035   2.3704  \n\nCoefficients:\n                Estimate Std. Error z value Pr(>|z|)    \n(Intercept)     -0.69705    0.10562  -6.600 4.12e-11 ***\nhhsize           0.39411    0.02483  15.872  < 2e-16 ***\ncars_per_driver -0.20591    0.06124  -3.362 0.000773 ***\ncommuteTRUE     -1.82661    0.11851 -15.413  < 2e-16 ***\nsocialTRUE       0.36877    0.09771   3.774 0.000161 ***\n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\n(Dispersion parameter for binomial family taken to be 1)\n\n    Null deviance: 6927.6  on 4999  degrees of freedom\nResidual deviance: 6301.9  on 4995  degrees of freedom\nAIC: 6311.9\n\nNumber of Fisher Scoring iterations: 4"
   },
   {
     "objectID": "discrete-choice.html#what-about-more-than-two-outcomes",
@@ -672,32 +672,81 @@
     "text": "Likelihood-ratio tests of the nested logit model\n\nWe can perform a likelihood-ratio test, since constraining the inclusive value parameter to 1 would be the same as a multinomial logit model"
   },
   {
-    "objectID": "discrete-choice.html#an-alternative-to-nested-logit-mixed-logit",
-    "href": "discrete-choice.html#an-alternative-to-nested-logit-mixed-logit",
+    "objectID": "discrete-choice.html#mixed-logit-1",
+    "href": "discrete-choice.html#mixed-logit-1",
     "title": "Introduction to discrete choice models in R",
-    "section": "An alternative to nested logit: mixed logit",
-    "text": "An alternative to nested logit: mixed logit\n\nIn multinomial logit and nested logit models, parameters are assumed to be constant across the population\nMixed logit allows (a subset of) coefficients to vary across individuals\nBy creating random coefficients that enter multiple utility functions as constants, correlations can be created\nBasically, using random coefficients as additional shared error terms"
+    "section": "Mixed logit",
+    "text": "Mixed logit\n\nIn multinomial logit and nested logit models, parameters are assumed to be constant across the population\nMixed logit allows (a subset of) coefficients to vary across individuals"
   },
   {
-    "objectID": "discrete-choice.html#mixed-logit",
-    "href": "discrete-choice.html#mixed-logit",
+    "objectID": "discrete-choice.html#mixed-logit-as-an-alternative-to-nested-logit",
+    "href": "discrete-choice.html#mixed-logit-as-an-alternative-to-nested-logit",
+    "title": "Introduction to discrete choice models in R",
+    "section": "Mixed logit as an alternative to nested logit",
+    "text": "Mixed logit as an alternative to nested logit\n\nBy creating random coefficients that enter multiple utility functions as constants, correlations can be created\nBasically, using random coefficients as additional shared error terms"
+  },
+  {
+    "objectID": "discrete-choice.html#mixed-logit-2",
+    "href": "discrete-choice.html#mixed-logit-2",
     "title": "Introduction to discrete choice models in R",
     "section": "Mixed logit",
     "text": "Mixed logit\nWe might write our nested model above as\n\\[\nU_{car} = X_{car}B_{car} + \\epsilon_{car}\n\\]\n\\[\nU_{bus} = X_{bus}B_{bus} + \\mu'_{shared} + \\epsilon_{bus}\n\\]\n\\[\nU_{rail} = X_{rail}B_{rail} + \\mu'_{shared} + \\epsilon_{rail}\n\\]\n\\[\nU_{air} = X_{air}B_{air} + \\mu'_{shared} + \\epsilon_{air}\n\\]\n\\(\\mu'_{shared}\\) is a random value which acts as a common error term for the shared modes"
   },
   {
-    "objectID": "discrete-choice.html#mixed-logit-1",
-    "href": "discrete-choice.html#mixed-logit-1",
+    "objectID": "discrete-choice.html#mixed-logit-probabilities",
+    "href": "discrete-choice.html#mixed-logit-probabilities",
     "title": "Introduction to discrete choice models in R",
-    "section": "Mixed logit",
-    "text": "Mixed logit\n\nMixed logit can also have coefficients that vary\nCommon use is value of time - we know this varies a lot across the population\nWhen using mixed logits, be careful of taking ratios for valuation\n\nRatio of two normally-distributed coefficients is Cauchy distributed, which has no mean\nYou can simulate a mean, it will just be unstable and change each time you run your code."
+    "section": "Mixed logit: probabilities",
+    "text": "Mixed logit: probabilities\n\nThe mixed logit probability is the same as the multinomial logit probability, but integrated over the random coefficients\nThis is usually done through simulation\n\nRandom draws are taken from the coefficient distribution, the likelihood is calculated for each, and then they are averaged together"
   },
   {
-    "objectID": "discrete-choice.html#an-alternative-to-nested-logit-mixed-logit-1",
-    "href": "discrete-choice.html#an-alternative-to-nested-logit-mixed-logit-1",
+    "objectID": "discrete-choice.html#mixed-logit-3",
+    "href": "discrete-choice.html#mixed-logit-3",
     "title": "Introduction to discrete choice models in R",
-    "section": "An alternative to nested logit: mixed logit",
-    "text": "An alternative to nested logit: mixed logit\n\nEstimating mixed logit models is beyond the scope of this course\nFor more information on mixed logit models, see Train (2009) (free ebook available) and the Apollo manual"
+    "section": "Mixed logit",
+    "text": "Mixed logit\n\nMixed logit can also have coefficients that vary randomly\nCommon use is value of time - we know this varies a lot across the population\nFor more information on mixed logit models, see Train (2009) (free ebook available) and the Apollo manual"
+  },
+  {
+    "objectID": "discrete-choice.html#mixed-logit-in-r",
+    "href": "discrete-choice.html#mixed-logit-in-r",
+    "title": "Introduction to discrete choice models in R",
+    "section": "Mixed logit in R",
+    "text": "Mixed logit in R\n\nlibrary(apollo)\nlibrary(tidyverse)\n\ndatabase = read_csv(\"data/modechoice_apollo.csv\")\n\napollo_initialise()\n\napollo_control = list(\n    modelName = \"Mixed_Mode_Choice\",\n    indivID=\"ID\",\n    mixing = T\n)"
+  },
+  {
+    "objectID": "discrete-choice.html#defining-draws",
+    "href": "discrete-choice.html#defining-draws",
+    "title": "Introduction to discrete choice models in R",
+    "section": "Defining draws",
+    "text": "Defining draws\n\nWe need to tell Apollo what random variable we have\nSince log-likelihood is simulated, these are called “draws”\nHalton draws are common since they provide good distribution\nMost often in panel data, draws vary at the individual level\n\ni.e. an individual has the same random coefficient for all choices"
+  },
+  {
+    "objectID": "discrete-choice.html#defining-random-coefficients",
+    "href": "discrete-choice.html#defining-random-coefficients",
+    "title": "Introduction to discrete choice models in R",
+    "section": "Defining random coefficients",
+    "text": "Defining random coefficients\n\nBased on the draws, we then define an apollo_randCoeff function that transforms them as needed to the desired form"
+  },
+  {
+    "objectID": "discrete-choice.html#likelihood-ratio-test-for-mixed-logit",
+    "href": "discrete-choice.html#likelihood-ratio-test-for-mixed-logit",
+    "title": "Introduction to discrete choice models in R",
+    "section": "Likelihood-ratio test for mixed logit",
+    "text": "Likelihood-ratio test for mixed logit\n\nCannot compare to nested logit (why?) . . .\n\nModels are non-nested, cannot reduce this mixed logit model to nested logit\n\nCan compare to multinomial logit (with what constraint?) . . .\n\nConstrain standard deviation to zero"
+  },
+  {
+    "objectID": "discrete-choice.html#interpreting-mixed-logit-models",
+    "href": "discrete-choice.html#interpreting-mixed-logit-models",
+    "title": "Introduction to discrete choice models in R",
+    "section": "Interpreting mixed logit models",
+    "text": "Interpreting mixed logit models\n\nError components model: standard deviations of error terms and their significance is proportional to correlation between alternatives\n\nopposite of nested logit, where smaller inclusive value parameters mean more correlation\n\nCan also have random coefficients\n\nUsually a mean is added to the coefficients in this case\nOften used for value of time"
+  },
+  {
+    "objectID": "discrete-choice.html#interpreting-mixed-logit-models-1",
+    "href": "discrete-choice.html#interpreting-mixed-logit-models-1",
+    "title": "Introduction to discrete choice models in R",
+    "section": "Interpreting mixed logit models",
+    "text": "Interpreting mixed logit models\n\nBe careful with valuation\n\nRatio of normally distributed coefficients is Cauchy distributed\nKnown as a “pathological” distribution - no mean\nProbably not economically consistent; even Jeff Bezos doesn’t have infinite value of time"
   },
   {
     "objectID": "discrete-choice.html#questions-and-contact",
