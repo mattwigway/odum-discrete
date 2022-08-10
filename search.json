@@ -18,7 +18,7 @@
     "href": "discrete-choice.html#before-we-go-any-further",
     "title": "Introduction to discrete choice models in R",
     "section": "Before we go any further",
-    "text": "Before we go any further\n\nExample code and data at https://files.indicatrix.org/odum_discrete_class_files.zip\nThese slides at https://projects.indicatrix.org/odum-discrete/discrete-choice.html"
+    "text": "Before we go any further\n\nSlides, code, and data at https://projects.indicatrix.org/odum-discrete/"
   },
   {
     "objectID": "discrete-choice.html#before-we-go-any-further-1",
@@ -704,6 +704,6 @@
     "href": "index.html",
     "title": "Odum Discrete Choice Modeling class",
     "section": "",
-    "text": "Slides"
+    "text": "Example code and data\nSlides"
   }
 ]
