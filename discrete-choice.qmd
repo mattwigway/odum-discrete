@@ -60,6 +60,11 @@ clear = function () {
 
 ## Before we go any further
 
+- Example code and data at [https://files.indicatrix.org/odum_discrete_class_files.zip](https://files.indicatrix.org/odum_discrete_class_files.zip)
+- These slides at [https://projects.indicatrix.org/odum-discrete/discrete-choice.html](https://projects.indicatrix.org/odum-discrete/discrete-choice.html)
+
+## Before we go any further
+
 - If you haven't already installed R, RStudio, `apollo`, and `tidyverse`, do so now
 - R: [https://r-project.org](https://r-project.org)
 - RStudio: [https://rstudio.com](https://rstudio.com)
@@ -68,8 +73,6 @@ clear = function () {
 install.packages("tidyverse")
 install.packages("apollo")
 ```
-
-
 
 ## What are discrete choice models?
 
