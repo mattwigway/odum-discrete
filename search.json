@@ -4,7 +4,7 @@
     "href": "prepare-data.html",
     "title": "Data Matters Discrete Choice Models",
     "section": "",
-    "text": "For testing logistic regression.\n\nread_csv(\"data/nhts/trippub.csv\") %>%\n    filter(TRPTRANS %in% c(\"03\", \"04\", \"05\", \"06\") & DRVRCNT >= 1) %>%\n    mutate(carpool=NUMONTRP > 1, cars_per_driver=HHVEHCNT / DRVRCNT,              commute=WHYTRP1S==10, social=WHYTRP1S==50, hhsize=HHSIZE, id=row_number()) %>%\n    slice_sample(n=5000) %>%\n    select(id, carpool, cars_per_driver, hhsize, commute, social) %>%\n    write_csv(\"data/nhts/carpool.csv\")\n\nRows: 923572 Columns: 115\n── Column specification ────────────────────────────────────────────────────────\nDelimiter: \",\"\nchr (74): PERSONID, TDTRPNUM, STRTTIME, ENDTIME, TRPTRANS, VEHID, DROP_PRK, ...\ndbl (41): HOUSEID, TRVLCMIN, TRPMILES, TRPACCMP, TRPHHACC, TRWAITTM, NUMTRAN...\n\nℹ Use `spec()` to retrieve the full column specification for this data.\nℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.\n\n\n\n\n\n\ncovidfuture = read_csv(\"data/covidfuture/covid_pooled_public_w1b_1.1.0b7.csv\")\n\nWarning: One or more parsing issues, see `problems()` for details\n\n\nRows: 8152 Columns: 487\n── Column specification ────────────────────────────────────────────────────────\nDelimiter: \",\"\nchr  (448): empl_pre, worker_pre, jobcat_pre, ind_pre, empl_now, worker_now,...\ndbl   (33): resp_id, wfh_now_days, bzvm_now, tr_freq_now_privateveh, tr_freq...\nlgl    (4): yrborn_miss_desc, hhsize_miss_desc, nchildren_miss_desc, Finished\ndate   (2): StartDate, EndDate\n\nℹ Use `spec()` to retrieve the full column specification for this data.\nℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.\n\n\n\n# create the wfh variable\nworkers = covidfuture %>%\n    filter(worker_pre == \"yes\" | worker_now == \"yes\") %>%\n    mutate(\n        wfh=case_when(\n            wfh_expect == \"No\" ~ \"Unable\",\n            wfh_freq_exp %in% c(\"Never\", \"A few times/year\") ~ \"Rarely\",\n            wfh_freq_exp %in% c(\"A few times/month\", \"Once/week\", \"A few times/week\") ~ \"Often\",\n            wfh_freq_exp == \"Every day\" ~ \"Always\"\n        ),\n        income_100k_plus = hhincome_summary == \"$100,000 or more\",\n        service_worker=\n            !(case_when(ind_now == \"Question not displayed to respondent\" ~ ind_pre, T ~ ind_now) %in% c(\"None of the above\", \"Seen but unanswered\"))\n        ) %>%\n    filter(!is.na(wfh))\n\nselect(workers, resp_id, wfh, age, income_100k_plus, service_worker) %>%\n    write_csv(\"data/covidfuture_wfh.csv\")\n\n\n\n\nFrom apollo\n\nread_csv(\"data/apollo_modeChoiceData.csv\") %>%\n    filter(RP == 1) %>%\n    select(-c(RP, SP, RP_journey, SP_task)) %>%\n    write_csv(\"modechoice_apollo.csv\")\n\nRows: 8000 Columns: 26\n── Column specification ────────────────────────────────────────────────────────\nDelimiter: \",\"\ndbl (26): ID, RP, SP, RP_journey, SP_task, av_car, av_bus, av_air, av_rail, ...\n\nℹ Use `spec()` to retrieve the full column specification for this data.\nℹ Specify the column types or set `show_col_types = FALSE` to quiet this message."
+    "text": "For testing logistic regression.\n\nread_csv(\"data/nhts/trippub.csv\") %>%\n    filter(TRPTRANS %in% c(\"03\", \"04\", \"05\", \"06\") & DRVRCNT >= 1) %>%\n    mutate(carpool=NUMONTRP > 1, cars_per_driver=HHVEHCNT / DRVRCNT,              commute=WHYTRP1S==10, social=WHYTRP1S==50, hhsize=HHSIZE, id=row_number()) %>%\n    slice_sample(n=5000) %>%\n    select(id, carpool, cars_per_driver, hhsize, commute, social) %>%\n    write_csv(\"data/nhts/carpool.csv\")\n\nRows: 923572 Columns: 115\n── Column specification ────────────────────────────────────────────────────────\nDelimiter: \",\"\nchr (74): PERSONID, TDTRPNUM, STRTTIME, ENDTIME, TRPTRANS, VEHID, DROP_PRK, ...\ndbl (41): HOUSEID, TRVLCMIN, TRPMILES, TRPACCMP, TRPHHACC, TRWAITTM, NUMTRAN...\n\nℹ Use `spec()` to retrieve the full column specification for this data.\nℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.\n\n\n\n\n\n\ncovidfuture = read_csv(\"data/covidfuture/covid_pooled_public_w1b_1.1.0b7.csv\")\n\nWarning: One or more parsing issues, see `problems()` for details\n\n\nRows: 8152 Columns: 487\n── Column specification ────────────────────────────────────────────────────────\nDelimiter: \",\"\nchr  (448): empl_pre, worker_pre, jobcat_pre, ind_pre, empl_now, worker_now,...\ndbl   (33): resp_id, wfh_now_days, bzvm_now, tr_freq_now_privateveh, tr_freq...\nlgl    (4): yrborn_miss_desc, hhsize_miss_desc, nchildren_miss_desc, Finished\ndate   (2): StartDate, EndDate\n\nℹ Use `spec()` to retrieve the full column specification for this data.\nℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.\n\n\n\n# create the wfh variable\nworkers = covidfuture %>%\n    filter(worker_pre == \"yes\" | worker_now == \"yes\") %>%\n    mutate(\n        wfh=case_when(\n            wfh_expect == \"No\" ~ \"Unable\",\n            wfh_freq_exp %in% c(\"Never\", \"A few times/year\") ~ \"Rarely\",\n            wfh_freq_exp %in% c(\"A few times/month\", \"Once/week\", \"A few times/week\") ~ \"Often\",\n            wfh_freq_exp == \"Every day\" ~ \"Always\"\n        ),\n        income_100k_plus = hhincome_summary == \"$100,000 or more\",\n        service_worker=\n            !(case_when(ind_now == \"Question not displayed to respondent\" ~ ind_pre, T ~ ind_now) %in% c(\"None of the above\", \"Seen but unanswered\"))\n        ) %>%\n    filter(!is.na(wfh))\n\nselect(workers, resp_id, wfh, age, income_100k_plus, service_worker) %>%\n    write_csv(\"data/covidfuture_wfh.csv\")\n\n\n\n\nFrom apollo\n\nread_csv(\"data/apollo_modeChoiceData.csv\") %>%\n    filter(RP == 1) %>%\n    select(-c(RP, SP, RP_journey, SP_task)) %>%\n    write_csv(\"data/modechoice_apollo.csv\")\n\nRows: 8000 Columns: 26\n── Column specification ────────────────────────────────────────────────────────\nDelimiter: \",\"\ndbl (26): ID, RP, SP, RP_journey, SP_task, av_car, av_bus, av_air, av_rail, ...\n\nℹ Use `spec()` to retrieve the full column specification for this data.\nℹ Specify the column types or set `show_col_types = FALSE` to quiet this message."
   },
   {
     "objectID": "discrete-choice.html#about-me",
@@ -91,6 +91,62 @@
     "text": "Logistic regression in R\n\n\n\nCall:\nglm(formula = carpool ~ hhsize + cars_per_driver + commute + \n    social, family = binomial(link = \"logit\"), data = data)\n\nDeviance Residuals: \n    Min       1Q   Median       3Q      Max  \n-2.1680  -1.1291  -0.4298   1.1035   2.3704  \n\nCoefficients:\n                Estimate Std. Error z value Pr(>|z|)    \n(Intercept)     -0.69705    0.10562  -6.600 4.12e-11 ***\nhhsize           0.39411    0.02483  15.872  < 2e-16 ***\ncars_per_driver -0.20591    0.06124  -3.362 0.000773 ***\ncommuteTRUE     -1.82661    0.11851 -15.413  < 2e-16 ***\nsocialTRUE       0.36877    0.09771   3.774 0.000161 ***\n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\n(Dispersion parameter for binomial family taken to be 1)\n\n    Null deviance: 6927.6  on 4999  degrees of freedom\nResidual deviance: 6301.9  on 4995  degrees of freedom\nAIC: 6311.9\n\nNumber of Fisher Scoring iterations: 4"
   },
   {
+    "objectID": "discrete-choice.html#interpreting-logistic-regression",
+    "href": "discrete-choice.html#interpreting-logistic-regression",
+    "title": "Introduction to discrete choice models in R",
+    "section": "Interpreting logistic regression",
+    "text": "Interpreting logistic regression\n\nPositive coefficients mean positive outcome is more likely\nNegative the opposite\nLarger coefficients indicate a larger effect\nUnlike linear regression, coefficients don’t have a direct interpretation in terms of the dependent variable\n\nSee section on marginal effects below\n\nStatistical significance can be interpreted like in a linear regression"
+  },
+  {
+    "objectID": "discrete-choice.html#interpreting-logistic-regression-1",
+    "href": "discrete-choice.html#interpreting-logistic-regression-1",
+    "title": "Introduction to discrete choice models in R",
+    "section": "Interpreting logistic regression",
+    "text": "Interpreting logistic regression\n\n\n\n\n\n\nCoefficient\nStandard error\nZ-value\np-value\n\n\n\n\n(Intercept)\n-0.70\n0.11\n-6.60\n0\n\n\nhhsize\n0.39\n0.02\n15.87\n0\n\n\ncars_per_driver\n-0.21\n0.06\n-3.36\n0\n\n\ncommuteTRUE\n-1.83\n0.12\n-15.41\n0\n\n\nsocialTRUE\n0.37\n0.10\n3.77\n0"
+  },
+  {
+    "objectID": "discrete-choice.html#statistical-significance-and-p-values",
+    "href": "discrete-choice.html#statistical-significance-and-p-values",
+    "title": "Introduction to discrete choice models in R",
+    "section": "Statistical significance and p-values",
+    "text": "Statistical significance and p-values\n\nCoefficients are approximations to population-level parameters, and contain sampling error because we haven’t sampled the entire population\nThe standard error (\\(\\sigma\\)) is a measure of how precise the coefficient is\nWe assume coefficient estimates are asymtotically[^aysmtotically] normal\nBased on a normal distribution, there is a 95% chance the population parameter is within \\(1.96 \\times \\sigma\\) of the estimate"
+  },
+  {
+    "objectID": "discrete-choice.html#statistical-significance-and-p-values-1",
+    "href": "discrete-choice.html#statistical-significance-and-p-values-1",
+    "title": "Introduction to discrete choice models in R",
+    "section": "Statistical significance and p-values",
+    "text": "Statistical significance and p-values\n\nWe can also perform a hypothesis test that the coefficient is different from 0\nTo do this, we compute a \\(z\\)-value, which is just the coefficient divided by the standard error\nPut another way, the \\(z\\)-value is the number of standard errors between the coefficient and zero\nLarge coefficients lead to large \\(z\\)-values\nLarge standard errors (i.e. high uncertainty) lead to small \\(z\\)-values"
+  },
+  {
+    "objectID": "discrete-choice.html#statistical-significance-and-p-values-2",
+    "href": "discrete-choice.html#statistical-significance-and-p-values-2",
+    "title": "Introduction to discrete choice models in R",
+    "section": "Statistical significance and p-values",
+    "text": "Statistical significance and p-values\n\n\\(z\\) values larger in magnitude than 1.96 indicate that there is less than a 5% chance of observing a coefficient as larger or larger than the estimated coefficient if the true coefficient were zero"
+  },
+  {
+    "objectID": "discrete-choice.html#statistical-significance-and-p-values-3",
+    "href": "discrete-choice.html#statistical-significance-and-p-values-3",
+    "title": "Introduction to discrete choice models in R",
+    "section": "Statistical significance and p-values",
+    "text": "Statistical significance and p-values\n\nThe \\(p\\)-value is the probability of observing a coefficient as large or larger\nComputed as \\(2(1 - \\phi(|z|))\\), where \\(z\\) is the \\(z\\)-value and \\(\\phi\\) is the normal cumulative distribution function\nUsual rule is that \\(p < 0.05\\) is statistically significant, but in larger datasets \\(p < 0.01\\) or even \\(p < 0.001\\) may be used"
+  },
+  {
+    "objectID": "discrete-choice.html#statistical-significance-and-p-values-4",
+    "href": "discrete-choice.html#statistical-significance-and-p-values-4",
+    "title": "Introduction to discrete choice models in R",
+    "section": "Statistical significance and p-values",
+    "text": "Statistical significance and p-values\n\nFor more information about the math, see the hypothesis testing section of any statistics textbook\nLogistic regression hypothesis tests are computed just like linear regression, except using the normal instead of \\(t\\) distribution"
+  },
+  {
+    "objectID": "discrete-choice.html#nonsampling-error",
+    "href": "discrete-choice.html#nonsampling-error",
+    "title": "Introduction to discrete choice models in R",
+    "section": "Nonsampling error",
+    "text": "Nonsampling error\n\nThe \\(z\\) and \\(p\\) values account for the chance that the coefficient differs from the true population parameter due to random sampling error\n\ni.e. because you didn’t sample every member of the population, there is some probability that if you had, the answer would be different\n\nThey do not account for non-sampling error—bias in who was in the sampling frame to begin with\nFor instance, recruiting for a survey through a random sample of landline telephones would not sample anyone with only a cell phone, or no phone at all\nThis would likely bias results towards older and higher-income people"
+  },
+  {
     "objectID": "discrete-choice.html#binary-logistic-regression-as-a-random-utility-model",
     "href": "discrete-choice.html#binary-logistic-regression-as-a-random-utility-model",
     "title": "Introduction to discrete choice models in R",
@@ -165,7 +221,7 @@
     "href": "discrete-choice.html#multinomial-logistic-regression-in-r-1",
     "title": "Introduction to discrete choice models in R",
     "section": "Multinomial logistic regression in R",
-    "text": "Multinomial logistic regression in R\n` - These utility functions will have the same variables but different coefficients - Each will also have a alternative specific constant—like a constant in logistic regression that represents the base rate, but for each alternative - One utility function will be held at zero"
+    "text": "Multinomial logistic regression in R\n\nThese utility functions will have the same variables but different coefficients\nEach will also have a alternative specific constant—like a constant in logistic regression that represents the base rate, but for each alternative\nOne utility function will be held at zero"
   },
   {
     "objectID": "discrete-choice.html#multinomial-logistic-regression-in-r-2",
@@ -231,11 +287,25 @@
     "text": "Estimation in R\nmode-choice-mnl.R\n\nlibrary(apollo)\nlibrary(tidyverse)\n\ndatabase = read_csv(\"data/modechoice_apollo.csv\")\n\napollo_initialise()\n\napollo_control = list(\n    modelName = \"Apollo_Mode_Choice\",\n    indivID=\"ID\"\n)"
   },
   {
+    "objectID": "discrete-choice.html#interpretation-of-multinomial-logit-models",
+    "href": "discrete-choice.html#interpretation-of-multinomial-logit-models",
+    "title": "Introduction to discrete choice models in R",
+    "section": "Interpretation of multinomial logit models",
+    "text": "Interpretation of multinomial logit models\n\nThe income coefficient is itnerpreted the same way as the coefficients in the working-from-home model\nThe cost coefficients, however, aren’t associated with a particular alternative, so their interpretation is different"
+  },
+  {
+    "objectID": "discrete-choice.html#interpretation-of-multinomial-logit-models-1",
+    "href": "discrete-choice.html#interpretation-of-multinomial-logit-models-1",
+    "title": "Introduction to discrete choice models in R",
+    "section": "Interpretation of multinomial logit models",
+    "text": "Interpretation of multinomial logit models\n\nA coefficient estimated for an aspect of an alternative represents how valuable that aspect is to the decisionmaker\nFor estimation to succeed, this aspect must vary over alternatives"
+  },
+  {
     "objectID": "discrete-choice.html#valuation-using-discrete-choice-models",
     "href": "discrete-choice.html#valuation-using-discrete-choice-models",
     "title": "Introduction to discrete choice models in R",
     "section": "Valuation using discrete choice models",
-    "text": "Valuation using discrete choice models\n\nA common use for discrete choice models is to calculate willingness-to-pay\nThe linear-in-parameters utility function puts everything in terms of utility\nIf we have a cost parameter, we can use the model to put everything else in monetary units"
+    "text": "Valuation using discrete choice models\n\nA common use for discrete choice models is to calculate willingness-to-pay\nThe linear-in-parameters utility function puts everything in terms of utility\nIf we have a cost parameter, we can use the model to put everything else in monetary units\nThis makes interpretation and application more understandable"
   },
   {
     "objectID": "discrete-choice.html#valuation-using-discrete-choice-models-1",
@@ -277,7 +347,7 @@
     "href": "discrete-choice.html#interpretation",
     "title": "Introduction to discrete choice models in R",
     "section": "Interpretation",
-    "text": "Interpretation\n\n\nPeople really don’t like being on airplanes"
+    "text": "Interpretation\n\n\nPeople really don’t like being on airplanes, value of time is much higher for air than other modes\nYou can also see this in the coefficients, airplane in-vehicle travel time has a more negative coefficient than other modes, indicating it is more disliked"
   },
   {
     "objectID": "discrete-choice.html#correlation-does-not-imply-causation",
@@ -564,7 +634,7 @@
     "href": "discrete-choice.html#independence-of-irrelevant-alternatives-the-math",
     "title": "Introduction to discrete choice models in R",
     "section": "Independence of irrelevant alternatives: the math",
-    "text": "Independence of irrelevant alternatives: the math\n\\[ \\frac{\\delta p(b)}{\\delta U_r}\\]\n\\[\n= \\frac{\n    e^{U_b}}{\n        e^{U_r} + e^{U_b} + e^{U_c}}\n    \\frac{\\delta}{\\delta U_r}\n\\]\n\\[\n    = e^{U_b} \\big[ ( e^{U_r} + e^{U_b} + e^{U_c} \\big)^{-1} \\frac{\\delta}{\\delta U_r} \\big]\n\\]"
+    "text": "Independence of irrelevant alternatives: the math\nWhat is the effect of a change in utility of red bus on probability of choosing blue bus or car?\n\n\\(U_r, U_b, U_c\\): utility of red bus, blue bus, and car, respectively\n\\(p(b)\\): probability of choosing blue bus"
   },
   {
     "objectID": "discrete-choice.html#questions-3",
@@ -665,6 +735,13 @@
     "text": "Nested logit in R\n\nlibrary(apollo)\nlibrary(tidyverse)\n\ndatabase = read_csv(\"data/modechoice_apollo.csv\")\n\napollo_initialise()\n\napollo_control = list(\n    modelName = \"Nested_Mode_Choice\",\n    indivID=\"ID\"\n)"
   },
   {
+    "objectID": "discrete-choice.html#interpreting-the-nested-logit-model",
+    "href": "discrete-choice.html#interpreting-the-nested-logit-model",
+    "title": "Introduction to discrete choice models in R",
+    "section": "Interpreting the nested logit model",
+    "text": "Interpreting the nested logit model\n\nThe shared mode nest has an inclusive value parameter of 0.6\nThis is statistically significantly different from 1\n\nNeed to do the hypothesis test manually, Apollo has presented a test relative to 0\n\nThis means that there are common unobserved attributes between the shared mode\nInterpreting other coefficients is the same as with the multinomial logit model"
+  },
+  {
     "objectID": "discrete-choice.html#likelihood-ratio-tests-of-the-nested-logit-model",
     "href": "discrete-choice.html#likelihood-ratio-tests-of-the-nested-logit-model",
     "title": "Introduction to discrete choice models in R",
@@ -739,14 +816,21 @@
     "href": "discrete-choice.html#interpreting-mixed-logit-models",
     "title": "Introduction to discrete choice models in R",
     "section": "Interpreting mixed logit models",
-    "text": "Interpreting mixed logit models\n\nError components model: standard deviations of error terms and their significance is proportional to correlation between alternatives\n\nopposite of nested logit, where smaller inclusive value parameters mean more correlation\n\nCan also have random coefficients\n\nUsually a mean is added to the coefficients in this case\nOften used for value of time"
+    "text": "Interpreting mixed logit models\n\nError components model: standard deviations of error terms and their significance is proportional to correlation between alternatives\n\nopposite of nested logit, where smaller inclusive value parameters mean more correlation\nWe found a significant sd_shared parameter, which means that there are unobserved common factors between the shared modes"
   },
   {
-    "objectID": "discrete-choice.html#interpreting-mixed-logit-models-1",
-    "href": "discrete-choice.html#interpreting-mixed-logit-models-1",
+    "objectID": "discrete-choice.html#random-coefficients",
+    "href": "discrete-choice.html#random-coefficients",
     "title": "Introduction to discrete choice models in R",
-    "section": "Interpreting mixed logit models",
-    "text": "Interpreting mixed logit models\n\nBe careful with valuation\n\nRatio of normally distributed coefficients is Cauchy distributed\nKnown as a “pathological” distribution - no mean\nProbably not economically consistent; even Jeff Bezos doesn’t have infinite value of time"
+    "section": "Random coefficients",
+    "text": "Random coefficients\n\nCan also have random coefficients\n\nUsually a mean is added to the coefficients in this case\nOften used for value of time"
+  },
+  {
+    "objectID": "discrete-choice.html#interpreting-random-coefficients",
+    "href": "discrete-choice.html#interpreting-random-coefficients",
+    "title": "Introduction to discrete choice models in R",
+    "section": "Interpreting random coefficients",
+    "text": "Interpreting random coefficients\n\nBe careful with valuation\n\nAny function of coefficients must be integrated over coefficient distribution\nRatio of normally distributed coefficients is Cauchy distributed\nKnown as a “pathological” distribution - no mean\nDenominator can be arbitrarily close to zero, making estimate arbitrarily close to infinity\nNot possible to estimate through simulation, simulated value will be unstable depending on how close to zero the smallest sample from the denominator was"
   },
   {
     "objectID": "discrete-choice.html#questions-and-contact",

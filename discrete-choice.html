@@ -562,6 +562,179 @@ Number of Fisher Scoring iterations: 4</code></pre>
 </div>
 </div>
 </section>
+<section id="interpreting-logistic-regression" class="slide level2">
+<h2>Interpreting logistic regression</h2>
+<ul>
+<li>Positive coefficients mean positive outcome is more likely</li>
+<li>Negative the opposite</li>
+<li>Larger coefficients indicate a larger effect</li>
+<li>Unlike linear regression, coefficients don’t have a direct interpretation in terms of the dependent variable
+<ul>
+<li>See section on marginal effects below</li>
+</ul></li>
+<li>Statistical significance can be interpreted like in a linear regression</li>
+</ul>
+</section>
+<section id="interpreting-logistic-regression-1" class="slide level2">
+<h2>Interpreting logistic regression</h2>
+<div class="cell" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-6_01ff95720efaea528216b43ed7426136">
+<div class="cell-output-display">
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: right;">Coefficient</th>
+<th style="text-align: right;">Standard error</th>
+<th style="text-align: right;">Z-value</th>
+<th style="text-align: right;">p-value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">(Intercept)</td>
+<td style="text-align: right;">-0.70</td>
+<td style="text-align: right;">0.11</td>
+<td style="text-align: right;">-6.60</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">hhsize</td>
+<td style="text-align: right;">0.39</td>
+<td style="text-align: right;">0.02</td>
+<td style="text-align: right;">15.87</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">cars_per_driver</td>
+<td style="text-align: right;">-0.21</td>
+<td style="text-align: right;">0.06</td>
+<td style="text-align: right;">-3.36</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">commuteTRUE</td>
+<td style="text-align: right;">-1.83</td>
+<td style="text-align: right;">0.12</td>
+<td style="text-align: right;">-15.41</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">socialTRUE</td>
+<td style="text-align: right;">0.37</td>
+<td style="text-align: right;">0.10</td>
+<td style="text-align: right;">3.77</td>
+<td style="text-align: right;">0</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<section class="slide level2">
+
+<ul>
+<li>In this model, the dependent variable is 1 if the trip was a carpool, and 0 if not</li>
+<li>Positive coefficients thus indicate a higher likelihood of carpooling</li>
+<li>We could alos code carpool as 0 and non-carpool as 1, and get the same model with signs on all coefficients reversed</li>
+</ul>
+</section>
+<section class="slide level2">
+
+<ul>
+<li>Intercept is generally not interpreted in logistic regression
+<ul>
+<li>Controls “base rate” - proportion of positive outcomes when all covariates are 0.</li>
+</ul></li>
+</ul>
+</section>
+<section class="slide level2">
+
+<ul>
+<li><code>hhsize</code> has a positive and statistically significant coefficient, indicating that larger households are more likely to carpool
+<ul>
+<li>This makes sense, there are more household members to carpool with</li>
+</ul></li>
+</ul>
+</section>
+<section class="slide level2">
+
+<ul>
+<li><code>cars_per_driver</code> has a negative coefficient, indicating that households with more cars for each driver are less likely to carpool
+<ul>
+<li>This makes sense as a vehicle is more likely to be available for single person</li>
+</ul></li>
+</ul>
+</section>
+<section class="slide level2">
+
+<ul>
+<li><code>commuteTRUE</code> has a negative coefficient, indicating that commute trips are less likely to be carpools
+<ul>
+<li>Again, this makes senses—commutes are to a location usually only relevant to one household member</li>
+</ul></li>
+</ul>
+</section>
+<section class="slide level2">
+
+<ul>
+<li><code>socialTRUE</code> has a positive coefficient, indicating social and recreational trips are more likely to be carpools
+<ul>
+<li>Multiple household members are likely to participate in social and recreational activities together, and travel to them together</li>
+</ul></li>
+</ul>
+</section>
+<section id="statistical-significance-and-p-values" class="slide level2">
+<h2>Statistical significance and p-values</h2>
+<ul>
+<li>Coefficients are approximations to population-level parameters, and contain sampling error because we haven’t sampled the entire population</li>
+<li>The standard error (<span class="math inline">\(\sigma\)</span>) is a measure of how precise the coefficient is</li>
+<li>We assume coefficient estimates are asymtotically[^aysmtotically] normal</li>
+<li>Based on a normal distribution, there is a 95% chance the population parameter is within <span class="math inline">\(1.96 \times \sigma\)</span> of the estimate</li>
+</ul>
+</section>
+<section id="statistical-significance-and-p-values-1" class="slide level2">
+<h2>Statistical significance and p-values</h2>
+<ul>
+<li>We can also perform a hypothesis test that the coefficient is different from 0</li>
+<li>To do this, we compute a <span class="math inline">\(z\)</span>-value, which is just the coefficient divided by the standard error</li>
+<li>Put another way, the <span class="math inline">\(z\)</span>-value is the number of standard errors between the coefficient and zero</li>
+<li>Large coefficients lead to large <span class="math inline">\(z\)</span>-values</li>
+<li>Large standard errors (i.e.&nbsp;high uncertainty) lead to small <span class="math inline">\(z\)</span>-values</li>
+</ul>
+</section>
+<section id="statistical-significance-and-p-values-2" class="slide level2">
+<h2>Statistical significance and p-values</h2>
+<ul>
+<li><span class="math inline">\(z\)</span> values larger in magnitude than 1.96 indicate that there is less than a 5% chance of observing a coefficient as larger or larger than the estimated coefficient if the true coefficient were zero</li>
+</ul>
+</section>
+<section id="statistical-significance-and-p-values-3" class="slide level2">
+<h2>Statistical significance and p-values</h2>
+<ul>
+<li>The <span class="math inline">\(p\)</span>-value is the probability of observing a coefficient as large or larger</li>
+<li>Computed as <span class="math inline">\(2(1 - \phi(|z|))\)</span>, where <span class="math inline">\(z\)</span> is the <span class="math inline">\(z\)</span>-value and <span class="math inline">\(\phi\)</span> is the normal cumulative distribution function</li>
+<li>Usual rule is that <span class="math inline">\(p &lt; 0.05\)</span> is statistically significant, but in larger datasets <span class="math inline">\(p &lt; 0.01\)</span> or even <span class="math inline">\(p &lt; 0.001\)</span> may be used</li>
+</ul>
+</section>
+<section id="statistical-significance-and-p-values-4" class="slide level2">
+<h2>Statistical significance and p-values</h2>
+<ul>
+<li>For more information about the math, see the hypothesis testing section of any statistics textbook</li>
+<li>Logistic regression hypothesis tests are computed just like linear regression, except using the normal instead of <span class="math inline">\(t\)</span> distribution</li>
+</ul>
+</section>
+<section id="nonsampling-error" class="slide level2">
+<h2>Nonsampling error</h2>
+<ul>
+<li>The <span class="math inline">\(z\)</span> and <span class="math inline">\(p\)</span> values account for the chance that the coefficient differs from the true population parameter due to random sampling error
+<ul>
+<li>i.e.&nbsp;because you didn’t sample every member of the population, there is some probability that if you had, the answer would be different</li>
+</ul></li>
+<li>They do not account for <em>non-sampling error</em>—bias in who was in the sampling frame to begin with</li>
+<li>For instance, recruiting for a survey through a random sample of landline telephones would not sample anyone with only a cell phone, or no phone at all</li>
+<li>This would likely bias results towards older and higher-income people</li>
+</ul>
+</section>
 <section id="binary-logistic-regression-as-a-random-utility-model" class="slide level2">
 <h2>Binary logistic regression as a random utility model</h2>
 <ul>
@@ -602,7 +775,7 @@ p(y = 1) = p(U_{y=1} &gt; U_{y=0})\\= \frac{e^{U_{y=1}}}{e^{U_{y=0}} + e^{U_{y=1
 <section id="binary-logistic-regression-as-a-random-utility-model-in-r" class="slide level2">
 <h2>Binary logistic regression as a random utility model in R</h2>
 <p><code>nhts-carpool-apollo.R</code></p>
-<div class="cell" data-filename="nhts-carpool-apollo.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-7_cd7ca6bc75f24a4f58694445c495ea59">
+<div class="cell" data-filename="nhts-carpool-apollo.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-8_053ccec62b4db6a86516f7b84aacc7df">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="fu">library</span>(apollo)</span>
 <span id="cb4-2"><a href="#cb4-2"></a><span class="fu">library</span>(tidyverse)</span>
 <span id="cb4-3"><a href="#cb4-3"></a></span>
@@ -612,7 +785,7 @@ p(y = 1) = p(U_{y=1} &gt; U_{y=0})\\= \frac{e^{U_{y=1}}}{e^{U_{y=0}} + e^{U_{y=1
 </section>
 <section class="slide level2">
 
-<div class="cell" data-filename="nhts-carpool-apollo.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-8_2d0185790338db8ca615d556e3f847ee">
+<div class="cell" data-filename="nhts-carpool-apollo.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-9_fea539c40d4d75fcdf52391d40a0cf49">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="co"># Initialize Apollo library</span></span>
 <span id="cb5-2"><a href="#cb5-2"></a><span class="fu">apollo_initialise</span>()</span>
 <span id="cb5-3"><a href="#cb5-3"></a></span>
@@ -625,7 +798,7 @@ p(y = 1) = p(U_{y=1} &gt; U_{y=0})\\= \frac{e^{U_{y=1}}}{e^{U_{y=0}} + e^{U_{y=1
 </section>
 <section class="slide level2">
 
-<div class="cell" data-filename="nhts-carpool-apollo.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-9_f28fb68482f9797b5522cdd992d81d6e">
+<div class="cell" data-filename="nhts-carpool-apollo.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-10_d167f918205662cdcf757a4914684411">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="co"># In Apollo, you specify your utility functions by hand,</span></span>
 <span id="cb6-2"><a href="#cb6-2"></a><span class="co"># first telling Apollo what coefficients to estimate</span></span>
 <span id="cb6-3"><a href="#cb6-3"></a>apollo_beta <span class="ot">=</span> <span class="fu">c</span>(</span>
@@ -642,7 +815,7 @@ p(y = 1) = p(U_{y=1} &gt; U_{y=0})\\= \frac{e^{U_{y=1}}}{e^{U_{y=0}} + e^{U_{y=1
 </section>
 <section class="slide level2">
 
-<div class="cell" data-filename="nhts-carpool-apollo.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-10_b32393a346d8a9c88c6049d4643c3728">
+<div class="cell" data-filename="nhts-carpool-apollo.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-11_f624242874c0473e4cb3199c9659573c">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a><span class="co"># prepare the inputs to the Apollo estimation code</span></span>
 <span id="cb7-2"><a href="#cb7-2"></a>apollo_inputs <span class="ot">=</span> <span class="fu">apollo_validateInputs</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -653,7 +826,7 @@ All checks on database completed.</code></pre>
 </section>
 <section class="slide level2">
 
-<div class="cell" data-filename="nhts-carpool-apollo.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-11_2c9669efedb36bc44041eee1003a2817">
+<div class="cell" data-filename="nhts-carpool-apollo.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-12_9baf3da752b392263c303e7b7fcaf1d8">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="co"># this function calculates probabilities of each alternative</span></span>
 <span id="cb9-2"><a href="#cb9-2"></a>apollo_probabilities <span class="ot">=</span> <span class="cf">function</span>(apollo_beta, apollo_inputs,</span>
 <span id="cb9-3"><a href="#cb9-3"></a>        <span class="at">functionality=</span><span class="st">"estimate"</span>) {</span>
@@ -690,7 +863,7 @@ All checks on database completed.</code></pre>
 </section>
 <section class="slide level2">
 
-<div class="cell" data-filename="nhts-carpool-apollo.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-12_705bc9d05dee3c9118bb81a54e8e8792">
+<div class="cell" data-filename="nhts-carpool-apollo.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-13_32d1e1916a673122b96603cc254eecaf">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a><span class="co"># finally, estimate the model</span></span>
 <span id="cb10-2"><a href="#cb10-2"></a>model <span class="ot">=</span> <span class="fu">apollo_estimate</span>(apollo_beta, apollo_fixed,</span>
 <span id="cb10-3"><a href="#cb10-3"></a>    apollo_probabilities, apollo_inputs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -701,10 +874,10 @@ Testing likelihood function...
 
 Overview of choices for MNL model component :
                                  carpool not_carpool
-Times available                   5000.0      5000.0
-Times chosen                      2430.0      2570.0
-Percentage chosen overall           48.6        51.4
-Percentage chosen when available    48.6        51.4
+Times available                  5000.00     5000.00
+Times chosen                     2411.00     2589.00
+Percentage chosen overall          48.22       51.78
+Percentage chosen when available   48.22       51.78
 
 Pre-processing likelihood function...
 
@@ -713,42 +886,41 @@ Starting main estimation
 Initial function value: -3465.736 
 Initial gradient value:
  constant_carpool          b_hhsize b_cars_per_driver         b_commute 
-         -70.0000          571.5000         -187.2226         -199.5000 
+         -89.0000          473.0000         -206.0972         -191.5000 
          b_social 
-          51.5000 
+          45.0000 
 initial  value 3465.735903 
-iter   2 value 3462.049070
-iter   3 value 3404.483122
-iter   4 value 3266.363837
-iter   5 value 3260.544356
-iter   6 value 3252.724971
-iter   7 value 3163.319397
-iter   8 value 3151.229542
-iter   9 value 3150.963126
-iter  10 value 3150.958622
-iter  11 value 3150.958331
-iter  11 value 3150.958327
-iter  11 value 3150.958327
-final  value 3150.958327 
+iter   2 value 3443.591884
+iter   3 value 3331.622460
+iter   4 value 3249.060162
+iter   5 value 3247.066881
+iter   6 value 3238.991716
+iter   7 value 3205.797699
+iter   8 value 3197.928616
+iter   9 value 3197.838651
+iter  10 value 3197.833589
+iter  10 value 3197.833569
+iter  10 value 3197.833569
+final  value 3197.833569 
 converged
 Additional convergence test using scaled estimation. Parameters will be
   scaled by their current estimates and additional iterations will be
   performed.
-initial  value 3150.958327 
-iter   1 value 3150.958327
-final  value 3150.958327 
+initial  value 3197.833569 
+iter   1 value 3197.833569
+final  value 3197.833569 
 converged
 Estimated parameters:
                      Estimate
-constant_carpool      -0.6971
-b_hhsize               0.3941
-b_cars_per_driver     -0.2059
-b_commute             -1.8266
-b_social               0.3688
+constant_carpool      -0.6710
+b_hhsize               0.3621
+b_cars_per_driver     -0.1859
+b_commute             -1.5528
+b_social               0.3480
 
 Computing covariance matrix using analytical gradient.
  0%....25%....50%...100%
-Negative definite Hessian with maximum eigenvalue: -69.347981
+Negative definite Hessian with maximum eigenvalue: -70.429675
 Computing score matrix...
 Calculating LL(0) for applicable models...
 Calculating LL(c) for applicable models...
@@ -758,7 +930,7 @@ Calculating LL of each model component...</code></pre>
 </section>
 <section class="slide level2">
 
-<div class="cell" data-filename="nhts-carpool-apollo.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-13_1ebb222e7e4ffa6c08217ed33c97e081">
+<div class="cell" data-filename="nhts-carpool-apollo.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-14_ef54505bbbc7e594344b90bdbb733255">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a><span class="co"># print results</span></span>
 <span id="cb12-2"><a href="#cb12-2"></a><span class="fu">apollo_modelOutput</span>(model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -767,7 +939,7 @@ www.ApolloChoiceModelling.com
 
 Model name                       : Carpool_binary
 Model description                : No model description provided in apollo_control
-Model run at                     : 2022-08-10 12:28:22
+Model run at                     : 2022-08-12 16:09:24
 Estimation method                : bfgs
 Model diagnosis                  : successful convergence 
 Number of individuals            : 5000
@@ -779,38 +951,38 @@ Model without mixing
 
 LL(start)                        : -3465.74
 LL(0)                            : -3465.74
-LL(C)                            : -3463.78
-LL(final)                        : -3150.96
-Rho-square (0)                   :  0.0908 
-Adj.Rho-square (0)               :  0.0894 
-Rho-square (C)                   :  0.0903 
-Adj.Rho-square (C)               :  0.0889 
-AIC                              :  6311.92 
-BIC                              :  6344.5 
+LL(C)                            : -3462.57
+LL(final)                        : -3197.83
+Rho-square (0)                   :  0.0773 
+Adj.Rho-square (0)               :  0.0759 
+Rho-square (C)                   :  0.0765 
+Adj.Rho-square (C)               :  0.075 
+AIC                              :  6405.67 
+BIC                              :  6438.25 
 
 Estimated parameters             :  5
 Time taken (hh:mm:ss)            :  00:00:0.46 
-     pre-estimation              :  00:00:0.25 
+     pre-estimation              :  00:00:0.26 
      estimation                  :  00:00:0.06 
      post-estimation             :  00:00:0.15 
-Iterations                       :  15  
-Min abs eigenvalue of Hessian    :  69.34798 
+Iterations                       :  14  
+Min abs eigenvalue of Hessian    :  70.42968 
 
 Unconstrained optimisation.
 
 Estimates:
                      Estimate        s.e.   t.rat.(0)    Rob.s.e. Rob.t.rat.(0)
-constant_carpool      -0.6971     0.10562      -6.600     0.10562        -6.600
-b_hhsize               0.3941     0.02483      15.871     0.02527        15.595
-b_cars_per_driver     -0.2059     0.06124      -3.362     0.06171        -3.337
-b_commute             -1.8266     0.11851     -15.413     0.12392       -14.740
-b_social               0.3688     0.09771       3.774     0.09735         3.788</code></pre>
+constant_carpool      -0.6710     0.10575      -6.346     0.10731        -6.253
+b_hhsize               0.3621     0.02445      14.814     0.02535        14.287
+b_cars_per_driver     -0.1859     0.06083      -3.057     0.06242        -2.979
+b_commute             -1.5528     0.10880     -14.273     0.11562       -13.430
+b_social               0.3480     0.10021       3.472     0.09827         3.541</code></pre>
 </div>
 </div>
 </section>
 <section id="but-dont-take-my-word-for-it" class="slide level2">
 <h2>But don’t take my word for it…</h2>
-<div class="cell" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-14_c5b1daf32d912b389c45ac9f2a3df08c">
+<div class="cell" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-15_1f4bf8993ed3345d224a061dae4fbb66">
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -888,12 +1060,16 @@ p(y=i)\\= p(U_i &gt; \mathrm{all~other}~U)\\
 </section>
 <section id="multinomial-logistic-regression-in-r-1" class="slide level2">
 <h2>Multinomial logistic regression in R</h2>
-<p>` - These utility functions will have the same variables but different coefficients - Each will also have a <em>alternative specific constant</em>—like a constant in logistic regression that represents the base rate, but for each alternative - One utility function will be held at zero</p>
+<ul>
+<li>These utility functions will have the same variables but different coefficients</li>
+<li>Each will also have a <em>alternative specific constant</em>—like a constant in logistic regression that represents the base rate, but for each alternative</li>
+<li>One utility function will be held at zero</li>
+</ul>
 </section>
 <section id="multinomial-logistic-regression-in-r-2" class="slide level2">
 <h2>Multinomial logistic regression in R</h2>
 <p><code>covidfuture-wfh-mnl.R</code></p>
-<div class="cell" data-filename="covidfuture-wfh-mnl.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-16_1975716c4e3657f6d7a731744f183479">
+<div class="cell" data-filename="covidfuture-wfh-mnl.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-17_880d7753edf9693500d4fa7c04a82b85">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a><span class="fu">library</span>(apollo)</span>
 <span id="cb15-2"><a href="#cb15-2"></a><span class="fu">library</span>(tidyverse)</span>
 <span id="cb15-3"><a href="#cb15-3"></a></span>
@@ -909,7 +1085,7 @@ p(y=i)\\= p(U_i &gt; \mathrm{all~other}~U)\\
 </section>
 <section class="slide level2">
 
-<div class="cell" data-filename="covidfuture-wfh-mnl.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-17_593bb5eea6c6a9be8f5eb8776231798d">
+<div class="cell" data-filename="covidfuture-wfh-mnl.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-18_73a5923b8c8a3fd58fa6ff729e6d07ba">
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a><span class="fu">head</span>(database)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 6 × 5
@@ -926,7 +1102,7 @@ p(y=i)\\= p(U_i &gt; \mathrm{all~other}~U)\\
 </section>
 <section class="slide level2">
 
-<div class="cell" data-filename="covidfuture-wfh-mnl.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-18_2481b50b0e0dc83a626018381cae9dc5">
+<div class="cell" data-filename="covidfuture-wfh-mnl.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-19_5ae577aed95da6a7e97cb1820cccde20">
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1"></a><span class="co"># now, we must define all the coefficients</span></span>
 <span id="cb18-2"><a href="#cb18-2"></a><span class="co"># we have separate sets of coefficients for each utility</span></span>
 <span id="cb18-3"><a href="#cb18-3"></a><span class="co"># function, because the utilities need to be different</span></span>
@@ -948,7 +1124,7 @@ p(y=i)\\= p(U_i &gt; \mathrm{all~other}~U)\\
 </section>
 <section class="slide level2">
 
-<div class="cell" data-filename="covidfuture-wfh-mnl.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-19_4c414ff5c701503ba382873d0627de80">
+<div class="cell" data-filename="covidfuture-wfh-mnl.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-20_549de74445a457b3d510633df65a2704">
 <div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a>apollo_fixed <span class="ot">=</span> <span class="fu">c</span>()</span>
 <span id="cb19-2"><a href="#cb19-2"></a></span>
 <span id="cb19-3"><a href="#cb19-3"></a>apollo_inputs <span class="ot">=</span> <span class="fu">apollo_validateInputs</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -960,7 +1136,7 @@ All checks on database completed.</code></pre>
 </section>
 <section class="slide level2">
 
-<div class="cell" data-filename="covidfuture-wfh-mnl.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-20_e278037bc92e3c3144023ad892f2fb39">
+<div class="cell" data-filename="covidfuture-wfh-mnl.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-21_26444fb483805a82d16a5cc0c2076570">
 <div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a><span class="co"># Finally, we define the utility functions in apollo_probabilities</span></span>
 <span id="cb21-2"><a href="#cb21-2"></a>apollo_probabilities <span class="ot">=</span> <span class="cf">function</span>(apollo_beta, apollo_inputs,</span>
 <span id="cb21-3"><a href="#cb21-3"></a>        <span class="at">functionality=</span><span class="st">"estimate"</span>) {</span>
@@ -999,7 +1175,7 @@ All checks on database completed.</code></pre>
 </section>
 <section class="slide level2">
 
-<div class="cell" data-filename="covidfuture-wfh-mnl.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-21_f1e0c3cc8b8738877068f80533371a6e">
+<div class="cell" data-filename="covidfuture-wfh-mnl.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-22_8ce781820eec2aa22e2c208f1448ba9a">
 <div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1"></a><span class="co"># estimate model</span></span>
 <span id="cb22-2"><a href="#cb22-2"></a>model <span class="ot">=</span> <span class="fu">apollo_estimate</span>(apollo_beta, apollo_fixed,</span>
 <span id="cb22-3"><a href="#cb22-3"></a>    apollo_probabilities, apollo_inputs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -1087,7 +1263,7 @@ Calculating LL of each model component...</code></pre>
 </section>
 <section class="slide level2">
 
-<div class="cell" data-filename="covidfuture-wfh-mnl.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-22_d3aecc5a1ad16b53352f211be47fda19">
+<div class="cell" data-filename="covidfuture-wfh-mnl.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-23_3b9505ea285bd78f42e3211c9912620c">
 <div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1"></a><span class="co"># Print results</span></span>
 <span id="cb24-2"><a href="#cb24-2"></a><span class="fu">apollo_modelOutput</span>(model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -1096,7 +1272,7 @@ www.ApolloChoiceModelling.com
 
 Model name                       : WFH_Postpandemic
 Model description                : No model description provided in apollo_control
-Model run at                     : 2022-08-10 12:28:23
+Model run at                     : 2022-08-12 16:09:24
 Estimation method                : bfgs
 Model diagnosis                  : successful convergence 
 Number of individuals            : 4895
@@ -1118,10 +1294,10 @@ AIC                              :  10181.4
 BIC                              :  10259.35 
 
 Estimated parameters             :  12
-Time taken (hh:mm:ss)            :  00:00:0.7 
-     pre-estimation              :  00:00:0.26 
-     estimation                  :  00:00:0.14 
-     post-estimation             :  00:00:0.3 
+Time taken (hh:mm:ss)            :  00:00:0.73 
+     pre-estimation              :  00:00:0.24 
+     estimation                  :  00:00:0.15 
+     post-estimation             :  00:00:0.34 
 Iterations                       :  24  
 Min abs eigenvalue of Hessian    :  16.46684 
 
@@ -1159,7 +1335,7 @@ b_always_service_worker       -15.549</code></pre>
 </section>
 <section id="interpreting-multinomial-logit-results" class="slide level2">
 <h2>Interpreting multinomial logit results</h2>
-<div class="cell" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-23_22494bddf8dbaa280eb13cb33a906c17">
+<div class="cell" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-24_0ed8e45018b851df9f3b5ced59259cba">
 <div class="cell-output-display">
 <table>
 <thead>
@@ -1204,12 +1380,67 @@ b_always_service_worker       -15.549</code></pre>
 <section class="slide level2">
 
 <ul>
-<li>Relative to being unable to WFH,
+<li>Multinomial logit models may be presented in this tabular format where independent variables are on one axis and outcomes on the other
 <ul>
-<li>Older people are less likely to WFH rarely or often, but more likely to always</li>
-<li>Higher income people are much more likely to be able to and choose to WFH</li>
-<li>Service workers are less likely to be able to WFH</li>
-<li>Scale of age variable is different from others</li>
+<li>Each cell is the coefficient for the relationship between an independent variable and a particular outcome</li>
+</ul></li>
+<li>May also be presented as a table where each row contains a single coefficient
+<ul>
+<li>Coefficients names will include both independent variable name and outcome</li>
+<li>e.g.&nbsp;<code>b_rarely_age</code> is the relationship between age and rarely working from home</li>
+<li>This is the format Apollo presents</li>
+</ul></li>
+</ul>
+</section>
+<section class="slide level2">
+
+<ul>
+<li>Like logistic regression, positive coefficients are related to an outcome being more likely, and negative coefficients with an outcome being less likely</li>
+<li>Like binary logistic regression, we still have one base outcome, with utility of 0
+<ul>
+<li>Not carpool in binary logistic regression, Unable to work from home in this example</li>
+</ul></li>
+<li>Because there are more than two outcomes, we have a set of coefficients for each outcome (other than the base outcome)</li>
+<li>These coefficients are relative to the base outcome
+<ul>
+<li>i.e.&nbsp;a positive coefficient means more likely than the base outcome</li>
+</ul></li>
+</ul>
+</section>
+<section class="slide level2">
+
+<ul>
+<li>Alternative specific constants are sometimes used to indicate relative popularity of different options (a positive ASC means that an outcome is more likely than the base outcome, all else equal)
+<ul>
+<li>If your sample is choice-based, i.e.&nbsp;certain outcomes are sampled more frequently than they occur in the population, ASCs will be biased but other coefficients will be unbiased <span class="citation" data-cites="ben-akiva_discrete_1985">(<a href="#/ref-ben-akiva_discrete_1985" role="doc-biblioref" onclick="return false;">Ben-Akiva and Lerman 1985</a>)</span></li>
+<li>This is often a result of data collection methods, e.g.&nbsp;a transit on-board survey will oversample people who choose transit</li>
+</ul></li>
+</ul>
+</section>
+<section class="slide level2">
+
+<ul>
+<li>Age is negative for rarely and often working from home, but positive for always working from home
+<ul>
+<li>This indicates that older people are less likely to work from home sometimes than to be unable to work from home</li>
+<li>But also, they are more likely to always work from home than to be unable to work from home (positive coefficient)</li>
+</ul></li>
+<li>Coefficient sizes are much smaller than other coefficients, because age is measured in years while other variables are 0-1</li>
+</ul>
+</section>
+<section class="slide level2">
+
+<ul>
+<li>Higher income people are more likely to rarely, often, or always work from home than to be unable to work from home, because coefficients for all these outcomes are positive</li>
+<li>They are most likely to often work from home</li>
+</ul>
+</section>
+<section class="slide level2">
+
+<ul>
+<li>Service workers are unlikely to be able to work from home at all
+<ul>
+<li>If they can, they are least likely to work from home always, and somewhat more likely to work from home often, and somewhat more likely to work from home every day</li>
 </ul></li>
 </ul>
 </section>
@@ -1393,7 +1624,7 @@ cs-&gt;tc
 </section>
 <section id="estimating-a-multinomial-logit-model-in-r" class="slide level2">
 <h2>Estimating a multinomial logit model in R</h2>
-<div class="cell" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-25_29098c623adc6ffebfad6c5ce26e4025">
+<div class="cell" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-26_6b802fb19cc7e677aaf9830456a7d89b">
 
 </div>
 <ul>
@@ -1403,7 +1634,7 @@ cs-&gt;tc
 </section>
 <section id="the-data" class="slide level2">
 <h2>The data</h2>
-<div class="cell" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-26_41c7ea0bce2177d681763402086677ac">
+<div class="cell" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-27_59f1c122b7c3d69938739357ce91b079">
 <div class="cell-output-display">
 <table>
 <colgroup>
@@ -1609,7 +1840,7 @@ cs-&gt;tc
 <section id="estimation-in-r" class="slide level2">
 <h2>Estimation in R</h2>
 <p><code>mode-choice-mnl.R</code></p>
-<div class="cell" data-filename="mode-choice-mnl.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-28_ebfff9d328756b15f8371886811af2da">
+<div class="cell" data-filename="mode-choice-mnl.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-29_4a3bc563030807e6319f77fa9a3dbf40">
 <div class="sourceCode cell-code" id="cb26"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1"></a><span class="fu">library</span>(apollo)</span>
 <span id="cb26-2"><a href="#cb26-2"></a><span class="fu">library</span>(tidyverse)</span>
 <span id="cb26-3"><a href="#cb26-3"></a></span>
@@ -1625,7 +1856,7 @@ cs-&gt;tc
 </section>
 <section class="slide level2">
 
-<div class="cell" data-filename="mode-choice-mnl.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-29_f9165a440c74cb29d19a42855dc993c3">
+<div class="cell" data-filename="mode-choice-mnl.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-30_eb271d7277ec773824bbe58b69cdec90">
 <div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1"></a><span class="fu">head</span>(database)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 6 × 22
@@ -1647,7 +1878,7 @@ cs-&gt;tc
 </section>
 <section class="slide level2">
 
-<div class="cell" data-filename="mode-choice-mnl.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-30_d6fb1b1521f9105ded9e047e3971e45f">
+<div class="cell" data-filename="mode-choice-mnl.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-31_77faa91eca48d6ea2c070691a1f7e98b">
 <div class="sourceCode cell-code" id="cb29"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1"></a>apollo_beta <span class="ot">=</span> <span class="fu">c</span>(</span>
 <span id="cb29-2"><a href="#cb29-2"></a>    <span class="at">asc_air =</span> <span class="dv">0</span>,</span>
 <span id="cb29-3"><a href="#cb29-3"></a>    <span class="at">asc_bus =</span> <span class="dv">0</span>,</span>
@@ -1666,7 +1897,7 @@ cs-&gt;tc
 </section>
 <section class="slide level2">
 
-<div class="cell" data-filename="mode-choice-mnl.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-31_1d461819ab8278daddfc92716458c0b1">
+<div class="cell" data-filename="mode-choice-mnl.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-32_293d639b7d77cd758c099e2dc7fc7c23">
 <div class="sourceCode cell-code" id="cb30"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1"></a>apollo_fixed <span class="ot">=</span> <span class="fu">c</span>()</span>
 <span id="cb30-2"><a href="#cb30-2"></a></span>
 <span id="cb30-3"><a href="#cb30-3"></a>apollo_inputs <span class="ot">=</span> <span class="fu">apollo_validateInputs</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -1680,7 +1911,7 @@ All checks on database completed.</code></pre>
 </section>
 <section class="slide level2">
 
-<div class="cell" data-filename="mode-choice-mnl.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-32_2b9a32514be0d30d4bbce487ab326f3e">
+<div class="cell" data-filename="mode-choice-mnl.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-33_b4529a0fa52194e2bc792206ce86422a">
 <div class="sourceCode cell-code" id="cb32"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1"></a>apollo_probabilities <span class="ot">=</span> <span class="cf">function</span>(apollo_beta, apollo_inputs,</span>
 <span id="cb32-2"><a href="#cb32-2"></a>        <span class="at">functionality=</span><span class="st">"estimate"</span>) {</span>
 <span id="cb32-3"><a href="#cb32-3"></a>    <span class="fu">apollo_attach</span>(apollo_beta, apollo_inputs)</span>
@@ -1732,7 +1963,7 @@ All checks on database completed.</code></pre>
 </section>
 <section class="slide level2">
 
-<div class="cell" data-filename="mode-choice-mnl.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-33_ffa5a34c2adadaa4f3b17f6196893753">
+<div class="cell" data-filename="mode-choice-mnl.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-34_6e07594df1890ba6c855c62070fafd5d">
 <div class="sourceCode cell-code" id="cb33"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1"></a><span class="co"># estimate model</span></span>
 <span id="cb33-2"><a href="#cb33-2"></a>model <span class="ot">=</span> <span class="fu">apollo_estimate</span>(apollo_beta, apollo_fixed,</span>
 <span id="cb33-3"><a href="#cb33-3"></a>    apollo_probabilities, apollo_inputs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -1811,7 +2042,7 @@ Calculating LL of each model component...</code></pre>
 </section>
 <section class="slide level2">
 
-<div class="cell" data-filename="mode-choice-mnl.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-34_96a32ef44c930ed91abb230fd63261fc">
+<div class="cell" data-filename="mode-choice-mnl.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-35_1dd9db52b2d07b4219dcbf2f19efcbe4">
 <div class="sourceCode cell-code" id="cb35"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1"></a><span class="co"># Print results</span></span>
 <span id="cb35-2"><a href="#cb35-2"></a><span class="fu">apollo_modelOutput</span>(model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -1820,7 +2051,7 @@ www.ApolloChoiceModelling.com
 
 Model name                       : Apollo_Mode_Choice
 Model description                : No model description provided in apollo_control
-Model run at                     : 2022-08-10 12:28:24
+Model run at                     : 2022-08-12 16:09:25
 Estimation method                : bfgs
 Model diagnosis                  : successful convergence 
 Number of individuals            : 500
@@ -1842,9 +2073,9 @@ AIC                              :  2058
 BIC                              :  2102.17 
 
 Estimated parameters             :  9
-Time taken (hh:mm:ss)            :  00:00:0.67 
+Time taken (hh:mm:ss)            :  00:00:0.66 
      pre-estimation              :  00:00:0.15 
-     estimation                  :  00:00:0.28 
+     estimation                  :  00:00:0.27 
      post-estimation             :  00:00:0.24 
 Iterations                       :  20  
 Min abs eigenvalue of Hessian    :  3.070863 
@@ -1867,7 +2098,7 @@ b_income_rail       6.963e-07   5.090e-06      0.1368   5.216e-06        0.1335<
 </section>
 <section class="slide level2">
 
-<div class="cell" data-filename="mode-choice-mnl.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-35_f4fa5d9343be990a4b1ba73ce0e3b848">
+<div class="cell" data-filename="mode-choice-mnl.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-36_4d270258f4631252c1163460a6f0f649">
 <div class="sourceCode cell-code" id="cb37"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1"></a><span class="co"># save results in current directory,</span></span>
 <span id="cb37-2"><a href="#cb37-2"></a><span class="co"># using model name specified above</span></span>
 <span id="cb37-3"><a href="#cb37-3"></a><span class="fu">apollo_saveOutput</span>(model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -1878,12 +2109,35 @@ Model object saved to /Users/mwbc/Library/CloudStorage/OneDrive-UniversityofNort
 </div>
 </div>
 </section>
+<section id="interpretation-of-multinomial-logit-models" class="slide level2">
+<h2>Interpretation of multinomial logit models</h2>
+<ul>
+<li>The income coefficient is itnerpreted the same way as the coefficients in the working-from-home model</li>
+<li>The cost coefficients, however, aren’t associated with a particular alternative, so their interpretation is different</li>
+</ul>
+</section>
+<section id="interpretation-of-multinomial-logit-models-1" class="slide level2">
+<h2>Interpretation of multinomial logit models</h2>
+<ul>
+<li>A coefficient estimated for an aspect of an alternative represents how valuable that aspect is to the decisionmaker</li>
+<li>For estimation to succeed, this aspect must vary over alternatives</li>
+</ul>
+</section>
+<section class="slide level2">
+
+<ul>
+<li>For instance, the negative cost coefficient means that the more an alternative costs, the less a user is interested in using it</li>
+<li>Same for in vehicle time</li>
+<li>Access time also has a negative coefficient, but it is not statistically significant</li>
+</ul>
+</section>
 <section id="valuation-using-discrete-choice-models" class="slide level2">
 <h2>Valuation using discrete choice models</h2>
 <ul>
 <li>A common use for discrete choice models is to calculate willingness-to-pay</li>
 <li>The linear-in-parameters utility function puts everything in terms of utility</li>
 <li>If we have a cost parameter, we can use the model to put everything else in monetary units</li>
+<li>This makes interpretation and application more understandable</li>
 </ul>
 </section>
 <section id="valuation-using-discrete-choice-models-1" class="slide level2">
@@ -1914,7 +2168,7 @@ Model object saved to /Users/mwbc/Library/CloudStorage/OneDrive-UniversityofNort
 </section>
 <section class="slide level2">
 
-<div class="cell" data-filename="mode-choice-mnl.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-37_8ffe9ad08e0dd0a11000d8f41cf0e773">
+<div class="cell" data-filename="mode-choice-mnl.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-38_1ea0dc8bf0a95d56946010d6636e3695">
 <div class="sourceCode cell-code" id="cb39"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1"></a><span class="fu">apollo_deltaMethod</span>(model, <span class="at">deltaMethod_settings=</span><span class="fu">list</span>(</span>
 <span id="cb39-2"><a href="#cb39-2"></a>    <span class="at">expression=</span><span class="st">"b_in_vehicle_time * 60 / b_cost"</span></span>
 <span id="cb39-3"><a href="#cb39-3"></a>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -1936,7 +2190,7 @@ Model object saved to /Users/mwbc/Library/CloudStorage/OneDrive-UniversityofNort
 </section>
 <section id="solution" class="slide level2">
 <h2>Solution</h2>
-<div class="cell" data-filename="mode-choice-mnl-in-vehicle-answers.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-40_3890b06d7da389b4f8cacde73ac4e6e8">
+<div class="cell" data-filename="mode-choice-mnl-in-vehicle-answers.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-41_6d4131ab6c8a051135b7ca12ae2292b1">
 <div class="sourceCode cell-code" id="cb41"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1"></a>apollo_beta <span class="ot">=</span> <span class="fu">c</span>(</span>
 <span id="cb41-2"><a href="#cb41-2"></a>    <span class="at">asc_air =</span> <span class="dv">0</span>,</span>
 <span id="cb41-3"><a href="#cb41-3"></a>    <span class="at">asc_bus =</span> <span class="dv">0</span>,</span>
@@ -1958,7 +2212,7 @@ Model object saved to /Users/mwbc/Library/CloudStorage/OneDrive-UniversityofNort
 </section>
 <section class="slide level2">
 
-<div class="cell" data-filename="mode-choice-mnl-in-vehicle-answers.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-42_63ef7216601f774a45a33bd77e6514ee">
+<div class="cell" data-filename="mode-choice-mnl-in-vehicle-answers.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-43_10c587b53c5b8a3287373770a4a2ec09">
 <div class="sourceCode cell-code" id="cb42"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1"></a>apollo_probabilities <span class="ot">=</span> <span class="cf">function</span>(apollo_beta, apollo_inputs,</span>
 <span id="cb42-2"><a href="#cb42-2"></a>        <span class="at">functionality=</span><span class="st">"estimate"</span>) {</span>
 <span id="cb42-3"><a href="#cb42-3"></a>    <span class="fu">apollo_attach</span>(apollo_beta, apollo_inputs)</span>
@@ -2010,7 +2264,7 @@ Model object saved to /Users/mwbc/Library/CloudStorage/OneDrive-UniversityofNort
 </section>
 <section class="slide level2">
 
-<div class="cell" data-filename="mode-choice-mnl-in-vehicle-answers.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-43_50a846a6d6255842b75a7fb8602c7f47">
+<div class="cell" data-filename="mode-choice-mnl-in-vehicle-answers.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-44_bdf797007b9d9f8b6798ef0b9e7258cb">
 <div class="sourceCode cell-code" id="cb43"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1"></a><span class="co"># estimate model</span></span>
 <span id="cb43-2"><a href="#cb43-2"></a>model <span class="ot">=</span> <span class="fu">apollo_estimate</span>(apollo_beta, apollo_fixed,</span>
 <span id="cb43-3"><a href="#cb43-3"></a>    apollo_probabilities, apollo_inputs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -2096,7 +2350,7 @@ Calculating LL of each model component...</code></pre>
 </section>
 <section class="slide level2">
 
-<div class="cell" data-filename="mode-choice-mnl-in-vehicle-answers.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-44_ccc5994d3b17dc39ea7994cda56b867f">
+<div class="cell" data-filename="mode-choice-mnl-in-vehicle-answers.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-45_9659c6caf5519695adc404db270efdce">
 <div class="sourceCode cell-code" id="cb45"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1"></a><span class="co"># Print results</span></span>
 <span id="cb45-2"><a href="#cb45-2"></a><span class="fu">apollo_modelOutput</span>(model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -2105,7 +2359,7 @@ www.ApolloChoiceModelling.com
 
 Model name                       : Apollo_Mode_Choice_Flexible
 Model description                : No model description provided in apollo_control
-Model run at                     : 2022-08-10 12:28:25
+Model run at                     : 2022-08-12 16:09:26
 Estimation method                : bfgs
 Model diagnosis                  : successful convergence 
 Number of individuals            : 500
@@ -2127,10 +2381,10 @@ AIC                              :  2053.48
 BIC                              :  2112.38 
 
 Estimated parameters             :  12
-Time taken (hh:mm:ss)            :  00:00:1.07 
-     pre-estimation              :  00:00:0.18 
-     estimation                  :  00:00:0.5 
-     post-estimation             :  00:00:0.39 
+Time taken (hh:mm:ss)            :  00:00:1.02 
+     pre-estimation              :  00:00:0.16 
+     estimation                  :  00:00:0.47 
+     post-estimation             :  00:00:0.38 
 Iterations                       :  22  
 Min abs eigenvalue of Hessian    :  0.691575 
 
@@ -2168,7 +2422,7 @@ b_income_rail               -0.01545</code></pre>
 </section>
 <section class="slide level2">
 
-<div class="cell" data-filename="mode-choice-mnl-in-vehicle-answers.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-45_ac09e7594e8144df060f2cc9330b0e0a">
+<div class="cell" data-filename="mode-choice-mnl-in-vehicle-answers.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-46_a76fedfc4e151bc9240a90bff13a2313">
 <div class="sourceCode cell-code" id="cb47"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1"></a><span class="co"># save results in current directory,</span></span>
 <span id="cb47-2"><a href="#cb47-2"></a><span class="co"># using model name specified above</span></span>
 <span id="cb47-3"><a href="#cb47-3"></a><span class="fu">apollo_saveOutput</span>(model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -2181,7 +2435,7 @@ Model object saved to /Users/mwbc/Library/CloudStorage/OneDrive-UniversityofNort
 </section>
 <section class="slide level2">
 
-<div class="cell" data-filename="mode-choice-mnl-in-vehicle-answers.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-46_c0387171f32429ab1a53d60ef7dde668">
+<div class="cell" data-filename="mode-choice-mnl-in-vehicle-answers.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-47_74aeb4c909a368e3c94e6a1c20dcb483">
 <div class="sourceCode cell-code" id="cb49"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1"></a><span class="fu">apollo_deltaMethod</span>(model, <span class="at">deltaMethod_settings=</span><span class="fu">list</span>(</span>
 <span id="cb49-2"><a href="#cb49-2"></a>    <span class="at">expression=</span><span class="st">"b_in_vehicle_time_car * 60 / b_cost"</span></span>
 <span id="cb49-3"><a href="#cb49-3"></a>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -2195,7 +2449,7 @@ Model object saved to /Users/mwbc/Library/CloudStorage/OneDrive-UniversityofNort
 </section>
 <section class="slide level2">
 
-<div class="cell" data-filename="mode-choice-mnl-in-vehicle-answers.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-47_1b3eb675427afa86b4b0f296dab337c2">
+<div class="cell" data-filename="mode-choice-mnl-in-vehicle-answers.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-48_41aee1a4c00fd60e2c2eccfdce809219">
 <div class="sourceCode cell-code" id="cb51"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1"></a><span class="fu">apollo_deltaMethod</span>(model, <span class="at">deltaMethod_settings=</span><span class="fu">list</span>(</span>
 <span id="cb51-2"><a href="#cb51-2"></a>    <span class="at">expression=</span><span class="st">"b_in_vehicle_time_air * 60 / b_cost"</span></span>
 <span id="cb51-3"><a href="#cb51-3"></a>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -2209,7 +2463,7 @@ Model object saved to /Users/mwbc/Library/CloudStorage/OneDrive-UniversityofNort
 </section>
 <section class="slide level2">
 
-<div class="cell" data-filename="mode-choice-mnl-in-vehicle-answers.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-48_3b49f6bb1b78146ca68b5c41001af876">
+<div class="cell" data-filename="mode-choice-mnl-in-vehicle-answers.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-49_c996b1739bcee18c9738ef1665d45772">
 <div class="sourceCode cell-code" id="cb53"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1"></a><span class="fu">apollo_deltaMethod</span>(model, <span class="at">deltaMethod_settings=</span><span class="fu">list</span>(</span>
 <span id="cb53-2"><a href="#cb53-2"></a>    <span class="at">expression=</span><span class="st">"b_in_vehicle_time_bus * 60 / b_cost"</span></span>
 <span id="cb53-3"><a href="#cb53-3"></a>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -2223,7 +2477,7 @@ Model object saved to /Users/mwbc/Library/CloudStorage/OneDrive-UniversityofNort
 </section>
 <section class="slide level2">
 
-<div class="cell" data-filename="mode-choice-mnl-in-vehicle-answers.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-49_2860926437350c709dd50d5a6c1c1ec9">
+<div class="cell" data-filename="mode-choice-mnl-in-vehicle-answers.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-50_a9bc8f3fb7f920288b20e0a57b9ece0a">
 <div class="sourceCode cell-code" id="cb55"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1"></a>dm <span class="ot">=</span> <span class="fu">apollo_deltaMethod</span>(model, <span class="at">deltaMethod_settings=</span><span class="fu">list</span>(</span>
 <span id="cb55-2"><a href="#cb55-2"></a>    <span class="at">expression=</span><span class="st">"b_in_vehicle_time_rail * 60 / b_cost"</span></span>
 <span id="cb55-3"><a href="#cb55-3"></a>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -2238,8 +2492,9 @@ Model object saved to /Users/mwbc/Library/CloudStorage/OneDrive-UniversityofNort
 <section id="interpretation" class="slide level2">
 <h2>Interpretation</h2>
 
-<img data-src="discrete-choice_files/figure-revealjs/unnamed-chunk-51-1.svg" alt="Bar plot of values of travel time for car, air, bus, and rail" width="1200" class="r-stretch quarto-figure-center"><ul>
-<li>People really don’t like being on airplanes</li>
+<img data-src="discrete-choice_files/figure-revealjs/unnamed-chunk-52-1.svg" alt="Bar plot of values of travel time for car, air, bus, and rail" width="1200" class="r-stretch quarto-figure-center"><ul>
+<li>People really don’t like being on airplanes, value of time is much higher for air than other modes</li>
+<li>You can also see this in the coefficients, airplane in-vehicle travel time has a more negative coefficient than other modes, indicating it is more disliked</li>
 </ul>
 </section>
 <section id="correlation-does-not-imply-causation" class="slide level2">
@@ -2282,7 +2537,7 @@ Model object saved to /Users/mwbc/Library/CloudStorage/OneDrive-UniversityofNort
 </section>
 <section id="predictions-and-market-shares-in-r" class="slide level2">
 <h2>Predictions and market shares in R</h2>
-<div class="cell" data-filename="prediction.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-53_b896f74d5c03c3e01e30dd6e10846eb2">
+<div class="cell" data-filename="prediction.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-54_672444d43ca8e97066743da7ed0ad40d">
 <div class="sourceCode cell-code" id="cb57"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1"></a><span class="co"># Make predictions for the existing dataset</span></span>
 <span id="cb57-2"><a href="#cb57-2"></a>predictions <span class="ot">=</span></span>
 <span id="cb57-3"><a href="#cb57-3"></a>    <span class="fu">apollo_prediction</span>(model, apollo_probabilities, apollo_inputs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -2315,7 +2570,7 @@ The output from apollo_prediction is a matrix containing the
 <section id="predictions-and-market-shares-in-r-3" class="slide level2">
 <h2>Predictions and market shares in R</h2>
 <p><code>predictions.R</code></p>
-<div class="cell" data-filename="prediction.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-54_abfd4c0dc4022adc1b193e275a118de4">
+<div class="cell" data-filename="prediction.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-55_40ed5a4848633fb8ce72e92937b97adc">
 <div class="sourceCode cell-code" id="cb59"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1"></a><span class="co"># Now, make predictions in a counterfactual scenario</span></span>
 <span id="cb59-2"><a href="#cb59-2"></a><span class="co"># First, we will give the original database a new name</span></span>
 <span id="cb59-3"><a href="#cb59-3"></a>original_database <span class="ot">=</span> database</span>
@@ -2330,7 +2585,7 @@ The output from apollo_prediction is a matrix containing the
 </section>
 <section class="slide level2">
 
-<div class="cell" data-filename="prediction.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-55_f58e5851ece16881e7c37749ff841b8d">
+<div class="cell" data-filename="prediction.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-56_fe7ce33f3de384abcc23ee8dd56182d8">
 <div class="sourceCode cell-code" id="cb60"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1"></a><span class="co"># now that we have a new variable called "database," we run</span></span>
 <span id="cb60-2"><a href="#cb60-2"></a><span class="co"># apollo_validateInputs again, and then apollo_probabilities</span></span>
 <span id="cb60-3"><a href="#cb60-3"></a><span class="co"># apollo_validateInputs will always use the variable called</span></span>
@@ -2358,7 +2613,7 @@ The output from apollo_prediction is a matrix containing the
 </section>
 <section class="slide level2">
 
-<div class="cell" data-filename="prediction.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-56_c0d0cf198af832fb8dafe67b69503b1f">
+<div class="cell" data-filename="prediction.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-57_a9fd4dd97c7b7b63d0e2f34be2545fc2">
 <div class="sourceCode cell-code" id="cb64"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1"></a><span class="co"># now, we can use the two predictions to compute changes in market shares</span></span>
 <span id="cb64-2"><a href="#cb64-2"></a><span class="co"># first, original market shares</span></span>
 <span id="cb64-3"><a href="#cb64-3"></a>orig_mktshares <span class="ot">=</span> <span class="fu">apply</span>(</span>
@@ -2375,7 +2630,7 @@ The output from apollo_prediction is a matrix containing the
 </section>
 <section class="slide level2">
 
-<div class="cell" data-filename="prediction.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-57_cff3db594de3a421de4e5cf71d450b8e">
+<div class="cell" data-filename="prediction.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-58_f0b1a9853ea7adb4c8076db16d01c1a2">
 <div class="sourceCode cell-code" id="cb66"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1"></a><span class="co"># next, taxed market shares</span></span>
 <span id="cb66-2"><a href="#cb66-2"></a>tax_mktshares <span class="ot">=</span> <span class="fu">apply</span>(</span>
 <span id="cb66-3"><a href="#cb66-3"></a>    tax_predictions[,<span class="fu">c</span>(<span class="st">"car"</span>, <span class="st">"rail"</span>, <span class="st">"air"</span>, <span class="st">"bus"</span>)],</span>
@@ -2391,7 +2646,7 @@ The output from apollo_prediction is a matrix containing the
 </section>
 <section class="slide level2">
 
-<div class="cell" data-filename="prediction.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-58_8ba3715bf38646a7ebbb20a46f1184b3">
+<div class="cell" data-filename="prediction.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-59_5ee9b0bf27686af69e54ce04a2f351fe">
 <div class="sourceCode cell-code" id="cb68"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1"></a><span class="co"># and finally, their difference. Is this the change we</span></span>
 <span id="cb68-2"><a href="#cb68-2"></a><span class="co"># expect to see?</span></span>
 <span id="cb68-3"><a href="#cb68-3"></a>tax_mktshares <span class="sc">-</span> orig_mktshares</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -2400,6 +2655,11 @@ The output from apollo_prediction is a matrix containing the
  0.03546394  0.03960968 -0.09392234  0.01884872 </code></pre>
 </div>
 </div>
+<ul>
+<li>As expected, air market share has dropped quite a bit with the new tax</li>
+<li>All other modes have increased market share due to diversion from air, with most passengers going to rail or car, and a smaller number going to bus</li>
+<li>This model does not model the decision to travel at all, so does not capture a reduction in overall travel due to increased prices</li>
+</ul>
 </section>
 <section id="exercise-1" class="slide level2">
 <h2>Exercise</h2>
@@ -2413,7 +2673,7 @@ The output from apollo_prediction is a matrix containing the
 </section>
 <section id="answers" class="slide level2">
 <h2>Answers</h2>
-<div class="cell" data-filename="prediction-answers.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-59_78f9fdf1e172f46bb2ce7abf6ef26b91">
+<div class="cell" data-filename="prediction-answers.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-60_044aca5f283703f4b337dbebfa22c604">
 <div class="sourceCode cell-code" id="cb70"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1"></a><span class="co"># adjust travel times</span></span>
 <span id="cb70-2"><a href="#cb70-2"></a>database <span class="ot">=</span> <span class="fu">mutate</span>(</span>
 <span id="cb70-3"><a href="#cb70-3"></a>    original_database,</span>
@@ -2432,7 +2692,7 @@ All checks on database completed.</code></pre>
 </section>
 <section class="slide level2">
 
-<div class="cell" data-filename="prediction-answers.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-60_dae7e82ce6e717bdfc4d4ecfd2ad7a5b">
+<div class="cell" data-filename="prediction-answers.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-61_e24b2e5b29133ed010bd04ad2e18b74a">
 <div class="sourceCode cell-code" id="cb72"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb72-1"><a href="#cb72-1"></a><span class="co"># Make predictions</span></span>
 <span id="cb72-2"><a href="#cb72-2"></a>fast_rail_predictions <span class="ot">=</span></span>
 <span id="cb72-3"><a href="#cb72-3"></a>    <span class="fu">apollo_prediction</span>(model, apollo_probabilities, apollo_inputs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -2450,7 +2710,7 @@ The output from apollo_prediction is a matrix containing the
 </section>
 <section class="slide level2">
 
-<div class="cell" data-filename="prediction-answers.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-61_e8e0a46e6df02699323b8aa2433c8c2d">
+<div class="cell" data-filename="prediction-answers.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-62_a17372c325894d74b72e255d713183cd">
 <div class="sourceCode cell-code" id="cb74"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb74-1"><a href="#cb74-1"></a><span class="co"># compute market shares</span></span>
 <span id="cb74-2"><a href="#cb74-2"></a>fast_rail_mktshares <span class="ot">=</span> <span class="fu">apply</span>(</span>
 <span id="cb74-3"><a href="#cb74-3"></a>    fast_rail_predictions[,<span class="fu">c</span>(<span class="st">"car"</span>, <span class="st">"rail"</span>, <span class="st">"air"</span>, <span class="st">"bus"</span>)],</span>
@@ -2466,7 +2726,7 @@ The output from apollo_prediction is a matrix containing the
 </section>
 <section class="slide level2">
 
-<div class="cell" data-filename="prediction-answers.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-62_412712daeae29362ee19f360840f94ed">
+<div class="cell" data-filename="prediction-answers.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-63_4beafabce1baee74249167ff4e9bb0f2">
 <div class="sourceCode cell-code" id="cb76"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb76-1"><a href="#cb76-1"></a><span class="co"># compute differences</span></span>
 <span id="cb76-2"><a href="#cb76-2"></a><span class="co"># if you need to recalculate orig_mktshares, make sure</span></span>
 <span id="cb76-3"><a href="#cb76-3"></a><span class="co"># you re-run apollo_validateInputs before calculating</span></span>
@@ -2476,6 +2736,10 @@ The output from apollo_prediction is a matrix containing the
 -0.03788217  0.07731030 -0.02366936 -0.01575876 </code></pre>
 </div>
 </div>
+<ul>
+<li>Rail has seen an increase in market share, with the most passengers being diverted from car, then air, then bus</li>
+<li>As before, this does not capture decision to travel; faster rail travel times may induce some people to make additional trips</li>
+</ul>
 </section></section>
 <section id="logit-model-estimation-maximum-likelihood" class="title-slide slide level1 center">
 <h1>Logit model estimation: maximum likelihood</h1>
@@ -2522,7 +2786,7 @@ The output from apollo_prediction is a matrix containing the
 </ul></li>
 <li>Generally too small to be represented in a computer</li>
 </ul>
-<div class="cell" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-63_5d15afa4862507697af6c2c95b0cc0dd">
+<div class="cell" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-64_b671e6803370134b3c2e25c39911289b">
 <div class="sourceCode cell-code" id="cb78"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb78-1"><a href="#cb78-1"></a><span class="dv">10</span><span class="sc">^-</span><span class="dv">440</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0</code></pre>
@@ -2601,7 +2865,7 @@ The output from apollo_prediction is a matrix containing the
 </section>
 <section id="comparing-logistic-regression-models-to-each-other" class="slide level2">
 <h2>Comparing logistic regression models to each other</h2>
-<div class="cell" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-64_4254bc81f23bdbf25f632c6d22659e29">
+<div class="cell" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-65_53e7290d55d145e6f174e52efd75ed54">
 <div class="sourceCode cell-code" id="cb80"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb80-1"><a href="#cb80-1"></a><span class="dv">1</span> <span class="sc">-</span> <span class="fu">pchisq</span>(<span class="fl">10.52</span>, <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.01462584</code></pre>
@@ -2613,7 +2877,7 @@ The output from apollo_prediction is a matrix containing the
 <ul>
 <li>If we have given our models unique names and run <code>apollo_saveOutput</code>, Apollo can do the test for us</li>
 </ul>
-<div class="cell" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-65_6ba5163fe15eb412e9bc62e276acf4e8">
+<div class="cell" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-66_cdf37e9ac270c77aa96ef1fd009fe51f">
 <div class="sourceCode cell-code" id="cb82"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb82-1"><a href="#cb82-1"></a><span class="fu">apollo_lrTest</span>(<span class="st">"Apollo_Mode_Choice"</span>, <span class="st">"Apollo_Mode_Choice_Flexible"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>                                  LL par
@@ -2712,7 +2976,7 @@ LL(final)                        : -1020</code></pre>
 <section class="slide level2">
 
 <p><code>margins.R</code></p>
-<div class="cell" data-filename="margins.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-66_382ac303610582cd9ea00c7606062c7a">
+<div class="cell" data-filename="margins.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-67_bba158e0986b186f1e577e7773581669">
 <div class="sourceCode cell-code" id="cb85"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb85-1"><a href="#cb85-1"></a><span class="co"># Run this after running mode-choice-mnl-in-vehicle-answers.R and predictions.R</span></span>
 <span id="cb85-2"><a href="#cb85-2"></a></span>
 <span id="cb85-3"><a href="#cb85-3"></a><span class="co"># First, we will add 0.01 to the in-vehicle travel time by car</span></span>
@@ -2731,7 +2995,7 @@ All checks on database completed.</code></pre>
 </section>
 <section class="slide level2">
 
-<div class="cell" data-filename="margins.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-67_42bdf443069657c7c610a02efb13bdcc">
+<div class="cell" data-filename="margins.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-68_8de961d11c85fd380634a7596dfe6577">
 <div class="sourceCode cell-code" id="cb87"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb87-1"><a href="#cb87-1"></a>meff_predictions <span class="ot">=</span></span>
 <span id="cb87-2"><a href="#cb87-2"></a>    <span class="fu">apollo_prediction</span>(model, apollo_probabilities, apollo_inputs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -2748,7 +3012,7 @@ The output from apollo_prediction is a matrix containing the
 </section>
 <section class="slide level2">
 
-<div class="cell" data-filename="margins.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-68_60a614d5c3bab788a3b8d2284f40f077">
+<div class="cell" data-filename="margins.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-69_5af1d8ca973dd299a552c88fc009ef90">
 <div class="sourceCode cell-code" id="cb89"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb89-1"><a href="#cb89-1"></a><span class="co"># now, we can compute the per-observation marginal effect</span></span>
 <span id="cb89-2"><a href="#cb89-2"></a><span class="co"># We divide by 0.01 to scale the marginal effects to a unit</span></span>
 <span id="cb89-3"><a href="#cb89-3"></a><span class="co"># change in the independent variable, because this is the</span></span>
@@ -2762,6 +3026,10 @@ The output from apollo_prediction is a matrix containing the
 -0.0006134619  0.0001276546  0.0003080833  0.0001777240 </code></pre>
 </div>
 </div>
+<ul>
+<li>As expected, increasing car travel time has had a large negative impact on the choice probability of car</li>
+<li>Rail, air, and bus have seen gains due to change in car travel time</li>
+</ul>
 </section>
 <section id="interpreting-marginal-effects" class="slide level2">
 <h2>Interpreting marginal effects</h2>
@@ -2792,7 +3060,7 @@ The output from apollo_prediction is a matrix containing the
 </section>
 <section id="answers-1" class="slide level2">
 <h2>Answers</h2>
-<div class="cell" data-filename="margins-answers.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-69_d7f0eb33d724f9d9592ce38b2d166fb5">
+<div class="cell" data-filename="margins-answers.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-70_f7574c4e2d5415f28b40a4b17bab023b">
 <div class="sourceCode cell-code" id="cb91"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb91-1"><a href="#cb91-1"></a><span class="co"># Run this after running mode-choice-mnl-in-vehicle-answers.R and predictions.R</span></span>
 <span id="cb91-2"><a href="#cb91-2"></a></span>
 <span id="cb91-3"><a href="#cb91-3"></a><span class="co"># First, we will add 0.01 to the income</span></span>
@@ -2811,7 +3079,7 @@ All checks on database completed.</code></pre>
 </section>
 <section class="slide level2">
 
-<div class="cell" data-filename="margins-answers.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-70_44dda125cc7aa122e2bc0460aa911193">
+<div class="cell" data-filename="margins-answers.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-71_64c36d96ed266a7353a1f7bd67d07460">
 <div class="sourceCode cell-code" id="cb93"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb93-1"><a href="#cb93-1"></a><span class="co"># now, do the predictions</span></span>
 <span id="cb93-2"><a href="#cb93-2"></a>meff_predictions <span class="ot">=</span></span>
 <span id="cb93-3"><a href="#cb93-3"></a>    <span class="fu">apollo_prediction</span>(model, apollo_probabilities, apollo_inputs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -2829,7 +3097,7 @@ The output from apollo_prediction is a matrix containing the
 </section>
 <section class="slide level2">
 
-<div class="cell" data-filename="margins-answers.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-71_8a7c110378dfa04237c20ff66f4d0df0">
+<div class="cell" data-filename="margins-answers.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-72_3d8dc51251454a6512ae7e76b1fcc22d">
 <div class="sourceCode cell-code" id="cb95"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb95-1"><a href="#cb95-1"></a><span class="co"># now, we can compute the per-observation marginal effect</span></span>
 <span id="cb95-2"><a href="#cb95-2"></a><span class="co"># We divide by 0.01 to scale the marginal effects to a unit</span></span>
 <span id="cb95-3"><a href="#cb95-3"></a><span class="co"># change in the independent variable, because this is the</span></span>
@@ -2843,6 +3111,12 @@ The output from apollo_prediction is a matrix containing the
  3.513233e-07 -1.727214e-06  1.655256e-07  1.210365e-06 </code></pre>
 </div>
 </div>
+<ul>
+<li>An increase in income has the largest positive effect on air, and the largest negative effect on bus
+<ul>
+<li>Look at the exponents - marginal effects may be small and presented in scientific notation</li>
+</ul></li>
+</ul>
 </section></section>
 <section>
 <section id="practical-application-of-choice-models" class="title-slide slide level1 center">
@@ -2922,6 +3196,14 @@ The output from apollo_prediction is a matrix containing the
 </section>
 <section id="independence-of-irrelevant-alternatives-the-math" class="slide level2">
 <h2>Independence of irrelevant alternatives: the math</h2>
+<p>What is the effect of a change in utility of red bus on probability of choosing blue bus or car?</p>
+<ul>
+<li><span class="math inline">\(U_r, U_b, U_c\)</span>: utility of red bus, blue bus, and car, respectively</li>
+<li><span class="math inline">\(p(b)\)</span>: probability of choosing blue bus</li>
+</ul>
+</section>
+<section class="slide level2">
+
 <p><span class="math display">\[ \frac{\delta p(b)}{\delta U_r}\]</span></p>
 <p><span class="math display">\[
 = \frac{
@@ -2929,9 +3211,14 @@ The output from apollo_prediction is a matrix containing the
         e^{U_r} + e^{U_b} + e^{U_c}}
     \frac{\delta}{\delta U_r}
 \]</span></p>
+</section>
+<section class="slide level2">
+
+<p>for blue bus and car, the utility is a constant, so can be moved outside the derivative</p>
 <p><span class="math display">\[
     = e^{U_b} \big[ ( e^{U_r} + e^{U_b} + e^{U_c} \big)^{-1} \frac{\delta}{\delta U_r} \big]
 \]</span></p>
+<p>The portion in <span class="math inline">\(\big[\ldots\big]\)</span> is same for all alternatives, so blue bus and car probabilities are scaled by the same amount</p>
 </section>
 <section id="questions-3" class="slide level2">
 <h2>Questions?</h2>
@@ -3087,7 +3374,7 @@ U_i = \alpha_i + \beta_{ix} x_i + \cdots + \epsilon_{nest} + \epsilon_{i}
 </section>
 <section id="nested-logit-in-r" class="slide level2">
 <h2>Nested logit in R</h2>
-<div class="cell" data-filename="nested-logit-mode-choice.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-75_400cbd3adebd6e88f7a800f5089fd69b">
+<div class="cell" data-filename="nested-logit-mode-choice.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-76_e42a40607858b7bd8564cb372f2d41ef">
 <div class="sourceCode cell-code" id="cb97"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb97-1"><a href="#cb97-1"></a><span class="fu">library</span>(apollo)</span>
 <span id="cb97-2"><a href="#cb97-2"></a><span class="fu">library</span>(tidyverse)</span>
 <span id="cb97-3"><a href="#cb97-3"></a></span>
@@ -3103,7 +3390,7 @@ U_i = \alpha_i + \beta_{ix} x_i + \cdots + \epsilon_{nest} + \epsilon_{i}
 </section>
 <section class="slide level2">
 
-<div class="cell" data-filename="nested-logit-mode-choice.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-76_2a7f509ee94443e7f292a45e49252659">
+<div class="cell" data-filename="nested-logit-mode-choice.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-77_076f9f87acdb669c9e10a1fe8814402e">
 <div class="sourceCode cell-code" id="cb98"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb98-1"><a href="#cb98-1"></a>apollo_beta <span class="ot">=</span> <span class="fu">c</span>(</span>
 <span id="cb98-2"><a href="#cb98-2"></a>    <span class="at">asc_air =</span> <span class="dv">0</span>,</span>
 <span id="cb98-3"><a href="#cb98-3"></a>    <span class="at">asc_bus =</span> <span class="dv">0</span>,</span>
@@ -3125,7 +3412,7 @@ U_i = \alpha_i + \beta_{ix} x_i + \cdots + \epsilon_{nest} + \epsilon_{i}
 </section>
 <section class="slide level2">
 
-<div class="cell" data-filename="nested-logit-mode-choice.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-77_7ae2ca4ddeb9b4c1659c50446b4467e8">
+<div class="cell" data-filename="nested-logit-mode-choice.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-78_7f937e793637116aad5c8ba34c9227c1">
 <div class="sourceCode cell-code" id="cb99"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb99-1"><a href="#cb99-1"></a>apollo_fixed <span class="ot">=</span> <span class="fu">c</span>()</span>
 <span id="cb99-2"><a href="#cb99-2"></a>apollo_inputs <span class="ot">=</span> <span class="fu">apollo_validateInputs</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -3138,7 +3425,7 @@ All checks on database completed.</code></pre>
 </section>
 <section class="slide level2">
 
-<div class="cell" data-filename="nested-logit-mode-choice.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-78_e975beddcf21e4eab795b428e4b6dc6e">
+<div class="cell" data-filename="nested-logit-mode-choice.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-79_28fb29ce01f9aaad8c68edd44402993b">
 <div class="sourceCode cell-code" id="cb101"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb101-1"><a href="#cb101-1"></a>apollo_probabilities <span class="ot">=</span> <span class="cf">function</span>(apollo_beta, apollo_inputs,</span>
 <span id="cb101-2"><a href="#cb101-2"></a>        <span class="at">functionality=</span><span class="st">"estimate"</span>) {</span>
 <span id="cb101-3"><a href="#cb101-3"></a>    <span class="fu">apollo_attach</span>(apollo_beta, apollo_inputs)</span>
@@ -3201,7 +3488,7 @@ All checks on database completed.</code></pre>
 </section>
 <section class="slide level2">
 
-<div class="cell" data-filename="nested-logit-mode-choice.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-79_41a9f2863759c1a42f2dd98ee01314d8">
+<div class="cell" data-filename="nested-logit-mode-choice.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-80_f4565f8191046d08bb5ccc9f09d16bd9">
 <div class="sourceCode cell-code" id="cb102"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb102-1"><a href="#cb102-1"></a>model <span class="ot">=</span></span>
 <span id="cb102-2"><a href="#cb102-2"></a>    <span class="fu">apollo_estimate</span>(apollo_beta, apollo_fixed, apollo_probabilities, apollo_inputs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -3302,7 +3589,7 @@ Calculating LL of each model component...</code></pre>
 </section>
 <section class="slide level2">
 
-<div class="cell" data-filename="nested-logit-mode-choice.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-80_221040ff2576ef3d8e73e6c104f14c9a">
+<div class="cell" data-filename="nested-logit-mode-choice.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-81_84b72f234a77109cea60199b7be55ae8">
 <div class="sourceCode cell-code" id="cb104"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb104-1"><a href="#cb104-1"></a><span class="fu">apollo_modelOutput</span>(model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Model run by mwbc using Apollo 0.2.7 on R 4.2.1 for Darwin.
@@ -3310,7 +3597,7 @@ www.ApolloChoiceModelling.com
 
 Model name                       : Nested_Mode_Choice
 Model description                : No model description provided in apollo_control
-Model run at                     : 2022-08-10 12:28:27
+Model run at                     : 2022-08-12 16:09:28
 Estimation method                : bfgs
 Model diagnosis                  : successful convergence 
 Number of individuals            : 500
@@ -3366,7 +3653,7 @@ Nest: root (1)
 </section>
 <section class="slide level2">
 
-<div class="cell" data-filename="nested-logit-mode-choice.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-81_30e442e9cf41c740d982a48338b6b5a6">
+<div class="cell" data-filename="nested-logit-mode-choice.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-82_79014de812f118f31ca9fee7a2b2dd9e">
 <div class="sourceCode cell-code" id="cb106"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb106-1"><a href="#cb106-1"></a><span class="fu">apollo_saveOutput</span>(model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Model output saved to /Users/mwbc/Library/CloudStorage/OneDrive-UniversityofNorthCarolinaatChapelHill/teaching/odum-discrete/Nested_Mode_Choice_output.txt 
@@ -3374,6 +3661,18 @@ Estimates saved to /Users/mwbc/Library/CloudStorage/OneDrive-UniversityofNorthCa
 Model object saved to /Users/mwbc/Library/CloudStorage/OneDrive-UniversityofNorthCarolinaatChapelHill/teaching/odum-discrete/Nested_Mode_Choice.rds </code></pre>
 </div>
 </div>
+</section>
+<section id="interpreting-the-nested-logit-model" class="slide level2">
+<h2>Interpreting the nested logit model</h2>
+<ul>
+<li>The <code>shared</code> mode nest has an inclusive value parameter of 0.6</li>
+<li>This is statistically significantly different from 1
+<ul>
+<li>Need to do the hypothesis test manually, Apollo has presented a test relative to 0</li>
+</ul></li>
+<li>This means that there are common unobserved attributes between the shared mode</li>
+<li>Interpreting other coefficients is the same as with the multinomial logit model</li>
+</ul>
 </section>
 <section id="likelihood-ratio-tests-of-the-nested-logit-model" class="slide level2">
 <h2>Likelihood-ratio tests of the nested logit model</h2>
@@ -3383,7 +3682,7 @@ Model object saved to /Users/mwbc/Library/CloudStorage/OneDrive-UniversityofNort
 </section>
 <section class="slide level2">
 
-<div class="cell" data-filename="nested-logit-mode-choice.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-82_0844d5d96628214a1f1366a6f429c2a5">
+<div class="cell" data-filename="nested-logit-mode-choice.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-83_732ebf7d31004cf61ddabb3467d7e70e">
 <div class="sourceCode cell-code" id="cb108"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb108-1"><a href="#cb108-1"></a><span class="fu">apollo_lrTest</span>(<span class="st">"Nested_Mode_Choice"</span>, <span class="st">"Apollo_Mode_Choice"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>The order of your two models will be reversed in the output as model 1
@@ -3456,7 +3755,7 @@ U_{air} = X_{air}B_{air} + \mu'_{shared} + \epsilon_{air}
 </section>
 <section id="mixed-logit-in-r" class="slide level2">
 <h2>Mixed logit in R</h2>
-<div class="cell" data-filename="mixed-logit-mode-choice.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-84_4b0861f19a8c7a1d3eb0b483cca779d1">
+<div class="cell" data-filename="mixed-logit-mode-choice.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-85_55efcfef4f6d01aa43fab45c8451b9c0">
 <div class="sourceCode cell-code" id="cb110"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb110-1"><a href="#cb110-1"></a><span class="fu">library</span>(apollo)</span>
 <span id="cb110-2"><a href="#cb110-2"></a><span class="fu">library</span>(tidyverse)</span>
 <span id="cb110-3"><a href="#cb110-3"></a></span>
@@ -3473,7 +3772,7 @@ U_{air} = X_{air}B_{air} + \mu'_{shared} + \epsilon_{air}
 </section>
 <section class="slide level2">
 
-<div class="cell" data-filename="mixed-logit-mode-choice.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-85_1c412d5ba2a01ff9dfb53f0ded15a938">
+<div class="cell" data-filename="mixed-logit-mode-choice.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-86_e2dede03d6693baeea626fcec58df915">
 <div class="sourceCode cell-code" id="cb111"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb111-1"><a href="#cb111-1"></a>apollo_beta <span class="ot">=</span> <span class="fu">c</span>(</span>
 <span id="cb111-2"><a href="#cb111-2"></a>    <span class="at">asc_air =</span> <span class="dv">0</span>,</span>
 <span id="cb111-3"><a href="#cb111-3"></a>    <span class="at">asc_bus =</span> <span class="dv">0</span>,</span>
@@ -3507,7 +3806,7 @@ U_{air} = X_{air}B_{air} + \mu'_{shared} + \epsilon_{air}
 </section>
 <section class="slide level2">
 
-<div class="cell" data-filename="mixed-logit-mode-choice.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-86_40017f9568e5f1c34596517149faf813">
+<div class="cell" data-filename="mixed-logit-mode-choice.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-87_3a5ba954d9c437bd20a08b7e69046e6a">
 <div class="sourceCode cell-code" id="cb112"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb112-1"><a href="#cb112-1"></a>apollo_draws <span class="ot">=</span> <span class="fu">list</span>(</span>
 <span id="cb112-2"><a href="#cb112-2"></a>    <span class="at">interDrawsType=</span><span class="st">"halton"</span>,</span>
 <span id="cb112-3"><a href="#cb112-3"></a>    <span class="co"># number of draws - more is slower but more accurate</span></span>
@@ -3529,7 +3828,7 @@ U_{air} = X_{air}B_{air} + \mu'_{shared} + \epsilon_{air}
 </section>
 <section class="slide level2">
 
-<div class="cell" data-filename="mixed-logit-mode-choice.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-87_c8557ab350dee11067f813c719048afb">
+<div class="cell" data-filename="mixed-logit-mode-choice.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-88_9d59995dcf2ba05811e2265f22c2cc77">
 <div class="sourceCode cell-code" id="cb113"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb113-1"><a href="#cb113-1"></a>apollo_randCoeff <span class="ot">=</span> <span class="cf">function</span> (apollo_beta, apollo_inputs) {</span>
 <span id="cb113-2"><a href="#cb113-2"></a>    randcoeff <span class="ot">=</span> <span class="fu">list</span>()</span>
 <span id="cb113-3"><a href="#cb113-3"></a>    <span class="co"># error term has mean zero, so we multiply by standard deviation</span></span>
@@ -3540,7 +3839,7 @@ U_{air} = X_{air}B_{air} + \mu'_{shared} + \epsilon_{air}
 <span id="cb113-8"><a href="#cb113-8"></a>    <span class="fu">return</span>(randcoeff)</span>
 <span id="cb113-9"><a href="#cb113-9"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-filename="mixed-logit-mode-choice.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-88_a8492a5de6e1a012e8eeccd18fa63bca">
+<div class="cell" data-filename="mixed-logit-mode-choice.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-89_0314c88509c832dc9b5ecfd9bdd29318">
 <div class="sourceCode cell-code" id="cb114"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb114-1"><a href="#cb114-1"></a>apollo_fixed <span class="ot">=</span> <span class="fu">c</span>()</span>
 <span id="cb114-2"><a href="#cb114-2"></a>apollo_inputs <span class="ot">=</span> <span class="fu">apollo_validateInputs</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -3556,7 +3855,7 @@ Generating inter-individual draws . Done</code></pre>
 </section>
 <section class="slide level2">
 
-<div class="cell" data-filename="mixed-logit-mode-choice.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-89_f59143d669db5c43f15643bb0caf3617">
+<div class="cell" data-filename="mixed-logit-mode-choice.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-90_b4efcb292d7089975d6d444eb5f362e1">
 <div class="sourceCode cell-code" id="cb116"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb116-1"><a href="#cb116-1"></a>apollo_probabilities <span class="ot">=</span> <span class="cf">function</span>(apollo_beta, apollo_inputs,</span>
 <span id="cb116-2"><a href="#cb116-2"></a>        <span class="at">functionality=</span><span class="st">"estimate"</span>) {</span>
 <span id="cb116-3"><a href="#cb116-3"></a>    <span class="fu">apollo_attach</span>(apollo_beta, apollo_inputs)</span>
@@ -3624,7 +3923,7 @@ Generating inter-individual draws . Done</code></pre>
 </section>
 <section class="slide level2">
 
-<div class="cell" data-filename="mixed-logit-mode-choice.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-90_a5a5d4534329d779ff5c382342ac64de">
+<div class="cell" data-filename="mixed-logit-mode-choice.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-91_341ecc6e2f98d5b7c34ea245223ffb22">
 <div class="sourceCode cell-code" id="cb117"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb117-1"><a href="#cb117-1"></a>model <span class="ot">=</span></span>
 <span id="cb117-2"><a href="#cb117-2"></a>    <span class="fu">apollo_estimate</span>(apollo_beta, apollo_fixed, apollo_probabilities, apollo_inputs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -3713,7 +4012,7 @@ Calculating LL of each model component...</code></pre>
 </section>
 <section class="slide level2">
 
-<div class="cell" data-filename="mixed-logit-mode-choice.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-91_0f7d488f8fbf9c33769bfde527eec13e">
+<div class="cell" data-filename="mixed-logit-mode-choice.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-92_d78d264d9a1212118e48fb65bd66ec62">
 <div class="sourceCode cell-code" id="cb119"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb119-1"><a href="#cb119-1"></a><span class="fu">apollo_modelOutput</span>(model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Model run by mwbc using Apollo 0.2.7 on R 4.2.1 for Darwin.
@@ -3721,7 +4020,7 @@ www.ApolloChoiceModelling.com
 
 Model name                       : Mixed_Mode_Choice
 Model description                : No model description provided in apollo_control
-Model run at                     : 2022-08-10 12:28:33
+Model run at                     : 2022-08-12 16:09:35
 Estimation method                : bfgs
 Model diagnosis                  : successful convergence 
 Number of individuals            : 500
@@ -3743,10 +4042,10 @@ AIC                              :  2058.71
 BIC                              :  2107.79 
 
 Estimated parameters             :  10
-Time taken (hh:mm:ss)            :  00:01:16.67 
-     pre-estimation              :  00:00:11.36 
-     estimation                  :  00:00:33.95 
-     post-estimation             :  00:00:31.36 
+Time taken (hh:mm:ss)            :  00:01:18.2 
+     pre-estimation              :  00:00:11.22 
+     estimation                  :  00:00:34.54 
+     post-estimation             :  00:00:32.45 
 Iterations                       :  24  
 Min abs eigenvalue of Hessian    :  2.823983 
 
@@ -3769,7 +4068,7 @@ sd_shared            0.512083    0.249167     2.05518    0.257106       1.99172<
 </section>
 <section class="slide level2">
 
-<div class="cell" data-filename="mixed-logit-mode-choice.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-92_19fd930ccbd44f7f1d955c3583ca5706">
+<div class="cell" data-filename="mixed-logit-mode-choice.R" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-93_1a63aac39ab3753a4d009ac2403473da">
 <div class="sourceCode cell-code" id="cb121"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb121-1"><a href="#cb121-1"></a><span class="fu">apollo_saveOutput</span>(model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Model output saved to /Users/mwbc/Library/CloudStorage/OneDrive-UniversityofNorthCarolinaatChapelHill/teaching/odum-discrete/Mixed_Mode_Choice_output.txt 
@@ -3793,7 +4092,7 @@ Model object saved to /Users/mwbc/Library/CloudStorage/OneDrive-UniversityofNort
 </section>
 <section class="slide level2">
 
-<div class="cell" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-93_34b419eb2eb7c41bbc889e0ada4a1122">
+<div class="cell" data-hash="discrete-choice_cache/revealjs/unnamed-chunk-94_5f1fd1223dbe367b43703cabab282788">
 <div class="cell-output cell-output-stdout">
 <pre><code>The order of your two models will be reversed in the output as model 1
   has better fit than model 2.
@@ -3815,7 +4114,13 @@ Likelihood ratio test p-value:  0.2542 </code></pre>
 <li>Error components model: standard deviations of error terms and their significance is proportional to correlation between alternatives
 <ul>
 <li>opposite of nested logit, where smaller inclusive value parameters mean more correlation</li>
+<li>We found a significant <code>sd_shared</code> parameter, which means that there are unobserved common factors between the shared modes</li>
 </ul></li>
+</ul>
+</section>
+<section id="random-coefficients" class="slide level2">
+<h2>Random coefficients</h2>
+<ul>
 <li>Can also have random coefficients
 <ul>
 <li>Usually a mean is added to the coefficients in this case</li>
@@ -3823,14 +4128,16 @@ Likelihood ratio test p-value:  0.2542 </code></pre>
 </ul></li>
 </ul>
 </section>
-<section id="interpreting-mixed-logit-models-1" class="slide level2">
-<h2>Interpreting mixed logit models</h2>
+<section id="interpreting-random-coefficients" class="slide level2">
+<h2>Interpreting random coefficients</h2>
 <ul>
 <li>Be careful with valuation
 <ul>
+<li>Any function of coefficients must be integrated over coefficient distribution</li>
 <li>Ratio of normally distributed coefficients is Cauchy distributed</li>
 <li>Known as a “pathological” distribution - no mean</li>
-<li>Probably not economically consistent; even Jeff Bezos doesn’t have infinite value of time</li>
+<li>Denominator can be arbitrarily close to zero, making estimate arbitrarily close to infinity</li>
+<li>Not possible to estimate through simulation, simulated value will be unstable depending on how close to zero the smallest sample from the denominator was</li>
 </ul></li>
 </ul>
 </section>
