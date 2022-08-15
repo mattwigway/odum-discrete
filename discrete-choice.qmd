@@ -172,6 +172,98 @@ summary(glm_model)
 summary(glm_model)
 ```
 
+## Interpreting logistic regression
+
+- Positive coefficients mean positive outcome is more likely
+- Negative the opposite
+- Larger coefficients indicate a larger effect
+- Unlike linear regression, coefficients don't have a direct interpretation in terms of the dependent variable
+    - See section on marginal effects below
+- Statistical significance can be interpreted like in a linear regression
+
+## Interpreting logistic regression
+
+```{r}
+df = data.frame(
+        round(summary(glm_model)$coefficients, 2)
+    )
+names(df) <- c("Coefficient", "Standard error", "Z-value", "p-value")
+kable(df)
+```
+
+---
+
+- In this model, the dependent variable is 1 if the trip was a carpool, and 0 if not
+- Positive coefficients thus indicate a higher likelihood of carpooling
+- We could alos code carpool as 0 and non-carpool as 1, and get the same model with signs on all coefficients reversed
+
+---
+
+- Intercept is generally not interpreted in logistic regression
+    - Controls "base rate" - proportion of positive outcomes when all covariates are 0.
+
+---
+
+- `hhsize` has a positive and statistically significant coefficient, indicating that larger households are more likely to carpool
+    - This makes sense, there are more household members to carpool with
+
+---
+
+- `cars_per_driver` has a negative coefficient, indicating that households with more cars for each driver are less likely to carpool
+    - This makes sense as a vehicle is more likely to be available for single person
+
+---
+
+- `commuteTRUE` has a negative coefficient, indicating that commute trips are less likely to be carpools
+    - Again, this makes senses---commutes are to a location usually only relevant to one household member
+
+---
+
+- `socialTRUE` has a positive coefficient, indicating social and recreational trips are more likely to be carpools
+    - Multiple household members are likely to participate in social and recreational activities together, and travel to them together
+
+---
+
+## Statistical significance and p-values
+
+- Coefficients are approximations to population-level parameters, and contain sampling error because we haven't sampled the entire population
+- The standard error ($\sigma$) is a measure of how precise the coefficient is
+- We assume coefficient estimates are asymtotically[^aysmtotically] normal
+- Based on a normal distribution, there is a 95% chance the population parameter is within $1.96 \times \sigma$ of the estimate
+
+[^asymtotically]: Maximum-likelihood coefficient estimates approximate a normal distribution as sample size increases
+
+## Statistical significance and p-values
+
+- We can also perform a hypothesis test that the coefficient is different from 0
+- To do this, we compute a $z$-value, which is just the coefficient divided by the standard error
+- Put another way, the $z$-value is the number of standard errors between the coefficient and zero
+- Large coefficients lead to large $z$-values
+- Large standard errors (i.e. high uncertainty) lead to small $z$-values
+
+## Statistical significance and p-values
+
+- $z$ values larger in magnitude than 1.96 indicate that there is less than a 5\% chance of observing a coefficient as larger or larger than the estimated coefficient if the true coefficient were zero
+
+## Statistical significance and p-values
+
+- The $p$-value is the probability of observing a coefficient as large or larger
+- Computed as $2(1 - \phi(|z|))$, where $z$ is the $z$-value and $\phi$ is the normal cumulative distribution function
+- Usual rule is that $p < 0.05$ is statistically significant, but in larger datasets $p < 0.01$ or even $p < 0.001$ may be used
+
+## Statistical significance and p-values
+
+- For more information about the math, see the hypothesis testing section of any statistics textbook
+- Logistic regression hypothesis tests are computed just like linear regression, except using the normal instead of $t$ distribution
+
+## Nonsampling error
+
+- The $z$ and $p$ values account for the chance that the coefficient differs from the true population parameter due to random sampling error
+    - i.e. because you didn't sample every member of the population, there is some probability that if you had, the answer would be different
+- They do not account for _non-sampling error_---bias in who was in the sampling frame to begin with
+- For instance, recruiting for a survey through a random sample of landline telephones would not sample anyone with only a cell phone, or no phone at all
+- This would likely bias results towards older and higher-income people
+
 ## Binary logistic regression as a random utility model
 
 - We can treat the linear predictor in logistic regression as the utility of the modeled outcome
@@ -381,7 +473,7 @@ clear()
 - Based on age, income, and job type
 
 ## Multinomial logistic regression in R
-`
+
 - These utility functions will have the same variables but different coefficients
 - Each will also have a _alternative specific constant_---like a constant in logistic regression that represents the base rate, but for each alternative
 - One utility function will be held at zero
@@ -528,11 +620,44 @@ Note: all variables significant at $p < 0.05$
 
 ---
 
-- Relative to being unable to WFH,
-    - Older people are less likely to WFH rarely or often, but more likely to always
-    - Higher income people are much more likely to be able to and choose to WFH
-    - Service workers are less likely to be able to WFH
-    - Scale of age variable is different from others
+- Multinomial logit models may be presented in this tabular format where independent variables are on one axis and outcomes on the other
+    - Each cell is the coefficient for the relationship between an independent variable and a particular outcome
+- May also be presented as a table where each row contains a single coefficient
+    - Coefficients names will include both independent variable name and outcome
+    - e.g. `b_rarely_age` is the relationship between age and rarely working from home
+    - This is the format Apollo presents
+
+---
+
+- Like logistic regression, positive coefficients are related to an outcome being more likely, and negative coefficients with an outcome being less likely
+- Like binary logistic regression, we still have one base outcome, with utility of 0
+    - Not carpool in binary logistic regression, Unable to work from home in this example
+- Because there are more than two outcomes, we have a set of coefficients for each outcome (other than the base outcome)
+- These coefficients are relative to the base outcome
+    - i.e. a positive coefficient means more likely than the base outcome
+
+---
+
+- Alternative specific constants are sometimes used to indicate relative popularity of different options (a positive ASC means that an outcome is more likely than the base outcome, all else equal)
+    - If your sample is choice-based, i.e. certain outcomes are sampled more frequently than they occur in the population, ASCs will be biased but other coefficients will be unbiased [@ben-akiva_discrete_1985]
+    - This is often a result of data collection methods, e.g. a transit on-board survey will oversample people who choose transit
+
+---
+
+- Age is negative for rarely and often working from home, but positive for always working from home
+    - This indicates that older people are less likely to work from home sometimes than to be unable to work from home
+    - But also, they are more likely to always work from home than to be unable to work from home (positive coefficient)
+- Coefficient sizes are much smaller than other coefficients, because age is measured in years while other variables are 0-1
+
+---
+
+- Higher income people are more likely to rarely, often, or always work from home than to be unable to work from home, because coefficients for all these outcomes are positive
+- They are most likely to often work from home
+
+---
+
+- Service workers are unlikely to be able to work from home at all
+    - If they can, they are least likely to work from home always, and somewhat more likely to work from home often, and somewhat more likely to work from home every day
 
 ## Questions?
 
@@ -775,11 +900,28 @@ apollo_modelOutput(model)
 apollo_saveOutput(model)
 ```
 
+## Interpretation of multinomial logit models
+
+- The income coefficient is itnerpreted the same way as the coefficients in the working-from-home model
+- The cost coefficients, however, aren't associated with a particular alternative, so their interpretation is different
+
+## Interpretation of multinomial logit models
+
+- A coefficient estimated for an aspect of an alternative represents how valuable that aspect is to the decisionmaker
+- For estimation to succeed, this aspect must vary over alternatives
+
+---
+
+- For instance, the negative cost coefficient means that the more an alternative costs, the less a user is interested in using it
+- Same for in vehicle time
+- Access time also has a negative coefficient, but it is not statistically significant
+
 ## Valuation using discrete choice models
 
 - A common use for discrete choice models is to calculate willingness-to-pay
 - The linear-in-parameters utility function puts everything in terms of utility
 - If we have a cost parameter, we can use the model to put everything else in monetary units
+- This makes interpretation and application more understandable
 
 ## Valuation using discrete choice models
 
@@ -1073,7 +1215,8 @@ ggplot(df, aes(x=lab, y=vtt)) +
 
 ```
 
-- People really don't like being on airplanes
+- People really don't like being on airplanes, value of time is much higher for air than other modes
+- You can also see this in the coefficients, airplane in-vehicle travel time has a more negative coefficient than other modes, indicating it is more disliked
 
 ## Correlation does not imply causation
 
@@ -1206,6 +1349,10 @@ tax_mktshares
 tax_mktshares - orig_mktshares
 ```
 
+- As expected, air market share has dropped quite a bit with the new tax
+- All other modes have increased market share due to diversion from air, with most passengers going to rail or car, and a smaller number going to bus
+- This model does not model the decision to travel at all, so does not capture a reduction in overall travel due to increased prices
+
 ## Exercise
 
 - How would new rail infrastructure that reduces journey times 25% affect market shares?
@@ -1265,6 +1412,9 @@ fast_rail_mktshares
 # you re-run apollo_validateInputs before calculating
 fast_rail_mktshares - orig_mktshares
 ```
+
+- Rail has seen an increase in market share, with the most passengers being diverted from car, then air, then bus
+- As before, this does not capture decision to travel; faster rail travel times may induce some people to make additional trips
 
 # Logit model estimation: maximum likelihood
 
@@ -1461,6 +1611,9 @@ obs_meff = (meff_predictions - predictions) / 0.01
 apply(obs_meff[,c("car", "bus", "rail", "air")], 2, mean)
 ```
 
+- As expected, increasing car travel time has had a large negative impact on the choice probability of car
+- Rail, air, and bus have seen gains due to change in car travel time
+
 ## Interpreting marginal effects
 
 - Increasing travel time by car has a large negative effect on probability of choosing car
@@ -1522,6 +1675,9 @@ obs_meff = (meff_predictions - predictions) / 0.01
 apply(obs_meff[,c("car", "bus", "rail", "air")], 2, mean)
 ```
 
+- An increase in income has the largest positive effect on air, and the largest negative effect on bus
+    - Look at the exponents - marginal effects may be small and presented in scientific notation
+
 # Practical application of choice models
 
 ## Data acquisition
@@ -1574,7 +1730,15 @@ apply(obs_meff[,c("car", "bus", "rail", "air")], 2, mean)
 
 ## Independence of irrelevant alternatives: the math
 
+What is the effect of a change in utility of red bus on probability of choosing blue bus or car?
+
+- $U_r, U_b, U_c$: utility of red bus, blue bus, and car, respectively
+- $p(b)$: probability of choosing blue bus
+
+---
+
 $$ \frac{\delta p(b)}{\delta U_r}$$
+
 $$
 = \frac{
     e^{U_b}}{
@@ -1582,9 +1746,15 @@ $$
     \frac{\delta}{\delta U_r}
 $$
 
+---
+
+for blue bus and car, the utility is a constant, so can be moved outside the derivative
+
 $$
     = e^{U_b} \big[ ( e^{U_r} + e^{U_b} + e^{U_c} \big)^{-1} \frac{\delta}{\delta U_r} \big]
 $$
+
+The portion in $\big[\ldots\big]$ is same for all alternatives, so blue bus and car probabilities are scaled by the same amount
 
 
 ## Questions?
@@ -1844,6 +2014,14 @@ apollo_modelOutput(model)
 
 apollo_saveOutput(model)
 ```
+
+## Interpreting the nested logit model
+
+- The `shared` mode nest has an inclusive value parameter of 0.6
+- This is statistically significantly different from 1
+    - Need to do the hypothesis test manually, Apollo has presented a test relative to 0
+- This means that there are common unobserved attributes between the shared mode
+- Interpreting other coefficients is the same as with the multinomial logit model
 
 ## Likelihood-ratio tests of the nested logit model
 
@@ -2135,15 +2313,21 @@ apollo_lrTest("Mixed_Mode_Choice", "Apollo_Mode_Choice")
 
 - Error components model: standard deviations of error terms and their significance is proportional to correlation between alternatives
     - opposite of nested logit, where smaller inclusive value parameters mean more correlation
+    - We found a significant `sd_shared` parameter, which means that there are unobserved common factors between the shared modes
+
+## Random coefficients
+
 - Can also have random coefficients
     - Usually a mean is added to the coefficients in this case
     - Often used for value of time
 
-## Interpreting mixed logit models
+## Interpreting random coefficients
 - Be careful with valuation
+    - Any function of coefficients must be integrated over coefficient distribution
     - Ratio of normally distributed coefficients is Cauchy distributed
     - Known as a "pathological" distribution - no mean
-    - Probably not economically consistent; even Jeff Bezos doesn't have infinite value of time
+    - Denominator can be arbitrarily close to zero, making estimate arbitrarily close to infinity
+    - Not possible to estimate through simulation, simulated value will be unstable depending on how close to zero the smallest sample from the denominator was
 
 ## Questions and contact
 
