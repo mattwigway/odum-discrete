@@ -16,12 +16,15 @@ execute:
     echo: true
     output: true
     cache: true
+bibliography: bibliography.bib
+csl: presentation.csl
 ---
 
 ```{python}
 #| include: false
 import pandas as pd
 import numpy as np
+import scipy
 import matplotlib.pyplot as plt
 import statsmodels.api as sm
 from IPython.display import Markdown, HTML
@@ -483,3 +486,1036 @@ print(result.getEstimatedParameters())
 print(result.shortSummary())
 print(result.getEstimatedParameters())
 ```
+
+## Moving beyond binary outcomes: the multinomial logit model
+
+- Often, we have more than two outcomes
+    - Choice of travel mode might be drive alone, carpool, transit, walk, or bike.
+    - Choice of Internet service might be DSL, cable, satellite, or fiber
+    - Choice of vacation destination might be beach, mountains, or theme park
+    - Choice of treatment for pain might be surgery, physical therapy, non-opioid medication, opioid medication, or accupuncture
+
+## The multinomial logit model: conceptually
+
+- Each alternative has a _utility_ or value
+- The decisionmaker will choose the alternative with the highest utility
+- Like binary logistic regression, each alternative has an error term—there is some random/unobserved variation in utility
+
+## The multinomial logit model, in math I
+
+- Each alternative gets a utility function, with systematic and random components
+
+$$
+U_{car} = V_{car} + \epsilon_{car}
+U_{transit} = V_{transit} + \epsilon_{transit}
+U_{bike} = V_{bike} + \epsilon_{bike}
+U_{walk} = V_{walk} + \epsilon_{walk}
+$$
+
+## The multinomial logit model, in math II
+
+- Like in a logistic regression, the systematic portion of utility is usually a linear combination of predictors
+
+$$
+V_{car} = \alpha_{car} + \beta_{car,income} x_{income} \cdots
+V_{transit} = \alpha_{transit} + \beta_{transit,income} x_{income} \cdots
+V_{bike} = \alpha_{bike} + \beta_{bike,income} x_{income} \cdots
+V_{walk} = \alpha_{walk} + \beta_{walk,income} x_{income} \cdots
+$$
+
+## Alternative specific constants
+
+- Unlike the binary logit model, there is now an $\alpha$ for each mode
+- This is known as an _alternative specific constant_
+- It measures the relative popularity of each option with all other coefficients held at zero
+    - Just like in a binary logit model
+- Interpretation is a little tricky, just like constants in other regression models—because all the other coefficients being zero doesn't always make sense
+
+## Only utility differences matter
+
+- The option with the highest utility is chosen
+- This means only _differences_ in utility matter, not their actual values
+- It is very easy to create models that are not identified (i.e. there is not a unique best set of coefficients) because of this
+
+
+## Identification issues
+
+- Looking again at our mode choice model, how do the differences between utilities change if we add 1 to all of the $\alpha$'s or $\beta$'s?
+
+$$
+V_{car} = \alpha_{car} + \beta_{car,income} x_{income} \cdots
+V_{transit} = \alpha_{transit} + \beta_{transit,income} x_{income} \cdots
+V_{bike} = \alpha_{bike} + \beta_{bike,income} x_{income} \cdots
+V_{walk} = \alpha_{walk} + \beta_{walk,income} x_{income} \cdots
+$$
+
+## An identified model
+
+- We can solve this by setting one utility to zero
+    - Which one does not affect predictions from the model, but will affect interpretations
+- For instance, we might do
+
+$$
+V_{car} = 0
+V_{transit} = \alpha_{transit} + \beta_{transit,income} x_{income} \cdots
+V_{bike} = \alpha_{bike} + \beta_{bike,income} x_{income} \cdots
+V_{walk} = \alpha_{walk} + \beta_{walk,income} x_{income} \cdots
+$$
+
+- This is exactly what a binary logistic regression does—you have coefficients for one outcome, and the utility of the other outcome is zero
+
+## Interpreting the model
+
+- All of the other coefficients are relative to the alternative that has its utility set to zero
+- For instance, $\beta_{bike,income}$ represents how income changes the _relative_ attractiveness of biking and driving
+
+## An example multinomial logit model: Seattle mode choice
+
+:::: {.columns}
+
+::: {.column width="60%"}
+- We have data on 8,883 trips taken in the Seattle region, based on a survey from the Puget Sound Regional Council
+- We have demographic information on the tripmakers, as well as attributes of the trip itself
+    - How long it would have taken by car, bike, walk, and transit
+    - How much it would have cost by car and transit
+        - For car, based on distance traveled
+    - How many transit transfers are required
+    - Whether the trip took place at rush hour
+:::
+::: {.column width="40%"}
+![](img/seattle.jpg){fig-alt="Image of the Space Needle, Seattle"}
+:::
+::::
+
+## Interpreting a multinomial logit model
+
+- We're going to start with a very simple multinomial logit model, modeling the relationship between income and mode choice
+
+```{python}
+#| echo: false
+import biogeme.database as db, biogeme.biogeme as bio
+from biogeme import models
+from biogeme.expressions import Beta, Variable
+import pandas as pd
+
+df = pd.read_csv("data/seattle_trips.csv") # read data
+
+# create our choice variable - it is coded as text in the data but Biogeme requires
+# it to be numeric
+df["numeric_mode"] = df.mode_choice.replace({
+    "Car": 1,
+    "Transit": 2,
+    "Walk": 3,
+    "Bike": 4
+})
+
+data = db.Database("Seattle", pd.get_dummies(df).astype("float64"))
+
+# specify coefficients - all start at zero, have no bounds (None, None), and are
+# estimated rather than fixed (0)
+asc_bike = Beta("asc_bike", 0, None, None, 0)
+b_income_over_100k_bike = Beta("b_income_over_100k_bike", 0, None, None, 0)
+
+asc_walk = Beta("asc_walk", 0, None, None, 0)
+b_income_over_100k_walk = Beta("b_income_over_100k_walk", 0, None, None, 0)
+
+asc_transit = Beta("asc_transit", 0, None, None, 0)
+b_income_over_100k_transit = Beta("b_income_over_100k_transit", 0, None, None, 0)
+
+# and specify the variables we want to use
+income_over_100k = Variable("income_over_100k")
+
+V = {
+    # Car
+    1: 0,
+
+    # Transit
+    2: asc_transit + b_income_over_100k_transit * income_over_100k,
+
+    # Walk
+    3: asc_walk + b_income_over_100k_walk * income_over_100k,
+
+    # Bike
+    4: asc_bike + b_income_over_100k_bike * income_over_100k
+}
+
+av = {1: 1, 2: 1, 3: 1, 4: 1}
+
+logprob = models.loglogit(V, av, Variable("numeric_mode"))
+
+model = bio.BIOGEME(data, logprob)
+model.modelName = "seattle_mode_choice"
+model.calculateNullLoglikelihood(av)
+result = model.estimate()
+print(result.shortSummary())
+print(result.getEstimatedParameters())
+```
+
+## Interpreting a multinomial logit model: alternative-specific constants
+
+```{python}
+#| echo: false
+params = result.getEstimatedParameters()
+Markdown(
+    tabulate.tabulate(
+        params.loc[[i for i in params.index if i.startswith("asc")]],
+        headers=params.columns
+    )
+)
+```
+
+::: {.incremental}
+- For households making less than $100,000/year
+    - Biking is least prevalent
+    - Transit is second least
+    - Walking is third least
+    - Driving is most prevalent
+:::
+
+## Interpreting a multinomial logit model: coefficients
+
+```{python}
+#| echo: false
+params = result.getEstimatedParameters()
+Markdown(
+    tabulate.tabulate(
+        params.loc[[i for i in params.index if i.startswith("asc")]],
+        headers=params.columns
+    )
+)
+```
+
+::: {.incremental}
+- In higher income households, relative to lower income households and relative to driving
+    - Is walking more prevalent than driving, or just relatively more prevalent :thinking:
+        - This is probably because this is Seattle which has an affluent, walkable downtown
+    - Biking is not really affected much by income (not statistically significant)
+    - Transit is relatively less prevalent
+    - Walking is relatively more prevalent
+:::
+
+## Estimating a multinomial logit model yourself
+
+```{python}
+#| filename: seattle_mnl_income.py
+import biogeme.database as db, biogeme.biogeme as bio
+from biogeme import models
+from biogeme.expressions import Beta, Variable
+import pandas as pd
+
+df = pd.read_csv("data/seattle_trips.csv") # read data
+
+# create our choice variable - it is coded as text in the data but Biogeme requires
+# it to be numeric
+df["numeric_mode"] = df.mode_choice.replace({
+    "Car": 1,
+    "Transit": 2,
+    "Walk": 3,
+    "Bike": 4
+})
+
+data = db.Database("Seattle", pd.get_dummies(df).astype("float64"))
+
+# specify coefficients - all start at zero, have no bounds (None, None), and are
+# estimated rather than fixed (0)
+asc_bike = Beta("asc_bike", 0, None, None, 0)
+b_income_over_100k_bike = Beta("b_income_over_100k_bike", 0, None, None, 0)
+
+asc_walk = Beta("asc_walk", 0, None, None, 0)
+b_income_over_100k_walk = Beta("b_income_over_100k_walk", 0, None, None, 0)
+
+asc_transit = Beta("asc_transit", 0, None, None, 0)
+b_income_over_100k_transit = Beta("b_income_over_100k_transit", 0, None, None, 0)
+
+# and specify the variables we want to use
+income_over_100k = Variable("income_over_100k")
+
+V = {
+    # Car
+    1: 0,
+
+    # Transit
+    2: asc_transit + b_income_over_100k_transit * income_over_100k,
+
+    # Walk
+    3: asc_walk + b_income_over_100k_walk * income_over_100k,
+
+    # Bike
+    4: asc_bike + b_income_over_100k_bike * income_over_100k
+}
+
+av = {1: 1, 2: 1, 3: 1, 4: 1}
+
+logprob = models.loglogit(V, av, Variable("numeric_mode"))
+
+model = bio.BIOGEME(data, logprob)
+model.modelName = "seattle_mode_choice"
+model.calculateNullLoglikelihood(av)
+result = model.estimate()
+print(result.shortSummary())
+print(result.getEstimatedParameters())
+```
+
+## Exercise: add a variable
+
+::: {.incremental}
+- Add the `rush_hour` variable to the model - this is a binary variable for trips that occur during the AM or PM rush hours
+    - Hint: you need to add it to the bike, walk, and transit utility function, with different betas
+:::
+
+## Exercise: add a variable: answer
+
+```{python}
+#| filename: seattle_mnl_income_rush.py
+import biogeme.database as db, biogeme.biogeme as bio
+from biogeme import models
+from biogeme.expressions import Beta, Variable
+import pandas as pd
+
+df = pd.read_csv("data/seattle_trips.csv") # read data
+
+# create our choice variable - it is coded as text in the data but Biogeme requires
+# it to be numeric
+df["numeric_mode"] = df.mode_choice.replace({
+    "Car": 1,
+    "Transit": 2,
+    "Walk": 3,
+    "Bike": 4
+})
+
+data = db.Database("Seattle", pd.get_dummies(df).astype("float64"))
+
+# specify coefficients - all start at zero, have no bounds (None, None), and are
+# estimated rather than fixed (0)
+asc_bike = Beta("asc_bike", 0, None, None, 0)
+b_income_over_100k_bike = Beta("b_income_over_100k_bike", 0, None, None, 0)
+b_rush_hour_bike = Beta("b_rush_hour_bike", 0, None, None, 0)
+
+asc_walk = Beta("asc_walk", 0, None, None, 0)
+b_income_over_100k_walk = Beta("b_income_over_100k_walk", 0, None, None, 0)
+b_rush_hour_walk = Beta("b_rush_hour_walk", 0, None, None, 0)
+
+asc_transit = Beta("asc_transit", 0, None, None, 0)
+b_income_over_100k_transit = Beta("b_income_over_100k_transit", 0, None, None, 0)
+b_rush_hour_transit = Beta("b_rush_hour_transit", 0, None, None, 0)
+
+# and specify the variables we want to use
+income_over_100k = Variable("income_over_100k")
+rush_hour = Variable("rush_hour")
+
+V = {
+    # Car
+    1: 0,
+
+    # Transit
+    2: asc_transit + b_income_over_100k_transit * income_over_100k + b_rush_hour_transit * rush_hour,
+
+    # Walk
+    3: asc_walk + b_income_over_100k_walk * income_over_100k + b_rush_hour_walk * rush_hour,
+
+    # Bike
+    4: asc_bike + b_income_over_100k_bike * income_over_100k + b_rush_hour_bike * rush_hour
+}
+
+av = {1: 1, 2: 1, 3: 1, 4: 1}
+
+logprob = models.loglogit(V, av, Variable("numeric_mode"))
+
+model = bio.BIOGEME(data, logprob)
+model.modelName = "seattle_mode_choice"
+model.calculateNullLoglikelihood(av)
+result = model.estimate()
+print(result.shortSummary())
+print(result.getEstimatedParameters())
+```
+
+## Interpreting the coefficient changes
+
+```{python}
+#| echo: false
+params = result.getEstimatedParameters()
+Markdown(tabulate.tabulate(params, headers=params.columns))
+```
+
+::: {.incremental}
+- Biking is about the same at rush hour vs. not
+- Transit ridership is relatively higher during rush hour
+- Walking is relatively lower during during rush hour
+- What happens to driving?
+    - We have set driving as the reference level, so all of these other changes are relative to the change in driving
+:::
+
+## Availability
+
+- Sometimes, not all options will be available to all decisionmakers
+- For example,
+    - In Internet choice, some types of Internet service are not available to certain homes
+    - In mode choice, transit may not be available in some areas
+        - Sometimes modelers assume people without cars cannot choose driving, but a significant percentage of trips in zero-vehicle households do occur by car
+- We can add an availability constraint to our model to indicate which alternatives are available to which decisionmakers
+- This effectively sets $V_{mode} = -\infty$, so it will always be worse than every other option
+
+## Adding a transit availability constraint
+
+- We constrain choices in the model to indicate that transit is unavailable for some trips
+
+```{python}
+#| filename: seattle_mnl_availability.py
+import biogeme.database as db, biogeme.biogeme as bio
+from biogeme import models
+from biogeme.expressions import Beta, Variable
+import pandas as pd
+
+df = pd.read_csv("data/seattle_trips.csv") # read data
+
+# create our choice variable - it is coded as text in the data but Biogeme requires
+# it to be numeric
+df["numeric_mode"] = df.mode_choice.replace({
+    "Car": 1,
+    "Transit": 2,
+    "Walk": 3,
+    "Bike": 4
+})
+
+data = db.Database("Seattle", pd.get_dummies(df).astype("float64"))
+
+# specify coefficients - all start at zero, have no bounds (None, None), and are
+# estimated rather than fixed (0)
+asc_bike = Beta("asc_bike", 0, None, None, 0)
+b_income_over_100k_bike = Beta("b_income_over_100k_bike", 0, None, None, 0)
+b_rush_hour_bike = Beta("b_rush_hour_bike", 0, None, None, 0)
+
+asc_walk = Beta("asc_walk", 0, None, None, 0)
+b_income_over_100k_walk = Beta("b_income_over_100k_walk", 0, None, None, 0)
+b_rush_hour_walk = Beta("b_rush_hour_walk", 0, None, None, 0)
+
+asc_transit = Beta("asc_transit", 0, None, None, 0)
+b_income_over_100k_transit = Beta("b_income_over_100k_transit", 0, None, None, 0)
+b_rush_hour_transit = Beta("b_rush_hour_transit", 0, None, None, 0)
+
+# and specify the variables we want to use
+income_over_100k = Variable("income_over_100k")
+rush_hour = Variable("rush_hour")
+
+V = {
+    # Car
+    1: 0,
+
+    # Transit
+    2: asc_transit + b_income_over_100k_transit * income_over_100k + b_rush_hour_transit * rush_hour,
+
+    # Walk
+    3: asc_walk + b_income_over_100k_walk * income_over_100k + b_rush_hour_walk * rush_hour,
+
+    # Bike
+    4: asc_bike + b_income_over_100k_bike * income_over_100k + b_rush_hour_bike * rush_hour
+}
+
+# here we set the transit availability variable. We leave the other modes set to 1 - available
+# to all decisionmakers.
+av = {1: 1, 2: Variable("transit_available"), 3: 1, 4: 1}
+
+logprob = models.loglogit(V, av, Variable("numeric_mode"))
+
+model = bio.BIOGEME(data, logprob)
+model.modelName = "seattle_mnl_availability"
+model.calculateNullLoglikelihood(av)
+result = model.estimate()
+print(result.shortSummary())
+print(result.getEstimatedParameters())
+```
+
+## What went wrong?
+
+- Some people in our dataset chose transit even though (we thought) it was not available to them
+- This is fairly common
+    - Since we need attributes of all the mode options for each trip, I generated the `travel_time` variable with a trip planner (like Google Maps)
+    - I assumed that transit was only available if it was within 2.5km
+    - Some people might walk further than that, or drive to the bus, or bike (like me!)
+    - Some of the trips are also using transit systems that I did not have schedules for
+- For now, we'll just remove them
+- In practice, you should look at these trips to see if they indicate errors or if removing them might bias results
+
+## Fixing the issue
+
+```{python}
+#| filename: seattle_mnl_availability_fixed.py
+import biogeme.database as db, biogeme.biogeme as bio
+from biogeme import models
+from biogeme.expressions import Beta, Variable
+import pandas as pd
+
+df = pd.read_csv("data/seattle_trips.csv") # read data
+
+# Remove people who chose transit despite transit not being available
+df = df.loc[(df.mode_choice != "Transit") | df.transit_available, :]
+
+# create our choice variable - it is coded as text in the data but Biogeme requires
+# it to be numeric
+df["numeric_mode"] = df.mode_choice.replace({
+    "Car": 1,
+    "Transit": 2,
+    "Walk": 3,
+    "Bike": 4
+})
+
+data = db.Database("Seattle", pd.get_dummies(df).astype("float64"))
+
+# specify coefficients - all start at zero, have no bounds (None, None), and are
+# estimated rather than fixed (0)
+asc_bike = Beta("asc_bike", 0, None, None, 0)
+b_income_over_100k_bike = Beta("b_income_over_100k_bike", 0, None, None, 0)
+b_rush_hour_bike = Beta("b_rush_hour_bike", 0, None, None, 0)
+
+asc_walk = Beta("asc_walk", 0, None, None, 0)
+b_income_over_100k_walk = Beta("b_income_over_100k_walk", 0, None, None, 0)
+b_rush_hour_walk = Beta("b_rush_hour_walk", 0, None, None, 0)
+
+asc_transit = Beta("asc_transit", 0, None, None, 0)
+b_income_over_100k_transit = Beta("b_income_over_100k_transit", 0, None, None, 0)
+b_rush_hour_transit = Beta("b_rush_hour_transit", 0, None, None, 0)
+
+# and specify the variables we want to use
+income_over_100k = Variable("income_over_100k")
+rush_hour = Variable("rush_hour")
+
+V = {
+    # Car
+    1: 0,
+
+    # Transit
+    2: asc_transit + b_income_over_100k_transit * income_over_100k + b_rush_hour_transit * rush_hour,
+
+    # Walk
+    3: asc_walk + b_income_over_100k_walk * income_over_100k + b_rush_hour_walk * rush_hour,
+
+    # Bike
+    4: asc_bike + b_income_over_100k_bike * income_over_100k + b_rush_hour_bike * rush_hour
+}
+
+# here we set the transit availability variable. We leave the other modes set to 1 - available
+# to all decisionmakers.
+av = {1: 1, 2: Variable("transit_available"), 3: 1, 4: 1}
+
+logprob = models.loglogit(V, av, Variable("numeric_mode"))
+
+model = bio.BIOGEME(data, logprob)
+model.modelName = "seattle_mnl_availability"
+model.calculateNullLoglikelihood(av)
+result = model.estimate()
+print(result.shortSummary())
+print(result.getEstimatedParameters())
+```
+
+## Generic variables
+
+- The variables we've discussed so far are "alternative-specific"
+    — they need to have a separate coefficient for each alternative
+    - they do not vary across alternatives for a single individual
+- "Generic" variables vary across alternatives—for instance, travel time or cost
+    - We can have a single coefficient across all alternatives if we want
+    - This is the "generic" part—they can affect all alternatives the same way
+
+## Adding a generic variable
+
+- Let's add travel time to the model
+- We can use just a single coefficient
+- Do we expect the coefficient to be negative or positive?
+
+## Adding a generic variable in Biogeme
+
+```{python}
+#| filename: seattle_mnl_generic.py
+import biogeme.database as db, biogeme.biogeme as bio
+from biogeme import models
+from biogeme.expressions import Beta, Variable
+import pandas as pd
+import numpy as np
+
+df = pd.read_csv("data/seattle_trips.csv") # read data
+
+# Remove people who chose transit despite transit not being available
+df = df.loc[(df.mode_choice != "Transit") | df.transit_available, :]
+
+# create our choice variable - it is coded as text in the data but Biogeme requires
+# it to be numeric
+df["numeric_mode"] = df.mode_choice.replace({
+    "Car": 1,
+    "Transit": 2,
+    "Walk": 3,
+    "Bike": 4
+})
+
+data = db.Database("Seattle", pd.get_dummies(df).astype("float64"))
+
+# specify coefficients - all start at zero, have no bounds (None, None), and are
+# estimated rather than fixed (0)
+asc_bike = Beta("asc_bike", 0, None, None, 0)
+b_income_over_100k_bike = Beta("b_income_over_100k_bike", 0, None, None, 0)
+b_rush_hour_bike = Beta("b_rush_hour_bike", 0, None, None, 0)
+
+asc_walk = Beta("asc_walk", 0, None, None, 0)
+b_income_over_100k_walk = Beta("b_income_over_100k_walk", 0, None, None, 0)
+b_rush_hour_walk = Beta("b_rush_hour_walk", 0, None, None, 0)
+
+asc_transit = Beta("asc_transit", 0, None, None, 0)
+b_income_over_100k_transit = Beta("b_income_over_100k_transit", 0, None, None, 0)
+b_rush_hour_transit = Beta("b_rush_hour_transit", 0, None, None, 0)
+
+# we only need one coefficient for travel time
+b_travel_time = Beta("b_travel_time", 0, None, None, 0)
+
+# and specify the variables we want to use
+income_over_100k = Variable("income_over_100k")
+rush_hour = Variable("rush_hour")
+
+# but we need the travel time variables for each mode
+car_travel_time_mins = Variable("car_travel_time_mins")
+bike_travel_time_mins = Variable("bike_travel_time_mins")
+walk_travel_time_mins = Variable("walk_travel_time_mins")
+transit_travel_time_mins = Variable("transit_travel_time_mins")
+
+V = {
+    # Car
+    1: b_travel_time * car_travel_time_mins,
+
+    # Transit
+    2: asc_transit + b_income_over_100k_transit * income_over_100k + b_rush_hour_transit * rush_hour + b_travel_time * transit_travel_time_mins,
+
+    # Walk
+    3: asc_walk + b_income_over_100k_walk * income_over_100k + b_rush_hour_walk * rush_hour + b_travel_time * walk_travel_time_mins,
+
+    # Bike
+    4: asc_bike + b_income_over_100k_bike * income_over_100k + b_rush_hour_bike * rush_hour + b_travel_time * bike_travel_time_mins
+}
+
+av = {1: 1, 2: Variable("transit_available"), 3: 1, 4: 1}
+
+logprob = models.loglogit(V, av, Variable("numeric_mode"))
+
+model = bio.BIOGEME(data, logprob)
+model.modelName = "seattle_mnl_generic"
+model.calculateNullLoglikelihood(av)
+result = model.estimate()
+print(result.shortSummary())
+print(result.getEstimatedParameters())
+```
+
+## Exercise: add the cost variable
+
+```{python}
+#| filename: seattle_mnl_generic_cost.py
+import biogeme.database as db, biogeme.biogeme as bio
+from biogeme import models
+from biogeme.expressions import Beta, Variable
+import pandas as pd
+import numpy as np
+
+df = pd.read_csv("data/seattle_trips.csv") # read data
+
+# Remove people who chose transit despite transit not being available
+df = df.loc[(df.mode_choice != "Transit") | df.transit_available, :]
+
+# create our choice variable - it is coded as text in the data but Biogeme requires
+# it to be numeric
+df["numeric_mode"] = df.mode_choice.replace({
+    "Car": 1,
+    "Transit": 2,
+    "Walk": 3,
+    "Bike": 4
+})
+
+data = db.Database("Seattle", pd.get_dummies(df).astype("float64"))
+
+# specify coefficients - all start at zero, have no bounds (None, None), and are
+# estimated rather than fixed (0)
+asc_bike = Beta("asc_bike", 0, None, None, 0)
+b_income_over_100k_bike = Beta("b_income_over_100k_bike", 0, None, None, 0)
+b_rush_hour_bike = Beta("b_rush_hour_bike", 0, None, None, 0)
+
+asc_walk = Beta("asc_walk", 0, None, None, 0)
+b_income_over_100k_walk = Beta("b_income_over_100k_walk", 0, None, None, 0)
+b_rush_hour_walk = Beta("b_rush_hour_walk", 0, None, None, 0)
+
+asc_transit = Beta("asc_transit", 0, None, None, 0)
+b_income_over_100k_transit = Beta("b_income_over_100k_transit", 0, None, None, 0)
+b_rush_hour_transit = Beta("b_rush_hour_transit", 0, None, None, 0)
+
+# we only need one coefficient for travel time
+b_travel_time = Beta("b_travel_time", 0, None, None, 0)
+b_travel_cost = Beta("b_travel_cost", 0, None, None, 0)
+
+# and specify the variables we want to use
+income_over_100k = Variable("income_over_100k")
+rush_hour = Variable("rush_hour")
+
+# but we need the travel time variables for each mode
+car_travel_time_mins = Variable("car_travel_time_mins")
+bike_travel_time_mins = Variable("bike_travel_time_mins")
+walk_travel_time_mins = Variable("walk_travel_time_mins")
+transit_travel_time_mins = Variable("transit_travel_time_mins")
+
+car_travel_cost = Variable("car_travel_cost")
+bike_travel_cost = Variable("bike_travel_cost")
+walk_travel_cost = Variable("walk_travel_cost")
+transit_travel_cost = Variable("transit_travel_cost")
+
+V = {
+    # Car
+    1: b_travel_time * car_travel_time_mins + b_travel_cost * car_travel_cost,
+
+    # Transit
+    2: asc_transit + b_income_over_100k_transit * income_over_100k + b_rush_hour_transit * rush_hour + b_travel_time * transit_travel_time_mins + b_travel_cost * transit_travel_cost,
+
+    # Walk
+    3: asc_walk + b_income_over_100k_walk * income_over_100k + b_rush_hour_walk * rush_hour + b_travel_time * walk_travel_time_mins + b_travel_cost * walk_travel_cost,
+
+    # Bike
+    4: asc_bike + b_income_over_100k_bike * income_over_100k + b_rush_hour_bike * rush_hour + b_travel_time * bike_travel_time_mins + b_travel_cost * bike_travel_cost
+}
+
+av = {1: 1, 2: Variable("transit_available"), 3: 1, 4: 1}
+
+logprob = models.loglogit(V, av, Variable("numeric_mode"))
+
+model = bio.BIOGEME(data, logprob)
+model.modelName = "seattle_mnl_generic_cost"
+model.calculateNullLoglikelihood(av)
+result = model.estimate()
+print(result.shortSummary())
+print(result.getEstimatedParameters())
+```
+
+## Willingness to pay
+
+- A common use of choice models is to evaluate willingness-to-pay for some attribute
+- If you have a cost coefficient, we can do this with a ratio of coefficients
+- For instance, let's calculate value of time, in $/hour
+
+## Willingness to pay: calculation
+
+- The units of utility are arbitrarily defined as _utils_
+- The units of $\beta_{cost}$ are utils per dollar
+- The units of $\beta_{time}$ are utils per minute
+- Thus, the units of $\frac{\beta_{time}}{\beta_{cost}}$ are dollars per minute
+
+## Willingness to pay: calculation
+
+$$
+\frac{\beta_{time}}{\beta_{cost}} \times 60 = \frac{-0.055}{-0.102} \times 60 = \$32.35 / \mathrm{hour}
+$$
+
+::: {.incremental}
+- In theory, this is how much people are willing to spend to avoid an hour of travel time
+- This is in the ballpark of what I would expect, but is rather high
+    - Seattle is relatively affluent
+    - Estimated costs (esp. for driving) may be too high, because they represent total rather than marginal costs, and much of the cost of car ownership is fixed
+    - Costs of driving, walking, and biking are not very salient, so may be underestimated
+- Driving costs are 0.39/mile plus $10 for parking downtown, bike costs are 0.17/mile, and walk costs are 0.10/mile
+- Transit costs are loosely based on actual fares, but many transit users have monthly passes
+:::
+
+## Digging more into the math of the multinomial logit model
+
+![](https://i.giphy.com/media/v1.Y2lkPTc5MGI3NjExNWh6ZDUzcnZjZDZ2aHcwb3JrcnRsYWw2ZjVsaTA2djFxcWxuMXhjOCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/APqEbxBsVlkWSuFpth/giphy.gif){fig-alt="GIF of young child looking confused by math" width="35%"}
+![](https://i.giphy.com/media/v1.Y2lkPTc5MGI3NjExbHE5MWR3aXB4bDFsODlsa3lwY3htYmJlZzVocW00ZDZuZHNiZ3Z0byZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/WRQBXSCnEFJIuxktnw/giphy.gif){fig-alt="GIF of a woman looking confused by math" width="60.7%"}
+
+## Predicted probabilities with the multinomial logit model
+
+- The outcome variable of a multinomial logit model is predicted probabilities of each individual choosing each alternative
+- How do we calculate those probabilities?
+
+## Calculating predicted probabilities with the multinomial logit model
+
+We want to calculate the probability that decisionmaker $n$ chooses alternative $i$
+
+$$
+P_{ni} = P\left[U_{ni}~~\geq~~\max_{\forall j\neq i}~~U_{nj}\right]
+$$
+
+. . .
+
+Which is probabilistic because of the error terms
+
+$$
+P_{ni} = P\left[\left(V_{ni} + \epsilon_{ni}\right)~~\geq~~\max_{\forall j\neq i}~~\left(V_{nj} + \epsilon_{nj}\right)\right]
+$$
+
+. . .
+
+which still isn't something we can directly calculate without accounting for (integrating over) the error terms
+
+## Enter the Gumbel distribution
+
+:::: {.columns}
+
+::: {.column width="50%"}
+
+- The $\epsilon$'s in the multinomial logit model are Gumbel-distributed
+    - aka Type I Extreme Value
+- The Gumbel distribution is an approximation of the normal with attractive statistical properties
+- Notably, the maximum of a set of Gumbel-distributed variables is also Gumbel-distributed
+- This gives us a _closed-form_ solution to find $\displaystyle\max_{\forall j\neq i} \left(V_{nj} + \epsilon_{nj}\right)$
+
+:::
+::: {.column width="50%"}
+
+```{python}
+#| echo: false
+#| fig-alt: "Probability density function of a Gumbel distribution: similar to a normal distribution, but slightly right-skewed"
+xs = np.arange(-6, 6, 0.01)
+ys = scipy.stats.gumbel_r.pdf(xs)
+plt.plot(xs, ys)
+```
+
+:::
+::::
+
+## Using the Gumbel distribution
+
+Because of the properties of the Gumbel distribution, 
+
+$$
+\max_{\forall j\neq i} \left(V_{nj} + \epsilon_{nj}\right) = \ln \sum_{\forall j\neq i} e^{V_{nj}}
+$$
+
+## Calculating the choice probability
+
+Again because of the properties of the Gumbel distribution, namely that the difference of two Gumbel distributions is a Logistic distribution, we have
+
+$$
+\begin{align*}
+P_{ni} =&~P\left[\left(V_{ni} + \epsilon_{ni}\right)~~\geq~~\max_{\forall j\neq i}~~\left(V_{nj} + \epsilon_{nj}\right)\right]\\
+=&~P\left[\left(V_{ni} + \epsilon_{ni}\right)~~\geq~~\ln \sum_{\forall j\neq i} e^{V_{nj}}\right]\\
+=&~\frac{e^{V_{ni}}}{e^{V_{ni}} + e^{\ln \sum_{\forall j\neq i} e^{V_{nj}}}}\\
+=&~\frac{e^{V_{ni}}}{\displaystyle\sum_{\forall j} e^{V_{nj}}}
+\end{align*}
+$$
+
+More detail: see Section 5.2 of @ben-akiva_discrete_1985
+
+## How the coefficients are estimated
+
+- A multinomial logit model is estimated using _maximum likelihood_
+- We want to find the set of coefficients that is most likely given the data we have observed
+- We then turn this idea on its head, and find the set of coefficients that makes the data we observed most likely
+- We do this by defining a _likelihood function_, which is the probability of observing the data we observed given a set of coefficients
+- We then use an iterative process to find the set of coefficients that maximizes this probability
+
+## The likelihood function for discrete choice models
+
+- The likelihood function for a discrete choice model is just the product of the choice probabilities of the chosen outcome for each decisionmaker
+
+$$
+\begin{align*}
+L =&~\prod_n P_{n,i=\mathrm{chosen}(n)}\\
+  =&~\prod_n \frac{e^{V_{n,i=\mathrm{chosen}(n)}}}{\sum_j e^{V_{nj}}}
+\end{align*}
+$$
+
+. . . 
+
+- Is this likely to be a large number?
+
+## The log-likelihood
+
+- The likelihood is too small to comptue with
+    - The smallest non-zero number than can be represented varies by machine, but is in the neighborhood of $5 \times 10^{-324}$
+    - The likelihood for the model we just estimated is about $10^{-1961}$
+    - You can confirm this if you want by running `10 ** -1961` in Python, you will get 0
+- Instead, we compute with the <i>log</i>likelihood - i.e. the natural logarithm of the likelihood
+
+## A few things to remember about logs
+
+:::: {.columns}
+::: {.column}
+- Logs map numbers between 0 and 1 to $-\infty$ to 0
+- Very small probabilities are very large negative numbers, avoiding rounding problems
+- $\ln ab = \ln a + \ln b$
+:::
+::: {.column}
+```{python}
+#| echo: false
+#| fig-alt: A graph of the logarthimic transformation, showing that it maps numbers between 0 and 1 to negative numbers
+xs = np.arange(1e-20, 1, 0.00001)
+ys = np.log(xs)
+plt.plot(xs, ys)
+plt.xlabel("Likelihood")
+plt.ylabel("Log-likelihood");
+```
+:::
+::::
+
+## The log-likelihood function for a multinomial logit model
+
+$$
+\ell = \sum_{n} \ln \frac{e^{V_{n,i=\mathrm{chosen}(n)}}}{\sum_j e^{V_{nj}}}
+$$
+
+- We take the log of each probability
+- The product becomes a summation
+- We see the log-likelihood in the Biogeme output
+- Why was the log-likelihood $-\infty$ when we first added the availability constraint?
+    - [Because some people chose a mode that was not available to them, making the probability 0]{.fragment}
+
+## Calculating choice probabilities in Biogeme
+
+Add to the end of your most recent model, and run 
+
+```{python}
+# models.loglogit(V, av, Variable("mode_choice")) represents the log-probability of the chosen alternative
+# models.logit(V, av, 1) represents the probability (not logged) of alternative 1
+sim_model = bio.BIOGEME(data, {
+    "Car": models.logit(V, av, 1),
+    "Transit": models.logit(V, av, 2),
+    "Walk": models.logit(V, av, 3),
+    "Bike": models.logit(V, av, 4)
+})
+
+choice_probabilities = sim_model.simulate(result.getBetaValues())
+print(choice_probabilities)
+```
+
+## Calculating market shares
+
+- Market shares are just the mean probability across all individuals
+
+```{python}
+choice_probabilities.apply(np.mean)
+```
+
+This is exactly the same as the market shares in the original data. This will always be the case when we have ASCs.
+
+```{python}
+df.mode_choice.value_counts() / len(df)
+```
+
+## Simulation
+
+- Washington State is considering a $0.025/mile road usage tax
+- Let's model what this might do to market shares
+- We'll increase the cost of driving by $0.025/mile
+    - The actual proposal would also get rid of gas taxes, but that is complicated to model because it depends on the fuel economy of the vehicle
+
+## Simulation
+
+```{python}
+df_road_cost = df.copy() # create a copy of the data to modify
+df_road_cost["car_travel_cost"] += df_road_cost.car_distance_km * 0.025 * 1.609
+data_road_cost = db.Database("Seattle road cost", pd.get_dummies(df_road_cost).astype("float64"))
+
+road_cost_model = bio.BIOGEME(data_road_cost, {
+    "Car": models.logit(V, av, 1),
+    "Transit": models.logit(V, av, 2),
+    "Walk": models.logit(V, av, 3),
+    "Bike": models.logit(V, av, 4)
+})
+
+choice_probabilities = road_cost_model.simulate(result.getBetaValues())
+print(choice_probabilities.apply(np.mean))
+```
+
+## How much do we forecast driving will decrease?
+
+- 76.2% -> 75.9%
+
+## Exercise: make transit faster
+
+- Improve transit travel times by 25% and see how choice probabilities change
+- Hint: `df_transit_time["transit_travel_time_mins"] *= 0.75` scales the variable `transit_travel_time` by 75%
+
+## Exercise answers
+
+```{python}
+df_transit_time = df.copy() # create a copy of the data to modify
+df_transit_time["transit_travel_time_mins"] *= 0.75
+data_transit_time = db.Database("Seattle transit time", pd.get_dummies(df_transit_time).astype("float64"))
+
+transit_time_model = bio.BIOGEME(data_transit_time, {
+    "Car": models.logit(V, av, 1),
+    "Transit": models.logit(V, av, 2),
+    "Walk": models.logit(V, av, 3),
+    "Bike": models.logit(V, av, 4)
+})
+
+choice_probabilities = transit_time_model.simulate(result.getBetaValues())
+print(choice_probabilities.apply(np.mean))
+```
+
+## Result
+
+- Transit mode share increase from 3.8% to 6.0%
+
+## Partial and general equilibrium results
+
+- The results above are _partial equilibrium_ or _marginal_ results
+- They represent forecasted changes _if everything else stays the same_
+- They do not account for _general equilibrium_ changes, which is how the rest of the market adjusts in response to a change
+    - For instance, if road pricing or better transit decrease auto usage, we might see auto travel times drop and see auto usage somewhat rebound
+
+## Data for choice modeling: stated preference data
+
+- There are two broad types of data for choice models: stated preference and revealed preference
+- Stated preference data comes from surveys where you ask people to choose between options
+- That might look something like this:
+
+Of the following options for internet service, which would you select:
+
+- Cable modem, 100 megabits/second, 1 outage per month, $55 / month, $75 setup fee
+- Fiber, 1000 megabits/second, 2 outages per year, $70 / month, $100 setup fee
+- DSL, 6 megabits/second, 2 outages / month, $30 / month, $25 setup fee
+
+## Designing choice experiments
+
+TODO
+
+## Revealed preference data: attributes of alternatives
+
+- A key challenge with revealed preference data is that you don't observe the attributes of the alternatives, and have to estimate them somehow
+- How you do this depends on the choice, of course
+- In transportation, using trip-planning software is common for attributes of alternative routes
+- In residential location choice, it is common to just randomly sample a few alternatives
+- Multinomial logit parameters are consistently estimated when alternatives are sampled randomly (ch. 8, @ben-akiva_discrete_1985)
+
+## Wide and long data
+
+- All of the data we have used so far has been "wide"—there is one row per decision, and attributes of alternatives are in columns (e.g. `car_travel_time`, `walk_travel_time`, etc.)
+
+| ID | Chosen | car_travel_time | walk_travel_time |
+|----|--------|-----------------|------------------|
+| 1  | Car    |   10            | 23               |
+
+- You may sometimes find "long" data—with multiple rows per choice with attributes of different alternatives
+
+| ID | Choice | travel_time | Chosen |
+|----|--------|-------------|--------|
+| 1  | Car    | 10          | Yes    |
+| 1  | Walk   | 23          | No     |
+
+- Biogeme requires wide data; `pandas` provides the `unstack` method to convert between formats
+
+## Independence of irrelevant alternatives
+
+- The multinomial logit model assumes the $\epsilon$'s are independent
+- That is, there are no shared _unobserved_ attributes of alternatives
+- A significant implication of this assumption is the _independence of irrelevant alternatives_ property
+- This says that when the probability of choosing one alternative increases (decreases), the probability of choosing the others decreases (increases) proportionally to the original probability of choosing that mode
+    - True at the individual level, not generally true of total forecast market shares
+
+## The red bus/blue bus problem
+
+- Suppose you have a model of mode choice, with two alternatives: driving and a red bus
+- One individual has a 50% probability of choosing each alternative
+- Suppose you paint half the buses red but don't change anything about the service
+
+## The red bus/blue bus problem
+
+- You'd expect this individual to now have probabilities 25% red bus, 25% blue bus, and 50% drive
+- But, half of the probability has to come from each other alternative
+- So, if blue bus has 25% probability, existing choices must all reduce by the same factor
+- Red bus: 50% * .75 = 37.5%
+- Same for car
+
+## Example from our exercise
+
+## The nested logit model
