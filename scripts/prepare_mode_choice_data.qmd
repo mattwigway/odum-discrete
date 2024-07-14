@@ -1,0 +1,238 @@
+---
+title: Prepare mode choice data
+---
+
+Prepare data for the Seattle mode choice model
+
+```{julia}
+using OSRM, DataFrames, CSV, DrWatson, DataFramesMeta, GeoDataFrames, ArchGDAL, Geodesy, Logging, TransitRouter, Serialization, Dates,
+    ThreadsX, DiscreteChoiceModels
+
+STREET_MODES = ["car", "bike", "walk"]
+```
+
+Read survey data
+
+```{julia}
+trips = CSV.read(datadir("seattle", "Household_Travel_Survey_Trips.csv"), DataFrame, types=Dict(:origin_tract20 => String, :dest_tract20 => String))
+persons = CSV.read(datadir("seattle", "Household_Travel_Survey_Persons.csv"), DataFrame)
+households = CSV.read(datadir("seattle", "Household_Travel_Survey_Households.csv"), DataFrame)
+data = @chain trips begin
+    leftjoin(households, on=:household_id, makeunique=true)
+    leftjoin(persons, on=[:household_id, :person_id], makeunique=true)
+end
+```
+
+Build OSRM networks, if needed
+
+```{julia}
+if !isfile(datadir("seattle", "walk", "walk.osrm.ebg"))
+    OSRM.build(datadir("seattle", "walk", "walk.osm.pbf"), OSRM.Profiles.Foot, OSRM.Algorithm.ContractionHierarchies)
+end
+
+if !isfile(datadir("seattle", "bike", "bike.osrm.ebg"))
+    OSRM.build(datadir("seattle", "bike", "bike.osm.pbf"), OSRM.Profiles.Bicycle, OSRM.Algorithm.ContractionHierarchies)
+end
+
+if !isfile(datadir("seattle", "car", "car.osrm.ebg"))
+    OSRM.build(datadir("seattle", "car", "car.osm.pbf"), OSRM.Profiles.Car, OSRM.Algorithm.ContractionHierarchies)
+end
+```
+
+## Get tracts
+
+```{julia}
+tracts = GeoDataFrames.read(datadir("seattle", "tl_2023_53_tract.shp"))
+# for some reason these tracts cause an OSRM failure
+tracts = tracts[tracts.GEOID .∉ Ref(["53009000300", "53073011000", "53035090300", "53031950702"]), :]
+tracts.latlon = LatLon.(parse.(Float64, tracts.INTPTLAT), parse.(Float64, tracts.INTPTLON))
+```
+
+## Calculate distance matrices
+
+Nothing is time dependent here.
+
+```{julia}
+matrices = Dict{String, Any}()
+
+for mode in ["car", "walk", "bike"]
+    @info mode
+    osrm = OSRMInstance(datadir("seattle", mode, "$mode.osrm"), OSRM.Algorithm.ContractionHierarchies)
+    matrices[mode] = distance_matrix(osrm, tracts.latlon, tracts.latlon)
+end
+```
+
+## Transit distances
+
+```{julia}
+osrm = OSRMInstance(datadir("seattle", "walk", "walk.osrm"), OSRM.Algorithm.ContractionHierarchies)
+net = TransitRouter.build_network([datadir("seattle", "transit", "gtfs_puget_sound_consolidated.zip")], osrm; max_transfer_distance_meters=1000.0)
+```
+
+```{julia}
+COUNTIES = ["King County", "Pierce County", "Kitsap County", "Snohomish County"]
+data = @chain data begin
+    @subset .!ismissing.(:origin_tract20) .&& .!ismissing.(:dest_tract20) .&& :origin_county .∈ Ref(COUNTIES) .&& :dest_county .∈ Ref(COUNTIES)
+    innerjoin(rename(tracts[:, [:GEOID, :latlon]], :latlon => :origin_latlon), on=:origin_tract20=>:GEOID)
+    innerjoin(rename(tracts[:, [:GEOID, :latlon]], :latlon => :dest_latlon), on=:dest_tract20=>:GEOID)
+end
+```
+
+```{julia}
+results = ThreadsX.mapi(zip(1:nrow(data), data.origin_latlon, data.dest_latlon, data.depart_date, data.depart_time_hour, data.depart_time_minute)) do (i, o, d, date, h, m)
+    if i % 1000 == 0
+        @info "Processed $i / $(nrow(data)) trips"
+    end
+    orig_date = parse(Date, date, dateformat"Y/m/d")
+    # get the right day of week during GTFS validity
+    route_date = Dates.tonext(d -> Dates.dayofweek(d) == Dates.dayofweek(orig_date), Date(2024, 7, 10))
+    route_dt = DateTime(route_date, Time(h, m))
+    try
+        street_raptor(net, osrm, osrm, o, [d], route_dt; max_access_distance_meters=2500, max_egress_distance_meters=2500)
+    catch e
+        @warn "OSRM failed for trip $i"
+        [[]]
+    end
+end
+```
+
+```{julia}
+data.transit_available = .!isempty.(first.(results))
+
+data.transit_travel_time_mins = map(first.(results)) do rs
+    if isempty(rs)
+        missing
+    else
+        round(Int64, Dates.value(last(first(rs)).end_time - first(first(rs)).start_time) / 1000 / 60)
+    end
+end
+
+data.transit_transfers = map(first.(results)) do rs
+    if isempty(rs)
+        missing
+    else
+        sum(l.type == TransitRouter.transit for l in first(rs)) - 1
+    end
+end
+
+# Oversimplified fare system - assume 2.75/ride or $4 total (half a day pass)
+data.transit_travel_cost = map(data.transit_transfers) do t
+    if ismissing(t)
+        missing
+    elseif t == 0
+        2.75
+    else
+        4
+    end
+end
+```
+
+## Car, bike, walk distances
+
+```{julia}
+for mode in STREET_MODES
+    wide = DataFrame(matrices[mode].distance_meters, tracts.GEOID)
+    wide.GEOID = tracts.GEOID
+    long = stack(wide, Not(:GEOID))
+    rename!(long, :GEOID=>:origin_tract20, :variable=>:dest_tract20, :value=>Symbol("$(mode)_distance_km"))
+    long[!, "$(mode)_distance_km"] ./= 1000
+    long[long.origin_tract20 .== long.dest_tract20, "$(mode)_distance_km"] .= 2.0
+    
+    leftjoin!(data, long, on=[:origin_tract20, :dest_tract20])
+
+    wide = DataFrame(matrices[mode].duration_seconds, tracts.GEOID)
+    wide.GEOID = tracts.GEOID
+    long = stack(wide, Not(:GEOID))
+    rename!(long, :GEOID=>:origin_tract20, :variable=>:dest_tract20, :value=>Symbol("$(mode)_travel_time_mins"))
+    long[!, "$(mode)_travel_time_mins"] ./= 60
+    long[long.origin_tract20 .== long.dest_tract20, "$(mode)_travel_time_mins"] .= 5.0
+    
+    leftjoin!(data, long, on=[:origin_tract20, :dest_tract20])
+end
+
+```
+
+```{julia}
+data.car_travel_cost = 0.39 * data.car_distance_km * 1.609
+data.bike_travel_cost = 0.17 * data.bike_distance_km * 1.609
+data.walk_travel_cost = 0.10 * data.walk_distance_km * 1.609
+
+# add some parking costs in Downtown Seattle
+DOWNTOWN_SEATTLE_TRACTS = [
+    "53033008003",
+    "53033007201",
+    "53033007302",
+    "53033007202",
+    "53033008004",
+    "53033008002",
+    "53033008200",
+    "53033008500",
+    "53033009100",
+    "53033009200",
+    "53033008101",
+    "53033008102"
+]
+
+data.car_travel_cost[data.dest_tract20 .∈ Ref(DOWNTOWN_SEATTLE_TRACTS)] .+= 10.0
+```
+
+```{julia}
+# Apply congestion to weekday peak trips in King County
+data.day_of_week = Dates.dayname.(parse.(Date, data.depart_date, dateformat"Y/m/d"))
+data.rush_hour = data.day_of_week .∈ Ref(["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]) .&&
+    data.depart_time_hour .∈ Ref([7, 8, 9, 4, 5, 6])
+data.car_travel_time_mins[
+    data.rush_hour .&&
+    (data.origin_county .== "King County" .|| data.dest_county .== "King County")
+] .*= 1.32 # from https://mobility.tamu.edu/umr/congestion-data/
+```
+
+```{julia}
+data.mode_choice = getindex.(Ref(Dict(
+ "Rental car" => "Car",
+ "Household vehicle 1" => "Car",
+ "Household vehicle 2" => "Car",
+ "Other mode (e.g., skateboard, kayak, motorhome, etc.)" => "Other",
+ "Other non-household vehicle" => "Car",
+ "Walk (or jog/wheelchair)" => "Walk",
+ "Household vehicle 3" => "Car",
+ "Bus (public transit)" => "Transit",
+ "Other vehicle in household" => "Car",
+ "Friend/colleague's car" => "Car",
+ "Bicycle or e-bike (rSurvey only)" => "Bike",
+ "Other hired service (Uber, Lyft, or other smartphone-app car service)" => "Other",
+ "School bus" => "Other",
+ "Household vehicle 4" => "Car",
+ "Urban Rail (e.g., Link light rail, monorail, streetcar)" => "Transit",
+ "Household vehicle 6" => "Car",
+ "Car from work" => "Car",
+ "Paratransit" => "Transit",
+ "Ferry or water taxi" => "Transit",
+ "Commuter rail (Sounder, Amtrak)" => "Transit",
+ "Other motorcycle/moped" => "Other",
+ "Household vehicle 5" => "Car",
+ "Private bus or shuttle" => "Transit",
+ "Taxi (e.g., Yellow Cab)" => "Other",
+ "Household vehicle 7" => "Car",
+ "Scooter or e-scooter (e.g., Lime, Bird, Razor)" => "Other",
+ "Household vehicle 8" => "Car",
+ "Vanpool" => "Transit"
+)), data.mode_1)
+
+data.home_county = passmissing(replace).(data.home_county, " County"=>"")
+
+data = data[data.mode_choice .!= "Other" .&& data.hhincome_broad .!= "Prefer not to answer", :]
+
+data[.!data.transit_available, ["transit_travel_time_mins", "transit_travel_cost", "transit_transfers"]] .= 0
+
+data.income_over_100k = data.hhincome_broad .∈ Ref(["\$100,000-\$199,000","\$200,000 or more"])
+```
+
+```{julia}
+data.mode_choice_detailed = ifelse.(data.mode_choice .== "Car" .&& (data.travelers_hh .> 1 .|| data.travelers_nonhh .≠ "No other people"), "Carpool", data.mode_choice)
+data.mode_choice_detailed[data.mode_choice_detailed .== "Car"] .= "Drive alone"
+```
+
+```{julia}
+CSV.write(datadir("seattle_trips.csv"), data[data.mode_choice .!= "Other" .&& .!ismissing.(data.home_county), ["mode_choice", "car_travel_time_mins", "car_travel_cost", "car_distance_km", "transit_travel_time_mins", "transit_travel_cost", "transit_transfers", "transit_available", "bike_travel_time_mins", "bike_travel_cost", "walk_travel_time_mins", "walk_travel_cost", "income_over_100k", "home_county", "rush_hour"]])
+```
