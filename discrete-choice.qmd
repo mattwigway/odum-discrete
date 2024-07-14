@@ -44,7 +44,8 @@ plt.rcParams.update({'font.size': 36})
 
 ## Before we go any further
 
-- Install [Anaconda](https://www.anaconda.com/) and [Biogeme](https://biogeme.epfl.ch/#install)
+- Install [Python](https://python.org/)
+- Install necessary Python packages using `pip`: `biogeme`, `statsmodels`, `pandas`, `numpy`, `statsmodels`
 - Slides, code, and data at [https://projects.indicatrix.org/odum-discrete/](https://projects.indicatrix.org/odum-discrete/)
 
 ## What are discrete choice models?
@@ -167,6 +168,36 @@ Markdown(tabulate.tabulate(modelRes.fillna(""), headers=modelRes.columns))
 - Are men?
 :::
 
+## Statistical significance and p-values
+
+- Coefficients are approximations to population-level parameters, and contain sampling error because we haven't sampled the entire population
+- The standard error ($\sigma$) is a measure of how precise the coefficient is
+- We assume coefficient estimates are asymtotically normal
+- Based on a normal distribution, there is a 95% chance the population parameter is within $1.96 \times \sigma$ of the estimate
+
+## Statistical significance and p-values
+
+- We can also perform a hypothesis test that the coefficient is different from 0
+- To do this, we compute a $z$-value, which is just the coefficient divided by the standard error
+- Put another way, the $z$-value is the number of standard errors between the coefficient and zero
+- Large coefficients lead to large $z$-values
+- Large standard errors (i.e. high uncertainty) lead to small $z$-values
+
+## Statistical significance and p-values
+
+- $z$ values larger in magnitude than 1.96 indicate that there is less than a 5\% chance of observing a coefficient as larger or larger than the estimated coefficient if the true coefficient were zero
+
+## Statistical significance and p-values
+
+- The $p$-value is the probability of observing a coefficient as large or larger
+- Computed as $2(1 - \phi(|z|))$, where $z$ is the $z$-value and $\phi$ is the normal cumulative distribution function
+- Usual rule is that $p < 0.05$ is statistically significant, but in larger datasets $p < 0.01$ or even $p < 0.001$ may be used
+
+## Statistical significance and p-values
+
+- For more information about the math, see the hypothesis testing section of any statistics textbook
+- Logistic regression hypothesis tests are computed just like linear regression, except using the normal instead of $t$ distribution
+
 ## Odds ratios
 ```{python}
 #| echo: false
@@ -264,12 +295,12 @@ result.summary()
 
 ## Logistic regression as a random utility model
 
-- We define the systematic utility of one alternative (e.g. working from home) as
+- We define the systematic utility (i.e. no random error) of one alternative (e.g. working from home) as V:
 $$
 V_{wfh} = \alpha + \beta_1 x_1 + \beta_2 x_2 \cdots
 $$
 
-The full utility has an error term
+The full utility U has an error term:
 
 $$
 U_{wfh} = V_{wfh} + \epsilon_{wfh}
@@ -373,9 +404,11 @@ av = {0: 1, 1: 1}
 logprob = models.loglogit(V, av, Variable("wfh_expectation"))
 
 model = bio.BIOGEME(data, logprob)
-model.modelName = "wfh_logit"
+model.modelName = "biogeme_binary"
 model.calculateNullLoglikelihood(av)
 result = model.estimate()
+
+assert result.algorithm_has_converged()
 print(result.shortSummary())
 print(result.getEstimatedParameters())
 ```
@@ -384,6 +417,8 @@ print(result.getEstimatedParameters())
 
 ```{python}
 #| echo: false
+
+assert result.algorithm_has_converged()
 print(result.shortSummary())
 print(result.getEstimatedParameters())
 ```
@@ -473,9 +508,11 @@ av = {0: 1, 1: 1}
 logprob = models.loglogit(V, av, Variable("wfh_expectation"))
 
 model = bio.BIOGEME(data, logprob)
-model.modelName = "wfh_logit_race"
+model.modelName = "biogeme_binary_race"
 model.calculateNullLoglikelihood(av)
 result = model.estimate()
+
+assert result.algorithm_has_converged()
 print(result.shortSummary())
 print(result.getEstimatedParameters())
 ```
@@ -484,6 +521,8 @@ print(result.getEstimatedParameters())
 
 ```{python}
 #| echo: false
+
+assert result.algorithm_has_converged()
 print(result.shortSummary())
 print(result.getEstimatedParameters())
 ```
@@ -649,6 +688,8 @@ model = bio.BIOGEME(data, logprob)
 model.modelName = "seattle_mode_choice"
 model.calculateNullLoglikelihood(av)
 result = model.estimate()
+
+assert result.algorithm_has_converged()
 print(result.shortSummary())
 print(result.getEstimatedParameters())
 ```
@@ -751,9 +792,11 @@ av = {1: 1, 2: 1, 3: 1, 4: 1}
 logprob = models.loglogit(V, av, Variable("numeric_mode"))
 
 model = bio.BIOGEME(data, logprob)
-model.modelName = "seattle_mode_choice"
+model.modelName = "seattle_mnl_income"
 model.calculateNullLoglikelihood(av)
 result = model.estimate()
+
+assert result.algorithm_has_converged()
 print(result.shortSummary())
 print(result.getEstimatedParameters())
 ```
@@ -824,9 +867,11 @@ av = {1: 1, 2: 1, 3: 1, 4: 1}
 logprob = models.loglogit(V, av, Variable("numeric_mode"))
 
 model = bio.BIOGEME(data, logprob)
-model.modelName = "seattle_mode_choice"
+model.modelName = "seattle_mnl_income_rush"
 model.calculateNullLoglikelihood(av)
 result = model.estimate()
+
+assert result.algorithm_has_converged()
 print(result.shortSummary())
 print(result.getEstimatedParameters())
 ```
@@ -923,6 +968,8 @@ model = bio.BIOGEME(data, logprob)
 model.modelName = "seattle_mnl_availability"
 model.calculateNullLoglikelihood(av)
 result = model.estimate()
+
+assert result.algorithm_has_converged()
 print(result.shortSummary())
 print(result.getEstimatedParameters())
 ```
@@ -1002,9 +1049,11 @@ av = {1: 1, 2: Variable("transit_available"), 3: 1, 4: 1}
 logprob = models.loglogit(V, av, Variable("numeric_mode"))
 
 model = bio.BIOGEME(data, logprob)
-model.modelName = "seattle_mnl_availability"
+model.modelName = "seattle_mnl_availability_fixed"
 model.calculateNullLoglikelihood(av)
 result = model.estimate()
+
+assert result.algorithm_has_converged()
 print(result.shortSummary())
 print(result.getEstimatedParameters())
 ```
@@ -1099,6 +1148,8 @@ model = bio.BIOGEME(data, logprob)
 model.modelName = "seattle_mnl_generic"
 model.calculateNullLoglikelihood(av)
 result = model.estimate()
+
+assert result.algorithm_has_converged()
 print(result.shortSummary())
 print(result.getEstimatedParameters())
 ```
@@ -1184,6 +1235,8 @@ model = bio.BIOGEME(data, logprob)
 model.modelName = "seattle_mnl_generic_cost"
 model.calculateNullLoglikelihood(av)
 result = model.estimate()
+
+assert result.algorithm_has_converged()
 print(result.shortSummary())
 print(result.getEstimatedParameters())
 ```
@@ -1472,7 +1525,109 @@ $$
 
 ## Pseudo-$R^2$ statistics
 
-TODO
+- In linear regression, we have the $R^2$ statistic that tells us how well the model fits the data
+- We don't have anything quite the same for discrete choice models
+- Many authors have created pseudo-$R^2$ (sometimes called $\rho^2$) metrics based on loglikelihoods
+- These measure the loglikelihood of your model relative to a _null model_, either
+    - a model with no coefficients, predicting equal probabilities for all alternatives, or
+    - a model with only ASCs (constants), predicting base rates for all alternatives
+
+## McFadden's pseudo-$R^2$
+
+- Most common is probably McFadden's, $1 - \frac{\ell}{\ell_C}$
+- Or McFadden's adjusted, $1 - \frac{\ell - K}{\ell_C}$ where $K$ is number of estimated coefficients that weren't in the null model, which attempts to correct for overfitting
+- Anecdotally, pseudo-$R^2$ statistics tend to be fairly low
+
+## Calculating pseudo-$R^2$ in Biogeme
+
+- Biogeme automatically calculates the log-likelihood at zero
+- However, comparing to log-likelihood at constants is generally preferred
+    - This is more similar to linear regression, where the $R^2$ is relative to a model with only an intercept
+- Unfortunately, Biogeme does not calculate this automatically
+- It is pretty easy to calculate though, by removing everything but the ASCs
+- Exercise: go ahead and do this now
+
+## Calculating pseudo-$R^2$ in Biogeme: results
+
+```{python}
+#| filename: seattle_constants.py
+import biogeme.database as db, biogeme.biogeme as bio
+from biogeme import models
+from biogeme.expressions import Beta, Variable
+import pandas as pd
+import numpy as np
+
+df = pd.read_csv("data/seattle_trips.csv") # read data
+
+# Remove people who chose transit despite transit not being available
+df = df.loc[(df.mode_choice != "Transit") | df.transit_available, :]
+
+# create our choice variable - it is coded as text in the data but Biogeme requires
+# it to be numeric
+df["numeric_mode"] = df.mode_choice.replace({
+    "Car": 1,
+    "Transit": 2,
+    "Walk": 3,
+    "Bike": 4
+})
+
+data = db.Database("Seattle", pd.get_dummies(df).astype("float64"))
+
+# specify coefficients - all start at zero, have no bounds (None, None), and are
+# estimated rather than fixed (0)
+asc_bike = Beta("asc_bike", 0, None, None, 0)
+
+asc_walk = Beta("asc_walk", 0, None, None, 0)
+
+asc_transit = Beta("asc_transit", 0, None, None, 0)
+
+# we only need one coefficient for travel time
+b_travel_time = Beta("b_travel_time", 0, None, None, 0)
+b_travel_cost = Beta("b_travel_cost", 0, None, None, 0)
+
+
+V = {
+    # Car
+    1: 0,
+
+    # Transit
+    2: asc_transit,
+
+    # Walk
+    3: asc_walk,
+
+    # Bike
+    4: asc_bike 
+}
+
+av = {1: 1, 2: Variable("transit_available"), 3: 1, 4: 1}
+
+logprob = models.loglogit(V, av, Variable("numeric_mode"))
+
+model = bio.BIOGEME(data, logprob)
+model.modelName = "seattle_constants"
+model.calculateNullLoglikelihood(av)
+result = model.estimate()
+
+assert result.algorithm_has_converged()
+print(result.shortSummary())
+print(result.getEstimatedParameters())
+```
+
+## Calculating pseudo-$R^2$ in Biogeme
+
+- Log-likelihood at constants: -6211.13
+- Log-likelihood at convergence: -4515.951
+- McFadden's pseudo-$R^2$: $1 - \frac{-4515.951}{-6211.13} = 0.273
+- Estimated parameters other than ASCs: 8
+- McFadden's adjusted pseudo-$R^2$: $1 - \frac{-4515.951 - 8}{-6211.13} = 0.272
+
+## Comparing coefficients of logistic regression models
+
+- In general, you _can't directly compare coefficients from different logistic regressions_
+- They may be scaled differently
+- In a linear regression, the coefficients have the same scale as the dependent variable
+- But in logistic regression, utility is scaleless
 
 ## Data for choice modeling: stated preference data
 
@@ -1482,13 +1637,17 @@ TODO
 
 Of the following options for internet service, which would you select:
 
-- Cable modem, 100 megabits/second, 1 outage per month, $55 / month, $75 setup fee
-- Fiber, 1000 megabits/second, 2 outages per year, $70 / month, $100 setup fee
+- Cable modem, 100 megabits/second, 1 outage per month, $55 / month, $50 setup fee
+- Fiber, 1000 megabits/second, 2 outages per year, $100 / month, $95 setup fee
 - DSL, 6 megabits/second, 2 outages / month, $30 / month, $25 setup fee
 
-## Designing choice experiments
+## Modeling with choice experiments
 
-TODO
+- You then run a choice model on the outcomes, using the attributes of the different alternatives as independent variables
+- You need to make sure the variables aren't perfectly correlated
+    - for instance, in the above example, if the prices always stayed the same, the model wouldn't be able to differentiate setup fee from monthly fee preferences
+    - if you have ASCs in your model, this is even more of an issue—if fiber is always 1000 megabits/second, you won't be able to differentiate the speed from an inherent preference for fiber
+- There's a lot more that goes into designing good choice experiments; see @bliemer_designing_2024
 
 ## Revealed preference data: attributes of alternatives
 
@@ -1733,6 +1892,8 @@ model = bio.BIOGEME(data, logprob)
 model.modelName = "seattle_nested"
 model.calculateNullLoglikelihood(av)
 result = model.estimate()
+
+assert result.algorithm_has_converged()
 print(result.shortSummary())
 print(result.getEstimatedParameters())
 ```
@@ -1862,6 +2023,8 @@ model = bio.BIOGEME(data, logprob)
 model.modelName = "seattle_nested_active"
 model.calculateNullLoglikelihood(av)
 result = model.estimate()
+
+assert result.algorithm_has_converged()
 print(result.shortSummary())
 print(result.getEstimatedParameters())
 ```
@@ -1941,19 +2104,109 @@ scipy.stats.chi2.sf(0.930, 1)
 
 ## Multiple nesting levels
 
-TODO
+- The nested logit we just estimated only had one nest
+- You can estimate nested logit models with multiple nests, and even multiple levels of nests
+- For instance, you could estimated this model
+
+```{mermaid}
+flowchart TD
+    mc[Mode choice]
+    da[Drive alone]
+
+    mc --> Motorized
+    mc --> Nonmotorized
+    Motorized --> Car
+    Motorized --> Transit
+    Car --> da
+    Car --> Carpool
+    Nonmotorized --> Walk
+    Nonmotorized --> Bike
+```
+
+- We will have one $\theta$ for each nest
+- $\theta$'s for top-level nests should be between 0 and 1
+- $\theta$'s for subnests should be between 0 and the $\theta$ in the next higher level nest
+- Biogeme can't directly estimate this type of model; [larch](https://larch.newman.me/) (Python) or [Apollo](http://www.apollochoicemodelling.com) (R) can.
 
 ## Going deeper: scale parameters in nested logit
 
-TODO
+- Another way to think about the nested logit model is that it allows an error term that varies between nests/top-level alternatives and another that varies within each nest
+- So, for instance, the utilities of biking and walking in our nested logit model above are
 
-## Estimation challenges with the nested logit
+$$
+\begin{align}
+U_{bike} &= V_{bike} + \epsilon_{nonmotorized} + \epsilon_{bike}
+U_{walk} &= V_{walk} + \epsilon_{nonmotorized} + \epsilon_{walk}
+\end{align}
+$$
 
-TODO
+- What $\theta$ actually represents is the ratio of the scales of the error terms at the top-level portion of the model and in the nest
+- As $\theta$ approaches 1, the scales of the error approach equality. When they are equal, the within nest variation is contributing all of the error term, and there is no shared unobserved variation.
+
+## Estimation challenges with the nested logit: local optima I
+
+:::: {.columns}
+::: {.column}
+- Both multinomial logit and nested logit models are solved using maximum likelihood, which is an iterative process of updating coefficients to improve the loglikelihood
+- The process adjusts the coefficients until it finds a point where it cannot improve the likelihood further through small changes to the coefficients
+- The _multinomial logit_ model is globally convex—there is only one place where moving the coefficients does not improve the loglikelihood—at the solution
+:::
+::: {.column}
+
+```{python}
+#| echo: false
+#| fig-alt: stylized representation of a multinomial logit log likelihood function, with a single global optimum
+x = np.arange(-1, 1, 0.01)
+y = x ** 2
+plt.plot(x, y)
+plt.xticks([])
+plt.yticks([])
+```
+
+:::
+::::
+
+## Estimation challenges with the nested logit: local optima II
+
+:::: {.columns}
+::: {.column}
+- The _nested logit_ model is not—there may be local optima where moving the coefficients a small amount cannot improve the loglikelihood, even if moving them quite a bit might find a set of coefficients with a better loglikelihood
+- You can experiment with this by adjusting the _starting values_ of the coefficients—the first number in the call to `Beta()`
+- @koppelman_self_2006 recommends trying starting with $\theta = 0.5$ ($\mu = 2$) as this may lead to a higher likelihood of finding a valid nested logit solution
+:::
+::: {.column}
+
+```{python}
+#| echo: false
+#| fig-alt: stylized representation of a nested logit log likelihood function, with a local optimum and a global optimum
+x = np.arange(-2, 2, 0.01)
+y = x ** 2 - np.sin(x * 3)
+plt.plot(x, y)
+plt.xticks([])
+plt.yticks([])
+```
+:::
+::::
+
+
+## Estimation challenges with logit models generally: scaling
+
+- If your variables have very different scales (e.g. income in dollars and immigrant status as a binary variable), you may run into numerical issues
+- We would expect the coefficient on income to be very small, for example, if it is per dollar
+- It is often wise to scale variables to not have wildly different scales—e.g. put income in thousands or tens of thousands
+
+## Estimation challenges with logit models generally: convergence and identification
+
+- In each of the models above, we checked for convergence
+- If the model did _not_ converge, it means Biogeme did not find a solution
+- This usually means an identification issue—for instance, multicollinearity, not excluding one ASC, etc.
+- There may also be cases where there is an idenfication issue that is indicated but unexpected coefficients, non-finite likelihoods, etc.—if anything looks off, identification is a good thing to think about
+- Some identification issues may not be apparent in results at all
 
 ## Other resources
 
 - The quintessential reference, albeit very technical: @ben-akiva_discrete_1985
 - A more practitioner-focused text (free e-book): [@koppelman_self_2006](http://www.caee.utexas.edu/prof/bhat/courses/lm_draft_060131final-060630.pdf)
+- Designing choice experiments: [@bliemer_designing_2024](https://surveyengine.com/wp-content/uploads/2021/11/Designing-and-Conducting-Stated-Choice-Experiments.pdf)
 
-Email me: [mwbc@unc.edu](mailto:mwbc@unc.edu)
+Part of my job is one-on-one statistical support. Email me: [mwbc@unc.edu](mailto:mwbc@unc.edu)
