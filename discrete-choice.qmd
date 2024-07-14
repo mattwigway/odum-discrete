@@ -18,6 +18,7 @@ execute:
     cache: true
 bibliography: bibliography.bib
 csl: presentation.csl
+mermaid-format: png
 ---
 
 ```{python}
@@ -494,6 +495,7 @@ print(result.getEstimatedParameters())
     - Choice of Internet service might be DSL, cable, satellite, or fiber
     - Choice of vacation destination might be beach, mountains, or theme park
     - Choice of treatment for pain might be surgery, physical therapy, non-opioid medication, opioid medication, or accupuncture
+- We refer to these outcomes as "alternatives"
 
 ## The multinomial logit model: conceptually
 
@@ -1294,69 +1296,20 @@ $$
 
 More detail: see Section 5.2 of @ben-akiva_discrete_1985
 
-## How the coefficients are estimated
+## The binary and multinomial logit are the same model
 
-- A multinomial logit model is estimated using _maximum likelihood_
-- We want to find the set of coefficients that is most likely given the data we have observed
-- We then turn this idea on its head, and find the set of coefficients that makes the data we observed most likely
-- We do this by defining a _likelihood function_, which is the probability of observing the data we observed given a set of coefficients
-- We then use an iterative process to find the set of coefficients that maximizes this probability
-
-## The likelihood function for discrete choice models
-
-- The likelihood function for a discrete choice model is just the product of the choice probabilities of the chosen outcome for each decisionmaker
+- The binary logit model is just a multinomial logit model with two outcome and no generic variables
+- If we had two outcomes, 0 and 1, with systematic utilities $V_0$ and $V_1$, the choice probability would be, with $V_0 = 0$
 
 $$
-\begin{align*}
-L =&~\prod_n P_{n,i=\mathrm{chosen}(n)}\\
-  =&~\prod_n \frac{e^{V_{n,i=\mathrm{chosen}(n)}}}{\sum_j e^{V_{nj}}}
-\end{align*}
+\begin{align}
+P(y = 1) &= \frac{e^{V_1}}{e^{V_0} + e^{V_1}}\\
+&= \frac{e^{V_1}}{e^0 + e^{V_1}}\\
+&= \frac{e^{V_1}}{1 + e^{V_1}}
+\end{align}
 $$
 
-. . . 
-
-- Is this likely to be a large number?
-
-## The log-likelihood
-
-- The likelihood is too small to comptue with
-    - The smallest non-zero number than can be represented varies by machine, but is in the neighborhood of $5 \times 10^{-324}$
-    - The likelihood for the model we just estimated is about $10^{-1961}$
-    - You can confirm this if you want by running `10 ** -1961` in Python, you will get 0
-- Instead, we compute with the <i>log</i>likelihood - i.e. the natural logarithm of the likelihood
-
-## A few things to remember about logs
-
-:::: {.columns}
-::: {.column}
-- Logs map numbers between 0 and 1 to $-\infty$ to 0
-- Very small probabilities are very large negative numbers, avoiding rounding problems
-- $\ln ab = \ln a + \ln b$
-:::
-::: {.column}
-```{python}
-#| echo: false
-#| fig-alt: A graph of the logarthimic transformation, showing that it maps numbers between 0 and 1 to negative numbers
-xs = np.arange(1e-20, 1, 0.00001)
-ys = np.log(xs)
-plt.plot(xs, ys)
-plt.xlabel("Likelihood")
-plt.ylabel("Log-likelihood");
-```
-:::
-::::
-
-## The log-likelihood function for a multinomial logit model
-
-$$
-\ell = \sum_{n} \ln \frac{e^{V_{n,i=\mathrm{chosen}(n)}}}{\sum_j e^{V_{nj}}}
-$$
-
-- We take the log of each probability
-- The product becomes a summation
-- We see the log-likelihood in the Biogeme output
-- Why was the log-likelihood $-\infty$ when we first added the availability constraint?
-    - [Because some people chose a mode that was not available to them, making the probability 0]{.fragment}
+Which is the same as the predicted probability in binary logistic regression
 
 ## Calculating choice probabilities in Biogeme
 
@@ -1453,6 +1406,74 @@ print(choice_probabilities.apply(np.mean))
 - They do not account for _general equilibrium_ changes, which is how the rest of the market adjusts in response to a change
     - For instance, if road pricing or better transit decrease auto usage, we might see auto travel times drop and see auto usage somewhat rebound
 
+## How the coefficients are estimated
+
+- A multinomial logit model is estimated using _maximum likelihood_
+- We want to find the set of coefficients that is most likely given the data we have observed
+- We then turn this idea on its head, and find the set of coefficients that makes the data we observed most likely
+- We do this by defining a _likelihood function_, which is the probability of observing the data we observed given a set of coefficients
+- We then use an iterative process to find the set of coefficients that maximizes this probability
+
+## The likelihood function for discrete choice models
+
+- The likelihood function for a discrete choice model is just the product of the choice probabilities of the chosen outcome for each decisionmaker
+
+$$
+\begin{align*}
+L =&~\prod_n P_{n,i=\mathrm{chosen}(n)}\\
+  =&~\prod_n \frac{e^{V_{n,i=\mathrm{chosen}(n)}}}{\sum_j e^{V_{nj}}}
+\end{align*}
+$$
+
+. . . 
+
+- Is this likely to be a large number?
+
+## The log-likelihood
+
+- The likelihood is too small to comptue with
+    - The smallest non-zero number than can be represented varies by machine, but is in the neighborhood of $5 \times 10^{-324}$
+    - The likelihood for the model we just estimated is about $10^{-1961}$
+    - You can confirm this if you want by running `10 ** -1961` in Python, you will get 0
+- Instead, we compute with the <i>log</i>likelihood - i.e. the natural logarithm of the likelihood
+
+## A few things to remember about logs
+
+:::: {.columns}
+::: {.column}
+- Logs map numbers between 0 and 1 to $-\infty$ to 0
+- Very small probabilities are very large negative numbers, avoiding rounding problems
+- $\ln ab = \ln a + \ln b$
+:::
+::: {.column}
+```{python}
+#| echo: false
+#| fig-alt: A graph of the logarthimic transformation, showing that it maps numbers between 0 and 1 to negative numbers
+xs = np.arange(1e-20, 1, 0.00001)
+ys = np.log(xs)
+plt.plot(xs, ys)
+plt.xlabel("Likelihood")
+plt.ylabel("Log-likelihood");
+```
+:::
+::::
+
+## The log-likelihood function for a multinomial logit model
+
+$$
+\ell = \sum_{n} \ln \frac{e^{V_{n,i=\mathrm{chosen}(n)}}}{\sum_j e^{V_{nj}}}
+$$
+
+- We take the log of each probability
+- The product becomes a summation
+- We see the log-likelihood in the Biogeme output
+- Why was the log-likelihood $-\infty$ when we first added the availability constraint?
+    - [Because some people chose a mode that was not available to them, making the probability 0]{.fragment}
+
+## Pseudo-$R^2$ statistics
+
+TODO
+
 ## Data for choice modeling: stated preference data
 
 - There are two broad types of data for choice models: stated preference and revealed preference
@@ -1497,7 +1518,7 @@ TODO
 ## Independence of irrelevant alternatives
 
 - The multinomial logit model assumes the $\epsilon$'s are independent
-- That is, there are no shared _unobserved_ attributes of alternatives
+- That is, there are no shared _unobserved_ attributes of alternatives (i.e. not in the model)
 - A significant implication of this assumption is the _independence of irrelevant alternatives_ property
 - This says that when the probability of choosing one alternative increases (decreases), the probability of choosing the others decreases (increases) proportionally to the original probability of choosing that mode
     - True at the individual level, not generally true of total forecast market shares
@@ -1516,6 +1537,423 @@ TODO
 - Red bus: 50% * .75 = 37.5%
 - Same for car
 
-## Example from our exercise
+## The nested logit model
+
+- The nested logit model relaxes the independence of irrelevant alternatives assumption by allowing error correlation between pre-specified alternatives (known as "nests")
+- Mathematically, it represents a hierarchical choice where first you choose among nests and then among alternatives within nests
 
 ## The nested logit model
+
+- For instance, we might think that transit and driving share unobserved attributes
+    - Namely, they are both motorized so are more suited for traveling long distances
+    - They are also more protected from rainy Seattle weather
+- We will estimate this nested logit model
+
+```{mermaid}
+%%| echo: false
+%%| fig-width: 8
+%%| fig-alt: Tree diagram of a nested logit model, with the top level showing a choice between motorized, bike, and walk, and the bottom level a choice between car or transit within motorized
+flowchart TD
+    mc["Mode choice"]
+    mc --> Motorized
+    mc --> Walk
+    mc --> Bike
+    Motorized --> Car
+    Motorized --> Transit
+```
+
+## The nested logit model: mathematically
+
+- The nested logit model is mathematically a hierarchical model—first, a choice between the top-level alternatives
+    - e.g. Motorized, Walk, or Bike
+- Then, within each nest, a choice of alternatives within that nest
+- At the top level, the utility of a nest is based on the utility of the items within that nest
+- The probability of choosing an alternative within a nest is the probability of choosing that nest multiplied by the probability of choosing the alternative given that the nest is chosen, e.g.
+
+$$
+P(car) = P(motorized) \times P(car|motorized)
+$$
+
+- Some people actually implement the nested logit model by estimating separate multinomial logit models for each nest and between the nests
+    - Not common anymore, modern computers and software can estimate all levels simultaneously which is statistically preferable
+
+## Expected maximum utility
+
+- The utility of a nest is the maximum of the utilities of the members of that nest
+- We've already seen the formula for this, thanks to our Gumbel-distributed errors:
+
+$$
+\Gamma_{\mathrm{nest}} = \ln \sum_{j \in \mathrm{nest}} e^V_{j}
+$$
+
+## Top-level choice probability
+
+- The top-level choice probability is like a multinomial logit, with the expected maximum utility for the nest
+
+$$
+P(motorized) = \frac{e^{\ln \sum_{j \in \mathrm{motorized}} V_{j}}}{e^{\ln \sum_{j \in \mathrm{motorized}} V_{j}} + e^{V_{bike}} + e^{V_{walk}}}
+$$
+
+## This reduces to the multinomial logit
+
+- With some math we can show this is equivalent to the multinomial logit model
+
+$$
+\begin{align*}
+P(motorized) &= \frac{e^{\ln \sum_{j \in \mathrm{motorized}} e^{V_{j}}}}{e^{\ln \sum_{j \in \mathrm{motorized}} e^{V_j}} + e^{V_{bike}} + e^{V_{walk}}} \\
+             &= \frac{\sum_{j \in \mathrm{motorized}} e^{V_j}}{\sum_{j \in \mathrm{motorized}} e^{V_j} + e^{V_{bike}} + e^{V_{walk}}} \\
+             &= \frac{e^{V_{car}} + e^{V_{transit}}}{e^{V_{car}} + e^{V_{transit}} + e^{V_{bike}} + e^{V_{walk}}} \\
+             &= \frac{e^{V_{car}}}{e^{V_{car}} + e^{V_{transit}} + e^{V_{bike}} + e^{V_{walk}}} + \frac{e^{V_{transit}}}{e^{V_{car}} + e^{V_{bike}} + e^{V_{bike}} + e^{V_{walk}}} \\
+             &= P_{mnl}(car) + P_{mnl}(transit)
+\end{align*}
+$$
+
+
+## Scale parameters
+
+- If the nested logit is equivalent to the multinomial logit, why bother?
+- There is an additional term that is introduced in the nested logit, the _inclusive value_ parameter $\theta$
+- The utility of choosing a nest, then, is
+
+$$
+\theta \ln \sum_{j \in nest} e^{V_j / \theta}
+$$
+
+
+## What does the scaling parameter do?
+
+$$
+\theta \ln \sum_{j \in nest} e^{V_j / \theta}
+$$
+
+- The first $\theta$ scales the expected maximum utility to account for correlation between the error terms of the items in the nest
+- When the error terms are uncorrelated, it is fairly likely that one of them will result in relatively high utility, just by chance
+    - Because there are many chances for an error term to be large
+- When they are correlated, it is less likely
+    - At the extreme, if the error terms were perfectly correlated, there would only be one chance for the error term to result in a large utility
+- The second $\theta$ normalizes the utilities so that the coefficients are comparable across alternatives in different nests
+
+## The range of $\theta$
+
+- $\theta$ should be between 0 and 1
+- If it is not, the model is not consistent with random utility theory
+
+## Estimating a nested logit model in Biogeme
+
+- We will put transit and driving together in a "motorized" nest.
+- Biogeme does not estimated $\theta$, instead it estimates $\mu$ which is $\frac{1}{\theta}$
+
+## Estimating a nested logit model in Biogeme: code
+
+```{python}
+#| filename: seattle_nested.py
+import biogeme.database as db, biogeme.biogeme as bio
+from biogeme import models
+from biogeme.nests import OneNestForNestedLogit, NestsForNestedLogit
+from biogeme.expressions import Beta, Variable
+import pandas as pd
+import numpy as np
+
+df = pd.read_csv("data/seattle_trips.csv") # read data
+
+# Remove people who chose transit despite transit not being available
+df = df.loc[(df.mode_choice != "Transit") | df.transit_available, :]
+
+# create our choice variable - it is coded as text in the data but Biogeme requires
+# it to be numeric
+df["numeric_mode"] = df.mode_choice.replace({
+    "Car": 1,
+    "Transit": 2,
+    "Walk": 3,
+    "Bike": 4
+})
+
+data = db.Database("Seattle", pd.get_dummies(df).astype("float64"))
+
+# specify coefficients - all start at zero, have no bounds (None, None), and are
+# estimated rather than fixed (0)
+asc_bike = Beta("asc_bike", 0, None, None, 0)
+b_income_over_100k_bike = Beta("b_income_over_100k_bike", 0, None, None, 0)
+b_rush_hour_bike = Beta("b_rush_hour_bike", 0, None, None, 0)
+
+asc_walk = Beta("asc_walk", 0, None, None, 0)
+b_income_over_100k_walk = Beta("b_income_over_100k_walk", 0, None, None, 0)
+b_rush_hour_walk = Beta("b_rush_hour_walk", 0, None, None, 0)
+
+asc_transit = Beta("asc_transit", 0, None, None, 0)
+b_income_over_100k_transit = Beta("b_income_over_100k_transit", 0, None, None, 0)
+b_rush_hour_transit = Beta("b_rush_hour_transit", 0, None, None, 0)
+
+# we only need one coefficient for travel time
+b_travel_time = Beta("b_travel_time", 0, None, None, 0)
+b_travel_cost = Beta("b_travel_cost", 0, None, None, 0)
+
+# and specify the variables we want to use
+income_over_100k = Variable("income_over_100k")
+rush_hour = Variable("rush_hour")
+
+# but we need the travel time variables for each mode
+car_travel_time_mins = Variable("car_travel_time_mins")
+bike_travel_time_mins = Variable("bike_travel_time_mins")
+walk_travel_time_mins = Variable("walk_travel_time_mins")
+transit_travel_time_mins = Variable("transit_travel_time_mins")
+
+car_travel_cost = Variable("car_travel_cost")
+bike_travel_cost = Variable("bike_travel_cost")
+walk_travel_cost = Variable("walk_travel_cost")
+transit_travel_cost = Variable("transit_travel_cost")
+
+V = {
+    # Car
+    1: b_travel_time * car_travel_time_mins + b_travel_cost * car_travel_cost,
+
+    # Transit
+    2: asc_transit + b_income_over_100k_transit * income_over_100k + b_rush_hour_transit * rush_hour + b_travel_time * transit_travel_time_mins + b_travel_cost * transit_travel_cost,
+
+    # Walk
+    3: asc_walk + b_income_over_100k_walk * income_over_100k + b_rush_hour_walk * rush_hour + b_travel_time * walk_travel_time_mins + b_travel_cost * walk_travel_cost,
+
+    # Bike
+    4: asc_bike + b_income_over_100k_bike * income_over_100k + b_rush_hour_bike * rush_hour + b_travel_time * bike_travel_time_mins + b_travel_cost * bike_travel_cost
+}
+
+av = {1: 1, 2: Variable("transit_available"), 3: 1, 4: 1}
+
+# specify nests
+mu_motorized = Beta("mu_motorized", 1, None, None, 0)
+motorized = OneNestForNestedLogit(nest_param=mu_motorized, list_of_alternatives=[1, 2], name="motorized")
+
+# If you had multiple nests, you would add them to tuple_of_nests after the comma.
+# there always has to be a comma, even when there is only one nest
+nests = NestsForNestedLogit(choice_set=V.keys(), tuple_of_nests=(motorized,))
+
+logprob = models.lognested(V, av, nests, Variable("numeric_mode"))
+
+model = bio.BIOGEME(data, logprob)
+model.modelName = "seattle_nested"
+model.calculateNullLoglikelihood(av)
+result = model.estimate()
+print(result.shortSummary())
+print(result.getEstimatedParameters())
+```
+
+## Nested logit results
+
+```{python}
+#| echo: false
+params = result.getEstimatedParameters()
+Markdown(
+    tabulate.tabulate(
+        params,
+        headers=params.columns
+    )
+)
+```
+
+## Interpreting the nested logit model
+
+::: {.incremental}
+- $\mu$ is 0.76. What is $\theta$?
+- 1 / 0.76 = 1.32
+- Do we accept this as a valid nested logit model?
+:::
+
+## Exercise: estimate a different nesting structure: bike and walk together in a nest
+
+```{mermaid}
+%%| fig-alt: graph showing a nesting structure with bike and walk in an active nest, and no other nests
+flowchart TD
+    mc[Mode choice]
+
+    mc --> Car
+    mc --> Transit
+    mc --> Active
+    Active --> Bike
+    Active --> Walk
+```
+
+## Exercise answer
+
+```{python}
+#| filename: seattle_nested_active.py
+import biogeme.database as db, biogeme.biogeme as bio
+from biogeme import models
+from biogeme.nests import OneNestForNestedLogit, NestsForNestedLogit
+from biogeme.expressions import Beta, Variable
+import pandas as pd
+import numpy as np
+
+df = pd.read_csv("data/seattle_trips.csv") # read data
+
+# Remove people who chose transit despite transit not being available
+df = df.loc[(df.mode_choice != "Transit") | df.transit_available, :]
+
+# create our choice variable - it is coded as text in the data but Biogeme requires
+# it to be numeric
+df["numeric_mode"] = df.mode_choice.replace({
+    "Car": 1,
+    "Transit": 2,
+    "Walk": 3,
+    "Bike": 4
+})
+
+data = db.Database("Seattle", pd.get_dummies(df).astype("float64"))
+
+# specify coefficients - all start at zero, have no bounds (None, None), and are
+# estimated rather than fixed (0)
+asc_bike = Beta("asc_bike", 0, None, None, 0)
+b_income_over_100k_bike = Beta("b_income_over_100k_bike", 0, None, None, 0)
+b_rush_hour_bike = Beta("b_rush_hour_bike", 0, None, None, 0)
+
+asc_walk = Beta("asc_walk", 0, None, None, 0)
+b_income_over_100k_walk = Beta("b_income_over_100k_walk", 0, None, None, 0)
+b_rush_hour_walk = Beta("b_rush_hour_walk", 0, None, None, 0)
+
+asc_transit = Beta("asc_transit", 0, None, None, 0)
+b_income_over_100k_transit = Beta("b_income_over_100k_transit", 0, None, None, 0)
+b_rush_hour_transit = Beta("b_rush_hour_transit", 0, None, None, 0)
+
+# we only need one coefficient for travel time
+b_travel_time = Beta("b_travel_time", 0, None, None, 0)
+b_travel_cost = Beta("b_travel_cost", 0, None, None, 0)
+
+# and specify the variables we want to use
+income_over_100k = Variable("income_over_100k")
+rush_hour = Variable("rush_hour")
+
+# but we need the travel time variables for each mode
+car_travel_time_mins = Variable("car_travel_time_mins")
+bike_travel_time_mins = Variable("bike_travel_time_mins")
+walk_travel_time_mins = Variable("walk_travel_time_mins")
+transit_travel_time_mins = Variable("transit_travel_time_mins")
+
+car_travel_cost = Variable("car_travel_cost")
+bike_travel_cost = Variable("bike_travel_cost")
+walk_travel_cost = Variable("walk_travel_cost")
+transit_travel_cost = Variable("transit_travel_cost")
+
+V = {
+    # Car
+    1: b_travel_time * car_travel_time_mins + b_travel_cost * car_travel_cost,
+
+    # Transit
+    2: asc_transit + b_income_over_100k_transit * income_over_100k + b_rush_hour_transit * rush_hour + b_travel_time * transit_travel_time_mins + b_travel_cost * transit_travel_cost,
+
+    # Walk
+    3: asc_walk + b_income_over_100k_walk * income_over_100k + b_rush_hour_walk * rush_hour + b_travel_time * walk_travel_time_mins + b_travel_cost * walk_travel_cost,
+
+    # Bike
+    4: asc_bike + b_income_over_100k_bike * income_over_100k + b_rush_hour_bike * rush_hour + b_travel_time * bike_travel_time_mins + b_travel_cost * bike_travel_cost
+}
+
+av = {1: 1, 2: Variable("transit_available"), 3: 1, 4: 1}
+
+# specify nests
+mu_active = Beta("mu_active", 1, None, None, 0)
+active = OneNestForNestedLogit(nest_param=mu_active, list_of_alternatives=[3, 4], name="active")
+
+# If you had multiple nests, you would add them to tuple_of_nests after the comma.
+# there always has to be a comma, even when there is only one nest
+nests = NestsForNestedLogit(choice_set=V.keys(), tuple_of_nests=(active,))
+
+logprob = models.lognested(V, av, nests, Variable("numeric_mode"))
+
+model = bio.BIOGEME(data, logprob)
+model.modelName = "seattle_nested_active"
+model.calculateNullLoglikelihood(av)
+result = model.estimate()
+print(result.shortSummary())
+print(result.getEstimatedParameters())
+```
+
+## Nested logit results, again
+
+```{python}
+#| echo: false
+params = result.getEstimatedParameters()
+Markdown(
+    tabulate.tabulate(
+        params,
+        headers=params.columns
+    )
+)
+```
+
+## Interpreting the nested logit model, again
+
+::: {.incremental}
+- $\mu$ is 1.07. What is $\theta$?
+- 1 / 1.07 = 0.93
+- Do we accept this as a valid nested logit model?
+- What does this mean about the error correlation between walking and biking?
+:::
+
+## Testing the nested logit model
+
+- If $\theta$ were 1, the results would be the same as the multinomial logit model, and we wouldn't need a nested logit model
+- 0.93 isn't that different from 1
+- How do we know we need a nested logit model?
+- When there's just one nest we can use a standard $z$-test and $p$-value
+    - Much software doesn't do the right test, though—we need to test that the nesting parameter ($\theta$ or $\mu$) is different from one, not zero like most coefficients
+    - In our case, $\mu$ is just under one standard error above 1, so is _not_ statistically significant
+    - We can reject _this_ nesting structure as not being superior to multinomial logit, though there may be other nesting structures that are
+
+## The likelihood-ratio test
+
+- The standard test for a nested-logit model versus a multinomial logit model is a likelihood-ratio test
+- This works even when there are multiple nests
+- The likelihood-ratio is a statistical test for whether the overall improvement in the model justifies the added parameters
+- The _test statistic_ is $-2 (\ell_{mnl} - \ell_{nl})$
+    - This is called a likelihood-_ratio_ test because a difference in logarithms is equivalent to division
+- It has a $\chi^2$ distribution (yay another distribution)
+- The number of degrees of freedom is the number of nests you have
+
+## The likelihood-ratio test
+
+::: {.incremental}
+- Our log-likelihoods are:
+    - MNL: -4515.951
+    - NL: -4515.486
+- Difference: -0.465
+- Test statistic: 0.930
+- $\chi^2$ p-value: 0.34
+- Can we conclude that the NL model is superior to the MNL?
+:::
+
+## The likelihood-ratio test, in code
+
+```{python}
+import scipy
+
+# 0.930 is our test statistic, 1 is the number of degrees of freedom
+# sf is the "survival function", 1 minus the cumulative distribution function
+scipy.stats.chi2.sf(0.930, 1)
+```
+
+## The likelihood-ratio test, more generally
+
+- The likelihood-ratio test can be used for any two "nested" models
+    - Confusingly, not the same as a nested-logit model
+    - Nested models mean that the more complex model can be transformed into the simple model by restricting some coefficients
+    - For instance, a nested logit can be transformed into an MNL by restricting the $\theta$'s to 1
+    - Or two multinomial logit models where one has a few added coefficients, the more complex model is equivalent to the simpler model if those coefficients are restricted to zero
+    - The number of degrees of freedom is just the number of restrictions
+
+## Multiple nesting levels
+
+TODO
+
+## Going deeper: scale parameters in nested logit
+
+TODO
+
+## Estimation challenges with the nested logit
+
+TODO
+
+## Other resources
+
+- The quintessential reference, albeit very technical: @ben-akiva_discrete_1985
+- A more practitioner-focused text (free e-book): [@koppelman_self_2006](http://www.caee.utexas.edu/prof/bhat/courses/lm_draft_060131final-060630.pdf)
+
+Email me: [mwbc@unc.edu](mailto:mwbc@unc.edu)
