@@ -1,5 +1,10 @@
 project:
   type: website
+  render:
+    - index.qmd
+    - discrete-choice.qmd
+  # render for gh-pages
+  output-dir: docs
 
 website:
   title: "Odum Discrete Choice Models"
