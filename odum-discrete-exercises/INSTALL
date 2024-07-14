@@ -1,0 +1,29 @@
+To run the exercises in this folder, you need Python and the biogeme, statsmodels, pandas, and numpy packages. If you are already a Python user, install these packages however you normally install packages (note that biogeme is only available through pip, not through conda).
+ 
+If you aren’t, first install Python from https://python.org, then use the Python package manager “pip” to install the necessary packages. On macOS or Linux, you can do this with the command
+ 
+python3 -m pip install biogeme statsmodels pandas
+or
+python -m pip install biogeme statsmodels pandas
+ 
+depending on how your Python installation is configured (there’s no harm in trying the first one and then trying the second if that doesn’t work).
+ 
+On Windows, the commands are similar but not quite the same:
+ 
+py -m pip install biogeme statsmodels pandas
+or
+python3 -m pip install biogeme statsmodels pandas
+or
+python -m pip install biogeme statsmodels pandas
+ 
+Similarly, there’s no harm in trying these in order if you aren’t sure which to use.
+ 
+If you have trouble with the install, feel free to reach out to me or we can address during class on Monday.
+ 
+If you run into errors about compatibility with numpy 2.0, run
+
+python3 -m pip install numpy==1.26.4
+
+(replacing python3 with whatever version of the install command used above) to downgrade to the most recent compatible version of numpy.
+
+I also recommend installing a programming text editor; if you don’t already have one you like I recommend Visual Studio Code.
