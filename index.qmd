@@ -3,5 +3,5 @@ title: Odum Discrete Choice Modeling class
 author: Matt Bhagat-Conway
 ---
 
-- [Example code and data](https://files.indicatrix.org/odum_discrete_class_files.zip)
+- [Example code and data](https://github.com/mattwigway/odum-discrete/releases/download/summer2024/odum-discrete-exercises.zip)
 - [Slides](discrete-choice.html)
