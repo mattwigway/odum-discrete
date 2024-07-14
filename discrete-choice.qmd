@@ -19,6 +19,7 @@ execute:
 bibliography: bibliography.bib
 csl: presentation.csl
 mermaid-format: png
+from: markdown+emoji
 ---
 
 ```{python}
@@ -45,7 +46,7 @@ plt.rcParams.update({'font.size': 36})
 ## Before we go any further
 
 - Install [Python](https://python.org/)
-- Install necessary Python packages using `pip`: `biogeme`, `statsmodels`, `pandas`, `numpy`, `statsmodels`
+- Install necessary Python packages using `pip`: `biogeme`, `statsmodels`, `pandas`, `numpy`, `scipy`
 - Slides, code, and data at [https://projects.indicatrix.org/odum-discrete/](https://projects.indicatrix.org/odum-discrete/)
 
 ## What are discrete choice models?
@@ -74,7 +75,7 @@ plt.rcParams.update({'font.size': 36})
 ## The binary logistic regression model: conceptually
 
 - We are never going to be 100% sure of one outcome or the other, so we want to model the _probability_ of the outcomes
-- We could just assing 1 to one outcome and 0 to the other, and run a linear regression model
+- We could just assign 1 to one outcome and 0 to the other, and run a linear regression model
 - This is the _linear probability model_
 
 ## The problem with the linear probability model
@@ -189,12 +190,9 @@ Markdown(tabulate.tabulate(modelRes.fillna(""), headers=modelRes.columns))
 
 ## Statistical significance and p-values
 
-- The $p$-value is the probability of observing a coefficient as large or larger
-- Computed as $2(1 - \phi(|z|))$, where $z$ is the $z$-value and $\phi$ is the normal cumulative distribution function
+- The $p$-value is the probability of observing a coefficient as large or larger in magnitude, if the true coefficient were zero
+- Computed using the normal cumulative distribution function
 - Usual rule is that $p < 0.05$ is statistically significant, but in larger datasets $p < 0.01$ or even $p < 0.001$ may be used
-
-## Statistical significance and p-values
-
 - For more information about the math, see the hypothesis testing section of any statistics textbook
 - Logistic regression hypothesis tests are computed just like linear regression, except using the normal instead of $t$ distribution
 
@@ -210,7 +208,7 @@ Markdown(tabulate.tabulate(modelRes.fillna(""), headers=modelRes.columns))
 - This is just the exponentiation of the coefficient
 :::
 
-## Interpreting odds ratios
+## Interpreting odds ratios I
 
 ```{python}
 #| echo: false
@@ -224,6 +222,18 @@ Markdown(tabulate.tabulate(oddRes.fillna(""), headers=oddRes.columns))
     - Odds is the probability of something happening divided by the probability of it not happening
     - e.g. 5 to 1 odds means that out of 6 trials something will happen 5 times on average
 - They are multiplicative, so an odds ratio of 1.287 means that men have 28.7% higher odds of being able to work from home
+:::
+
+## Interpreting odds ratios II
+
+```{python}
+#| echo: false
+modelRes["Odds ratio"] = np.exp(modelRes.Coefficient).round(3)
+oddRes = modelRes[["Odds ratio", "$t$", "p"]]
+Markdown(tabulate.tabulate(oddRes.fillna(""), headers=oddRes.columns))
+```
+
+::: {.incremental}
 - What does an odds ratio of 0.977 mean?
     - Each additional year of age is associated with 2.3% _lower_ odds of being able to work from home
 :::
@@ -237,7 +247,7 @@ Markdown(tabulate.tabulate(oddRes.fillna(""), headers=oddRes.columns))
 ## Running a logistic regression in Python
 ```{python}
 #| filename: logistic_basic.py
-#| include: true
+#| output: false
 #| echo: true
 import pandas as pd, statsmodels.api as sm
 
@@ -255,6 +265,14 @@ model = sm.Logit(
 )
 
 result = model.fit()
+print(result.summary())
+```
+
+
+## Running a logistic regression in Python: results
+
+```{python}
+#| echo: false
 result.summary()
 ```
 
@@ -262,7 +280,7 @@ result.summary()
 
 ```{python}
 #| filename: logistic_black_hispanic.py
-#| include: true
+#| output: false
 #| echo: true
 import pandas as pd, statsmodels.api as sm
 
@@ -280,8 +298,16 @@ model = sm.Logit(
 )
 
 result = model.fit()
+print(result.summary())
+```
+
+## Exercise: add the `black` and `hispanic` variables to the model: result
+
+```{python}
+#| echo: false
 result.summary()
 ```
+
 
 ::: {.incremental}
 - Is either statistically significant?
@@ -309,7 +335,7 @@ $$
 - Only differences in utility are meaningful, so we can arbitrarily define the systematic portion of the utility of the other option as zero
 
 $$
-U_{notwfh} = 0 + \epsilon{notwfh}
+U_{notwfh} = 0 + \epsilon_{notwfh}
 $$
 
 The probability of working from home then becomes
@@ -423,6 +449,23 @@ print(result.shortSummary())
 print(result.getEstimatedParameters())
 ```
 
+## Numpy error
+
+- `numpy` 2.0 was released a few weeks ago, and `biogeme` is not yet compatible, you may get this message
+
+```
+A module that was compiled using NumPy 1.x cannot be run in
+NumPy 2.0.0 as it may crash. To support both 1.x and 2.x
+versions of NumPy, modules must be compiled with NumPy 2.0.
+Some module may need to rebuild instead e.g. with 'pybind11>=2.12'.
+
+If you are a user of the module, the easiest solution will be to
+downgrade to 'numpy<2' or try to upgrade the affected module.
+We expect that some modules will need time to support NumPy 2.
+```
+
+- If so, run `python3 -m pip install numpy==1.26.4` (macOS) or `py -m pip install numpy==1.26.4` (Windows) to downgrade to the most recent release of `numpy` 1
+
 ## How does the result compare to the original model we estimated?
 
 ```{python}
@@ -436,7 +479,7 @@ Markdown(tabulate.tabulate(modelRes.fillna(""), headers=modelRes.columns))
 
 ## Detailed result
 
-Stored in "wfh_logit.html", or some variation—look for most recent.
+Stored in "biogeme_binary.html", or some variation—look for most recent.
 
 ```{python}
 #| echo: false
@@ -460,9 +503,10 @@ HTML('<iframe width="1850" height="800px" src="{}" data-external="1"></iframe>'.
 
 - Add the `black` and `hispanic` variables to the model, confirm you get the same results you did before
 
+## Exercise: result
+
 ```{python}
 #| filename: biogeme_binary_race.py
-#| echo: false
 import biogeme.database as db, biogeme.biogeme as bio
 from biogeme import models
 from biogeme.expressions import Beta, Variable
@@ -547,10 +591,10 @@ print(result.getEstimatedParameters())
 - Each alternative gets a utility function, with systematic and random components
 
 $$
-U_{car} = V_{car} + \epsilon_{car}
-U_{transit} = V_{transit} + \epsilon_{transit}
-U_{bike} = V_{bike} + \epsilon_{bike}
-U_{walk} = V_{walk} + \epsilon_{walk}
+U_{car} = V_{car} + \epsilon_{car} \\
+U_{transit} = V_{transit} + \epsilon_{transit} \\
+U_{bike} = V_{bike} + \epsilon_{bike} \\
+U_{walk} = V_{walk} + \epsilon_{walk} \\
 $$
 
 ## The multinomial logit model, in math II
@@ -558,10 +602,10 @@ $$
 - Like in a logistic regression, the systematic portion of utility is usually a linear combination of predictors
 
 $$
-V_{car} = \alpha_{car} + \beta_{car,income} x_{income} \cdots
-V_{transit} = \alpha_{transit} + \beta_{transit,income} x_{income} \cdots
-V_{bike} = \alpha_{bike} + \beta_{bike,income} x_{income} \cdots
-V_{walk} = \alpha_{walk} + \beta_{walk,income} x_{income} \cdots
+V_{car} = \alpha_{car} + \beta_{car,income} x_{income} \cdots \\
+V_{transit} = \alpha_{transit} + \beta_{transit,income} x_{income} \cdots \\
+V_{bike} = \alpha_{bike} + \beta_{bike,income} x_{income} \cdots \\
+V_{walk} = \alpha_{walk} + \beta_{walk,income} x_{income} \cdots \\
 $$
 
 ## Alternative specific constants
@@ -584,10 +628,10 @@ $$
 - Looking again at our mode choice model, how do the differences between utilities change if we add 1 to all of the $\alpha$'s or $\beta$'s?
 
 $$
-V_{car} = \alpha_{car} + \beta_{car,income} x_{income} \cdots
-V_{transit} = \alpha_{transit} + \beta_{transit,income} x_{income} \cdots
-V_{bike} = \alpha_{bike} + \beta_{bike,income} x_{income} \cdots
-V_{walk} = \alpha_{walk} + \beta_{walk,income} x_{income} \cdots
+V_{car} = \alpha_{car} + \beta_{car,income} x_{income} \cdots \\
+V_{transit} = \alpha_{transit} + \beta_{transit,income} x_{income} \cdots \\
+V_{bike} = \alpha_{bike} + \beta_{bike,income} x_{income} \cdots \\
+V_{walk} = \alpha_{walk} + \beta_{walk,income} x_{income} \cdots \\
 $$
 
 ## An identified model
@@ -597,10 +641,10 @@ $$
 - For instance, we might do
 
 $$
-V_{car} = 0
-V_{transit} = \alpha_{transit} + \beta_{transit,income} x_{income} \cdots
-V_{bike} = \alpha_{bike} + \beta_{bike,income} x_{income} \cdots
-V_{walk} = \alpha_{walk} + \beta_{walk,income} x_{income} \cdots
+V_{car} = 0 \\
+V_{transit} = \alpha_{transit} + \beta_{transit,income} x_{income} \cdots \\
+V_{bike} = \alpha_{bike} + \beta_{bike,income} x_{income} \cdots \\
+V_{walk} = \alpha_{walk} + \beta_{walk,income} x_{income} \cdots \\
 $$
 
 - This is exactly what a binary logistic regression does—you have coefficients for one outcome, and the utility of the other outcome is zero
@@ -876,7 +920,7 @@ print(result.shortSummary())
 print(result.getEstimatedParameters())
 ```
 
-## Interpreting the coefficient changes
+## Interpreting the coefficient changes I
 
 ```{python}
 #| echo: false
@@ -888,6 +932,17 @@ Markdown(tabulate.tabulate(params, headers=params.columns))
 - Biking is about the same at rush hour vs. not
 - Transit ridership is relatively higher during rush hour
 - Walking is relatively lower during during rush hour
+:::
+
+## Interpreting the coefficient changes II
+
+```{python}
+#| echo: false
+params = result.getEstimatedParameters()
+Markdown(tabulate.tabulate(params, headers=params.columns))
+```
+
+::: {.incremental}
 - What happens to driving?
     - We have set driving as the reference level, so all of these other changes are relative to the change in driving
 :::
@@ -1347,7 +1402,7 @@ P_{ni} =&~P\left[\left(V_{ni} + \epsilon_{ni}\right)~~\geq~~\max_{\forall j\neq 
 \end{align*}
 $$
 
-More detail: see Section 5.2 of @ben-akiva_discrete_1985
+which is also known as the softmax function. More detail: see Section 5.2 of @ben-akiva_discrete_1985
 
 ## The binary and multinomial logit are the same model
 
@@ -1428,6 +1483,7 @@ print(choice_probabilities.apply(np.mean))
 ## Exercise: make transit faster
 
 - Improve transit travel times by 25% and see how choice probabilities change
+- Don't keep the road cost scenario
 - Hint: `df_transit_time["transit_travel_time_mins"] *= 0.75` scales the variable `transit_travel_time` by 75%
 
 ## Exercise answers
@@ -1647,7 +1703,7 @@ Of the following options for internet service, which would you select:
 - You need to make sure the variables aren't perfectly correlated
     - for instance, in the above example, if the prices always stayed the same, the model wouldn't be able to differentiate setup fee from monthly fee preferences
     - if you have ASCs in your model, this is even more of an issue—if fiber is always 1000 megabits/second, you won't be able to differentiate the speed from an inherent preference for fiber
-- There's a lot more that goes into designing good choice experiments; see @bliemer_designing_2024
+- There's a lot more that goes into designing good choice experiments; see [@bliemer_designing_2024](https://surveyengine.com/wp-content/uploads/2021/11/Designing-and-Conducting-Stated-Choice-Experiments.pdf)
 
 ## Revealed preference data: attributes of alternatives
 
@@ -1923,6 +1979,8 @@ Markdown(
 
 ```{mermaid}
 %%| fig-alt: graph showing a nesting structure with bike and walk in an active nest, and no other nests
+%%| echo: false
+%%| fig-width: 8
 flowchart TD
     mc[Mode choice]
 
@@ -2106,9 +2164,11 @@ scipy.stats.chi2.sf(0.930, 1)
 
 - The nested logit we just estimated only had one nest
 - You can estimate nested logit models with multiple nests, and even multiple levels of nests
-- For instance, you could estimated this model
+- For instance, you could estimate this model
 
 ```{mermaid}
+%%| echo: false
+%%| fig-alt: A complex nesting structure with a motorized nest containing car and transit, and an active nests containing bike and walk. Car is also a sub-nest containing drive alone and carpool.
 flowchart TD
     mc[Mode choice]
     da[Drive alone]
@@ -2125,7 +2185,8 @@ flowchart TD
 
 - We will have one $\theta$ for each nest
 - $\theta$'s for top-level nests should be between 0 and 1
-- $\theta$'s for subnests should be between 0 and the $\theta$ in the next higher level nest
+- $\theta$'s for subnests should be between 0 and the $\theta$ in the next higher level nest   
+    - And a $z$-test should be relative to the $\theta$ in the next higher nest, or just use a likelihood-ratio test
 - Biogeme can't directly estimate this type of model; [larch](https://larch.newman.me/) (Python) or [Apollo](http://www.apollochoicemodelling.com) (R) can.
 
 ## Going deeper: scale parameters in nested logit
@@ -2135,7 +2196,7 @@ flowchart TD
 
 $$
 \begin{align}
-U_{bike} &= V_{bike} + \epsilon_{nonmotorized} + \epsilon_{bike}
+U_{bike} &= V_{bike} + \epsilon_{nonmotorized} + \epsilon_{bike} \\
 U_{walk} &= V_{walk} + \epsilon_{nonmotorized} + \epsilon_{walk}
 \end{align}
 $$
@@ -2203,7 +2264,15 @@ plt.yticks([])
 - There may also be cases where there is an idenfication issue that is indicated but unexpected coefficients, non-finite likelihoods, etc.—if anything looks off, identification is a good thing to think about
 - Some identification issues may not be apparent in results at all
 
-## Other resources
+## Conclusion
+
+- We covered the binary, multinomial, and nested logit models
+- The multinomial logit model is used for multiple outcomes; the nested logit is used when you are concerned about independence of irrelevant alternatives
+- We estimated models using the Biogeme package, other packages are larch (Python) and apollo (R)
+
+## Questions?
+
+Other resources:
 
 - The quintessential reference, albeit very technical: @ben-akiva_discrete_1985
 - A more practitioner-focused text (free e-book): [@koppelman_self_2006](http://www.caee.utexas.edu/prof/bhat/courses/lm_draft_060131final-060630.pdf)
