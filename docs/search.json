@@ -137,7 +137,7 @@
     "href": "discrete-choice.html#running-a-logistic-regression-in-python-results",
     "title": "Introduction to Discrete Choice Models",
     "section": "Running a logistic regression in Python: results",
-    "text": "Running a logistic regression in Python: results\n\n\n\nLogit Regression Results\n\n\nDep. Variable:\nwfh_expectation\nNo. Observations:\n1171\n\n\nModel:\nLogit\nDf Residuals:\n1167\n\n\nMethod:\nMLE\nDf Model:\n3\n\n\nDate:\nSun, 14 Jul 2024\nPseudo R-squ.:\n0.05368\n\n\nTime:\n17:33:17\nLog-Likelihood:\n-755.40\n\n\nconverged:\nTrue\nLL-Null:\n-798.25\n\n\nCovariance Type:\nnonrobust\nLLR p-value:\n1.837e-18\n\n\n\n\n\n\n\n\n\ncoef\nstd err\nz\nP&gt;|z|\n[0.025\n0.975]\n\n\nconst\n0.7258\n0.247\n2.944\n0.003\n0.243\n1.209\n\n\nage\n-0.0230\n0.005\n-5.065\n0.000\n-0.032\n-0.014\n\n\ncollege\n0.9273\n0.131\n7.102\n0.000\n0.671\n1.183\n\n\ngender_Male\n0.2520\n0.128\n1.967\n0.049\n0.001\n0.503"
+    "text": "Running a logistic regression in Python: results\n\n\n\nLogit Regression Results\n\n\nDep. Variable:\nwfh_expectation\nNo. Observations:\n1171\n\n\nModel:\nLogit\nDf Residuals:\n1167\n\n\nMethod:\nMLE\nDf Model:\n3\n\n\nDate:\nWed, 17 Jul 2024\nPseudo R-squ.:\n0.05368\n\n\nTime:\n12:04:50\nLog-Likelihood:\n-755.40\n\n\nconverged:\nTrue\nLL-Null:\n-798.25\n\n\nCovariance Type:\nnonrobust\nLLR p-value:\n1.837e-18\n\n\n\n\n\n\n\n\n\ncoef\nstd err\nz\nP&gt;|z|\n[0.025\n0.975]\n\n\nconst\n0.7258\n0.247\n2.944\n0.003\n0.243\n1.209\n\n\nage\n-0.0230\n0.005\n-5.065\n0.000\n-0.032\n-0.014\n\n\ncollege\n0.9273\n0.131\n7.102\n0.000\n0.671\n1.183\n\n\ngender_Male\n0.2520\n0.128\n1.967\n0.049\n0.001\n0.503"
   },
   {
     "objectID": "discrete-choice.html#exercise-add-the-black-and-hispanic-variables-to-the-model",
@@ -151,7 +151,7 @@
     "href": "discrete-choice.html#exercise-add-the-black-and-hispanic-variables-to-the-model-result",
     "title": "Introduction to Discrete Choice Models",
     "section": "Exercise: add the black and hispanic variables to the model: result",
-    "text": "Exercise: add the black and hispanic variables to the model: result\n\n\n\nLogit Regression Results\n\n\nDep. Variable:\nwfh_expectation\nNo. Observations:\n1171\n\n\nModel:\nLogit\nDf Residuals:\n1165\n\n\nMethod:\nMLE\nDf Model:\n5\n\n\nDate:\nSun, 14 Jul 2024\nPseudo R-squ.:\n0.05437\n\n\nTime:\n17:33:18\nLog-Likelihood:\n-754.85\n\n\nconverged:\nTrue\nLL-Null:\n-798.25\n\n\nCovariance Type:\nnonrobust\nLLR p-value:\n3.164e-17\n\n\n\n\n\n\n\n\n\ncoef\nstd err\nz\nP&gt;|z|\n[0.025\n0.975]\n\n\nconst\n0.7721\n0.261\n2.962\n0.003\n0.261\n1.283\n\n\nage\n-0.0237\n0.005\n-5.072\n0.000\n-0.033\n-0.015\n\n\ncollege\n0.9245\n0.131\n7.056\n0.000\n0.668\n1.181\n\n\nblack\n0.0801\n0.232\n0.346\n0.729\n-0.374\n0.534\n\n\nhispanic\n-0.1971\n0.201\n-0.979\n0.327\n-0.592\n0.197\n\n\ngender_Male\n0.2546\n0.128\n1.986\n0.047\n0.003\n0.506\n\n\n\n\n\n\n\nIs either statistically significant?"
+    "text": "Exercise: add the black and hispanic variables to the model: result\n\n\n\nLogit Regression Results\n\n\nDep. Variable:\nwfh_expectation\nNo. Observations:\n1171\n\n\nModel:\nLogit\nDf Residuals:\n1165\n\n\nMethod:\nMLE\nDf Model:\n5\n\n\nDate:\nWed, 17 Jul 2024\nPseudo R-squ.:\n0.05437\n\n\nTime:\n12:04:50\nLog-Likelihood:\n-754.85\n\n\nconverged:\nTrue\nLL-Null:\n-798.25\n\n\nCovariance Type:\nnonrobust\nLLR p-value:\n3.164e-17\n\n\n\n\n\n\n\n\n\ncoef\nstd err\nz\nP&gt;|z|\n[0.025\n0.975]\n\n\nconst\n0.7721\n0.261\n2.962\n0.003\n0.261\n1.283\n\n\nage\n-0.0237\n0.005\n-5.072\n0.000\n-0.033\n-0.015\n\n\ncollege\n0.9245\n0.131\n7.056\n0.000\n0.668\n1.181\n\n\nblack\n0.0801\n0.232\n0.346\n0.729\n-0.374\n0.534\n\n\nhispanic\n-0.1971\n0.201\n-0.979\n0.327\n-0.592\n0.197\n\n\ngender_Male\n0.2546\n0.128\n1.986\n0.047\n0.003\n0.506\n\n\n\n\n\n\n\nIs either statistically significant?"
   },
   {
     "objectID": "discrete-choice.html#an-alternate-conceptualization-of-the-logistic-regression-model-random-utility-theory",
@@ -522,7 +522,7 @@
     "href": "discrete-choice.html#calculating-market-shares",
     "title": "Introduction to Discrete Choice Models",
     "section": "Calculating market shares",
-    "text": "Calculating market shares\n\nMarket shares are just the mean probability across all individuals\n\n\nchoice_probabilities.apply(np.mean)\n\nCar        0.761975\nTransit    0.037530\nWalk       0.185732\nBike       0.014764\ndtype: float64\n\n\nThis is exactly the same as the market shares in the original data. This will always be the case when we have ASCs.\n\ndf.mode_choice.value_counts() / len(df)\n\nmode_choice\nCar        0.761975\nWalk       0.185732\nTransit    0.037530\nBike       0.014764\nName: count, dtype: float64"
+    "text": "Calculating market shares\n\nMarket shares are just the mean probability across all individuals\n\n\nprint(choice_probabilities.apply(np.mean))\n\nCar        0.761975\nTransit    0.037530\nWalk       0.185732\nBike       0.014764\ndtype: float64\n\n\nThis is exactly the same as the market shares in the original data. This will always be the case when we have ASCs.\n\ndf.mode_choice.value_counts() / len(df)\n\nmode_choice\nCar        0.761975\nWalk       0.185732\nTransit    0.037530\nBike       0.014764\nName: count, dtype: float64"
   },
   {
     "objectID": "discrete-choice.html#simulation",
@@ -536,14 +536,14 @@
     "href": "discrete-choice.html#simulation-1",
     "title": "Introduction to Discrete Choice Models",
     "section": "Simulation",
-    "text": "Simulation\n\ndf_road_cost = df.copy() # create a copy of the data to modify\ndf_road_cost[\"car_travel_cost\"] += df_road_cost.car_distance_km * 0.025 * 1.609\ndata_road_cost = db.Database(\"Seattle road cost\", pd.get_dummies(df_road_cost).astype(\"float64\"))\n\nroad_cost_model = bio.BIOGEME(data_road_cost, {\n    \"Car\": models.logit(V, av, 1),\n    \"Transit\": models.logit(V, av, 2),\n    \"Walk\": models.logit(V, av, 3),\n    \"Bike\": models.logit(V, av, 4)\n})\n\nchoice_probabilities = road_cost_model.simulate(result.getBetaValues())\nprint(choice_probabilities.apply(np.mean))\n\nCar        0.759342\nTransit    0.038709\nWalk       0.186860\nBike       0.015088\ndtype: float64"
+    "text": "Simulation\n\ndf_road_cost = df.copy() # create a copy of the data to modify\ndf_road_cost[\"car_travel_cost\"] += df_road_cost.car_distance_km * 0.025 / 1.609\ndata_road_cost = db.Database(\"Seattle road cost\", pd.get_dummies(df_road_cost).astype(\"float64\"))\n\nroad_cost_model = bio.BIOGEME(data_road_cost, {\n    \"Car\": models.logit(V, av, 1),\n    \"Transit\": models.logit(V, av, 2),\n    \"Walk\": models.logit(V, av, 3),\n    \"Bike\": models.logit(V, av, 4)\n})\n\nchoice_probabilities = road_cost_model.simulate(result.getBetaValues())\nprint(choice_probabilities.apply(np.mean))\n\nCar        0.760968\nTransit    0.037977\nWalk       0.186167\nBike       0.014888\ndtype: float64"
   },
   {
     "objectID": "discrete-choice.html#how-much-do-we-forecast-driving-will-decrease",
     "href": "discrete-choice.html#how-much-do-we-forecast-driving-will-decrease",
     "title": "Introduction to Discrete Choice Models",
     "section": "How much do we forecast driving will decrease?",
-    "text": "How much do we forecast driving will decrease?\n\n76.2% -&gt; 75.9%"
+    "text": "How much do we forecast driving will decrease?\n\n76.2% -&gt; 76.1%"
   },
   {
     "objectID": "discrete-choice.html#exercise-make-transit-faster",
@@ -732,7 +732,7 @@
     "href": "discrete-choice.html#top-level-choice-probability",
     "title": "Introduction to Discrete Choice Models",
     "section": "Top-level choice probability",
-    "text": "Top-level choice probability\n\nThe top-level choice probability is like a multinomial logit, with the expected maximum utility for the nest\n\n\nP(motorized) = \\frac{e^{\\ln \\sum_{j \\in \\mathrm{motorized}} V_{j}}}{e^{\\ln \\sum_{j \\in \\mathrm{motorized}} V_{j}} + e^{V_{bike}} + e^{V_{walk}}}"
+    "text": "Top-level choice probability\n\nThe top-level choice probability is like a multinomial logit, with the expected maximum utility for the nest\n\n\nP(motorized) = \\frac{e^{\\ln \\sum_{j \\in \\mathrm{motorized}} e^{V_{j}}}}{e^{\\ln \\sum_{j \\in \\mathrm{motorized}} V_{j}} + e^{V_{bike}} + e^{V_{walk}}}"
   },
   {
     "objectID": "discrete-choice.html#this-reduces-to-the-multinomial-logit",

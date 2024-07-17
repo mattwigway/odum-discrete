@@ -1404,6 +1404,19 @@ $$
 
 which is also known as the softmax function. More detail: see Section 5.2 of @ben-akiva_discrete_1985
 
+## Only utility differences matter
+
+What happens if we add 1.5 to all utilities?
+
+$$
+\begin{align*}
+P_{ni} &= \frac{e^{V_{ni} + 1.5}}{\displaystyle\sum_{\forall j} e^{V_{nj} + 1.5}} \\
+&= \frac{e^{V_{ni}}e^{1.5}}{\displaystyle\sum_{\forall j} e^{V_{nj}}e^{1.5}} \\
+&= \frac{e^{V_{ni}}e^{1.5}}{e^{1.5}\displaystyle\sum_{\forall j} e^{V_{nj}}} \\
+&= \frac{e^{V_{ni}}}{\displaystyle\sum_{\forall j} e^{V_{nj}}} \\
+\end{align*}
+$$
+
 ## The binary and multinomial logit are the same model
 
 - The binary logit model is just a multinomial logit model with two outcome and no generic variables
@@ -1442,7 +1455,7 @@ print(choice_probabilities)
 - Market shares are just the mean probability across all individuals
 
 ```{python}
-choice_probabilities.apply(np.mean)
+print(choice_probabilities.apply(np.mean))
 ```
 
 This is exactly the same as the market shares in the original data. This will always be the case when we have ASCs.
@@ -1462,7 +1475,7 @@ df.mode_choice.value_counts() / len(df)
 
 ```{python}
 df_road_cost = df.copy() # create a copy of the data to modify
-df_road_cost["car_travel_cost"] += df_road_cost.car_distance_km * 0.025 * 1.609
+df_road_cost["car_travel_cost"] += df_road_cost.car_distance_km * 0.025 / 1.609
 data_road_cost = db.Database("Seattle road cost", pd.get_dummies(df_road_cost).astype("float64"))
 
 road_cost_model = bio.BIOGEME(data_road_cost, {
@@ -1478,7 +1491,7 @@ print(choice_probabilities.apply(np.mean))
 
 ## How much do we forecast driving will decrease?
 
-- 76.2% -> 75.9%
+- 76.2% -> 76.1%
 
 ## Exercise: make transit faster
 
@@ -1806,7 +1819,7 @@ $$
 - The top-level choice probability is like a multinomial logit, with the expected maximum utility for the nest
 
 $$
-P(motorized) = \frac{e^{\ln \sum_{j \in \mathrm{motorized}} V_{j}}}{e^{\ln \sum_{j \in \mathrm{motorized}} V_{j}} + e^{V_{bike}} + e^{V_{walk}}}
+P(motorized) = \frac{e^{\ln \sum_{j \in \mathrm{motorized}} e^{V_{j}}}}{e^{\ln \sum_{j \in \mathrm{motorized}} V_{j}} + e^{V_{bike}} + e^{V_{walk}}}
 $$
 
 ## This reduces to the multinomial logit
