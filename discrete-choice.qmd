@@ -26,6 +26,7 @@ from: markdown+emoji
 #| include: false
 import pandas as pd
 import numpy as np
+import numpy as np
 import scipy
 import matplotlib.pyplot as plt
 import statsmodels.api as sm
@@ -46,7 +47,7 @@ plt.rcParams.update({'font.size': 36})
 ## Before we go any further
 
 - Install [Python](https://python.org/)
-- Install necessary Python packages using `pip`: `biogeme`, `statsmodels`, `pandas`, `numpy`, `scipy`
+- Install necessary Python packages using `pip`: `larch6`, `statsmodels`, `pandas`, `numpy`, `scipy`
 - Slides, code, and data at [https://projects.indicatrix.org/odum-discrete/](https://projects.indicatrix.org/odum-discrete/)
 
 ## What are discrete choice models?
@@ -249,10 +250,14 @@ Markdown(tabulate.tabulate(oddRes.fillna(""), headers=oddRes.columns))
 #| filename: logistic_basic.py
 #| output: false
 #| echo: true
-import pandas as pd, statsmodels.api as sm
 
+import pandas as pd
+import numpy as np, statsmodels.api as sm
+
+# %%
 data = pd.read_csv("data/wfh_prediction_covidfuture.csv")
 
+# %%
 model = sm.Logit(
     data.wfh_expectation, # dependent variables
     sm.add_constant( # add an intercept to the dataframe
@@ -263,9 +268,9 @@ model = sm.Logit(
         .astype("float64") # convert everything to numeric
     )
 )
-
+# %%
 result = model.fit()
-print(result.summary())
+result.summary()
 ```
 
 
@@ -282,10 +287,13 @@ result.summary()
 #| filename: logistic_black_hispanic.py
 #| output: false
 #| echo: true
-import pandas as pd, statsmodels.api as sm
+import pandas as pd
+import numpy as np, statsmodels.api as sm
 
+# %%
 data = pd.read_csv("data/wfh_prediction_covidfuture.csv")
 
+# %%
 model = sm.Logit(
     data.wfh_expectation, # dependent variables
     sm.add_constant( # add an intercept to the dataframe
@@ -297,8 +305,9 @@ model = sm.Logit(
     )
 )
 
+# %%
 result = model.fit()
-print(result.summary())
+result.summary()
 ```
 
 ## Exercise: add the `black` and `hispanic` variables to the model: result
@@ -383,88 +392,67 @@ with $\epsilon_\Delta$ Logistic-distributed, which is the same as our formula fo
 ## Estimating our binary logistic regression as a random utility model
 
 - We're going to specify our logistic regression model as a random utility model
-- We're going to use the [Biogeme](https://biogeme.epfl.ch) package to do so
+- We're going to use the [larch](https://larch.driftless.xyz) package to do so
 
 ## Estimation code
 
 ```{python}
-#| filename: biogeme_binary.py
+#| filename: larch_binary.py
 #| output: false
-import biogeme.database as db, biogeme.biogeme as bio
-from biogeme import models
-from biogeme.expressions import Beta, Variable
 import pandas as pd
+import numpy as np
+import larch as lx
+from larch import P, X
 
+# %%
 df = pd.read_csv("data/wfh_prediction_covidfuture.csv") # read data
-data = db.Database("WFH", 
+
+# %%
+df["wfh_expectation"] = df.wfh_expectation.astype("int64") + 1
+
+# %%
+# convert data to larch format
+data = lx.Dataset.construct.from_idco(
     pd.get_dummies(df)
         .drop(columns="gender_Female")
-        .astype("float64")
-) # convert to Biogeme format
+        .astype("float64"),
+    alts={1: "Not expecting to WFH", 2: "Expecting to WFH"}
+)
 
-# specify coefficients - all start at zero, have no bounds (None, None), and are
-# estimated rather than fixed (0)
-alpha = Beta("Intercept", 0, None, None, 0)
-b_age = Beta("b_age", 0, None, None, 0)
-b_college = Beta("b_college", 0, None, None, 0)
-b_male = Beta("b_male", 0, None, None, 0)
+# %%
+m = lx.Model(data)
 
-# and specify the variables we want to use
-age = Variable("age")
-college = Variable("college")
-male = Variable("gender_Male")
+# utility of False (not expecting to work from home) = 0
 
-# specify utility functions
-V = {
-    # outcome 1 is WFH
-    1: (alpha + b_age * age + b_college * college + b_male * male),
-    # outcome 0 is non-WFH
-    0: 0
-}
+# utility of True (expecting to work from home)
+m.utility_co[2] = P.intercept + P.age * X.age + P.college * X.college + P.male * X.gender_Male
 
-# we also need to define the availability (more on this later)
-av = {0: 1, 1: 1}
+m.choice_co_code = "wfh_expectation"
 
-# now, set up what type of model we want (logit), what the utility functions are,
-# what the availability variables are, and what the dependent variable is
-logprob = models.loglogit(V, av, Variable("wfh_expectation"))
+# %%
+m.set_cap(25)
+result = m.maximize_loglike(stderr=True)
 
-model = bio.BIOGEME(data, logprob)
-model.modelName = "biogeme_binary"
-model.calculateNullLoglikelihood(av)
-result = model.estimate()
+# %%
+m.parameter_summary()
 
-assert result.algorithm_has_converged()
-print(result.shortSummary())
-print(result.getEstimatedParameters())
+# %%
+m.estimation_statistics()
 ```
 
 ## Result
 
 ```{python}
 #| echo: false
-
-assert result.algorithm_has_converged()
-print(result.shortSummary())
-print(result.getEstimatedParameters())
+m.parameter_summary()
 ```
 
-## Numpy error
 
-- `numpy` 2.0 was released a few weeks ago, and `biogeme` is not yet compatible, you may get this message
-
-```
-A module that was compiled using NumPy 1.x cannot be run in
-NumPy 2.0.0 as it may crash. To support both 1.x and 2.x
-versions of NumPy, modules must be compiled with NumPy 2.0.
-Some module may need to rebuild instead e.g. with 'pybind11>=2.12'.
-
-If you are a user of the module, the easiest solution will be to
-downgrade to 'numpy<2' or try to upgrade the affected module.
-We expect that some modules will need time to support NumPy 2.
+```{python}
+#| echo: false
+m.estimation_statistics()
 ```
 
-- If so, run `python3 -m pip install numpy==1.26.4` (macOS) or `py -m pip install numpy==1.26.4` (Windows) to downgrade to the most recent release of `numpy` 1
 
 ## How does the result compare to the original model we estimated?
 
@@ -477,28 +465,6 @@ Markdown(tabulate.tabulate(modelRes.fillna(""), headers=modelRes.columns))
 - It should be the same
 :::
 
-## Detailed result
-
-Stored in "biogeme_binary.html", or some variation—look for most recent.
-
-```{python}
-#| echo: false
-def fixHtmlFile(fn):
-    with open(fn) as f:
-        htxt = f.read()
-
-    # this http script causes load issues on modern browsers
-    htxt = htxt.replace('<script src="http://transp-or.epfl.ch/biogeme/sorttable.js"></script>', '')
-
-    with open(fn, "w") as f:
-        f.write(htxt)
-
-fixHtmlFile(result.data.htmlFileName)
-# https://stackoverflow.com/questions/1061697, https://github.com/quarto-dev/quarto-cli/issues/718
-HTML('<iframe width="1850" height="800px" src="{}" data-external="1"></iframe>'.format(html.escape(result.data.htmlFileName)))
-```
-
-
 ## Exercise
 
 - Add the `black` and `hispanic` variables to the model, confirm you get the same results you did before
@@ -506,69 +472,58 @@ HTML('<iframe width="1850" height="800px" src="{}" data-external="1"></iframe>'.
 ## Exercise: result
 
 ```{python}
-#| filename: biogeme_binary_race.py
-import biogeme.database as db, biogeme.biogeme as bio
-from biogeme import models
-from biogeme.expressions import Beta, Variable
+#| filename: larch_binary_race.py
 import pandas as pd
+import numpy as np
+import larch as lx
+from larch import P, X
 
+# %%
 df = pd.read_csv("data/wfh_prediction_covidfuture.csv") # read data
-data = db.Database("WFH", 
+
+# %%
+df["wfh_expectation"] = df.wfh_expectation.astype("int64") + 1
+
+# %%
+# convert data to larch format
+data = lx.Dataset.construct.from_idco(
     pd.get_dummies(df)
         .drop(columns="gender_Female")
-        .astype("float64")
-) # convert to Biogeme format
+        .astype("float64"),
+    alts={1: "Not expecting to WFH", 2: "Expecting to WFH"}
+)
 
-# specify coefficients - all start at zero, have no bounds (None, None), and are
-# estimated rather than fixed (0)
-alpha = Beta("Intercept", 0, None, None, 0)
-b_age = Beta("b_age", 0, None, None, 0)
-b_college = Beta("b_college", 0, None, None, 0)
-b_male = Beta("b_male", 0, None, None, 0)
-b_black = Beta("b_black", 0, None, None, 0)
-b_hispanic = Beta("b_hispanic", 0, None, None, 0)
+# %%
+m = lx.Model(data)
 
-# and specify the variables we want to use
-age = Variable("age")
-college = Variable("college")
-male = Variable("gender_Male")
-black = Variable("black")
-hispanic = Variable("hispanic")
+# utility of False (not expecting to work from home) = 0
 
-# specify utility functions
-V = {
-    # outcome 1 is WFH
-    1: (alpha + b_age * age + b_college * college + b_male * male +
-        b_black * black + b_hispanic * hispanic),
-    # outcome 0 is non-WFH
-    0: 0
-}
+# utility of True (expecting to work from home)
+m.utility_co[2] = P.intercept + P.age * X.age + P.college * X.college + P.male * X.gender_Male + P.black * X.black
 
-# we also need to define the availability (more on this later)
-av = {0: 1, 1: 1}
+m.choice_co_code = "wfh_expectation"
 
-# now, set up what type of model we want (logit), what the utility functions are,
-# what the availability variables are, and what the dependent variable is
-logprob = models.loglogit(V, av, Variable("wfh_expectation"))
+# %%
+m.set_cap(25)
+result = m.maximize_loglike(stderr=True)
 
-model = bio.BIOGEME(data, logprob)
-model.modelName = "biogeme_binary_race"
-model.calculateNullLoglikelihood(av)
-result = model.estimate()
+# %%
+m.parameter_summary()
 
-assert result.algorithm_has_converged()
-print(result.shortSummary())
-print(result.getEstimatedParameters())
+# %%
+m.estimation_statistics()
 ```
 
 ## Results
 
 ```{python}
 #| echo: false
+m.parameter_summary()
+```
 
-assert result.algorithm_has_converged()
-print(result.shortSummary())
-print(result.getEstimatedParameters())
+```{python}
+#| echo: false
+m.estimation_statistics()
 ```
 
 ## Moving beyond binary outcomes: the multinomial logit model
@@ -678,14 +633,16 @@ $$
 
 ```{python}
 #| echo: false
-import biogeme.database as db, biogeme.biogeme as bio
-from biogeme import models
-from biogeme.expressions import Beta, Variable
 import pandas as pd
+import numpy as np
+import larch as lx
+from larch import P, X
 
+# %%
 df = pd.read_csv("data/seattle_trips.csv") # read data
 
-# create our choice variable - it is coded as text in the data but Biogeme requires
+# %%
+# create our choice variable - it is coded as text in the data but `larch` requires
 # it to be numeric
 df["numeric_mode"] = df.mode_choice.replace({
     "Car": 1,
@@ -694,61 +651,42 @@ df["numeric_mode"] = df.mode_choice.replace({
     "Bike": 4
 })
 
-data = db.Database("Seattle", pd.get_dummies(df).astype("float64"))
+data = lx.Dataset.construct.from_idco(pd.get_dummies(df), alts={
+    1: "Car",
+    2: "Transit",
+    3: "Walk",
+    4: "Bike"
+})
 
-# specify coefficients - all start at zero, have no bounds (None, None), and are
-# estimated rather than fixed (0)
-asc_bike = Beta("asc_bike", 0, None, None, 0)
-b_income_over_100k_bike = Beta("b_income_over_100k_bike", 0, None, None, 0)
+# %%
+m = lx.Model(data)
 
-asc_walk = Beta("asc_walk", 0, None, None, 0)
-b_income_over_100k_walk = Beta("b_income_over_100k_walk", 0, None, None, 0)
+m.utility_co[2] = P.asc_transit + P.income_over_100k_transit * X.income_over_100k
+m.utility_co[3] = P.asc_walk + P.income_over_100k_walk * X.income_over_100k
+m.utility_co[4] = P.asc_bike + P.income_over_100k_bike * X.income_over_100k
 
-asc_transit = Beta("asc_transit", 0, None, None, 0)
-b_income_over_100k_transit = Beta("b_income_over_100k_transit", 0, None, None, 0)
+m.choice_co_code = "numeric_mode"
 
-# and specify the variables we want to use
-income_over_100k = Variable("income_over_100k")
 
-V = {
-    # Car
-    1: 0,
+m.set_cap(25)# %%
+m.maximize_loglike(stderr=True)
+```
 
-    # Transit
-    2: asc_transit + b_income_over_100k_transit * income_over_100k,
+```{python}
+#| echo: false
+m.parameter_summary()
+```
 
-    # Walk
-    3: asc_walk + b_income_over_100k_walk * income_over_100k,
-
-    # Bike
-    4: asc_bike + b_income_over_100k_bike * income_over_100k
-}
-
-av = {1: 1, 2: 1, 3: 1, 4: 1}
-
-logprob = models.loglogit(V, av, Variable("numeric_mode"))
-
-model = bio.BIOGEME(data, logprob)
-model.modelName = "seattle_mode_choice"
-model.calculateNullLoglikelihood(av)
-result = model.estimate()
-
-assert result.algorithm_has_converged()
-print(result.shortSummary())
-print(result.getEstimatedParameters())
+```{python}
+#| echo: false
+m.estimation_statistics()
 ```
 
 ## Interpreting a multinomial logit model: alternative-specific constants
 
 ```{python}
 #| echo: false
-params = result.getEstimatedParameters()
-Markdown(
-    tabulate.tabulate(
-        params.loc[[i for i in params.index if i.startswith("asc")]],
-        headers=params.columns
-    )
-)
+m.parameter_summary()
 ```
 
 ::: {.incremental}
@@ -763,13 +701,7 @@ Markdown(
 
 ```{python}
 #| echo: false
-params = result.getEstimatedParameters()
-Markdown(
-    tabulate.tabulate(
-        params.loc[[i for i in params.index if i.startswith("asc")]],
-        headers=params.columns
-    )
-)
+m.parameter_summary()
 ```
 
 ::: {.incremental}
@@ -785,14 +717,16 @@ Markdown(
 
 ```{python}
 #| filename: seattle_mnl_income.py
-import biogeme.database as db, biogeme.biogeme as bio
-from biogeme import models
-from biogeme.expressions import Beta, Variable
 import pandas as pd
+import numpy as np
+import larch as lx
+from larch import P, X
 
+# %%
 df = pd.read_csv("data/seattle_trips.csv") # read data
 
-# create our choice variable - it is coded as text in the data but Biogeme requires
+# %%
+# create our choice variable - it is coded as text in the data but `larch` requires
 # it to be numeric
 df["numeric_mode"] = df.mode_choice.replace({
     "Car": 1,
@@ -801,48 +735,31 @@ df["numeric_mode"] = df.mode_choice.replace({
     "Bike": 4
 })
 
-data = db.Database("Seattle", pd.get_dummies(df).astype("float64"))
+data = lx.Dataset.construct.from_idco(pd.get_dummies(df), alts={
+    1: "Car",
+    2: "Transit",
+    3: "Walk",
+    4: "Bike"
+})
 
-# specify coefficients - all start at zero, have no bounds (None, None), and are
-# estimated rather than fixed (0)
-asc_bike = Beta("asc_bike", 0, None, None, 0)
-b_income_over_100k_bike = Beta("b_income_over_100k_bike", 0, None, None, 0)
+# %%
+m = lx.Model(data)
 
-asc_walk = Beta("asc_walk", 0, None, None, 0)
-b_income_over_100k_walk = Beta("b_income_over_100k_walk", 0, None, None, 0)
+m.utility_co[2] = P.asc_transit + P.income_over_100k_transit * X.income_over_100k
+m.utility_co[3] = P.asc_walk + P.income_over_100k_walk * X.income_over_100k
+m.utility_co[4] = P.asc_bike + P.income_over_100k_bike * X.income_over_100k
 
-asc_transit = Beta("asc_transit", 0, None, None, 0)
-b_income_over_100k_transit = Beta("b_income_over_100k_transit", 0, None, None, 0)
+m.choice_co_code = "numeric_mode"
 
-# and specify the variables we want to use
-income_over_100k = Variable("income_over_100k")
 
-V = {
-    # Car
-    1: 0,
+m.set_cap(25)# %%
+m.maximize_loglike(stderr=True)
 
-    # Transit
-    2: asc_transit + b_income_over_100k_transit * income_over_100k,
+# %%
+m.parameter_summary()
 
-    # Walk
-    3: asc_walk + b_income_over_100k_walk * income_over_100k,
-
-    # Bike
-    4: asc_bike + b_income_over_100k_bike * income_over_100k
-}
-
-av = {1: 1, 2: 1, 3: 1, 4: 1}
-
-logprob = models.loglogit(V, av, Variable("numeric_mode"))
-
-model = bio.BIOGEME(data, logprob)
-model.modelName = "seattle_mnl_income"
-model.calculateNullLoglikelihood(av)
-result = model.estimate()
-
-assert result.algorithm_has_converged()
-print(result.shortSummary())
-print(result.getEstimatedParameters())
+# %%
+m.estimation_statistics()
 ```
 
 ## Exercise: add a variable
@@ -856,14 +773,16 @@ print(result.getEstimatedParameters())
 
 ```{python}
 #| filename: seattle_mnl_income_rush.py
-import biogeme.database as db, biogeme.biogeme as bio
-from biogeme import models
-from biogeme.expressions import Beta, Variable
 import pandas as pd
+import numpy as np
+import larch as lx
+from larch import P, X
 
+# %%
 df = pd.read_csv("data/seattle_trips.csv") # read data
 
-# create our choice variable - it is coded as text in the data but Biogeme requires
+# %%
+# create our choice variable - it is coded as text in the data but `larch` requires
 # it to be numeric
 df["numeric_mode"] = df.mode_choice.replace({
     "Car": 1,
@@ -872,60 +791,50 @@ df["numeric_mode"] = df.mode_choice.replace({
     "Bike": 4
 })
 
-data = db.Database("Seattle", pd.get_dummies(df).astype("float64"))
+data = lx.Dataset.construct.from_idco(pd.get_dummies(df), alts={
+    1: "Car",
+    2: "Transit",
+    3: "Walk",
+    4: "Bike"
+})
 
-# specify coefficients - all start at zero, have no bounds (None, None), and are
-# estimated rather than fixed (0)
-asc_bike = Beta("asc_bike", 0, None, None, 0)
-b_income_over_100k_bike = Beta("b_income_over_100k_bike", 0, None, None, 0)
-b_rush_hour_bike = Beta("b_rush_hour_bike", 0, None, None, 0)
+# %%
+m = lx.Model(data)
 
-asc_walk = Beta("asc_walk", 0, None, None, 0)
-b_income_over_100k_walk = Beta("b_income_over_100k_walk", 0, None, None, 0)
-b_rush_hour_walk = Beta("b_rush_hour_walk", 0, None, None, 0)
+m.utility_co[2] = (
+    P.asc_transit +
+    P.income_over_100k_transit * X.income_over_100k +
+    P.rush_transit * X.rush_hour
+)
+m.utility_co[3] = (
+    P.asc_walk +
+    P.income_over_100k_walk * X.income_over_100k +
+    P.rush_walk * X.rush_hour
+)
+m.utility_co[4] = (
+    P.asc_bike +
+    P.income_over_100k_bike * X.income_over_100k +
+    P.rush_bike * X.rush_hour
+)
 
-asc_transit = Beta("asc_transit", 0, None, None, 0)
-b_income_over_100k_transit = Beta("b_income_over_100k_transit", 0, None, None, 0)
-b_rush_hour_transit = Beta("b_rush_hour_transit", 0, None, None, 0)
+m.choice_co_code = "numeric_mode"
 
-# and specify the variables we want to use
-income_over_100k = Variable("income_over_100k")
-rush_hour = Variable("rush_hour")
 
-V = {
-    # Car
-    1: 0,
+m.set_cap(25)# %%
+m.maximize_loglike(stderr=True)
 
-    # Transit
-    2: asc_transit + b_income_over_100k_transit * income_over_100k + b_rush_hour_transit * rush_hour,
+# %%
+m.parameter_summary()
 
-    # Walk
-    3: asc_walk + b_income_over_100k_walk * income_over_100k + b_rush_hour_walk * rush_hour,
-
-    # Bike
-    4: asc_bike + b_income_over_100k_bike * income_over_100k + b_rush_hour_bike * rush_hour
-}
-
-av = {1: 1, 2: 1, 3: 1, 4: 1}
-
-logprob = models.loglogit(V, av, Variable("numeric_mode"))
-
-model = bio.BIOGEME(data, logprob)
-model.modelName = "seattle_mnl_income_rush"
-model.calculateNullLoglikelihood(av)
-result = model.estimate()
-
-assert result.algorithm_has_converged()
-print(result.shortSummary())
-print(result.getEstimatedParameters())
+# %%
+m.estimation_statistics()
 ```
 
 ## Interpreting the coefficient changes I
 
 ```{python}
 #| echo: false
-params = result.getEstimatedParameters()
-Markdown(tabulate.tabulate(params, headers=params.columns))
+m.parameter_summary()
 ```
 
 ::: {.incremental}
@@ -938,8 +847,7 @@ Markdown(tabulate.tabulate(params, headers=params.columns))
 
 ```{python}
 #| echo: false
-params = result.getEstimatedParameters()
-Markdown(tabulate.tabulate(params, headers=params.columns))
+m.parameter_summary()
 ```
 
 ::: {.incremental}
@@ -953,7 +861,7 @@ Markdown(tabulate.tabulate(params, headers=params.columns))
 - For example,
     - In Internet choice, some types of Internet service are not available to certain homes
     - In mode choice, transit may not be available in some areas
-        - Sometimes modelers assume people without cars cannot choose driving, but a significant percentage of trips in zero-vehicle households do occur by car
+    - Sometimes modelers assume people without cars cannot choose driving, but a significant percentage of trips in zero-vehicle households do occur by car
 - We can add an availability constraint to our model to indicate which alternatives are available to which decisionmakers
 - This effectively sets $V_{mode} = -\infty$, so it will always be worse than every other option
 
@@ -963,14 +871,17 @@ Markdown(tabulate.tabulate(params, headers=params.columns))
 
 ```{python}
 #| filename: seattle_mnl_availability.py
-import biogeme.database as db, biogeme.biogeme as bio
-from biogeme import models
-from biogeme.expressions import Beta, Variable
 import pandas as pd
+import numpy as np
+import larch as lx
+from larch import P, X
+
+# %%
 
 df = pd.read_csv("data/seattle_trips.csv") # read data
 
-# create our choice variable - it is coded as text in the data but Biogeme requires
+# %%
+# create our choice variable - it is coded as text in the data but `larch` requires
 # it to be numeric
 df["numeric_mode"] = df.mode_choice.replace({
     "Car": 1,
@@ -979,54 +890,51 @@ df["numeric_mode"] = df.mode_choice.replace({
     "Bike": 4
 })
 
-data = db.Database("Seattle", pd.get_dummies(df).astype("float64"))
+# %%
+data = lx.Dataset.construct.from_idco(pd.get_dummies(df), alts={
+    1: "Car",
+    2: "Transit",
+    3: "Walk",
+    4: "Bike"
+})
 
-# specify coefficients - all start at zero, have no bounds (None, None), and are
-# estimated rather than fixed (0)
-asc_bike = Beta("asc_bike", 0, None, None, 0)
-b_income_over_100k_bike = Beta("b_income_over_100k_bike", 0, None, None, 0)
-b_rush_hour_bike = Beta("b_rush_hour_bike", 0, None, None, 0)
+# %%
+m = lx.Model(data)
 
-asc_walk = Beta("asc_walk", 0, None, None, 0)
-b_income_over_100k_walk = Beta("b_income_over_100k_walk", 0, None, None, 0)
-b_rush_hour_walk = Beta("b_rush_hour_walk", 0, None, None, 0)
+m.utility_co[2] = (
+    P.asc_transit +
+    P.income_over_100k_transit * X.income_over_100k +
+    P.rush_transit * X.rush_hour
+)
+m.utility_co[3] = (
+    P.asc_walk +
+    P.income_over_100k_walk * X.income_over_100k +
+    P.rush_walk * X.rush_hour
+)
+m.utility_co[4] = (
+    P.asc_bike +
+    P.income_over_100k_bike * X.income_over_100k +
+    P.rush_bike * X.rush_hour
+)
 
-asc_transit = Beta("asc_transit", 0, None, None, 0)
-b_income_over_100k_transit = Beta("b_income_over_100k_transit", 0, None, None, 0)
-b_rush_hour_transit = Beta("b_rush_hour_transit", 0, None, None, 0)
+m.choice_co_code = "numeric_mode"
 
-# and specify the variables we want to use
-income_over_100k = Variable("income_over_100k")
-rush_hour = Variable("rush_hour")
-
-V = {
-    # Car
-    1: 0,
-
-    # Transit
-    2: asc_transit + b_income_over_100k_transit * income_over_100k + b_rush_hour_transit * rush_hour,
-
-    # Walk
-    3: asc_walk + b_income_over_100k_walk * income_over_100k + b_rush_hour_walk * rush_hour,
-
-    # Bike
-    4: asc_bike + b_income_over_100k_bike * income_over_100k + b_rush_hour_bike * rush_hour
+m.availability_co_vars = {
+    1: True,
+    2: "transit_available",
+    3: True,
+    4: True
 }
 
-# here we set the transit availability variable. We leave the other modes set to 1 - available
-# to all decisionmakers.
-av = {1: 1, 2: Variable("transit_available"), 3: 1, 4: 1}
 
-logprob = models.loglogit(V, av, Variable("numeric_mode"))
+m.set_cap(25)# %%
+m.maximize_loglike(stderr=True)
 
-model = bio.BIOGEME(data, logprob)
-model.modelName = "seattle_mnl_availability"
-model.calculateNullLoglikelihood(av)
-result = model.estimate()
+# %%
+m.parameter_summary()
 
-assert result.algorithm_has_converged()
-print(result.shortSummary())
-print(result.getEstimatedParameters())
+# %%
+m.estimation_statistics()
 ```
 
 ## What went wrong?
@@ -1044,17 +952,19 @@ print(result.getEstimatedParameters())
 
 ```{python}
 #| filename: seattle_mnl_availability_fixed.py
-import biogeme.database as db, biogeme.biogeme as bio
-from biogeme import models
-from biogeme.expressions import Beta, Variable
 import pandas as pd
+import numpy as np
+import larch as lx
+from larch import P, X
 
+# %%
 df = pd.read_csv("data/seattle_trips.csv") # read data
 
+# %%
 # Remove people who chose transit despite transit not being available
 df = df.loc[(df.mode_choice != "Transit") | df.transit_available, :]
 
-# create our choice variable - it is coded as text in the data but Biogeme requires
+# create our choice variable - it is coded as text in the data but `larch` requires
 # it to be numeric
 df["numeric_mode"] = df.mode_choice.replace({
     "Car": 1,
@@ -1063,54 +973,50 @@ df["numeric_mode"] = df.mode_choice.replace({
     "Bike": 4
 })
 
-data = db.Database("Seattle", pd.get_dummies(df).astype("float64"))
+data = lx.Dataset.construct.from_idco(pd.get_dummies(df), alts={
+    1: "Car",
+    2: "Transit",
+    3: "Walk",
+    4: "Bike"
+})
 
-# specify coefficients - all start at zero, have no bounds (None, None), and are
-# estimated rather than fixed (0)
-asc_bike = Beta("asc_bike", 0, None, None, 0)
-b_income_over_100k_bike = Beta("b_income_over_100k_bike", 0, None, None, 0)
-b_rush_hour_bike = Beta("b_rush_hour_bike", 0, None, None, 0)
+# %%
+m = lx.Model(data)
 
-asc_walk = Beta("asc_walk", 0, None, None, 0)
-b_income_over_100k_walk = Beta("b_income_over_100k_walk", 0, None, None, 0)
-b_rush_hour_walk = Beta("b_rush_hour_walk", 0, None, None, 0)
+m.utility_co[2] = (
+    P.asc_transit +
+    P.income_over_100k_transit * X.income_over_100k +
+    P.rush_transit * X.rush_hour
+)
+m.utility_co[3] = (
+    P.asc_walk +
+    P.income_over_100k_walk * X.income_over_100k +
+    P.rush_walk * X.rush_hour
+)
+m.utility_co[4] = (
+    P.asc_bike +
+    P.income_over_100k_bike * X.income_over_100k +
+    P.rush_bike * X.rush_hour
+)
 
-asc_transit = Beta("asc_transit", 0, None, None, 0)
-b_income_over_100k_transit = Beta("b_income_over_100k_transit", 0, None, None, 0)
-b_rush_hour_transit = Beta("b_rush_hour_transit", 0, None, None, 0)
+m.choice_co_code = "numeric_mode"
 
-# and specify the variables we want to use
-income_over_100k = Variable("income_over_100k")
-rush_hour = Variable("rush_hour")
-
-V = {
-    # Car
-    1: 0,
-
-    # Transit
-    2: asc_transit + b_income_over_100k_transit * income_over_100k + b_rush_hour_transit * rush_hour,
-
-    # Walk
-    3: asc_walk + b_income_over_100k_walk * income_over_100k + b_rush_hour_walk * rush_hour,
-
-    # Bike
-    4: asc_bike + b_income_over_100k_bike * income_over_100k + b_rush_hour_bike * rush_hour
+m.availability_co_vars = {
+    1: True,
+    2: "transit_available",
+    3: True,
+    4: True
 }
 
-# here we set the transit availability variable. We leave the other modes set to 1 - available
-# to all decisionmakers.
-av = {1: 1, 2: Variable("transit_available"), 3: 1, 4: 1}
 
-logprob = models.loglogit(V, av, Variable("numeric_mode"))
+m.set_cap(25)# %%
+m.maximize_loglike(stderr=True)
 
-model = bio.BIOGEME(data, logprob)
-model.modelName = "seattle_mnl_availability_fixed"
-model.calculateNullLoglikelihood(av)
-result = model.estimate()
+# %%
+m.parameter_summary()
 
-assert result.algorithm_has_converged()
-print(result.shortSummary())
-print(result.getEstimatedParameters())
+# %%
+m.estimation_statistics()
 ```
 
 ## Generic variables
@@ -1128,22 +1034,23 @@ print(result.getEstimatedParameters())
 - We can use just a single coefficient
 - Do we expect the coefficient to be negative or positive?
 
-## Adding a generic variable in Biogeme
+## Adding a generic variable in `larch`
 
 ```{python}
 #| filename: seattle_mnl_generic.py
-import biogeme.database as db, biogeme.biogeme as bio
-from biogeme import models
-from biogeme.expressions import Beta, Variable
 import pandas as pd
 import numpy as np
+import larch as lx
+from larch import P, X
 
+# %%
 df = pd.read_csv("data/seattle_trips.csv") # read data
 
+# %%
 # Remove people who chose transit despite transit not being available
 df = df.loc[(df.mode_choice != "Transit") | df.transit_available, :]
 
-# create our choice variable - it is coded as text in the data but Biogeme requires
+# create our choice variable - it is coded as text in the data but `larch` requires
 # it to be numeric
 df["numeric_mode"] = df.mode_choice.replace({
     "Car": 1,
@@ -1152,79 +1059,75 @@ df["numeric_mode"] = df.mode_choice.replace({
     "Bike": 4
 })
 
-data = db.Database("Seattle", pd.get_dummies(df).astype("float64"))
+data = lx.Dataset.construct.from_idco(pd.get_dummies(df), alts={
+    1: "Car",
+    2: "Transit",
+    3: "Walk",
+    4: "Bike"
+})
 
-# specify coefficients - all start at zero, have no bounds (None, None), and are
-# estimated rather than fixed (0)
-asc_bike = Beta("asc_bike", 0, None, None, 0)
-b_income_over_100k_bike = Beta("b_income_over_100k_bike", 0, None, None, 0)
-b_rush_hour_bike = Beta("b_rush_hour_bike", 0, None, None, 0)
+# %%
+m = lx.Model(data)
 
-asc_walk = Beta("asc_walk", 0, None, None, 0)
-b_income_over_100k_walk = Beta("b_income_over_100k_walk", 0, None, None, 0)
-b_rush_hour_walk = Beta("b_rush_hour_walk", 0, None, None, 0)
+m.utility_co[1] = P.travel_time * X.car_travel_time_mins
 
-asc_transit = Beta("asc_transit", 0, None, None, 0)
-b_income_over_100k_transit = Beta("b_income_over_100k_transit", 0, None, None, 0)
-b_rush_hour_transit = Beta("b_rush_hour_transit", 0, None, None, 0)
+m.utility_co[2] = (
+    P.asc_transit +
+    P.income_over_100k_transit * X.income_over_100k +
+    P.rush_transit * X.rush_hour +
+    P.travel_time * X.transit_travel_time_mins
+)
 
-# we only need one coefficient for travel time
-b_travel_time = Beta("b_travel_time", 0, None, None, 0)
+m.utility_co[3] = (
+    P.asc_walk +
+    P.income_over_100k_walk * X.income_over_100k +
+    P.rush_walk * X.rush_hour +
+    P.travel_time * X.walk_travel_time_mins
+)
+m.utility_co[4] = (
+    P.asc_bike +
+    P.income_over_100k_bike * X.income_over_100k +
+    P.rush_bike * X.rush_hour +
+    P.travel_time * X.bike_travel_time_mins
+)
 
-# and specify the variables we want to use
-income_over_100k = Variable("income_over_100k")
-rush_hour = Variable("rush_hour")
+m.choice_co_code = "numeric_mode"
 
-# but we need the travel time variables for each mode
-car_travel_time_mins = Variable("car_travel_time_mins")
-bike_travel_time_mins = Variable("bike_travel_time_mins")
-walk_travel_time_mins = Variable("walk_travel_time_mins")
-transit_travel_time_mins = Variable("transit_travel_time_mins")
-
-V = {
-    # Car
-    1: b_travel_time * car_travel_time_mins,
-
-    # Transit
-    2: asc_transit + b_income_over_100k_transit * income_over_100k + b_rush_hour_transit * rush_hour + b_travel_time * transit_travel_time_mins,
-
-    # Walk
-    3: asc_walk + b_income_over_100k_walk * income_over_100k + b_rush_hour_walk * rush_hour + b_travel_time * walk_travel_time_mins,
-
-    # Bike
-    4: asc_bike + b_income_over_100k_bike * income_over_100k + b_rush_hour_bike * rush_hour + b_travel_time * bike_travel_time_mins
+m.availability_co_vars = {
+    1: True,
+    2: "transit_available",
+    3: True,
+    4: True
 }
 
-av = {1: 1, 2: Variable("transit_available"), 3: 1, 4: 1}
 
-logprob = models.loglogit(V, av, Variable("numeric_mode"))
+m.set_cap(25)# %%
+m.maximize_loglike(stderr=True)
 
-model = bio.BIOGEME(data, logprob)
-model.modelName = "seattle_mnl_generic"
-model.calculateNullLoglikelihood(av)
-result = model.estimate()
+# %%
+m.parameter_summary()
 
-assert result.algorithm_has_converged()
-print(result.shortSummary())
-print(result.getEstimatedParameters())
+# %%
+m.estimation_statistics()
 ```
 
 ## Exercise: add the cost variable
 
 ```{python}
 #| filename: seattle_mnl_generic_cost.py
-import biogeme.database as db, biogeme.biogeme as bio
-from biogeme import models
-from biogeme.expressions import Beta, Variable
 import pandas as pd
 import numpy as np
+import larch as lx
+from larch import P, X
 
+# %%
 df = pd.read_csv("data/seattle_trips.csv") # read data
 
+# %%
 # Remove people who chose transit despite transit not being available
 df = df.loc[(df.mode_choice != "Transit") | df.transit_available, :]
 
-# create our choice variable - it is coded as text in the data but Biogeme requires
+# create our choice variable - it is coded as text in the data but `larch` requires
 # it to be numeric
 df["numeric_mode"] = df.mode_choice.replace({
     "Car": 1,
@@ -1233,67 +1136,59 @@ df["numeric_mode"] = df.mode_choice.replace({
     "Bike": 4
 })
 
-data = db.Database("Seattle", pd.get_dummies(df).astype("float64"))
+data = lx.Dataset.construct.from_idco(pd.get_dummies(df), alts={
+    1: "Car",
+    2: "Transit",
+    3: "Walk",
+    4: "Bike"
+})
 
-# specify coefficients - all start at zero, have no bounds (None, None), and are
-# estimated rather than fixed (0)
-asc_bike = Beta("asc_bike", 0, None, None, 0)
-b_income_over_100k_bike = Beta("b_income_over_100k_bike", 0, None, None, 0)
-b_rush_hour_bike = Beta("b_rush_hour_bike", 0, None, None, 0)
+# %%
+m = lx.Model(data)
 
-asc_walk = Beta("asc_walk", 0, None, None, 0)
-b_income_over_100k_walk = Beta("b_income_over_100k_walk", 0, None, None, 0)
-b_rush_hour_walk = Beta("b_rush_hour_walk", 0, None, None, 0)
+m.utility_co[1] = P.travel_time * X.car_travel_time_mins + P.travel_cost * X.car_travel_cost
 
-asc_transit = Beta("asc_transit", 0, None, None, 0)
-b_income_over_100k_transit = Beta("b_income_over_100k_transit", 0, None, None, 0)
-b_rush_hour_transit = Beta("b_rush_hour_transit", 0, None, None, 0)
+m.utility_co[2] = (
+    P.asc_transit +
+    P.income_over_100k_transit * X.income_over_100k +
+    P.rush_transit * X.rush_hour +
+    P.travel_time * X.transit_travel_time_mins +
+    P.travel_cost * X.transit_travel_cost
+)
 
-# we only need one coefficient for travel time
-b_travel_time = Beta("b_travel_time", 0, None, None, 0)
-b_travel_cost = Beta("b_travel_cost", 0, None, None, 0)
+m.utility_co[3] = (
+    P.asc_walk +
+    P.income_over_100k_walk * X.income_over_100k +
+    P.rush_walk * X.rush_hour +
+    P.travel_time * X.walk_travel_time_mins +
+    P.travel_cost * X.walk_travel_cost
+)
+m.utility_co[4] = (
+    P.asc_bike +
+    P.income_over_100k_bike * X.income_over_100k +
+    P.rush_bike * X.rush_hour +
+    P.travel_time * X.bike_travel_time_mins +
+    P.travel_cost * X.bike_travel_cost
+)
 
-# and specify the variables we want to use
-income_over_100k = Variable("income_over_100k")
-rush_hour = Variable("rush_hour")
+m.choice_co_code = "numeric_mode"
 
-# but we need the travel time variables for each mode
-car_travel_time_mins = Variable("car_travel_time_mins")
-bike_travel_time_mins = Variable("bike_travel_time_mins")
-walk_travel_time_mins = Variable("walk_travel_time_mins")
-transit_travel_time_mins = Variable("transit_travel_time_mins")
-
-car_travel_cost = Variable("car_travel_cost")
-bike_travel_cost = Variable("bike_travel_cost")
-walk_travel_cost = Variable("walk_travel_cost")
-transit_travel_cost = Variable("transit_travel_cost")
-
-V = {
-    # Car
-    1: b_travel_time * car_travel_time_mins + b_travel_cost * car_travel_cost,
-
-    # Transit
-    2: asc_transit + b_income_over_100k_transit * income_over_100k + b_rush_hour_transit * rush_hour + b_travel_time * transit_travel_time_mins + b_travel_cost * transit_travel_cost,
-
-    # Walk
-    3: asc_walk + b_income_over_100k_walk * income_over_100k + b_rush_hour_walk * rush_hour + b_travel_time * walk_travel_time_mins + b_travel_cost * walk_travel_cost,
-
-    # Bike
-    4: asc_bike + b_income_over_100k_bike * income_over_100k + b_rush_hour_bike * rush_hour + b_travel_time * bike_travel_time_mins + b_travel_cost * bike_travel_cost
+m.availability_co_vars = {
+    1: True,
+    2: "transit_available",
+    3: True,
+    4: True
 }
 
-av = {1: 1, 2: Variable("transit_available"), 3: 1, 4: 1}
 
-logprob = models.loglogit(V, av, Variable("numeric_mode"))
+m.set_cap(25)# %%
+m.maximize_loglike(stderr=True)
 
-model = bio.BIOGEME(data, logprob)
-model.modelName = "seattle_mnl_generic_cost"
-model.calculateNullLoglikelihood(av)
-result = model.estimate()
+# %%
+m.parameter_summary()
 
-assert result.algorithm_has_converged()
-print(result.shortSummary())
-print(result.getEstimatedParameters())
+# %%
+m.estimation_statistics()
 ```
 
 ## Willingness to pay
@@ -1362,7 +1257,7 @@ which still isn't something we can directly calculate without accounting for (in
 ::: {.column width="50%"}
 
 - The $\epsilon$'s in the multinomial logit model are Gumbel-distributed
-    - aka Type I Extreme Value
+- aka Type I Extreme Value
 - The Gumbel distribution is an approximation of the normal with attractive statistical properties
 - Notably, the maximum of a set of Gumbel-distributed variables is also Gumbel-distributed
 - This gives us a _closed-form_ solution to find $\displaystyle\max_{\forall j\neq i} \left(V_{nj} + \epsilon_{nj}\right)$
@@ -1432,35 +1327,21 @@ $$
 
 Which is the same as the predicted probability in binary logistic regression
 
-## Calculating choice probabilities in Biogeme
-
-Add to the end of your most recent model, and run 
-
-```{python}
-# models.loglogit(V, av, Variable("mode_choice")) represents the log-probability of the chosen alternative
-# models.logit(V, av, 1) represents the probability (not logged) of alternative 1
-sim_model = bio.BIOGEME(data, {
-    "Car": models.logit(V, av, 1),
-    "Transit": models.logit(V, av, 2),
-    "Walk": models.logit(V, av, 3),
-    "Bike": models.logit(V, av, 4)
-})
-
-choice_probabilities = sim_model.simulate(result.getBetaValues())
-print(choice_probabilities)
-```
-
-## Calculating market shares
+## Calculating market shares in `larch`
 
 - Market shares are just the mean probability across all individuals
 
 ```{python}
-print(choice_probabilities.apply(np.mean))
+#| filename: seattle_mnl_generic_cost.py
+# %%
+np.mean(m.probability(), axis=0)
 ```
 
 This is exactly the same as the market shares in the original data. This will always be the case when we have ASCs.
 
 ```{python}
+#| filename: seattle_mnl_generic_cost.py
+# %%
 df.mode_choice.value_counts() / len(df)
 ```
 
@@ -1474,19 +1355,20 @@ df.mode_choice.value_counts() / len(df)
 ## Simulation
 
 ```{python}
+#| filename: seattle_mnl_generic_cost.py
+#| # %%
 df_road_cost = df.copy() # create a copy of the data to modify
 df_road_cost["car_travel_cost"] += df_road_cost.car_distance_km * 0.025 / 1.609
-data_road_cost = db.Database("Seattle road cost", pd.get_dummies(df_road_cost).astype("float64"))
-
-road_cost_model = bio.BIOGEME(data_road_cost, {
-    "Car": models.logit(V, av, 1),
-    "Transit": models.logit(V, av, 2),
-    "Walk": models.logit(V, av, 3),
-    "Bike": models.logit(V, av, 4)
+data_road_cost = lx.Dataset.construct.from_idco(pd.get_dummies(df_road_cost), alts={
+    1: "Car",
+    2: "Transit",
+    3: "Walk",
+    4: "Bike"
 })
 
-choice_probabilities = road_cost_model.simulate(result.getBetaValues())
-print(choice_probabilities.apply(np.mean))
+m.datatree = data_road_cost
+
+np.mean(m.probability(), axis=0)
 ```
 
 ## How much do we forecast driving will decrease?
@@ -1502,19 +1384,20 @@ print(choice_probabilities.apply(np.mean))
 ## Exercise answers
 
 ```{python}
+#| filename: seattle_mnl_generic_cost.py
+# %%
 df_transit_time = df.copy() # create a copy of the data to modify
 df_transit_time["transit_travel_time_mins"] *= 0.75
-data_transit_time = db.Database("Seattle transit time", pd.get_dummies(df_transit_time).astype("float64"))
-
-transit_time_model = bio.BIOGEME(data_transit_time, {
-    "Car": models.logit(V, av, 1),
-    "Transit": models.logit(V, av, 2),
-    "Walk": models.logit(V, av, 3),
-    "Bike": models.logit(V, av, 4)
+data_transit_time = lx.Dataset.construct.from_idco(pd.get_dummies(df_transit_time), alts={
+    1: "Car",
+    2: "Transit",
+    3: "Walk",
+    4: "Bike"
 })
 
-choice_probabilities = transit_time_model.simulate(result.getBetaValues())
-print(choice_probabilities.apply(np.mean))
+m.datatree = data_transit_time
+
+np.mean(m.probability(), axis=0)
 ```
 
 ## Result
@@ -1588,7 +1471,7 @@ $$
 
 - We take the log of each probability
 - The product becomes a summation
-- We see the log-likelihood in the Biogeme output
+- We see the log-likelihood in the `larch` output
 - Why was the log-likelihood $-\infty$ when we first added the availability constraint?
     - [Because some people chose a mode that was not available to them, making the probability 0]{.fragment}
 
@@ -1607,31 +1490,32 @@ $$
 - Or McFadden's adjusted, $1 - \frac{\ell - K}{\ell_C}$ where $K$ is number of estimated coefficients that weren't in the null model, which attempts to correct for overfitting
 - Anecdotally, pseudo-$R^2$ statistics tend to be fairly low
 
-## Calculating pseudo-$R^2$ in Biogeme
+## Calculating pseudo-$R^2$ in `larch`
 
-- Biogeme automatically calculates the log-likelihood at zero
+- `larch` automatically calculates the log-likelihood at zero
 - However, comparing to log-likelihood at constants is generally preferred
     - This is more similar to linear regression, where the $R^2$ is relative to a model with only an intercept
-- Unfortunately, Biogeme does not calculate this automatically
+- Unfortunately, `larch` does not calculate this automatically
 - It is pretty easy to calculate though, by removing everything but the ASCs
 - Exercise: go ahead and do this now
 
-## Calculating pseudo-$R^2$ in Biogeme: results
+## Calculating pseudo-$R^2$ in `larch`: results
 
 ```{python}
 #| filename: seattle_constants.py
-import biogeme.database as db, biogeme.biogeme as bio
-from biogeme import models
-from biogeme.expressions import Beta, Variable
 import pandas as pd
 import numpy as np
+import larch as lx
+from larch import P, X
 
+# %%
 df = pd.read_csv("data/seattle_trips.csv") # read data
 
+# %%
 # Remove people who chose transit despite transit not being available
 df = df.loc[(df.mode_choice != "Transit") | df.transit_available, :]
 
-# create our choice variable - it is coded as text in the data but Biogeme requires
+# create our choice variable - it is coded as text in the data but `larch` requires
 # it to be numeric
 df["numeric_mode"] = df.mode_choice.replace({
     "Car": 1,
@@ -1640,50 +1524,43 @@ df["numeric_mode"] = df.mode_choice.replace({
     "Bike": 4
 })
 
-data = db.Database("Seattle", pd.get_dummies(df).astype("float64"))
+data = lx.Dataset.construct.from_idco(pd.get_dummies(df), alts={
+    1: "Car",
+    2: "Transit",
+    3: "Walk",
+    4: "Bike"
+})
 
-# specify coefficients - all start at zero, have no bounds (None, None), and are
-# estimated rather than fixed (0)
-asc_bike = Beta("asc_bike", 0, None, None, 0)
+# %%
+m = lx.Model(data)
 
-asc_walk = Beta("asc_walk", 0, None, None, 0)
+m.utility_co[2] = P.asc_transit
 
-asc_transit = Beta("asc_transit", 0, None, None, 0)
+m.utility_co[3] = P.asc_walk
 
-# we only need one coefficient for travel time
-b_travel_time = Beta("b_travel_time", 0, None, None, 0)
-b_travel_cost = Beta("b_travel_cost", 0, None, None, 0)
+m.utility_co[4] = P.asc_bike
 
+m.choice_co_code = "numeric_mode"
 
-V = {
-    # Car
-    1: 0,
-
-    # Transit
-    2: asc_transit,
-
-    # Walk
-    3: asc_walk,
-
-    # Bike
-    4: asc_bike 
+m.availability_co_vars = {
+    1: True,
+    2: "transit_available",
+    3: True,
+    4: True
 }
 
-av = {1: 1, 2: Variable("transit_available"), 3: 1, 4: 1}
 
-logprob = models.loglogit(V, av, Variable("numeric_mode"))
+m.set_cap(25)# %%
+m.maximize_loglike(stderr=True)
 
-model = bio.BIOGEME(data, logprob)
-model.modelName = "seattle_constants"
-model.calculateNullLoglikelihood(av)
-result = model.estimate()
+# %%
+m.parameter_summary()
 
-assert result.algorithm_has_converged()
-print(result.shortSummary())
-print(result.getEstimatedParameters())
+# %%
+m.estimation_statistics()
 ```
 
-## Calculating pseudo-$R^2$ in Biogeme
+## Calculating pseudo-$R^2$ in `larch`
 
 - Log-likelihood at constants: -6211.13
 - Log-likelihood at convergence: -4515.951
@@ -1741,7 +1618,7 @@ Of the following options for internet service, which would you select:
 | 1  | Car    | 10          | Yes    |
 | 1  | Walk   | 23          | No     |
 
-- Biogeme requires wide data; `pandas` provides the `unstack` method to convert between formats
+- `larch` can work with either wide data (which it refers to as `idco`) or long data (`idca`), or a combination of both
 
 ## Independence of irrelevant alternatives
 
@@ -1866,28 +1743,27 @@ $$
 - $\theta$ should be between 0 and 1
 - If it is not, the model is not consistent with random utility theory
 
-## Estimating a nested logit model in Biogeme
+## Estimating a nested logit model in `larch`
 
 - We will put transit and driving together in a "motorized" nest.
-- Biogeme does not estimated $\theta$, instead it estimates $\mu$ which is $\frac{1}{\theta}$
 
-## Estimating a nested logit model in Biogeme: code
+## Estimating a nested logit model in `larch`: code
 
 ```{python}
 #| filename: seattle_nested.py
-import biogeme.database as db, biogeme.biogeme as bio
-from biogeme import models
-from biogeme.nests import OneNestForNestedLogit, NestsForNestedLogit
-from biogeme.expressions import Beta, Variable
 import pandas as pd
 import numpy as np
+import larch as lx
+from larch import P, X
 
+# %%
 df = pd.read_csv("data/seattle_trips.csv") # read data
 
+# %%
 # Remove people who chose transit despite transit not being available
 df = df.loc[(df.mode_choice != "Transit") | df.transit_available, :]
 
-# create our choice variable - it is coded as text in the data but Biogeme requires
+# create our choice variable - it is coded as text in the data but `larch` requires
 # it to be numeric
 df["numeric_mode"] = df.mode_choice.replace({
     "Car": 1,
@@ -1896,97 +1772,76 @@ df["numeric_mode"] = df.mode_choice.replace({
     "Bike": 4
 })
 
-data = db.Database("Seattle", pd.get_dummies(df).astype("float64"))
+data = lx.Dataset.construct.from_idco(pd.get_dummies(df), alts={
+    1: "Car",
+    2: "Transit",
+    3: "Walk",
+    4: "Bike"
+})
 
-# specify coefficients - all start at zero, have no bounds (None, None), and are
-# estimated rather than fixed (0)
-asc_bike = Beta("asc_bike", 0, None, None, 0)
-b_income_over_100k_bike = Beta("b_income_over_100k_bike", 0, None, None, 0)
-b_rush_hour_bike = Beta("b_rush_hour_bike", 0, None, None, 0)
+# %%
+m = lx.Model(data)
 
-asc_walk = Beta("asc_walk", 0, None, None, 0)
-b_income_over_100k_walk = Beta("b_income_over_100k_walk", 0, None, None, 0)
-b_rush_hour_walk = Beta("b_rush_hour_walk", 0, None, None, 0)
+m.utility_co[1] = P.travel_time * X.car_travel_time_mins + P.travel_cost * X.car_travel_cost
 
-asc_transit = Beta("asc_transit", 0, None, None, 0)
-b_income_over_100k_transit = Beta("b_income_over_100k_transit", 0, None, None, 0)
-b_rush_hour_transit = Beta("b_rush_hour_transit", 0, None, None, 0)
+m.utility_co[2] = (
+    P.asc_transit +
+    P.income_over_100k_transit * X.income_over_100k +
+    P.rush_transit * X.rush_hour +
+    P.travel_time * X.transit_travel_time_mins +
+    P.travel_cost * X.transit_travel_cost
+)
 
-# we only need one coefficient for travel time
-b_travel_time = Beta("b_travel_time", 0, None, None, 0)
-b_travel_cost = Beta("b_travel_cost", 0, None, None, 0)
+m.utility_co[3] = (
+    P.asc_walk +
+    P.income_over_100k_walk * X.income_over_100k +
+    P.rush_walk * X.rush_hour +
+    P.travel_time * X.walk_travel_time_mins +
+    P.travel_cost * X.walk_travel_cost
+)
+m.utility_co[4] = (
+    P.asc_bike +
+    P.income_over_100k_bike * X.income_over_100k +
+    P.rush_bike * X.rush_hour +
+    P.travel_time * X.bike_travel_time_mins +
+    P.travel_cost * X.bike_travel_cost
+)
 
-# and specify the variables we want to use
-income_over_100k = Variable("income_over_100k")
-rush_hour = Variable("rush_hour")
+m.choice_co_code = "numeric_mode"
 
-# but we need the travel time variables for each mode
-car_travel_time_mins = Variable("car_travel_time_mins")
-bike_travel_time_mins = Variable("bike_travel_time_mins")
-walk_travel_time_mins = Variable("walk_travel_time_mins")
-transit_travel_time_mins = Variable("transit_travel_time_mins")
+# Here we define the nesting structure, combining transit and driving into motorized
+m.graph.new_node(parameter="motorized", children=[1, 2], name="Motorized")
 
-car_travel_cost = Variable("car_travel_cost")
-bike_travel_cost = Variable("bike_travel_cost")
-walk_travel_cost = Variable("walk_travel_cost")
-transit_travel_cost = Variable("transit_travel_cost")
-
-V = {
-    # Car
-    1: b_travel_time * car_travel_time_mins + b_travel_cost * car_travel_cost,
-
-    # Transit
-    2: asc_transit + b_income_over_100k_transit * income_over_100k + b_rush_hour_transit * rush_hour + b_travel_time * transit_travel_time_mins + b_travel_cost * transit_travel_cost,
-
-    # Walk
-    3: asc_walk + b_income_over_100k_walk * income_over_100k + b_rush_hour_walk * rush_hour + b_travel_time * walk_travel_time_mins + b_travel_cost * walk_travel_cost,
-
-    # Bike
-    4: asc_bike + b_income_over_100k_bike * income_over_100k + b_rush_hour_bike * rush_hour + b_travel_time * bike_travel_time_mins + b_travel_cost * bike_travel_cost
+m.availability_co_vars = {
+    1: True,
+    2: "transit_available",
+    3: True,
+    4: True
 }
 
-av = {1: 1, 2: Variable("transit_available"), 3: 1, 4: 1}
 
-# specify nests
-mu_motorized = Beta("mu_motorized", 1, None, None, 0)
-motorized = OneNestForNestedLogit(nest_param=mu_motorized, list_of_alternatives=[1, 2], name="motorized")
+m.set_cap(25)# %%
+m.maximize_loglike(stderr=True)
 
-# If you had multiple nests, you would add them to tuple_of_nests after the comma.
-# there always has to be a comma, even when there is only one nest
-nests = NestsForNestedLogit(choice_set=V.keys(), tuple_of_nests=(motorized,))
+# %%
+m.parameter_summary()
 
-logprob = models.lognested(V, av, nests, Variable("numeric_mode"))
-
-model = bio.BIOGEME(data, logprob)
-model.modelName = "seattle_nested"
-model.calculateNullLoglikelihood(av)
-result = model.estimate()
-
-assert result.algorithm_has_converged()
-print(result.shortSummary())
-print(result.getEstimatedParameters())
+# %%
+m.estimation_statistics()
 ```
 
 ## Nested logit results
 
 ```{python}
 #| echo: false
-params = result.getEstimatedParameters()
-Markdown(
-    tabulate.tabulate(
-        params,
-        headers=params.columns
-    )
-)
+m.parameter_summary()
 ```
 
 ## Interpreting the nested logit model
 
-::: {.incremental}
-- $\mu$ is 0.76. What is $\theta$?
-- 1 / 0.76 = 1.32
-- Do we accept this as a valid nested logit model?
-:::
+- Our inclusive-value parameter is 1, which means our nested logit model is the same as an MNL
+- However, `larch` by default constrains exclusive value parameters to $0.001 \leq \theta \leq 1$
+- If we add `m.pmaximum[:] = np.inf` before `m.maximize_loglike`, we will get an inclusive-value parameter of 1.32
 
 ## Exercise: estimate a different nesting structure: bike and walk together in a nest
 
@@ -2008,19 +1863,19 @@ flowchart TD
 
 ```{python}
 #| filename: seattle_nested_active.py
-import biogeme.database as db, biogeme.biogeme as bio
-from biogeme import models
-from biogeme.nests import OneNestForNestedLogit, NestsForNestedLogit
-from biogeme.expressions import Beta, Variable
 import pandas as pd
 import numpy as np
+import larch as lx
+from larch import P, X
 
+# %%
 df = pd.read_csv("data/seattle_trips.csv") # read data
 
+# %%
 # Remove people who chose transit despite transit not being available
 df = df.loc[(df.mode_choice != "Transit") | df.transit_available, :]
 
-# create our choice variable - it is coded as text in the data but Biogeme requires
+# create our choice variable - it is coded as text in the data but `larch` requires
 # it to be numeric
 df["numeric_mode"] = df.mode_choice.replace({
     "Car": 1,
@@ -2029,106 +1884,92 @@ df["numeric_mode"] = df.mode_choice.replace({
     "Bike": 4
 })
 
-data = db.Database("Seattle", pd.get_dummies(df).astype("float64"))
+data = lx.Dataset.construct.from_idco(pd.get_dummies(df), alts={
+    1: "Car",
+    2: "Transit",
+    3: "Walk",
+    4: "Bike"
+})
 
-# specify coefficients - all start at zero, have no bounds (None, None), and are
-# estimated rather than fixed (0)
-asc_bike = Beta("asc_bike", 0, None, None, 0)
-b_income_over_100k_bike = Beta("b_income_over_100k_bike", 0, None, None, 0)
-b_rush_hour_bike = Beta("b_rush_hour_bike", 0, None, None, 0)
+# %%
+m = lx.Model(data)
 
-asc_walk = Beta("asc_walk", 0, None, None, 0)
-b_income_over_100k_walk = Beta("b_income_over_100k_walk", 0, None, None, 0)
-b_rush_hour_walk = Beta("b_rush_hour_walk", 0, None, None, 0)
+m.utility_co[1] = P.travel_time * X.car_travel_time_mins + P.travel_cost * X.car_travel_cost
 
-asc_transit = Beta("asc_transit", 0, None, None, 0)
-b_income_over_100k_transit = Beta("b_income_over_100k_transit", 0, None, None, 0)
-b_rush_hour_transit = Beta("b_rush_hour_transit", 0, None, None, 0)
+m.utility_co[2] = (
+    P.asc_transit +
+    P.income_over_100k_transit * X.income_over_100k +
+    P.rush_transit * X.rush_hour +
+    P.travel_time * X.transit_travel_time_mins +
+    P.travel_cost * X.transit_travel_cost
+)
 
-# we only need one coefficient for travel time
-b_travel_time = Beta("b_travel_time", 0, None, None, 0)
-b_travel_cost = Beta("b_travel_cost", 0, None, None, 0)
+m.utility_co[3] = (
+    P.asc_walk +
+    P.income_over_100k_walk * X.income_over_100k +
+    P.rush_walk * X.rush_hour +
+    P.travel_time * X.walk_travel_time_mins +
+    P.travel_cost * X.walk_travel_cost
+)
+m.utility_co[4] = (
+    P.asc_bike +
+    P.income_over_100k_bike * X.income_over_100k +
+    P.rush_bike * X.rush_hour +
+    P.travel_time * X.bike_travel_time_mins +
+    P.travel_cost * X.bike_travel_cost
+)
 
-# and specify the variables we want to use
-income_over_100k = Variable("income_over_100k")
-rush_hour = Variable("rush_hour")
+m.choice_co_code = "numeric_mode"
 
-# but we need the travel time variables for each mode
-car_travel_time_mins = Variable("car_travel_time_mins")
-bike_travel_time_mins = Variable("bike_travel_time_mins")
-walk_travel_time_mins = Variable("walk_travel_time_mins")
-transit_travel_time_mins = Variable("transit_travel_time_mins")
+# Here we define the nesting structure, combining transit and driving into motorized
+m.graph.new_node(parameter="active", children=[3, 4], name="Active")
 
-car_travel_cost = Variable("car_travel_cost")
-bike_travel_cost = Variable("bike_travel_cost")
-walk_travel_cost = Variable("walk_travel_cost")
-transit_travel_cost = Variable("transit_travel_cost")
-
-V = {
-    # Car
-    1: b_travel_time * car_travel_time_mins + b_travel_cost * car_travel_cost,
-
-    # Transit
-    2: asc_transit + b_income_over_100k_transit * income_over_100k + b_rush_hour_transit * rush_hour + b_travel_time * transit_travel_time_mins + b_travel_cost * transit_travel_cost,
-
-    # Walk
-    3: asc_walk + b_income_over_100k_walk * income_over_100k + b_rush_hour_walk * rush_hour + b_travel_time * walk_travel_time_mins + b_travel_cost * walk_travel_cost,
-
-    # Bike
-    4: asc_bike + b_income_over_100k_bike * income_over_100k + b_rush_hour_bike * rush_hour + b_travel_time * bike_travel_time_mins + b_travel_cost * bike_travel_cost
+m.availability_co_vars = {
+    1: True,
+    2: "transit_available",
+    3: True,
+    4: True
 }
 
-av = {1: 1, 2: Variable("transit_available"), 3: 1, 4: 1}
 
-# specify nests
-mu_active = Beta("mu_active", 1, None, None, 0)
-active = OneNestForNestedLogit(nest_param=mu_active, list_of_alternatives=[3, 4], name="active")
+m.set_cap(25)# %%
+m.maximize_loglike(stderr=True)
 
-# If you had multiple nests, you would add them to tuple_of_nests after the comma.
-# there always has to be a comma, even when there is only one nest
-nests = NestsForNestedLogit(choice_set=V.keys(), tuple_of_nests=(active,))
+# %%
+m.parameter_summary()
 
-logprob = models.lognested(V, av, nests, Variable("numeric_mode"))
-
-model = bio.BIOGEME(data, logprob)
-model.modelName = "seattle_nested_active"
-model.calculateNullLoglikelihood(av)
-result = model.estimate()
-
-assert result.algorithm_has_converged()
-print(result.shortSummary())
-print(result.getEstimatedParameters())
+# %%
+m.estimation_statistics()
 ```
 
 ## Nested logit results, again
 
 ```{python}
 #| echo: false
-params = result.getEstimatedParameters()
-Markdown(
-    tabulate.tabulate(
-        params,
-        headers=params.columns
-    )
-)
+m.parameter_summary()
+```
+
+```{python}
+#| echo: false
+m.estimation_statistics()
 ```
 
 ## Interpreting the nested logit model, again
 
 ::: {.incremental}
-- $\mu$ is 1.07. What is $\theta$?
-- 1 / 1.07 = 0.93
-- Do we accept this as a valid nested logit model?
-- What does this mean about the error correlation between walking and biking?
+- $\theta$ is 0.89
+- What does this mean about the model?
+- There are likely unobserved shared attributes between wlaking and bicycling that affect the choice
 :::
 
 ## Testing the nested logit model
 
 - If $\theta$ were 1, the results would be the same as the multinomial logit model, and we wouldn't need a nested logit model
-- 0.93 isn't that different from 1
+- 0.89 isn't that different from 1
 - How do we know we need a nested logit model?
 - When there's just one nest we can use a standard $z$-test and $p$-value
-    - Much software doesn't do the right test, though—we need to test that the nesting parameter ($\theta$ or $\mu$) is different from one, not zero like most coefficients
+    - We need to test that the nesting parameter ($\theta$ or $\mu$) is different from one, not zero like most coefficients
+    - `larch` does this correctly, but many other programs do not
     - In our case, $\mu$ is just under one standard error above 1, so is _not_ statistically significant
     - We can reject _this_ nesting structure as not being superior to multinomial logit, though there may be other nesting structures that are
 
@@ -2146,8 +1987,8 @@ Markdown(
 
 ::: {.incremental}
 - Our log-likelihoods are:
-    - MNL: -4515.951
-    - NL: -4515.486
+    - MNL: -4515.95
+    - NL: -4516.03
 - Difference: -0.465
 - Test statistic: 0.930
 - $\chi^2$ p-value: 0.34
@@ -2200,7 +2041,6 @@ flowchart TD
 - $\theta$'s for top-level nests should be between 0 and 1
 - $\theta$'s for subnests should be between 0 and the $\theta$ in the next higher level nest   
     - And a $z$-test should be relative to the $\theta$ in the next higher nest, or just use a likelihood-ratio test
-- Biogeme can't directly estimate this type of model; [larch](https://larch.newman.me/) (Python) or [Apollo](http://www.apollochoicemodelling.com) (R) can.
 
 ## Going deeper: scale parameters in nested logit
 
@@ -2272,7 +2112,7 @@ plt.yticks([])
 ## Estimation challenges with logit models generally: convergence and identification
 
 - In each of the models above, we checked for convergence
-- If the model did _not_ converge, it means Biogeme did not find a solution
+- If the model did _not_ converge, it means `larch` did not find a solution
 - This usually means an identification issue—for instance, multicollinearity, not excluding one ASC, etc.
 - There may also be cases where there is an idenfication issue that is indicated but unexpected coefficients, non-finite likelihoods, etc.—if anything looks off, identification is a good thing to think about
 - Some identification issues may not be apparent in results at all
@@ -2281,7 +2121,7 @@ plt.yticks([])
 
 - We covered the binary, multinomial, and nested logit models
 - The multinomial logit model is used for multiple outcomes; the nested logit is used when you are concerned about independence of irrelevant alternatives
-- We estimated models using the Biogeme package, other packages are larch (Python) and apollo (R)
+- We estimated models using the `larch` package, other packages are Biogeme (Python) and apollo (R)
 
 ## Questions?
 
