@@ -82,10 +82,10 @@ logprob = models.lognested(V, av, nests, Variable("numeric_mode"))
 
 model = bio.BIOGEME(data, logprob)
 model.modelName = "seattle_nested_active"
-model.calculateNullLoglikelihood(av)
+model.calculate_null_loglikelihood(av)
 result = model.estimate()
 
 assert result.algorithm_has_converged()
-print(result.shortSummary())
-print(result.getEstimatedParameters())
+print(result.short_summary())
+print(result.get_estimated_parameters())
 

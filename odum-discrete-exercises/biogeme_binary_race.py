@@ -44,10 +44,10 @@ logprob = models.loglogit(V, av, Variable("wfh_expectation"))
 
 model = bio.BIOGEME(data, logprob)
 model.modelName = "biogeme_binary_race"
-model.calculateNullLoglikelihood(av)
+model.calculate_null_loglikelihood(av)
 result = model.estimate()
 
 assert result.algorithm_has_converged()
-print(result.shortSummary())
-print(result.getEstimatedParameters())
+print(result.short_summary())
+print(result.get_estimated_parameters())
 
