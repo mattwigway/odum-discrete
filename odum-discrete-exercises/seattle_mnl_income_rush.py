@@ -12,7 +12,7 @@ df["numeric_mode"] = df.mode_choice.replace({
     "Transit": 2,
     "Walk": 3,
     "Bike": 4
-})
+}).astype("int32")
 
 data = db.Database("Seattle", pd.get_dummies(df).astype("float64"))
 
