@@ -115,6 +115,22 @@
       margin-left: 2em;
     }  </style>
   <link rel="stylesheet" href="site_libs/revealjs/dist/theme/quarto.css">
+  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.js"></script>
+  <script>document.addEventListener("DOMContentLoaded", function () {
+ var mathElements = document.getElementsByClassName("math");
+ var macros = [];
+ for (var i = 0; i < mathElements.length; i++) {
+  var texText = mathElements[i].firstChild;
+  if (mathElements[i].tagName == "SPAN") {
+   katex.render(texText.data, mathElements[i], {
+    displayMode: mathElements[i].classList.contains('display'),
+    throwOnError: false,
+    macros: macros,
+    fleqn: false
+   });
+}}});
+  </script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css">
   <link href="site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -493,7 +509,7 @@ Matt Bhagat-Conway
 <ul>
 <li>Predicted values are not constrained between 0 and 1</li>
 </ul>
-<div id="9f72ed56" class="cell" data-execution_count="2">
+<div id="9f72ed56" class="cell" data-execution_count="3">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -508,7 +524,7 @@ Matt Bhagat-Conway
 <ul>
 <li>Instead of predicting the probability, we predict the log-odds (aka logit)</li>
 </ul>
-<div id="2acd2436" class="cell" data-execution_count="3">
+<div id="2acd2436" class="cell" data-execution_count="4">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -520,18 +536,18 @@ Matt Bhagat-Conway
 </section>
 <section id="binary-logistic-regression-the-math" class="slide level2">
 <h2>Binary logistic regression: the math</h2>
-<p><span class="math display">\[
+<p><span class="math display">
 y^* = \alpha + \beta_1 x_1 + \beta_2 x_2 \cdots + \epsilon
-\]</span></p>
-<p><span class="math display">\[
+</span></p>
+<p><span class="math display">
 \epsilon \thicksim \mathrm{Logistic}
-\]</span> <span class="math display">\[
+</span> <span class="math display">
 p(y = 1) = p(y^* &gt; 0) = \frac{e^{y^*}}{1 + e^{y^*}}
-\]</span></p>
+</span></p>
 </section>
 <section id="interpreting-a-binary-logistic-regression-model" class="slide level2">
 <h2>Interpreting a binary logistic regression model</h2>
-<div id="5c62ff0a" class="cell" data-execution_count="5">
+<div id="5c62ff0a" class="cell" data-execution_count="6">
 <div class="cell-output cell-output-display cell-output-markdown" data-execution_count="5">
 <table class="caption-top">
 <thead>
@@ -539,7 +555,7 @@ p(y = 1) = p(y^* &gt; 0) = \frac{e^{y^*}}{1 + e^{y^*}}
 <th></th>
 <th style="text-align: left;">Coefficient</th>
 <th style="text-align: left;">Std. Err.</th>
-<th style="text-align: left;"><span class="math inline">\(t\)</span></th>
+<th style="text-align: left;"><span class="math inline">t</span></th>
 <th style="text-align: right;">p</th>
 </tr>
 </thead>
@@ -616,40 +632,40 @@ p(y = 1) = p(y^* &gt; 0) = \frac{e^{y^*}}{1 + e^{y^*}}
 <h2>Statistical significance and p-values</h2>
 <ul>
 <li>Coefficients are approximations to population-level parameters, and contain sampling error because we haven’t sampled the entire population</li>
-<li>The standard error (<span class="math inline">\(\sigma\)</span>) is a measure of how precise the coefficient is</li>
+<li>The standard error (<span class="math inline">\sigma</span>) is a measure of how precise the coefficient is</li>
 <li>We assume coefficient estimates are asymtotically normal</li>
-<li>Based on a normal distribution, there is a 95% chance the population parameter is within <span class="math inline">\(1.96 \times \sigma\)</span> of the estimate</li>
+<li>Based on a normal distribution, there is a 95% chance the population parameter is within <span class="math inline">1.96 \times \sigma</span> of the estimate</li>
 </ul>
 </section>
 <section id="statistical-significance-and-p-values-1" class="slide level2">
 <h2>Statistical significance and p-values</h2>
 <ul>
 <li>We can also perform a hypothesis test that the coefficient is different from 0</li>
-<li>To do this, we compute a <span class="math inline">\(z\)</span>-value, which is just the coefficient divided by the standard error</li>
-<li>Put another way, the <span class="math inline">\(z\)</span>-value is the number of standard errors between the coefficient and zero</li>
-<li>Large coefficients lead to large <span class="math inline">\(z\)</span>-values</li>
-<li>Large standard errors (i.e.&nbsp;high uncertainty) lead to small <span class="math inline">\(z\)</span>-values</li>
+<li>To do this, we compute a <span class="math inline">z</span>-value, which is just the coefficient divided by the standard error</li>
+<li>Put another way, the <span class="math inline">z</span>-value is the number of standard errors between the coefficient and zero</li>
+<li>Large coefficients lead to large <span class="math inline">z</span>-values</li>
+<li>Large standard errors (i.e.&nbsp;high uncertainty) lead to small <span class="math inline">z</span>-values</li>
 </ul>
 </section>
 <section id="statistical-significance-and-p-values-2" class="slide level2">
 <h2>Statistical significance and p-values</h2>
 <ul>
-<li><span class="math inline">\(z\)</span> values larger in magnitude than 1.96 indicate that there is less than a 5% chance of observing a coefficient as larger or larger than the estimated coefficient if the true coefficient were zero</li>
+<li><span class="math inline">z</span> values larger in magnitude than 1.96 indicate that there is less than a 5% chance of observing a coefficient as larger or larger than the estimated coefficient if the true coefficient were zero</li>
 </ul>
 </section>
 <section id="statistical-significance-and-p-values-3" class="slide level2">
 <h2>Statistical significance and p-values</h2>
 <ul>
-<li>The <span class="math inline">\(p\)</span>-value is the probability of observing a coefficient as large or larger in magnitude, if the true coefficient were zero</li>
+<li>The <span class="math inline">p</span>-value is the probability of observing a coefficient as large or larger in magnitude, if the true coefficient were zero</li>
 <li>Computed using the normal cumulative distribution function</li>
-<li>Usual rule is that <span class="math inline">\(p &lt; 0.05\)</span> is statistically significant, but in larger datasets <span class="math inline">\(p &lt; 0.01\)</span> or even <span class="math inline">\(p &lt; 0.001\)</span> may be used</li>
+<li>Usual rule is that <span class="math inline">p &lt; 0.05</span> is statistically significant, but in larger datasets <span class="math inline">p &lt; 0.01</span> or even <span class="math inline">p &lt; 0.001</span> may be used</li>
 <li>For more information about the math, see the hypothesis testing section of any statistics textbook</li>
-<li>Logistic regression hypothesis tests are computed just like linear regression, except using the normal instead of <span class="math inline">\(t\)</span> distribution</li>
+<li>Logistic regression hypothesis tests are computed just like linear regression, except using the normal instead of <span class="math inline">t</span> distribution</li>
 </ul>
 </section>
 <section id="odds-ratios" class="slide level2">
 <h2>Odds ratios</h2>
-<div id="2d7a1d43" class="cell" data-execution_count="6">
+<div id="2d7a1d43" class="cell" data-execution_count="7">
 <div class="cell-output cell-output-display cell-output-markdown" data-execution_count="6">
 <table class="caption-top">
 <thead>
@@ -657,7 +673,7 @@ p(y = 1) = p(y^* &gt; 0) = \frac{e^{y^*}}{1 + e^{y^*}}
 <th></th>
 <th style="text-align: left;">Coefficient</th>
 <th style="text-align: left;">Std. Err.</th>
-<th style="text-align: left;"><span class="math inline">\(t\)</span></th>
+<th style="text-align: left;"><span class="math inline">t</span></th>
 <th style="text-align: right;">p</th>
 </tr>
 </thead>
@@ -732,14 +748,14 @@ p(y = 1) = p(y^* &gt; 0) = \frac{e^{y^*}}{1 + e^{y^*}}
 </section>
 <section id="interpreting-odds-ratios-i" class="slide level2">
 <h2>Interpreting odds ratios I</h2>
-<div id="40f84f80" class="cell" data-execution_count="7">
+<div id="40f84f80" class="cell" data-execution_count="8">
 <div class="cell-output cell-output-display cell-output-markdown" data-execution_count="7">
 <table class="caption-top">
 <thead>
 <tr class="header">
 <th></th>
 <th style="text-align: left;">Odds ratio</th>
-<th style="text-align: left;"><span class="math inline">\(t\)</span></th>
+<th style="text-align: left;"><span class="math inline">t</span></th>
 <th style="text-align: right;">p</th>
 </tr>
 </thead>
@@ -809,14 +825,14 @@ p(y = 1) = p(y^* &gt; 0) = \frac{e^{y^*}}{1 + e^{y^*}}
 </section>
 <section id="interpreting-odds-ratios-ii" class="slide level2">
 <h2>Interpreting odds ratios II</h2>
-<div id="3826ae5f" class="cell" data-execution_count="8">
+<div id="3826ae5f" class="cell" data-execution_count="9">
 <div class="cell-output cell-output-display cell-output-markdown" data-execution_count="8">
 <table class="caption-top">
 <thead>
 <tr class="header">
 <th></th>
 <th style="text-align: left;">Odds ratio</th>
-<th style="text-align: left;"><span class="math inline">\(t\)</span></th>
+<th style="text-align: left;"><span class="math inline">t</span></th>
 <th style="text-align: right;">p</th>
 </tr>
 </thead>
@@ -894,7 +910,7 @@ p(y = 1) = p(y^* &gt; 0) = \frac{e^{y^*}}{1 + e^{y^*}}
 </section>
 <section id="running-a-logistic-regression-in-python" class="slide level2">
 <h2>Running a logistic regression in Python</h2>
-<div id="a8f3e1a3" class="cell" data-execution_count="9">
+<div id="a8f3e1a3" class="cell" data-execution_count="10">
 <div class="code-with-filename">
 <div class="code-with-filename-file">
 <pre><strong>logistic_basic.py</strong></pre>
@@ -921,7 +937,7 @@ p(y = 1) = p(y^* &gt; 0) = \frac{e^{y^*}}{1 + e^{y^*}}
 </section>
 <section id="running-a-logistic-regression-in-python-results" class="slide level2">
 <h2>Running a logistic regression in Python: results</h2>
-<div id="4f336153" class="cell" data-execution_count="10">
+<div id="4f336153" class="cell" data-execution_count="11">
 <div class="cell-output cell-output-display" data-execution_count="10">
 <table class="simpletable caption-top" data-quarto-postprocess="true">
 <caption>Logit Regression Results</caption>
@@ -1026,7 +1042,7 @@ p(y = 1) = p(y^* &gt; 0) = \frac{e^{y^*}}{1 + e^{y^*}}
 </section>
 <section id="exercise-add-the-black-and-hispanic-variables-to-the-model" class="slide level2">
 <h2>Exercise: add the <code>black</code> and <code>hispanic</code> variables to the model</h2>
-<div id="2d2ec4a6" class="cell" data-execution_count="11">
+<div id="2d2ec4a6" class="cell" data-execution_count="12">
 <div class="code-with-filename">
 <div class="code-with-filename-file">
 <pre><strong>logistic_black_hispanic.py</strong></pre>
@@ -1053,7 +1069,7 @@ p(y = 1) = p(y^* &gt; 0) = \frac{e^{y^*}}{1 + e^{y^*}}
 </section>
 <section id="exercise-add-the-black-and-hispanic-variables-to-the-model-result" class="slide level2">
 <h2>Exercise: add the <code>black</code> and <code>hispanic</code> variables to the model: result</h2>
-<div id="58568ff1" class="cell" data-execution_count="12">
+<div id="58568ff1" class="cell" data-execution_count="13">
 <div class="cell-output cell-output-display" data-execution_count="12">
 <table class="simpletable caption-top" data-quarto-postprocess="true">
 <caption>Logit Regression Results</caption>
@@ -1190,30 +1206,30 @@ p(y = 1) = p(y^* &gt; 0) = \frac{e^{y^*}}{1 + e^{y^*}}
 <section id="logistic-regression-as-a-random-utility-model" class="slide level2">
 <h2>Logistic regression as a random utility model</h2>
 <ul>
-<li>We define the systematic utility (i.e.&nbsp;no random error) of one alternative (e.g.&nbsp;working from home) as V: <span class="math display">\[
+<li>We define the systematic utility (i.e.&nbsp;no random error) of one alternative (e.g.&nbsp;working from home) as V: <span class="math display">
 V_{wfh} = \alpha + \beta_1 x_1 + \beta_2 x_2 \cdots
-\]</span></li>
+</span></li>
 </ul>
 <p>The full utility U has an error term:</p>
-<p><span class="math display">\[
+<p><span class="math display">
 U_{wfh} = V_{wfh} + \epsilon_{wfh}
-\]</span></p>
+</span></p>
 <ul>
 <li>Only differences in utility are meaningful, so we can arbitrarily define the systematic portion of the utility of the other option as zero</li>
 </ul>
-<p><span class="math display">\[
+<p><span class="math display">
 U_{notwfh} = 0 + \epsilon_{notwfh}
-\]</span></p>
+</span></p>
 <p>The probability of working from home then becomes</p>
-<p><span class="math display">\[
+<p><span class="math display">
 P\left(U_{wfh} &gt; U_{notwfh}\right)
-\]</span></p>
+</span></p>
 </section>
 <section id="error-term-distribution" class="slide level2">
 <h2>Error term distribution</h2>
 <div>
 <ul>
-<li class="fragment">We assume the <span class="math inline">\(\epsilon\)</span>’s are Gumbel-distributed</li>
+<li class="fragment">We assume the <span class="math inline">\epsilon</span>’s are Gumbel-distributed</li>
 <li class="fragment">The Gumbel distribution is an approximation of the normal distribution with some attractive properties
 <ul>
 <li class="fragment">More on this later</li>
@@ -1228,14 +1244,14 @@ P\left(U_{wfh} &gt; U_{notwfh}\right)
 <section id="showing-the-equivalence-to-the-binary-logistic-regression-model-i" class="slide level2">
 <h2>Showing the equivalence to the binary logistic regression model I</h2>
 <p>We have</p>
-<p><span class="math display">\[
+<p><span class="math display">
 P\left(U_{wfh} &gt; U_{notwfh}\right)
-\]</span></p>
+</span></p>
 <div class="fragment">
 <p>which we can re-write as</p>
-<p><span class="math display">\[
+<p><span class="math display">
 P\left(V_{wfh} + \epsilon_{wfh} - (0 + \epsilon_{notwfh}) &gt; 0\right)
-\]</span></p>
+</span></p>
 </div>
 </section>
 <section id="showing-the-equivalence-to-the-binary-logistic-regression-model-ii" class="slide level2">
@@ -1243,10 +1259,10 @@ P\left(V_{wfh} + \epsilon_{wfh} - (0 + \epsilon_{notwfh}) &gt; 0\right)
 <ul>
 <li>Since the difference of our Gumbel-distributed error terms is Logistic-distributed, we have</li>
 </ul>
-<p><span class="math display">\[
+<p><span class="math display">
 P\left(V_{wfh} + \epsilon_{\Delta} &gt; 0\right)
-\]</span></p>
-<p>with <span class="math inline">\(\epsilon_\Delta\)</span> Logistic-distributed, which is the same as our formula for logistic regression.</p>
+</span></p>
+<p>with <span class="math inline">\epsilon_\Delta</span> Logistic-distributed, which is the same as our formula for logistic regression.</p>
 </section>
 <section id="estimating-our-binary-logistic-regression-as-a-random-utility-model" class="slide level2">
 <h2>Estimating our binary logistic regression as a random utility model</h2>
@@ -1257,7 +1273,7 @@ P\left(V_{wfh} + \epsilon_{\Delta} &gt; 0\right)
 </section>
 <section id="estimation-code" class="slide level2">
 <h2>Estimation code</h2>
-<div id="7f82472a" class="cell" data-execution_count="13">
+<div id="7f82472a" class="cell" data-execution_count="14">
 <div class="code-with-filename">
 <div class="code-with-filename-file">
 <pre><strong>biogeme_binary.py</strong></pre>
@@ -1314,7 +1330,7 @@ P\left(V_{wfh} + \epsilon_{\Delta} &gt; 0\right)
 </section>
 <section id="result" class="slide level2">
 <h2>Result</h2>
-<div id="dd24b202" class="cell" data-execution_count="14">
+<div id="dd24b202" class="cell" data-execution_count="15">
 <div class="cell-output cell-output-stdout">
 <pre><code>Results for model biogeme_binary
 Nbr of parameters:      4
@@ -1338,7 +1354,7 @@ b_male     0.251951      0.127537     1.975508  4.821053e-02</code></pre>
 </section>
 <section id="how-does-the-result-compare-to-the-original-model-we-estimated" class="slide level2">
 <h2>How does the result compare to the original model we estimated?</h2>
-<div id="cbb692e6" class="cell" data-execution_count="15">
+<div id="cbb692e6" class="cell" data-execution_count="16">
 <div class="cell-output cell-output-display cell-output-markdown" data-execution_count="15">
 <table class="caption-top">
 <thead>
@@ -1346,7 +1362,7 @@ b_male     0.251951      0.127537     1.975508  4.821053e-02</code></pre>
 <th></th>
 <th style="text-align: left;">Coefficient</th>
 <th style="text-align: left;">Std. Err.</th>
-<th style="text-align: left;"><span class="math inline">\(t\)</span></th>
+<th style="text-align: left;"><span class="math inline">t</span></th>
 <th style="text-align: right;">p</th>
 <th style="text-align: left;">Odds ratio</th>
 </tr>
@@ -1429,7 +1445,7 @@ b_male     0.251951      0.127537     1.975508  4.821053e-02</code></pre>
 <section id="detailed-result" class="slide level2">
 <h2>Detailed result</h2>
 <p>Stored in “biogeme_binary.html”, or some variation—look for most recent.</p>
-<div id="9997c408" class="cell" data-execution_count="16">
+<div id="9997c408" class="cell" data-execution_count="17">
 <div class="cell-output cell-output-display" data-execution_count="16">
 <iframe width="1850" height="800px" src="biogeme_binary.html" data-external="1"></iframe>
 </div>
@@ -1443,7 +1459,7 @@ b_male     0.251951      0.127537     1.975508  4.821053e-02</code></pre>
 </section>
 <section id="exercise-result" class="slide level2">
 <h2>Exercise: result</h2>
-<div id="90f011fe" class="cell" data-execution_count="17">
+<div id="90f011fe" class="cell" data-execution_count="18">
 <div class="code-with-filename">
 <div class="code-with-filename-file">
 <pre><strong>biogeme_binary_race.py</strong></pre>
@@ -1526,7 +1542,7 @@ b_male      0.254622      0.127658     1.994570  4.608975e-02</code></pre>
 </section>
 <section id="results" class="slide level2">
 <h2>Results</h2>
-<div id="cd1b29e5" class="cell" data-execution_count="18">
+<div id="cd1b29e5" class="cell" data-execution_count="19">
 <div class="cell-output cell-output-stdout">
 <pre><code>Results for model biogeme_binary_race
 Nbr of parameters:      6
@@ -1576,29 +1592,29 @@ b_male      0.254622      0.127658     1.994570  4.608975e-02</code></pre>
 <ul>
 <li>Each alternative gets a utility function, with systematic and random components</li>
 </ul>
-<p><span class="math display">\[
+<p><span class="math display">
 U_{car} = V_{car} + \epsilon_{car} \\
 U_{transit} = V_{transit} + \epsilon_{transit} \\
 U_{bike} = V_{bike} + \epsilon_{bike} \\
 U_{walk} = V_{walk} + \epsilon_{walk} \\
-\]</span></p>
+</span></p>
 </section>
 <section id="the-multinomial-logit-model-in-math-ii" class="slide level2">
 <h2>The multinomial logit model, in math II</h2>
 <ul>
 <li>Like in a logistic regression, the systematic portion of utility is usually a linear combination of predictors</li>
 </ul>
-<p><span class="math display">\[
+<p><span class="math display">
 V_{car} = \alpha_{car} + \beta_{car,income} x_{income} \cdots \\
 V_{transit} = \alpha_{transit} + \beta_{transit,income} x_{income} \cdots \\
 V_{bike} = \alpha_{bike} + \beta_{bike,income} x_{income} \cdots \\
 V_{walk} = \alpha_{walk} + \beta_{walk,income} x_{income} \cdots \\
-\]</span></p>
+</span></p>
 </section>
 <section id="alternative-specific-constants" class="slide level2">
 <h2>Alternative specific constants</h2>
 <ul>
-<li>Unlike the binary logit model, there is now an <span class="math inline">\(\alpha\)</span> for each mode</li>
+<li>Unlike the binary logit model, there is now an <span class="math inline">\alpha</span> for each mode</li>
 <li>This is known as an <em>alternative specific constant</em></li>
 <li>It measures the relative popularity of each option with all other coefficients held at zero
 <ul>
@@ -1618,14 +1634,14 @@ V_{walk} = \alpha_{walk} + \beta_{walk,income} x_{income} \cdots \\
 <section id="identification-issues" class="slide level2">
 <h2>Identification issues</h2>
 <ul>
-<li>Looking again at our mode choice model, how do the differences between utilities change if we add 1 to all of the <span class="math inline">\(\alpha\)</span>’s or <span class="math inline">\(\beta\)</span>’s?</li>
+<li>Looking again at our mode choice model, how do the differences between utilities change if we add 1 to all of the <span class="math inline">\alpha</span>’s or <span class="math inline">\beta</span>’s?</li>
 </ul>
-<p><span class="math display">\[
+<p><span class="math display">
 V_{car} = \alpha_{car} + \beta_{car,income} x_{income} \cdots \\
 V_{transit} = \alpha_{transit} + \beta_{transit,income} x_{income} \cdots \\
 V_{bike} = \alpha_{bike} + \beta_{bike,income} x_{income} \cdots \\
 V_{walk} = \alpha_{walk} + \beta_{walk,income} x_{income} \cdots \\
-\]</span></p>
+</span></p>
 </section>
 <section id="an-identified-model" class="slide level2">
 <h2>An identified model</h2>
@@ -1636,12 +1652,12 @@ V_{walk} = \alpha_{walk} + \beta_{walk,income} x_{income} \cdots \\
 </ul></li>
 <li>For instance, we might do</li>
 </ul>
-<p><span class="math display">\[
+<p><span class="math display">
 V_{car} = 0 \\
 V_{transit} = \alpha_{transit} + \beta_{transit,income} x_{income} \cdots \\
 V_{bike} = \alpha_{bike} + \beta_{bike,income} x_{income} \cdots \\
 V_{walk} = \alpha_{walk} + \beta_{walk,income} x_{income} \cdots \\
-\]</span></p>
+</span></p>
 <ul>
 <li>This is exactly what a binary logistic regression does—you have coefficients for one outcome, and the utility of the other outcome is zero</li>
 </ul>
@@ -1650,7 +1666,7 @@ V_{walk} = \alpha_{walk} + \beta_{walk,income} x_{income} \cdots \\
 <h2>Interpreting the model</h2>
 <ul>
 <li>All of the other coefficients are relative to the alternative that has its utility set to zero</li>
-<li>For instance, <span class="math inline">\(\beta_{bike,income}\)</span> represents how income changes the <em>relative</em> attractiveness of biking and driving</li>
+<li>For instance, <span class="math inline">\beta_{bike,income}</span> represents how income changes the <em>relative</em> attractiveness of biking and driving</li>
 </ul>
 </section>
 <section id="an-example-multinomial-logit-model-seattle-mode-choice" class="slide level2">
@@ -1679,7 +1695,7 @@ V_{walk} = \alpha_{walk} + \beta_{walk,income} x_{income} \cdots \\
 <ul>
 <li>We’re going to start with a very simple multinomial logit model, modeling the relationship between income and mode choice</li>
 </ul>
-<div id="58180ff3" class="cell" data-execution_count="19">
+<div id="58180ff3" class="cell" data-execution_count="20">
 <div class="cell-output cell-output-stdout">
 <pre><code>Results for model seattle_mode_choice
 Nbr of parameters:      6
@@ -1705,7 +1721,7 @@ b_income_over_100k_walk     0.223509      0.055121     4.054884      0.000050</c
 </section>
 <section id="interpreting-a-multinomial-logit-model-alternative-specific-constants" class="slide level2">
 <h2>Interpreting a multinomial logit model: alternative-specific constants</h2>
-<div id="4b0d1c5e" class="cell" data-execution_count="20">
+<div id="4b0d1c5e" class="cell" data-execution_count="21">
 <div class="cell-output cell-output-display cell-output-markdown" data-execution_count="20">
 <table class="caption-top">
 <thead>
@@ -1757,7 +1773,7 @@ b_income_over_100k_walk     0.223509      0.055121     4.054884      0.000050</c
 </section>
 <section id="interpreting-a-multinomial-logit-model-coefficients" class="slide level2">
 <h2>Interpreting a multinomial logit model: coefficients</h2>
-<div id="86fb24a6" class="cell" data-execution_count="21">
+<div id="86fb24a6" class="cell" data-execution_count="22">
 <div class="cell-output cell-output-display cell-output-markdown" data-execution_count="21">
 <table class="caption-top">
 <thead>
@@ -1812,7 +1828,7 @@ b_income_over_100k_walk     0.223509      0.055121     4.054884      0.000050</c
 </section>
 <section id="estimating-a-multinomial-logit-model-yourself" class="slide level2">
 <h2>Estimating a multinomial logit model yourself</h2>
-<div id="78bd3579" class="cell" data-execution_count="22">
+<div id="78bd3579" class="cell" data-execution_count="23">
 <div class="code-with-filename">
 <div class="code-with-filename-file">
 <pre><strong>seattle_mnl_income.py</strong></pre>
@@ -1912,7 +1928,7 @@ b_income_over_100k_walk     0.223509      0.055121     4.054884      0.000050</c
 </section>
 <section id="exercise-add-a-variable-answer" class="slide level2">
 <h2>Exercise: add a variable: answer</h2>
-<div id="8b10847c" class="cell" data-execution_count="23">
+<div id="8b10847c" class="cell" data-execution_count="24">
 <div class="code-with-filename">
 <div class="code-with-filename-file">
 <pre><strong>seattle_mnl_income_rush.py</strong></pre>
@@ -2008,7 +2024,7 @@ b_rush_hour_walk           -0.424242      0.074428    -5.700050  1.197720e-08</c
 </section>
 <section id="interpreting-the-coefficient-changes-i" class="slide level2">
 <h2>Interpreting the coefficient changes I</h2>
-<div id="fc14c661" class="cell" data-execution_count="24">
+<div id="fc14c661" class="cell" data-execution_count="25">
 <div class="cell-output cell-output-display cell-output-markdown" data-execution_count="24">
 <table class="caption-top">
 <thead>
@@ -2098,7 +2114,7 @@ b_rush_hour_walk           -0.424242      0.074428    -5.700050  1.197720e-08</c
 </section>
 <section id="interpreting-the-coefficient-changes-ii" class="slide level2">
 <h2>Interpreting the coefficient changes II</h2>
-<div id="87874acf" class="cell" data-execution_count="25">
+<div id="87874acf" class="cell" data-execution_count="26">
 <div class="cell-output cell-output-display cell-output-markdown" data-execution_count="25">
 <table class="caption-top">
 <thead>
@@ -2200,7 +2216,7 @@ b_rush_hour_walk           -0.424242      0.074428    -5.700050  1.197720e-08</c
 </ul></li>
 </ul></li>
 <li>We can add an availability constraint to our model to indicate which alternatives are available to which decisionmakers</li>
-<li>This effectively sets <span class="math inline">\(V_{mode} = -\infty\)</span>, so it will always be worse than every other option</li>
+<li>This effectively sets <span class="math inline">V_{mode} = -\infty</span>, so it will always be worse than every other option</li>
 </ul>
 </section>
 <section id="adding-a-transit-availability-constraint" class="slide level2">
@@ -2208,7 +2224,7 @@ b_rush_hour_walk           -0.424242      0.074428    -5.700050  1.197720e-08</c
 <ul>
 <li>We constrain choices in the model to indicate that transit is unavailable for some trips</li>
 </ul>
-<div id="87f032d9" class="cell" data-execution_count="26">
+<div id="87f032d9" class="cell" data-execution_count="27">
 <div class="code-with-filename">
 <div class="code-with-filename-file">
 <pre><strong>seattle_mnl_availability.py</strong></pre>
@@ -2321,7 +2337,7 @@ b_rush_hour_walk              0.0      0.096364          0.0           1.0</code
 </section>
 <section id="fixing-the-issue" class="slide level2">
 <h2>Fixing the issue</h2>
-<div id="976a8a19" class="cell" data-execution_count="27">
+<div id="976a8a19" class="cell" data-execution_count="28">
 <div class="code-with-filename">
 <div class="code-with-filename-file">
 <pre><strong>seattle_mnl_availability_fixed.py</strong></pre>
@@ -2444,7 +2460,7 @@ b_rush_hour_walk           -0.424159      0.074426    -5.699037  1.204861e-08</c
 </section>
 <section id="adding-a-generic-variable-in-biogeme" class="slide level2">
 <h2>Adding a generic variable in Biogeme</h2>
-<div id="4044edb7" class="cell" data-execution_count="28">
+<div id="4044edb7" class="cell" data-execution_count="29">
 <div class="code-with-filename">
 <div class="code-with-filename-file">
 <pre><strong>seattle_mnl_generic.py</strong></pre>
@@ -2554,7 +2570,7 @@ b_travel_time              -0.049626      0.001703   -29.139448  0.000000e+00</c
 </section>
 <section id="exercise-add-the-cost-variable" class="slide level2">
 <h2>Exercise: add the cost variable</h2>
-<div id="71699679" class="cell" data-execution_count="29">
+<div id="71699679" class="cell" data-execution_count="30">
 <div class="code-with-filename">
 <div class="code-with-filename-file">
 <pre><strong>seattle_mnl_generic_cost.py</strong></pre>
@@ -2681,16 +2697,16 @@ b_travel_time              -0.055375      0.001872   -29.577801  0.000000e+00</c
 <h2>Willingness to pay: calculation</h2>
 <ul>
 <li>The units of utility are arbitrarily defined as <em>utils</em></li>
-<li>The units of <span class="math inline">\(\beta_{cost}\)</span> are utils per dollar</li>
-<li>The units of <span class="math inline">\(\beta_{time}\)</span> are utils per minute</li>
-<li>Thus, the units of <span class="math inline">\(\frac{\beta_{time}}{\beta_{cost}}\)</span> are dollars per minute</li>
+<li>The units of <span class="math inline">\beta_{cost}</span> are utils per dollar</li>
+<li>The units of <span class="math inline">\beta_{time}</span> are utils per minute</li>
+<li>Thus, the units of <span class="math inline">\frac{\beta_{time}}{\beta_{cost}}</span> are dollars per minute</li>
 </ul>
 </section>
 <section id="willingness-to-pay-calculation-1" class="slide level2">
 <h2>Willingness to pay: calculation</h2>
-<p><span class="math display">\[
+<p><span class="math display">
 \frac{\beta_{time}}{\beta_{cost}} \times 60 = \frac{-0.055}{-0.102} \times 60 = \$32.35 / \mathrm{hour}
-\]</span></p>
+</span></p>
 <div>
 <ul>
 <li class="fragment">In theory, this is how much people are willing to spend to avoid an hour of travel time</li>
@@ -2718,15 +2734,15 @@ b_travel_time              -0.055375      0.001872   -29.577801  0.000000e+00</c
 </section>
 <section id="calculating-predicted-probabilities-with-the-multinomial-logit-model" class="slide level2">
 <h2>Calculating predicted probabilities with the multinomial logit model</h2>
-<p>We want to calculate the probability that decisionmaker <span class="math inline">\(n\)</span> chooses alternative <span class="math inline">\(i\)</span></p>
-<p><span class="math display">\[
+<p>We want to calculate the probability that decisionmaker <span class="math inline">n</span> chooses alternative <span class="math inline">i</span></p>
+<p><span class="math display">
 P_{ni} = P\left[U_{ni}~~\geq~~\max_{\forall j\neq i}~~U_{nj}\right]
-\]</span></p>
+</span></p>
 <div class="fragment">
 <p>Which is probabilistic because of the error terms</p>
-<p><span class="math display">\[
+<p><span class="math display">
 P_{ni} = P\left[\left(V_{ni} + \epsilon_{ni}\right)~~\geq~~\max_{\forall j\neq i}~~\left(V_{nj} + \epsilon_{nj}\right)\right]
-\]</span></p>
+</span></p>
 </div>
 <div class="fragment">
 <p>which still isn’t something we can directly calculate without accounting for (integrating over) the error terms</p>
@@ -2737,16 +2753,16 @@ P_{ni} = P\left[\left(V_{ni} + \epsilon_{ni}\right)~~\geq~~\max_{\forall j\neq i
 <div class="columns">
 <div class="column" style="width:50%;">
 <ul>
-<li>The <span class="math inline">\(\epsilon\)</span>’s in the multinomial logit model are Gumbel-distributed
+<li>The <span class="math inline">\epsilon</span>’s in the multinomial logit model are Gumbel-distributed
 <ul>
 <li>aka Type I Extreme Value</li>
 </ul></li>
 <li>The Gumbel distribution is an approximation of the normal with attractive statistical properties</li>
 <li>Notably, the maximum of a set of Gumbel-distributed variables is also Gumbel-distributed</li>
-<li>This gives us a <em>closed-form</em> solution to find <span class="math inline">\(\displaystyle\max_{\forall j\neq i} \left(V_{nj} + \epsilon_{nj}\right)\)</span></li>
+<li>This gives us a <em>closed-form</em> solution to find <span class="math inline">\displaystyle\max_{\forall j\neq i} \left(V_{nj} + \epsilon_{nj}\right)</span></li>
 </ul>
 </div><div class="column" style="width:50%;">
-<div id="c29739ee" class="cell" data-execution_count="30">
+<div id="c29739ee" class="cell" data-execution_count="31">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -2760,54 +2776,54 @@ P_{ni} = P\left[\left(V_{ni} + \epsilon_{ni}\right)~~\geq~~\max_{\forall j\neq i
 <section id="using-the-gumbel-distribution" class="slide level2">
 <h2>Using the Gumbel distribution</h2>
 <p>Because of the properties of the Gumbel distribution,</p>
-<p><span class="math display">\[
+<p><span class="math display">
 \max_{\forall j\neq i} \left(V_{nj} + \epsilon_{nj}\right) = \ln \sum_{\forall j\neq i} e^{V_{nj}}
-\]</span></p>
+</span></p>
 </section>
 <section id="calculating-the-choice-probability" class="slide level2">
 <h2>Calculating the choice probability</h2>
 <p>Again because of the properties of the Gumbel distribution, namely that the difference of two Gumbel distributions is a Logistic distribution, we have</p>
-<p><span class="math display">\[
+<p><span class="math display">
 \begin{align*}
 P_{ni} =&amp;~P\left[\left(V_{ni} + \epsilon_{ni}\right)~~\geq~~\max_{\forall j\neq i}~~\left(V_{nj} + \epsilon_{nj}\right)\right]\\
 =&amp;~P\left[\left(V_{ni} + \epsilon_{ni}\right)~~\geq~~\ln \sum_{\forall j\neq i} e^{V_{nj}}\right]\\
 =&amp;~\frac{e^{V_{ni}}}{e^{V_{ni}} + e^{\ln \sum_{\forall j\neq i} e^{V_{nj}}}}\\
 =&amp;~\frac{e^{V_{ni}}}{\displaystyle\sum_{\forall j} e^{V_{nj}}}
 \end{align*}
-\]</span></p>
+</span></p>
 <p>which is also known as the softmax function. More detail: see Section 5.2 of <span class="citation" data-cites="ben-akiva_discrete_1985">Ben-Akiva &amp; Lerman <a href="#/questions" role="doc-biblioref" onclick="">(1985) <em>Discrete <span>Choice Analysis</span>: <span>Theory</span> and <span>Application</span> to <span>Travel Demand</span></em></a></span></p>
 </section>
 <section id="only-utility-differences-matter-1" class="slide level2">
 <h2>Only utility differences matter</h2>
 <p>What happens if we add 1.5 to all utilities?</p>
-<p><span class="math display">\[
+<p><span class="math display">
 \begin{align*}
 P_{ni} &amp;= \frac{e^{V_{ni} + 1.5}}{\displaystyle\sum_{\forall j} e^{V_{nj} + 1.5}} \\
 &amp;= \frac{e^{V_{ni}}e^{1.5}}{\displaystyle\sum_{\forall j} e^{V_{nj}}e^{1.5}} \\
 &amp;= \frac{e^{V_{ni}}e^{1.5}}{e^{1.5}\displaystyle\sum_{\forall j} e^{V_{nj}}} \\
 &amp;= \frac{e^{V_{ni}}}{\displaystyle\sum_{\forall j} e^{V_{nj}}} \\
 \end{align*}
-\]</span></p>
+</span></p>
 </section>
 <section id="the-binary-and-multinomial-logit-are-the-same-model" class="slide level2">
 <h2>The binary and multinomial logit are the same model</h2>
 <ul>
 <li>The binary logit model is just a multinomial logit model with two outcome and no generic variables</li>
-<li>If we had two outcomes, 0 and 1, with systematic utilities <span class="math inline">\(V_0\)</span> and <span class="math inline">\(V_1\)</span>, the choice probability would be, with <span class="math inline">\(V_0 = 0\)</span></li>
+<li>If we had two outcomes, 0 and 1, with systematic utilities <span class="math inline">V_0</span> and <span class="math inline">V_1</span>, the choice probability would be, with <span class="math inline">V_0 = 0</span></li>
 </ul>
-<p><span class="math display">\[
+<p><span class="math display">
 \begin{align}
 P(y = 1) &amp;= \frac{e^{V_1}}{e^{V_0} + e^{V_1}}\\
 &amp;= \frac{e^{V_1}}{e^0 + e^{V_1}}\\
 &amp;= \frac{e^{V_1}}{1 + e^{V_1}}
 \end{align}
-\]</span></p>
+</span></p>
 <p>Which is the same as the predicted probability in binary logistic regression</p>
 </section>
 <section id="calculating-choice-probabilities-in-biogeme" class="slide level2">
 <h2>Calculating choice probabilities in Biogeme</h2>
 <p>Add to the end of your most recent model, and run</p>
-<div id="fc3ff528" class="cell" data-execution_count="31">
+<div id="fc3ff528" class="cell" data-execution_count="32">
 <div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a></a><span class="co"># models.loglogit(V, av, Variable("mode_choice")) represents the log-probability of the chosen alternative</span></span>
 <span id="cb21-2"><a></a><span class="co"># models.logit(V, av, 1) represents the probability (not logged) of alternative 1</span></span>
 <span id="cb21-3"><a></a>sim_model <span class="op">=</span> bio.BIOGEME(data, {</span>
@@ -2842,7 +2858,7 @@ P(y = 1) &amp;= \frac{e^{V_1}}{e^{V_0} + e^{V_1}}\\
 <ul>
 <li>Market shares are just the mean probability across all individuals</li>
 </ul>
-<div id="8d3ae870" class="cell" data-execution_count="32">
+<div id="8d3ae870" class="cell" data-execution_count="33">
 <div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a></a><span class="bu">print</span>(choice_probabilities.<span class="bu">apply</span>(np.mean))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Car        0.761975
@@ -2853,7 +2869,7 @@ dtype: float64</code></pre>
 </div>
 </div>
 <p>This is exactly the same as the market shares in the original data. This will always be the case when we have ASCs.</p>
-<div id="348b2d5d" class="cell" data-execution_count="33">
+<div id="348b2d5d" class="cell" data-execution_count="34">
 <div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a></a>df.mode_choice.value_counts() <span class="op">/</span> <span class="bu">len</span>(df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="33">
 <pre><code>mode_choice
@@ -2878,7 +2894,7 @@ Name: count, dtype: float64</code></pre>
 </section>
 <section id="simulation-1" class="slide level2">
 <h2>Simulation</h2>
-<div id="bd9027d7" class="cell" data-execution_count="34">
+<div id="bd9027d7" class="cell" data-execution_count="35">
 <div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a></a>df_road_cost <span class="op">=</span> df.copy() <span class="co"># create a copy of the data to modify</span></span>
 <span id="cb27-2"><a></a>df_road_cost[<span class="st">"car_travel_cost"</span>] <span class="op">+=</span> df_road_cost.car_distance_km <span class="op">*</span> <span class="fl">0.025</span> <span class="op">/</span> <span class="fl">1.609</span></span>
 <span id="cb27-3"><a></a>data_road_cost <span class="op">=</span> db.Database(<span class="st">"Seattle road cost"</span>, pd.get_dummies(df_road_cost).astype(<span class="st">"float64"</span>))</span>
@@ -2917,7 +2933,7 @@ dtype: float64</code></pre>
 </section>
 <section id="exercise-answers" class="slide level2">
 <h2>Exercise answers</h2>
-<div id="1a16fa7c" class="cell" data-execution_count="35">
+<div id="1a16fa7c" class="cell" data-execution_count="36">
 <div class="sourceCode cell-code" id="cb29"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a></a>df_transit_time <span class="op">=</span> df.copy() <span class="co"># create a copy of the data to modify</span></span>
 <span id="cb29-2"><a></a>df_transit_time[<span class="st">"transit_travel_time_mins"</span>] <span class="op">*=</span> <span class="fl">0.75</span></span>
 <span id="cb29-3"><a></a>data_transit_time <span class="op">=</span> db.Database(<span class="st">"Seattle transit time"</span>, pd.get_dummies(df_transit_time).astype(<span class="st">"float64"</span>))</span>
@@ -2972,12 +2988,12 @@ dtype: float64</code></pre>
 <ul>
 <li>The likelihood function for a discrete choice model is just the product of the choice probabilities of the chosen outcome for each decisionmaker</li>
 </ul>
-<p><span class="math display">\[
+<p><span class="math display">
 \begin{align*}
 L =&amp;~\prod_n P_{n,i=\mathrm{chosen}(n)}\\
   =&amp;~\prod_n \frac{e^{V_{n,i=\mathrm{chosen}(n)}}}{\sum_j e^{V_{nj}}}
 \end{align*}
-\]</span></p>
+</span></p>
 <div class="fragment">
 <ul>
 <li>Is this likely to be a large number?</li>
@@ -2989,8 +3005,8 @@ L =&amp;~\prod_n P_{n,i=\mathrm{chosen}(n)}\\
 <ul>
 <li>The likelihood is too small to comptue with
 <ul>
-<li>The smallest non-zero number than can be represented varies by machine, but is in the neighborhood of <span class="math inline">\(5 \times 10^{-324}\)</span></li>
-<li>The likelihood for the model we just estimated is about <span class="math inline">\(10^{-1961}\)</span></li>
+<li>The smallest non-zero number than can be represented varies by machine, but is in the neighborhood of <span class="math inline">5 \times 10^{-324}</span></li>
+<li>The likelihood for the model we just estimated is about <span class="math inline">10^{-1961}</span></li>
 <li>You can confirm this if you want by running <code>10 ** -1961</code> in Python, you will get 0</li>
 </ul></li>
 <li>Instead, we compute with the <i>log</i>likelihood - i.e.&nbsp;the natural logarithm of the likelihood</li>
@@ -3001,12 +3017,12 @@ L =&amp;~\prod_n P_{n,i=\mathrm{chosen}(n)}\\
 <div class="columns">
 <div class="column">
 <ul>
-<li>Logs map numbers between 0 and 1 to <span class="math inline">\(-\infty\)</span> to 0</li>
+<li>Logs map numbers between 0 and 1 to <span class="math inline">-\infty</span> to 0</li>
 <li>Very small probabilities are very large negative numbers, avoiding rounding problems</li>
-<li><span class="math inline">\(\ln ab = \ln a + \ln b\)</span></li>
+<li><span class="math inline">\ln ab = \ln a + \ln b</span></li>
 </ul>
 </div><div class="column">
-<div id="1c27d60d" class="cell" data-execution_count="36">
+<div id="1c27d60d" class="cell" data-execution_count="37">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -3019,25 +3035,25 @@ L =&amp;~\prod_n P_{n,i=\mathrm{chosen}(n)}\\
 </section>
 <section id="the-log-likelihood-function-for-a-multinomial-logit-model" class="slide level2">
 <h2>The log-likelihood function for a multinomial logit model</h2>
-<p><span class="math display">\[
+<p><span class="math display">
 \ell = \sum_{n} \ln \frac{e^{V_{n,i=\mathrm{chosen}(n)}}}{\sum_j e^{V_{nj}}}
-\]</span></p>
+</span></p>
 <ul>
 <li>We take the log of each probability</li>
 <li>The product becomes a summation</li>
 <li>We see the log-likelihood in the Biogeme output</li>
-<li>Why was the log-likelihood <span class="math inline">\(-\infty\)</span> when we first added the availability constraint?
+<li>Why was the log-likelihood <span class="math inline">-\infty</span> when we first added the availability constraint?
 <ul>
 <li><span class="fragment">Because some people chose a mode that was not available to them, making the probability 0</span></li>
 </ul></li>
 </ul>
 </section>
 <section id="pseudo-r2-statistics" class="slide level2">
-<h2>Pseudo-<span class="math inline">\(R^2\)</span> statistics</h2>
+<h2>Pseudo-<span class="math inline">R^2</span> statistics</h2>
 <ul>
-<li>In linear regression, we have the <span class="math inline">\(R^2\)</span> statistic that tells us how well the model fits the data</li>
+<li>In linear regression, we have the <span class="math inline">R^2</span> statistic that tells us how well the model fits the data</li>
 <li>We don’t have anything quite the same for discrete choice models</li>
-<li>Many authors have created pseudo-<span class="math inline">\(R^2\)</span> (sometimes called <span class="math inline">\(\rho^2\)</span>) metrics based on loglikelihoods</li>
+<li>Many authors have created pseudo-<span class="math inline">R^2</span> (sometimes called <span class="math inline">\rho^2</span>) metrics based on loglikelihoods</li>
 <li>These measure the loglikelihood of your model relative to a <em>null model</em>, either
 <ul>
 <li>a model with no coefficients, predicting equal probabilities for all alternatives, or</li>
@@ -3046,20 +3062,20 @@ L =&amp;~\prod_n P_{n,i=\mathrm{chosen}(n)}\\
 </ul>
 </section>
 <section id="mcfaddens-pseudo-r2" class="slide level2">
-<h2>McFadden’s pseudo-<span class="math inline">\(R^2\)</span></h2>
+<h2>McFadden’s pseudo-<span class="math inline">R^2</span></h2>
 <ul>
-<li>Most common is probably McFadden’s, <span class="math inline">\(1 - \frac{\ell}{\ell_C}\)</span></li>
-<li>Or McFadden’s adjusted, <span class="math inline">\(1 - \frac{\ell - K}{\ell_C}\)</span> where <span class="math inline">\(K\)</span> is number of estimated coefficients that weren’t in the null model, which attempts to correct for overfitting</li>
-<li>Anecdotally, pseudo-<span class="math inline">\(R^2\)</span> statistics tend to be fairly low</li>
+<li>Most common is probably McFadden’s, <span class="math inline">1 - \frac{\ell}{\ell_C}</span></li>
+<li>Or McFadden’s adjusted, <span class="math inline">1 - \frac{\ell - K}{\ell_C}</span> where <span class="math inline">K</span> is number of estimated coefficients that weren’t in the null model, which attempts to correct for overfitting</li>
+<li>Anecdotally, pseudo-<span class="math inline">R^2</span> statistics tend to be fairly low</li>
 </ul>
 </section>
 <section id="calculating-pseudo-r2-in-biogeme" class="slide level2">
-<h2>Calculating pseudo-<span class="math inline">\(R^2\)</span> in Biogeme</h2>
+<h2>Calculating pseudo-<span class="math inline">R^2</span> in Biogeme</h2>
 <ul>
 <li>Biogeme automatically calculates the log-likelihood at zero</li>
 <li>However, comparing to log-likelihood at constants is generally preferred
 <ul>
-<li>This is more similar to linear regression, where the <span class="math inline">\(R^2\)</span> is relative to a model with only an intercept</li>
+<li>This is more similar to linear regression, where the <span class="math inline">R^2</span> is relative to a model with only an intercept</li>
 </ul></li>
 <li>Unfortunately, Biogeme does not calculate this automatically</li>
 <li>It is pretty easy to calculate though, by removing everything but the ASCs</li>
@@ -3067,8 +3083,8 @@ L =&amp;~\prod_n P_{n,i=\mathrm{chosen}(n)}\\
 </ul>
 </section>
 <section id="calculating-pseudo-r2-in-biogeme-results" class="slide level2">
-<h2>Calculating pseudo-<span class="math inline">\(R^2\)</span> in Biogeme: results</h2>
-<div id="121000b3" class="cell" data-execution_count="37">
+<h2>Calculating pseudo-<span class="math inline">R^2</span> in Biogeme: results</h2>
+<div id="121000b3" class="cell" data-execution_count="38">
 <div class="code-with-filename">
 <div class="code-with-filename-file">
 <pre><strong>seattle_constants.py</strong></pre>
@@ -3156,13 +3172,13 @@ asc_walk    -1.411608      0.027472   -51.383789           0.0</code></pre>
 </div>
 </section>
 <section id="calculating-pseudo-r2-in-biogeme-1" class="slide level2">
-<h2>Calculating pseudo-<span class="math inline">\(R^2\)</span> in Biogeme</h2>
+<h2>Calculating pseudo-<span class="math inline">R^2</span> in Biogeme</h2>
 <ul>
 <li>Log-likelihood at constants: -6211.13</li>
 <li>Log-likelihood at convergence: -4515.951</li>
-<li>McFadden’s pseudo-<span class="math inline">\(R^2\)</span>: <span class="math inline">\(1 - \frac{-4515.951}{-6211.13} = 0.273\)</span></li>
+<li>McFadden’s pseudo-<span class="math inline">R^2</span>: <span class="math inline">1 - \frac{-4515.951}{-6211.13} = 0.273</span></li>
 <li>Estimated parameters other than ASCs: 8</li>
-<li>McFadden’s adjusted pseudo-<span class="math inline">\(R^2\)</span>: <span class="math inline">\(1 - \frac{-4515.951 - 8}{-6211.13} = 0.272\)</span></li>
+<li>McFadden’s adjusted pseudo-<span class="math inline">R^2</span>: <span class="math inline">1 - \frac{-4515.951 - 8}{-6211.13} = 0.272</span></li>
 </ul>
 </section>
 <section id="comparing-coefficients-of-logistic-regression-models" class="slide level2">
@@ -3179,8 +3195,8 @@ asc_walk    -1.411608      0.027472   -51.383789           0.0</code></pre>
 <div class="columns">
 <div class="column" style="width:50%;">
 <ul>
-<li>True model: <span class="math inline">\(V_1 = 0.3 + 2x_1 + 2x_2 + 2x_3\)</span></li>
-<li><span class="math inline">\(x_1\)</span>, <span class="math inline">\(x_2\)</span>, <span class="math inline">\(x_3\)</span> uncorrelated</li>
+<li>True model: <span class="math inline">V_1 = 0.3 + 2x_1 + 2x_2 + 2x_3</span></li>
+<li><span class="math inline">x_1</span>, <span class="math inline">x_2</span>, <span class="math inline">x_3</span> uncorrelated</li>
 </ul>
 </div><div class="column" style="width:50%;">
 <table>
@@ -3354,7 +3370,7 @@ x3
 <section id="independence-of-irrelevant-alternatives" class="slide level2">
 <h2>Independence of irrelevant alternatives</h2>
 <ul>
-<li>The multinomial logit model assumes the <span class="math inline">\(\epsilon\)</span>’s are independent</li>
+<li>The multinomial logit model assumes the <span class="math inline">\epsilon</span>’s are independent</li>
 <li>That is, there are no shared <em>unobserved</em> attributes of alternatives (i.e.&nbsp;not in the model)</li>
 <li>A significant implication of this assumption is the <em>independence of irrelevant alternatives</em> property</li>
 <li>This says that when the probability of choosing one alternative increases (decreases), the probability of choosing the others decreases (increases) proportionally to the original probability of choosing that mode
@@ -3421,9 +3437,9 @@ x3
 <li>At the top level, the utility of a nest is based on the utility of the items within that nest</li>
 <li>The probability of choosing an alternative within a nest is the probability of choosing that nest multiplied by the probability of choosing the alternative given that the nest is chosen, e.g.</li>
 </ul>
-<p><span class="math display">\[
+<p><span class="math display">
 P(car) = P(motorized) \times P(car|motorized)
-\]</span></p>
+</span></p>
 <ul>
 <li>Some people actually implement the nested logit model by estimating separate multinomial logit models for each nest and between the nests
 <ul>
@@ -3437,25 +3453,25 @@ P(car) = P(motorized) \times P(car|motorized)
 <li>The utility of a nest is the maximum of the utilities of the members of that nest</li>
 <li>We’ve already seen the formula for this, thanks to our Gumbel-distributed errors:</li>
 </ul>
-<p><span class="math display">\[
+<p><span class="math display">
 \Gamma_{\mathrm{nest}} = \ln \sum_{j \in \mathrm{nest}} e^V_{j}
-\]</span></p>
+</span></p>
 </section>
 <section id="top-level-choice-probability" class="slide level2">
 <h2>Top-level choice probability</h2>
 <ul>
 <li>The top-level choice probability is like a multinomial logit, with the expected maximum utility for the nest</li>
 </ul>
-<p><span class="math display">\[
+<p><span class="math display">
 P(motorized) = \frac{e^{\ln \sum_{j \in \mathrm{motorized}} e^{V_{j}}}}{e^{\ln \sum_{j \in \mathrm{motorized}} V_{j}} + e^{V_{bike}} + e^{V_{walk}}}
-\]</span></p>
+</span></p>
 </section>
 <section id="this-reduces-to-the-multinomial-logit" class="slide level2">
 <h2>This reduces to the multinomial logit</h2>
 <ul>
 <li>With some math we can show this is equivalent to the multinomial logit model</li>
 </ul>
-<p><span class="math display">\[
+<p><span class="math display">
 \begin{align*}
 P(motorized) &amp;= \frac{e^{\ln \sum_{j \in \mathrm{motorized}} e^{V_{j}}}}{e^{\ln \sum_{j \in \mathrm{motorized}} e^{V_j}} + e^{V_{bike}} + e^{V_{walk}}} \\
              &amp;= \frac{\sum_{j \in \mathrm{motorized}} e^{V_j}}{\sum_{j \in \mathrm{motorized}} e^{V_j} + e^{V_{bike}} + e^{V_{walk}}} \\
@@ -3463,26 +3479,26 @@ P(motorized) &amp;= \frac{e^{\ln \sum_{j \in \mathrm{motorized}} e^{V_{j}}}}{e^{
              &amp;= \frac{e^{V_{car}}}{e^{V_{car}} + e^{V_{transit}} + e^{V_{bike}} + e^{V_{walk}}} + \frac{e^{V_{transit}}}{e^{V_{car}} + e^{V_{bike}} + e^{V_{bike}} + e^{V_{walk}}} \\
              &amp;= P_{mnl}(car) + P_{mnl}(transit)
 \end{align*}
-\]</span></p>
+</span></p>
 </section>
 <section id="scale-parameters" class="slide level2">
 <h2>Scale parameters</h2>
 <ul>
 <li>If the nested logit is equivalent to the multinomial logit, why bother?</li>
-<li>There is an additional term that is introduced in the nested logit, the <em>inclusive value</em> parameter <span class="math inline">\(\theta\)</span></li>
+<li>There is an additional term that is introduced in the nested logit, the <em>inclusive value</em> parameter <span class="math inline">\theta</span></li>
 <li>The utility of choosing a nest, then, is</li>
 </ul>
-<p><span class="math display">\[
+<p><span class="math display">
 \theta \ln \sum_{j \in nest} e^{V_j / \theta}
-\]</span></p>
+</span></p>
 </section>
 <section id="what-does-the-scaling-parameter-do" class="slide level2">
 <h2>What does the scaling parameter do?</h2>
-<p><span class="math display">\[
+<p><span class="math display">
 \theta \ln \sum_{j \in nest} e^{V_j / \theta}
-\]</span></p>
+</span></p>
 <ul>
-<li>The first <span class="math inline">\(\theta\)</span> scales the expected maximum utility to account for correlation between the error terms of the items in the nest</li>
+<li>The first <span class="math inline">\theta</span> scales the expected maximum utility to account for correlation between the error terms of the items in the nest</li>
 <li>When the error terms are uncorrelated, it is fairly likely that one of them will result in relatively high utility, just by chance
 <ul>
 <li>Because there are many chances for an error term to be large</li>
@@ -3491,13 +3507,13 @@ P(motorized) &amp;= \frac{e^{\ln \sum_{j \in \mathrm{motorized}} e^{V_{j}}}}{e^{
 <ul>
 <li>At the extreme, if the error terms were perfectly correlated, there would only be one chance for the error term to result in a large utility</li>
 </ul></li>
-<li>The second <span class="math inline">\(\theta\)</span> normalizes the utilities so that the coefficients are comparable across alternatives in different nests</li>
+<li>The second <span class="math inline">\theta</span> normalizes the utilities so that the coefficients are comparable across alternatives in different nests</li>
 </ul>
 </section>
 <section id="the-range-of-theta" class="slide level2">
-<h2>The range of <span class="math inline">\(\theta\)</span></h2>
+<h2>The range of <span class="math inline">\theta</span></h2>
 <ul>
-<li><span class="math inline">\(\theta\)</span> should be between 0 and 1</li>
+<li><span class="math inline">\theta</span> should be between 0 and 1</li>
 <li>If it is not, the model is not consistent with random utility theory</li>
 </ul>
 </section>
@@ -3505,12 +3521,12 @@ P(motorized) &amp;= \frac{e^{\ln \sum_{j \in \mathrm{motorized}} e^{V_{j}}}}{e^{
 <h2>Estimating a nested logit model in Biogeme</h2>
 <ul>
 <li>We will put transit and driving together in a “motorized” nest.</li>
-<li>Biogeme does not estimated <span class="math inline">\(\theta\)</span>, instead it estimates <span class="math inline">\(\mu\)</span> which is <span class="math inline">\(\frac{1}{\theta}\)</span></li>
+<li>Biogeme does not estimated <span class="math inline">\theta</span>, instead it estimates <span class="math inline">\mu</span> which is <span class="math inline">\frac{1}{\theta}</span></li>
 </ul>
 </section>
 <section id="estimating-a-nested-logit-model-in-biogeme-code" class="slide level2">
 <h2>Estimating a nested logit model in Biogeme: code</h2>
-<div id="89c5d5ec" class="cell" data-execution_count="38">
+<div id="89c5d5ec" class="cell" data-execution_count="39">
 <div class="code-with-filename">
 <div class="code-with-filename-file">
 <pre><strong>seattle_nested.py</strong></pre>
@@ -3637,7 +3653,7 @@ mu_motorized                0.758889      0.080916     9.378704  0.000000e+00</c
 </section>
 <section id="nested-logit-results" class="slide level2">
 <h2>Nested logit results</h2>
-<div id="c01f865e" class="cell" data-execution_count="39">
+<div id="c01f865e" class="cell" data-execution_count="40">
 <div class="cell-output cell-output-display cell-output-markdown" data-execution_count="39">
 <table class="caption-top">
 <thead>
@@ -3743,7 +3759,7 @@ mu_motorized                0.758889      0.080916     9.378704  0.000000e+00</c
 <h2>Interpreting the nested logit model</h2>
 <div>
 <ul>
-<li class="fragment"><span class="math inline">\(\mu\)</span> is 0.76. What is <span class="math inline">\(\theta\)</span>?</li>
+<li class="fragment"><span class="math inline">\mu</span> is 0.76. What is <span class="math inline">\theta</span>?</li>
 <li class="fragment">1 / 0.76 = 1.32</li>
 <li class="fragment">Do we accept this as a valid nested logit model?</li>
 </ul>
@@ -3765,7 +3781,7 @@ mu_motorized                0.758889      0.080916     9.378704  0.000000e+00</c
 </section>
 <section id="exercise-answer" class="slide level2">
 <h2>Exercise answer</h2>
-<div id="774895ba" class="cell" data-execution_count="40">
+<div id="774895ba" class="cell" data-execution_count="41">
 <div class="code-with-filename">
 <div class="code-with-filename-file">
 <pre><strong>seattle_nested_active.py</strong></pre>
@@ -3892,7 +3908,7 @@ mu_active                   1.071948      0.084551    12.678100  0.000000e+00</c
 </section>
 <section id="nested-logit-results-again" class="slide level2">
 <h2>Nested logit results, again</h2>
-<div id="5d66907d" class="cell" data-execution_count="41">
+<div id="5d66907d" class="cell" data-execution_count="42">
 <div class="cell-output cell-output-display cell-output-markdown" data-execution_count="41">
 <table class="caption-top">
 <thead>
@@ -3998,7 +4014,7 @@ mu_active                   1.071948      0.084551    12.678100  0.000000e+00</c
 <h2>Interpreting the nested logit model, again</h2>
 <div>
 <ul>
-<li class="fragment"><span class="math inline">\(\mu\)</span> is 1.07. What is <span class="math inline">\(\theta\)</span>?</li>
+<li class="fragment"><span class="math inline">\mu</span> is 1.07. What is <span class="math inline">\theta</span>?</li>
 <li class="fragment">1 / 1.07 = 0.93</li>
 <li class="fragment">Do we accept this as a valid nested logit model?</li>
 <li class="fragment">What does this mean about the error correlation between walking and biking?</li>
@@ -4008,13 +4024,13 @@ mu_active                   1.071948      0.084551    12.678100  0.000000e+00</c
 <section id="testing-the-nested-logit-model" class="slide level2">
 <h2>Testing the nested logit model</h2>
 <ul>
-<li>If <span class="math inline">\(\theta\)</span> were 1, the results would be the same as the multinomial logit model, and we wouldn’t need a nested logit model</li>
+<li>If <span class="math inline">\theta</span> were 1, the results would be the same as the multinomial logit model, and we wouldn’t need a nested logit model</li>
 <li>0.93 isn’t that different from 1</li>
 <li>How do we know we need a nested logit model?</li>
-<li>When there’s just one nest we can use a standard <span class="math inline">\(z\)</span>-test and <span class="math inline">\(p\)</span>-value
+<li>When there’s just one nest we can use a standard <span class="math inline">z</span>-test and <span class="math inline">p</span>-value
 <ul>
-<li>Much software doesn’t do the right test, though—we need to test that the nesting parameter (<span class="math inline">\(\theta\)</span> or <span class="math inline">\(\mu\)</span>) is different from one, not zero like most coefficients</li>
-<li>In our case, <span class="math inline">\(\mu\)</span> is just under one standard error above 1, so is <em>not</em> statistically significant</li>
+<li>Much software doesn’t do the right test, though—we need to test that the nesting parameter (<span class="math inline">\theta</span> or <span class="math inline">\mu</span>) is different from one, not zero like most coefficients</li>
+<li>In our case, <span class="math inline">\mu</span> is just under one standard error above 1, so is <em>not</em> statistically significant</li>
 <li>We can reject <em>this</em> nesting structure as not being superior to multinomial logit, though there may be other nesting structures that are</li>
 </ul></li>
 </ul>
@@ -4025,11 +4041,11 @@ mu_active                   1.071948      0.084551    12.678100  0.000000e+00</c
 <li>The standard test for a nested-logit model versus a multinomial logit model is a likelihood-ratio test</li>
 <li>This works even when there are multiple nests</li>
 <li>The likelihood-ratio is a statistical test for whether the overall improvement in the model justifies the added parameters</li>
-<li>The <em>test statistic</em> is <span class="math inline">\(-2 (\ell_{mnl} - \ell_{nl})\)</span>
+<li>The <em>test statistic</em> is <span class="math inline">-2 (\ell_{mnl} - \ell_{nl})</span>
 <ul>
 <li>This is called a likelihood-<em>ratio</em> test because a difference in logarithms is equivalent to division</li>
 </ul></li>
-<li>It has a <span class="math inline">\(\chi^2\)</span> distribution (yay another distribution)</li>
+<li>It has a <span class="math inline">\chi^2</span> distribution (yay another distribution)</li>
 <li>The number of degrees of freedom is the number of nests you have</li>
 </ul>
 </section>
@@ -4044,14 +4060,14 @@ mu_active                   1.071948      0.084551    12.678100  0.000000e+00</c
 </ul></li>
 <li class="fragment">Difference: -0.465</li>
 <li class="fragment">Test statistic: 0.930</li>
-<li class="fragment"><span class="math inline">\(\chi^2\)</span> p-value: 0.34</li>
+<li class="fragment"><span class="math inline">\chi^2</span> p-value: 0.34</li>
 <li class="fragment">Can we conclude that the NL model is superior to the MNL?</li>
 </ul>
 </div>
 </section>
 <section id="the-likelihood-ratio-test-in-code" class="slide level2">
 <h2>The likelihood-ratio test, in code</h2>
-<div id="4c6a75cd" class="cell" data-execution_count="42">
+<div id="4c6a75cd" class="cell" data-execution_count="43">
 <div class="sourceCode cell-code" id="cb37"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a></a><span class="im">import</span> scipy</span>
 <span id="cb37-2"><a></a></span>
 <span id="cb37-3"><a></a><span class="co"># 0.930 is our test statistic, 1 is the number of degrees of freedom</span></span>
@@ -4069,7 +4085,7 @@ mu_active                   1.071948      0.084551    12.678100  0.000000e+00</c
 <ul>
 <li>Confusingly, not the same as a nested-logit model</li>
 <li>Nested models mean that the more complex model can be transformed into the simple model by restricting some coefficients</li>
-<li>For instance, a nested logit can be transformed into an MNL by restricting the <span class="math inline">\(\theta\)</span>’s to 1</li>
+<li>For instance, a nested logit can be transformed into an MNL by restricting the <span class="math inline">\theta</span>’s to 1</li>
 <li>Or two multinomial logit models where one has a few added coefficients, the more complex model is equivalent to the simpler model if those coefficients are restricted to zero</li>
 <li>The number of degrees of freedom is just the number of restrictions</li>
 </ul></li>
@@ -4094,11 +4110,11 @@ mu_active                   1.071948      0.084551    12.678100  0.000000e+00</c
 </div>
 </div>
 <ul>
-<li>We will have one <span class="math inline">\(\theta\)</span> for each nest</li>
-<li><span class="math inline">\(\theta\)</span>’s for top-level nests should be between 0 and 1</li>
-<li><span class="math inline">\(\theta\)</span>’s for subnests should be between 0 and the <span class="math inline">\(\theta\)</span> in the next higher level nest
+<li>We will have one <span class="math inline">\theta</span> for each nest</li>
+<li><span class="math inline">\theta</span>’s for top-level nests should be between 0 and 1</li>
+<li><span class="math inline">\theta</span>’s for subnests should be between 0 and the <span class="math inline">\theta</span> in the next higher level nest
 <ul>
-<li>And a <span class="math inline">\(z\)</span>-test should be relative to the <span class="math inline">\(\theta\)</span> in the next higher nest, or just use a likelihood-ratio test</li>
+<li>And a <span class="math inline">z</span>-test should be relative to the <span class="math inline">\theta</span> in the next higher nest, or just use a likelihood-ratio test</li>
 </ul></li>
 <li>Biogeme can’t directly estimate this type of model; <a href="https://larch.newman.me/">larch</a> (Python) or <a href="http://www.apollochoicemodelling.com">Apollo</a> (R) can.</li>
 </ul>
@@ -4109,15 +4125,15 @@ mu_active                   1.071948      0.084551    12.678100  0.000000e+00</c
 <li>Another way to think about the nested logit model is that it allows an error term that varies between nests/top-level alternatives and another that varies within each nest</li>
 <li>So, for instance, the utilities of biking and walking in our nested logit model above are</li>
 </ul>
-<p><span class="math display">\[
+<p><span class="math display">
 \begin{align}
 U_{bike} &amp;= V_{bike} + \epsilon_{nonmotorized} + \epsilon_{bike} \\
 U_{walk} &amp;= V_{walk} + \epsilon_{nonmotorized} + \epsilon_{walk}
 \end{align}
-\]</span></p>
+</span></p>
 <ul>
-<li>What <span class="math inline">\(\theta\)</span> actually represents is the ratio of the scales of the error terms at the top-level portion of the model and in the nest</li>
-<li>As <span class="math inline">\(\theta\)</span> approaches 1, the scales of the error approach equality. When they are equal, the within nest variation is contributing all of the error term, and there is no shared unobserved variation.</li>
+<li>What <span class="math inline">\theta</span> actually represents is the ratio of the scales of the error terms at the top-level portion of the model and in the nest</li>
+<li>As <span class="math inline">\theta</span> approaches 1, the scales of the error approach equality. When they are equal, the within nest variation is contributing all of the error term, and there is no shared unobserved variation.</li>
 </ul>
 </section>
 <section id="estimation-challenges-with-the-nested-logit-local-optima-i" class="slide level2">
@@ -4130,7 +4146,7 @@ U_{walk} &amp;= V_{walk} + \epsilon_{nonmotorized} + \epsilon_{walk}
 <li>The <em>multinomial logit</em> model is globally convex—there is only one place where moving the coefficients does not improve the loglikelihood—at the solution</li>
 </ul>
 </div><div class="column">
-<div id="69c01809" class="cell" data-execution_count="43">
+<div id="69c01809" class="cell" data-execution_count="44">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -4148,10 +4164,10 @@ U_{walk} &amp;= V_{walk} + \epsilon_{nonmotorized} + \epsilon_{walk}
 <ul>
 <li>The <em>nested logit</em> model is not—there may be local optima where moving the coefficients a small amount cannot improve the loglikelihood, even if moving them quite a bit might find a set of coefficients with a better loglikelihood</li>
 <li>You can experiment with this by adjusting the <em>starting values</em> of the coefficients—the first number in the call to <code>Beta()</code></li>
-<li><span class="citation" data-cites="koppelman_self_2006">Koppelman &amp; Bhat <a href="#/questions" role="doc-biblioref" onclick="">(2006) <em>A <span>Self Instructing Course</span> in <span>Mode Choice Modeling</span>: <span>Multinomial</span> and <span>Nested Logit Models</span></em></a></span> recommends trying starting with <span class="math inline">\(\theta = 0.5\)</span> (<span class="math inline">\(\mu = 2\)</span>) as this may lead to a higher likelihood of finding a valid nested logit solution</li>
+<li><span class="citation" data-cites="koppelman_self_2006">Koppelman &amp; Bhat <a href="#/questions" role="doc-biblioref" onclick="">(2006) <em>A <span>Self Instructing Course</span> in <span>Mode Choice Modeling</span>: <span>Multinomial</span> and <span>Nested Logit Models</span></em></a></span> recommends trying starting with <span class="math inline">\theta = 0.5</span> (<span class="math inline">\mu = 2</span>) as this may lead to a higher likelihood of finding a valid nested logit solution</li>
 </ul>
 </div><div class="column">
-<div id="be2f0204" class="cell" data-execution_count="44">
+<div id="be2f0204" class="cell" data-execution_count="45">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -4232,7 +4248,6 @@ U_{walk} &amp;= V_{walk} + \epsilon_{nonmotorized} + \epsilon_{walk}
   <script src="site_libs/revealjs/plugin/notes/notes.js"></script>
   <script src="site_libs/revealjs/plugin/search/search.js"></script>
   <script src="site_libs/revealjs/plugin/zoom/zoom.js"></script>
-  <script src="site_libs/revealjs/plugin/math/math.js"></script>
   <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
 
   <script>
@@ -4399,27 +4414,9 @@ U_{walk} &amp;= V_{walk} + \epsilon_{nonmotorized} + \epsilon_{walk}
         // Factor of the display size that should remain empty around the content
         margin: 0.1,
 
-        math: {
-          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js',
-          config: 'TeX-AMS_HTML-full',
-          tex2jax: {
-            inlineMath: [['\\(','\\)']],
-            displayMath: [['\\[','\\]']],
-            balanceBraces: true,
-            processEscapes: false,
-            processRefs: true,
-            processEnvironments: true,
-            preview: 'TeX',
-            skipTags: ['script','noscript','style','textarea','pre','code'],
-            ignoreClass: 'tex2jax_ignore',
-            processClass: 'tex2jax_process'
-          },
-        },
-
         // reveal.js plugins
         plugins: [QuartoLineHighlight, PdfExport, RevealMenu, QuartoSupport,
 
-          RevealMath,
           RevealNotes,
           RevealSearch,
           RevealZoom
