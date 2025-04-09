@@ -9,7 +9,7 @@ format:
         height: 1080
         logo: UNC_logo_RGB.png
         slide-number: true
-        html-math-method: mathjax
+        html-math-method: katex
 jupyter: odum-discrete
 execute:
     eval: true
