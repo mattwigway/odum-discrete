@@ -1369,7 +1369,7 @@ plt.plot(xs, ys)
 Because of the properties of the Gumbel distribution, 
 
 $$
-\max_{\forall j\neq i} \left(V_{nj} + \epsilon_{nj}\right) = \ln \sum_{\forall j\neq i} e^{V_{nj}}
+E[\max_{\forall j\neq i} \left(V_{nj} + \epsilon_{nj}\right)] = \ln \sum_{\forall j\neq i} e^{V_{nj}}
 $$
 
 ## Calculating the choice probability
@@ -1386,6 +1386,14 @@ P_{ni} =&~P\left[\left(V_{ni} + \epsilon_{ni}\right)~~\geq~~\max_{\forall j\neq 
 $$
 
 which is also known as the softmax function. More detail: see Section 5.2 of @ben-akiva_discrete_1985
+
+## The expected maximum utility/logsum
+
+::: {.incremental}
+- The denominator of the probability function is the "expected maximum utility" (in exponentiated form), also called the "logsum"
+- This estimates how much utility a decisionmaker will derive from their chosen outcome, _without having to know what they choose_
+:::
+
 
 ## Only utility differences matter
 
