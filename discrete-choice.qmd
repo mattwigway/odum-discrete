@@ -429,7 +429,7 @@ av = {0: 1, 1: 1}
 logprob = models.loglogit(V, av, Variable("wfh_expectation"))
 
 model = bio.BIOGEME(data, logprob)
-model.modelName = "biogeme_binary"
+model.model_name = "biogeme_binary"
 model.calculate_null_loglikelihood(av)
 result = model.estimate()
 
@@ -534,7 +534,7 @@ av = {0: 1, 1: 1}
 logprob = models.loglogit(V, av, Variable("wfh_expectation"))
 
 model = bio.BIOGEME(data, logprob)
-model.modelName = "biogeme_binary_race"
+model.model_name = "biogeme_binary_race"
 model.calculate_null_loglikelihood(av)
 result = model.estimate()
 
@@ -711,7 +711,7 @@ av = {1: 1, 2: 1, 3: 1, 4: 1}
 logprob = models.loglogit(V, av, Variable("numeric_mode"))
 
 model = bio.BIOGEME(data, logprob)
-model.modelName = "seattle_mode_choice"
+model.model_name = "seattle_mode_choice"
 model.calculate_null_loglikelihood(av)
 result = model.estimate()
 
@@ -818,7 +818,7 @@ av = {1: 1, 2: 1, 3: 1, 4: 1}
 logprob = models.loglogit(V, av, Variable("numeric_mode"))
 
 model = bio.BIOGEME(data, logprob)
-model.modelName = "seattle_mnl_income"
+model.model_name = "seattle_mnl_income"
 model.calculate_null_loglikelihood(av)
 result = model.estimate()
 
@@ -893,7 +893,7 @@ av = {1: 1, 2: 1, 3: 1, 4: 1}
 logprob = models.loglogit(V, av, Variable("numeric_mode"))
 
 model = bio.BIOGEME(data, logprob)
-model.modelName = "seattle_mnl_income_rush"
+model.model_name = "seattle_mnl_income_rush"
 model.calculate_null_loglikelihood(av)
 result = model.estimate()
 
@@ -1002,7 +1002,7 @@ av = {1: 1, 2: Variable("transit_available"), 3: 1, 4: 1}
 logprob = models.loglogit(V, av, Variable("numeric_mode"))
 
 model = bio.BIOGEME(data, logprob)
-model.modelName = "seattle_mnl_availability"
+model.model_name = "seattle_mnl_availability"
 model.calculate_null_loglikelihood(av)
 result = model.estimate()
 
@@ -1086,7 +1086,7 @@ av = {1: 1, 2: Variable("transit_available"), 3: 1, 4: 1}
 logprob = models.loglogit(V, av, Variable("numeric_mode"))
 
 model = bio.BIOGEME(data, logprob)
-model.modelName = "seattle_mnl_availability_fixed"
+model.model_name = "seattle_mnl_availability_fixed"
 model.calculate_null_loglikelihood(av)
 result = model.estimate()
 
@@ -1182,7 +1182,7 @@ av = {1: 1, 2: Variable("transit_available"), 3: 1, 4: 1}
 logprob = models.loglogit(V, av, Variable("numeric_mode"))
 
 model = bio.BIOGEME(data, logprob)
-model.modelName = "seattle_mnl_generic"
+model.model_name = "seattle_mnl_generic"
 model.calculate_null_loglikelihood(av)
 result = model.estimate()
 
@@ -1269,7 +1269,7 @@ av = {1: 1, 2: Variable("transit_available"), 3: 1, 4: 1}
 logprob = models.loglogit(V, av, Variable("numeric_mode"))
 
 model = bio.BIOGEME(data, logprob)
-model.modelName = "seattle_mnl_generic_cost"
+model.model_name = "seattle_mnl_generic_cost"
 model.calculate_null_loglikelihood(av)
 result = model.estimate()
 
@@ -1665,7 +1665,7 @@ av = {1: 1, 2: Variable("transit_available"), 3: 1, 4: 1}
 logprob = models.loglogit(V, av, Variable("numeric_mode"))
 
 model = bio.BIOGEME(data, logprob)
-model.modelName = "seattle_constants"
+model.model_name = "seattle_constants"
 model.calculate_null_loglikelihood(av)
 result = model.estimate()
 
@@ -1965,7 +1965,7 @@ nests = NestsForNestedLogit(choice_set=V.keys(), tuple_of_nests=(motorized,))
 logprob = models.lognested(V, av, nests, Variable("numeric_mode"))
 
 model = bio.BIOGEME(data, logprob)
-model.modelName = "seattle_nested"
+model.model_name = "seattle_nested"
 model.calculate_null_loglikelihood(av)
 result = model.estimate()
 
@@ -2098,7 +2098,7 @@ nests = NestsForNestedLogit(choice_set=V.keys(), tuple_of_nests=(active,))
 logprob = models.lognested(V, av, nests, Variable("numeric_mode"))
 
 model = bio.BIOGEME(data, logprob)
-model.modelName = "seattle_nested_active"
+model.model_name = "seattle_nested_active"
 model.calculate_null_loglikelihood(av)
 result = model.estimate()
 
