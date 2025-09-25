@@ -6,9 +6,8 @@
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="site_libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.5.57">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-ea385d0e468b0dd5ea5bf0780b1290d9.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.7.33">
 
   <meta name="author" content="Matt Bhagat-Conway">
   <title>Odum Discrete Choice Models – Introduction to Discrete Choice Models</title>
@@ -30,8 +29,9 @@
       vertical-align: middle;
     }
     /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
     pre > code.sourceCode { white-space: pre; position: relative; }
-    pre > code.sourceCode > span { line-height: 1.25; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
     pre > code.sourceCode > span:empty { height: 1.2em; }
     .sourceCode { overflow: visible; }
     code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -42,7 +42,7 @@
     }
     @media print {
     pre > code.sourceCode { white-space: pre-wrap; }
-    pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
     }
     pre.numberSource code
       { counter-reset: source-line 0; }
@@ -114,225 +114,11 @@
     div.csl-indent {
       margin-left: 2em;
     }  </style>
-  <link rel="stylesheet" href="site_libs/revealjs/dist/theme/quarto.css">
-  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.js"></script>
-  <script>document.addEventListener("DOMContentLoaded", function () {
- var mathElements = document.getElementsByClassName("math");
- var macros = [];
- for (var i = 0; i < mathElements.length; i++) {
-  var texText = mathElements[i].firstChild;
-  if (mathElements[i].tagName == "SPAN") {
-   katex.render(texText.data, mathElements[i], {
-    displayMode: mathElements[i].classList.contains('display'),
-    throwOnError: false,
-    macros: macros,
-    fleqn: false
-   });
-}}});
-  </script>
-  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css">
+  <link rel="stylesheet" href="site_libs/revealjs/dist/theme/quarto-13bb69b1d4e03e96bacc53254dd2c65e.css">
   <link href="site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
   <link href="site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
-  <style type="text/css">
-
-  .callout {
-    margin-top: 1em;
-    margin-bottom: 1em;  
-    border-radius: .25rem;
-  }
-
-  .callout.callout-style-simple { 
-    padding: 0em 0.5em;
-    border-left: solid #acacac .3rem;
-    border-right: solid 1px silver;
-    border-top: solid 1px silver;
-    border-bottom: solid 1px silver;
-    display: flex;
-  }
-
-  .callout.callout-style-default {
-    border-left: solid #acacac .3rem;
-    border-right: solid 1px silver;
-    border-top: solid 1px silver;
-    border-bottom: solid 1px silver;
-  }
-
-  .callout .callout-body-container {
-    flex-grow: 1;
-  }
-
-  .callout.callout-style-simple .callout-body {
-    font-size: 1rem;
-    font-weight: 400;
-  }
-
-  .callout.callout-style-default .callout-body {
-    font-size: 0.9rem;
-    font-weight: 400;
-  }
-
-  .callout.callout-titled.callout-style-simple .callout-body {
-    margin-top: 0.2em;
-  }
-
-  .callout:not(.callout-titled) .callout-body {
-      display: flex;
-  }
-
-  .callout:not(.no-icon).callout-titled.callout-style-simple .callout-content {
-    padding-left: 1.6em;
-  }
-
-  .callout.callout-titled .callout-header {
-    padding-top: 0.2em;
-    margin-bottom: -0.2em;
-  }
-
-  .callout.callout-titled .callout-title  p {
-    margin-top: 0.5em;
-    margin-bottom: 0.5em;
-  }
-    
-  .callout.callout-titled.callout-style-simple .callout-content  p {
-    margin-top: 0;
-  }
-
-  .callout.callout-titled.callout-style-default .callout-content  p {
-    margin-top: 0.7em;
-  }
-
-  .callout.callout-style-simple div.callout-title {
-    border-bottom: none;
-    font-size: .9rem;
-    font-weight: 600;
-    opacity: 75%;
-  }
-
-  .callout.callout-style-default  div.callout-title {
-    border-bottom: none;
-    font-weight: 600;
-    opacity: 85%;
-    font-size: 0.9rem;
-    padding-left: 0.5em;
-    padding-right: 0.5em;
-  }
-
-  .callout.callout-style-default div.callout-content {
-    padding-left: 0.5em;
-    padding-right: 0.5em;
-  }
-
-  .callout.callout-style-simple .callout-icon::before {
-    height: 1rem;
-    width: 1rem;
-    display: inline-block;
-    content: "";
-    background-repeat: no-repeat;
-    background-size: 1rem 1rem;
-  }
-
-  .callout.callout-style-default .callout-icon::before {
-    height: 0.9rem;
-    width: 0.9rem;
-    display: inline-block;
-    content: "";
-    background-repeat: no-repeat;
-    background-size: 0.9rem 0.9rem;
-  }
-
-  .callout-title {
-    display: flex
-  }
-    
-  .callout-icon::before {
-    margin-top: 1rem;
-    padding-right: .5rem;
-  }
-
-  .callout.no-icon::before {
-    display: none !important;
-  }
-
-  .callout.callout-titled .callout-body > .callout-content > :last-child {
-    padding-bottom: 0.5rem;
-    margin-bottom: 0;
-  }
-
-  .callout.callout-titled .callout-icon::before {
-    margin-top: .5rem;
-    padding-right: .5rem;
-  }
-
-  .callout:not(.callout-titled) .callout-icon::before {
-    margin-top: 1rem;
-    padding-right: .5rem;
-  }
-
-  /* Callout Types */
-
-  div.callout-note {
-    border-left-color: #4582ec !important;
-  }
-
-  div.callout-note .callout-icon::before {
-    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAAEU0lEQVRYCcVXTWhcVRQ+586kSUMMxkyaElstCto2SIhitS5Ek8xUKV2poatCcVHtUlFQk8mbaaziwpWgglJwVaquitBOfhQXFlqlzSJpFSpIYyXNjBNiTCck7x2/8/LeNDOZxDuEkgOXe++553zfefee+/OYLOXFk3+1LLrRdiO81yNqZ6K9cG0P3MeFaMIQjXssE8Z1JzLO9ls20MBZX7oG8w9GxB0goaPrW5aNMp1yOZIa7Wv6o2ykpLtmAPs/vrG14Z+6d4jpbSKuhdcSyq9wGMPXjonwmESXrriLzFGOdDBLB8Y6MNYBu0dRokSygMA/mrun8MGFN3behm6VVAwg4WR3i6FvYK1T7MHo9BK7ydH+1uurECoouk5MPRyVSBrBHMYwVobG2aOXM07sWrn5qgB60rc6mcwIDJtQrnrEr44kmy+UO9r0u9O5/YbkS9juQckLed3DyW2XV/qWBBB3ptvI8EUY3I9p/67OW+g967TNr3Sotn3IuVlfMLVnsBwH4fsnebJvyGm5GeIUA3jljERmrv49SizPYuq+z7c2H/jlGC+Ghhupn/hcapqmcudB9jwJ/3jvnvu6vu5lVzF1fXyZuZZ7U8nRmVzytvT+H3kilYvH09mLWrQdwFSsFEsxFVs5fK7A0g8gMZjbif4ACpKbjv7gNGaD8bUrlk8x+KRflttr22JEMRUbTUwwDQScyzPgedQHZT0xnx7ujw2jfVfExwYHwOsDTjLdJ2ebmeQIlJ7neo41s/DrsL3kl+W2lWvAga0tR3zueGr6GL78M3ifH0rGXrBC2aAR8uYcIA5gwV8zIE8onoh8u0Fca/ciF7j1uOzEnqcIm59sEXoGc0+z6+H45V1CvAvHcD7THztu669cnp+L0okAeIc6zjbM/24LgGM1gZk7jnRu1aQWoU9sfUOuhrmtaPIO3YY1KLLWZaEO5TKUbMY5zx8W9UJ6elpLwKXbsaZ4EFl7B4bMtDv0iRipKoDQT2sNQI9b1utXFdYisi+wzZ/ri/1m7QfDgEuvgUUEIJPq3DhX/5DWNqIXDOweC2wvIR90Oq3lDpdMIgD2r0dXvGdsEW5H6x6HLRJYU7C69VefO1x8Gde1ZFSJLfWS1jbCnhtOPxmpfv2LXOA2Xk2tvnwKKPFuZ/oRmwBwqRQDcKNeVQkYcOjtWVBuM/JuYw5b6isojIkYxyYAFn5K7ZBF10fea52y8QltAg6jnMqNHFBmGkQ1j+U43HMi2xMar1Nv0zGsf1s8nUsmUtPOOrbFIR8bHFDMB5zL13Gmr/kGlCkUzedTzzmzsaJXhYawnA3UmARpiYj5ooJZiUoxFRtK3X6pgNPv+IZVPcnwbOl6f+aBaO1CNvPW9n9LmCp01nuSaTRF2YxHqZ8DYQT6WsXT+RD6eUztwYLZ8rM+rcPxamv1VQzFUkzFXvkiVrySGQgJNvXHJAxiU3/NwiC03rSf05VBaPtu/Z7/B8Yn/w7eguloAAAAAElFTkSuQmCC');
-  }
-
-  div.callout-note.callout-style-default .callout-title {
-    background-color: #dae6fb
-  }
-
-  div.callout-important {
-    border-left-color: #d9534f !important;
-  }
-
-  div.callout-important .callout-icon::before {
-    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAAEKklEQVRYCcVXTWhcVRS+575MJym48A+hSRFr00ySRQhURRfd2HYjk2SSTokuBCkU2o0LoSKKraKIBTcuFCoidGFD08nkBzdREbpQ1EDNIv8qSGMFUboImMSZd4/f9zJv8ibJMC8xJQfO3HPPPef7zrvvvnvviIkpC9nsw0UttFunbUhpFzFtarSd6WJkStVMw5xyVqYTvkwfzuf/5FgtkVoB0729j1rjXwThS7Vio+Mo6DNnvLfahoZ+i/o32lULuJ3NNiz7q6+pyAUkJaFF6JwaM2lUJlV0MlnQn5aTRbEu0SEqHUa0A4AdiGuB1kFXRfVyg5d87+Dg4DL6m2TLAub60ilj7A1Ec4odSAc8X95sHh7+ZRPCFo6Fnp7HfU/fBng/hi10CjCnWnJjsxvDNxWw0NfV6Rv5GgP3I3jGWXumdTD/3cbEOP2ZbOZp69yniG3FQ9z1jD7bnBu9Fc2tKGC2q+uAJOQHBDRiZX1x36o7fWBs7J9ownbtO+n0/qWkvW7UPIfc37WgT6ZGR++EOJyeQDSb9UB+DZ1G6DdLDzyS+b/kBCYGsYgJbSQHuThGKRcw5xdeQf8YdNHsc6ePXrlSYMBuSIAFTGAtQo+VuALo4BX83N190NWZWbynBjhOHsmNfFWLeL6v+ynsA58zDvvAC8j5PkbOcXCMg2PZFk3q8MjI7WAG/Dp9AwP7jdGBOOQkAvlFUB+irtm16I1Zw9YBcpGTGXYmk3kQIC/Cds55l+iMI3jqhjAuaoe+am2Jw5GT3Nbz3CkE12NavmzN5+erJW7046n/CH1RO/RVa8lBLozXk9uqykkGAyRXLWlLv5jyp4RFsG5vGVzpDLnIjTWgnRy2Rr+tDKvRc7Y8AyZq10jj8DqXdnIRNtFZb+t/ZRtXcDiVnzpqx8mPcDWxgARUqx0W1QB9MeUZiNrV4qP+Ehc+BpNgATsTX8ozYKL2NtFYAHc84fG7ndxUPr+AR/iQSns7uSUufAymwDOb2+NjK27lEFocm/EE2WpyIy/Hi66MWuMKJn8RvxIcj87IM5Vh9663ziW36kR0HNenXuxmfaD8JC7tfKbrhFr7LiZCrMjrzTeGx+PmkosrkNzW94ObzwocJ7A1HokLolY+AvkTiD/q1H0cN48c5EL8Crkttsa/AXQVDmutfyku0E7jShx49XqV3MFK8IryDhYVbj7Sj2P2eBxwcXoe8T8idsKKPRcnZw1b+slFTubwUwhktrfnAt7J++jwQtLZcm3sr9LQrjRzz6cfMv9aLvgmnAGvpoaGLxM4mAEaLV7iAzQ3oU0IvD5x9ix3yF2RAAuYAOO2f7PEFWCXZ4C9Pb2UsgDeVnFSpbFK7/IWu7TPTvBqzbGdCHOJQSxiEjt6IyZmxQyEJHv6xyQsYk//moVFsN2zP6fRImjfq7/n/wFDguUQFNEwugAAAABJRU5ErkJggg==');
-  }
-
-  div.callout-important.callout-style-default .callout-title {
-    background-color: #f7dddc
-  }
-
-  div.callout-warning {
-    border-left-color: #f0ad4e !important;
-  }
-
-  div.callout-warning .callout-icon::before {
-    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAAETklEQVRYCeVWW2gcVRg+58yaTUnizqbipZeX4uWhBEniBaoUX1Ioze52t7sRq6APio9V9MEaoWlVsFasRq0gltaAPuxms8lu0gcviE/FFOstVbSIxgcv6SU7EZqmdc7v9+9mJtNks51NTUH84ed889/PP+cmxP+d5FIbMJmNbpREu4WUkiTtCicKny0l1pIKmBzovF2S+hIJHX8iEu3hZJ5lNZGqyRrGSIQpq15AzF28jgpeY6yk6GVdrfFqdrD6Iw+QlB8g0YS2g7dyQmXM/IDhBhT0UCiRf59lfqmmDvzRt6kByV/m4JjtzuaujMUM2c5Z2d6JdKrRb3K2q6mA+oYVz8JnDdKPmmNthzkAk/lN63sYPgevrguc72aZX/L9C6x09GYyxBgCX4NlvyGUHOKELlm5rXeR1kchuChJt4SSwyddZRXgvwMGvYo4QSlk3/zkHD8UHxwVJA6zjZZqP8v8kK8OWLnIZtLyCAJagYC4rTGW/9Pqj92N/c+LUaAj27movwbi19tk/whRCIE7Q9vyI6yvRpftAKVTdUjOW40X3h5OXsKCdmFcx0xlLJoSuQngnrJe7Kcjm4OMq9FlC7CMmScQANuNvjfP3PjGXDBaUQmbp296S5L4DrpbrHN1T87ZVEZVCzg1FF0Ft+dKrlLukI+/c9ENo+TvlTDbYFvuKPtQ9+l052rXrgKoWkDAFnvh0wTOmYn8R5f4k/jN/fZiCM1tQx9jQQ4ANhqG4hiL0qIFTGViG9DKB7GYzgubnpofgYRwO+DFjh0Zin2m4b/97EDkXkc+f6xYAPX0KK2I/7fUQuwzuwo/L3AkcjugPNixC8cHf0FyPjWlItmLxWw4Ou9YsQCr5fijMGoD/zpdRy95HRysyXA74MWOnscpO4j2y3HAVisw85hX5+AFBRSHt4ShfLFkIMXTqyKFc46xdzQM6XbAi702a7sy04J0+feReMFKp5q9esYLCqAZYw/k14E/xcLLsFElaornTuJB0svMuJINy8xkIYuL+xPAlWRceH6+HX7THJ0djLUom46zREu7tTkxwmf/FdOZ/sh6Q8qvEAiHpm4PJ4a/doJe0gH1t+aHRgCzOvBvJedEK5OFE5jpm4AGP2a8Dxe3gGJ/pAutug9Gp6he92CsSsWBaEcxGx0FHytmIpuqGkOpldqNYQK8cSoXvd+xLxXADw0kf6UkJNFtdo5MOgaLjiQOQHcn+A6h5NuL2s0qsC2LOM75PcF3yr5STuBSAcGG+meA14K/CI21HcS4LBT6tv0QAh8Dr5l93AhZzG5ZJ4VxAqdZUEl9z7WJ4aN+svMvwHHL21UKTd1mqvChH7/Za5xzXBBKrUcB0TQ+Ulgkfbi/H/YT5EptrGzsEK7tR1B7ln9BBwckYfMiuSqklSznIuoIIOM42MQO+QnduCoFCI0bpkzjCjddHPN/F+2Yu+sd9bKNpVwHhbS3LluK/0zgfwD0xYI5dXuzlQAAAABJRU5ErkJggg==');
-  }
-
-  div.callout-warning.callout-style-default .callout-title {
-    background-color: #fcefdc
-  }
-
-  div.callout-tip {
-    border-left-color: #02b875 !important;
-  }
-
-  div.callout-tip .callout-icon::before {
-    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAADr0lEQVRYCe1XTWgTQRj9ZjZV8a9SPIkKgj8I1bMHsUWrqYLVg4Ue6v9BwZOxSYsIerFao7UiUryIqJcqgtpimhbBXoSCVxUFe9CTiogUrUp2Pt+3aUI2u5vdNh4dmMzOzHvvezuz8xNFM0mjnbXaNu1MvFWRXkXEyE6aYOYJpdW4IXuA4r0fo8qqSMDBU0v1HJUgVieAXxzCsdE/YJTdFcVIZQNMyhruOMJKXYFoLfIfIvVIMWdsrd+Rpd86ZmyzzjJmLStqRn0v8lzkb4rVIXvnpScOJuAn2ACC65FkPzEdEy4TPWRLJ2h7z4cArXzzaOdKlbOvKKX25Wl00jSnrwVxAg3o4dRxhO13RBSdNvH0xSARv3adTXbBdTf64IWO2vH0LT+cv4GR1DJt+DUItaQogeBX/chhbTBxEiZ6gftlDNXTrvT7co4ub5A6gp9HIcHvzTa46OS5fBeP87Qm0fQkr4FsYgVQ7Qg+ZayaDg9jhg1GkWj8RG6lkeSacrrHgDaxdoBiZPg+NXV/KifMuB6//JmYH4CntVEHy/keA6x4h4CU5oFy8GzrBS18cLJMXcljAKB6INjWsRcuZBWVaS3GDrqB7rdapVIeA+isQ57Eev9eCqzqOa81CY05VLd6SamW2wA2H3SiTbnbSxmzfp7WtKZkqy4mdyAlGx7ennghYf8voqp9cLSgKdqNfa6RdRsAAkPwRuJZNbpByn+RrJi1RXTwdi8RQF6ymDwGMAtZ6TVE+4uoKh+MYkcLsT0Hk8eAienbiGdjJHZTpmNjlbFJNKDVAp2fJlYju6IreQxQ08UJDNYdoLSl6AadO+fFuCQqVMB1NJwPm69T04Wv5WhfcWyfXQB+wXRs1pt+nCknRa0LVzSA/2B+a9+zQJadb7IyyV24YAxKp2Jqs3emZTuNnKxsah+uabKbMk7CbTgJx/zIgQYErIeTKRQ9yD9wxVof5YolPHqaWo7TD6tJlh7jQnK5z2n3+fGdggIOx2kaa2YI9QWarc5Ce1ipNWMKeSG4DysFF52KBmTNMmn5HqCFkwy34rDg05gDwgH3bBi+sgFhN/e8QvRn8kbamCOhgrZ9GJhFDgfcMHzFb6BAtjKpFhzTjwv1KCVuxHvCbsSiEz4CANnj84cwHdFXAbAOJ4LTSAawGWFn5tDhLMYz6nWeU2wJfIhmIJBefcd/A5FWQWGgrWzyORZ3Q6HuV+Jf0Bj+BTX69fm1zWgK7By1YTXchFDORywnfQ7GpzOo6S+qECrsx2ifVQAAAABJRU5ErkJggg==');
-  }
-
-  div.callout-tip.callout-style-default .callout-title {
-    background-color: #ccf1e3
-  }
-
-  div.callout-caution {
-    border-left-color: #fd7e14 !important;
-  }
-
-  div.callout-caution .callout-icon::before {
-    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAACV0lEQVRYCdVWzWoUQRCuqp2ICBLJXgITZL1EfQDBW/bkzUMUD7klD+ATSHBEfAIfQO+iXsWDxJsHL96EHAwhgzlkg8nBg25XWb0zIb0zs9muYYWkoKeru+vn664fBqElyZNuyh167NXJ8Ut8McjbmEraKHkd7uAnAFku+VWdb3reSmRV8PKSLfZ0Gjn3a6Xlcq9YGb6tADjn+lUfTXtVmaZ1KwBIvFI11rRXlWlatwIAAv2asaa9mlB9wwygiDX26qaw1yYPzFXg2N1GgG0FMF8Oj+VIx7E/03lHx8UhvYyNZLN7BwSPgekXXLribw7w5/c8EF+DBK5idvDVYtEEwMeYefjjLAdEyQ3M9nfOkgnPTEkYU+sxMq0BxNR6jExrAI31H1rzvLEfRIdgcv1XEdj6QTQAS2wtstEALLG1yEZ3QhH6oDX7ExBSFEkFINXH98NTrme5IOaaA7kIfiu2L8A3qhH9zRbukdCqdsA98TdElyeMe5BI8Rs2xHRIsoTSSVFfCFCWGPn9XHb4cdobRIWABNf0add9jakDjQJpJ1bTXOJXnnRXHRf+dNL1ZV1MBRCXhMbaHqGI1JkKIL7+i8uffuP6wVQAzO7+qVEbF6NbS0LJureYcWXUUhH66nLR5rYmva+2tjRFtojkM2aD76HEGAD3tPtKM309FJg5j/K682ywcWJ3PASCcycH/22u+Bh7Aa0ehM2Fu4z0SAE81HF9RkB21c5bEn4Dzw+/qNOyXr3DCTQDMBOdhi4nAgiFDGCinIa2owCEChUwD8qzd03PG+qdW/4fDzjUMcE1ZpIAAAAASUVORK5CYII=');
-  }
-
-  div.callout-caution.callout-style-default .callout-title {
-    background-color: #ffe5d0
-  }
-
-  </style>
   <style type="text/css">
     .reveal div.sourceCode {
       margin: 0;
@@ -420,6 +206,9 @@
       margin-right: 0; 
     }
   </style>
+  <script src="site_libs/quarto-diagram/mermaid.min.js"></script>
+  <script src="site_libs/quarto-diagram/mermaid-init.js"></script>
+  <link href="site_libs/quarto-diagram/mermaid.css" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
   
   <script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
@@ -509,7 +298,7 @@ Matt Bhagat-Conway
 <ul>
 <li>Predicted values are not constrained between 0 and 1</li>
 </ul>
-<div id="9f72ed56" class="cell" data-execution_count="3">
+<div id="a4171370" class="cell" data-execution_count="2">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -524,7 +313,7 @@ Matt Bhagat-Conway
 <ul>
 <li>Instead of predicting the probability, we predict the log-odds (aka logit)</li>
 </ul>
-<div id="2acd2436" class="cell" data-execution_count="4">
+<div id="25cb5c5a" class="cell" data-execution_count="3">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -536,26 +325,26 @@ Matt Bhagat-Conway
 </section>
 <section id="binary-logistic-regression-the-math" class="slide level2">
 <h2>Binary logistic regression: the math</h2>
-<p><span class="math display">
+<p><span class="math display">\[
 y^* = \alpha + \beta_1 x_1 + \beta_2 x_2 \cdots + \epsilon
-</span></p>
-<p><span class="math display">
+\]</span></p>
+<p><span class="math display">\[
 \epsilon \thicksim \mathrm{Logistic}
-</span> <span class="math display">
+\]</span> <span class="math display">\[
 p(y = 1) = p(y^* &gt; 0) = \frac{e^{y^*}}{1 + e^{y^*}}
-</span></p>
+\]</span></p>
 </section>
 <section id="interpreting-a-binary-logistic-regression-model" class="slide level2">
 <h2>Interpreting a binary logistic regression model</h2>
-<div id="5c62ff0a" class="cell" data-execution_count="6">
-<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="5">
+<div id="1ae26839" class="cell" data-execution_count="5">
+<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="49">
 <table class="caption-top">
 <thead>
 <tr class="header">
 <th></th>
 <th style="text-align: left;">Coefficient</th>
 <th style="text-align: left;">Std. Err.</th>
-<th style="text-align: left;"><span class="math inline">t</span></th>
+<th style="text-align: left;"><span class="math inline">\(t\)</span></th>
 <th style="text-align: right;">p</th>
 </tr>
 </thead>
@@ -620,60 +409,58 @@ p(y = 1) = p(y^* &gt; 0) = \frac{e^{y^*}}{1 + e^{y^*}}
 </table>
 </div>
 </div>
-<div>
 <ul>
 <li class="fragment">Are older people more likely to be able to WFH?</li>
 <li class="fragment">Are college-educated people?</li>
 <li class="fragment">Are men?</li>
 </ul>
-</div>
 </section>
 <section id="statistical-significance-and-p-values" class="slide level2">
 <h2>Statistical significance and p-values</h2>
 <ul>
 <li>Coefficients are approximations to population-level parameters, and contain sampling error because we haven’t sampled the entire population</li>
-<li>The standard error (<span class="math inline">\sigma</span>) is a measure of how precise the coefficient is</li>
+<li>The standard error (<span class="math inline">\(\sigma\)</span>) is a measure of how precise the coefficient is</li>
 <li>We assume coefficient estimates are asymtotically normal</li>
-<li>Based on a normal distribution, there is a 95% chance the population parameter is within <span class="math inline">1.96 \times \sigma</span> of the estimate</li>
+<li>Based on a normal distribution, there is a 95% chance the population parameter is within <span class="math inline">\(1.96 \times \sigma\)</span> of the estimate</li>
 </ul>
 </section>
 <section id="statistical-significance-and-p-values-1" class="slide level2">
 <h2>Statistical significance and p-values</h2>
 <ul>
 <li>We can also perform a hypothesis test that the coefficient is different from 0</li>
-<li>To do this, we compute a <span class="math inline">z</span>-value, which is just the coefficient divided by the standard error</li>
-<li>Put another way, the <span class="math inline">z</span>-value is the number of standard errors between the coefficient and zero</li>
-<li>Large coefficients lead to large <span class="math inline">z</span>-values</li>
-<li>Large standard errors (i.e.&nbsp;high uncertainty) lead to small <span class="math inline">z</span>-values</li>
+<li>To do this, we compute a <span class="math inline">\(z\)</span>-value, which is just the coefficient divided by the standard error</li>
+<li>Put another way, the <span class="math inline">\(z\)</span>-value is the number of standard errors between the coefficient and zero</li>
+<li>Large coefficients lead to large <span class="math inline">\(z\)</span>-values</li>
+<li>Large standard errors (i.e.&nbsp;high uncertainty) lead to small <span class="math inline">\(z\)</span>-values</li>
 </ul>
 </section>
 <section id="statistical-significance-and-p-values-2" class="slide level2">
 <h2>Statistical significance and p-values</h2>
 <ul>
-<li><span class="math inline">z</span> values larger in magnitude than 1.96 indicate that there is less than a 5% chance of observing a coefficient as larger or larger than the estimated coefficient if the true coefficient were zero</li>
+<li><span class="math inline">\(z\)</span> values larger in magnitude than 1.96 indicate that there is less than a 5% chance of observing a coefficient as larger or larger than the estimated coefficient if the true coefficient were zero</li>
 </ul>
 </section>
 <section id="statistical-significance-and-p-values-3" class="slide level2">
 <h2>Statistical significance and p-values</h2>
 <ul>
-<li>The <span class="math inline">p</span>-value is the probability of observing a coefficient as large or larger in magnitude, if the true coefficient were zero</li>
+<li>The <span class="math inline">\(p\)</span>-value is the probability of observing a coefficient as large or larger in magnitude, if the true coefficient were zero</li>
 <li>Computed using the normal cumulative distribution function</li>
-<li>Usual rule is that <span class="math inline">p &lt; 0.05</span> is statistically significant, but in larger datasets <span class="math inline">p &lt; 0.01</span> or even <span class="math inline">p &lt; 0.001</span> may be used</li>
+<li>Usual rule is that <span class="math inline">\(p &lt; 0.05\)</span> is statistically significant, but in larger datasets <span class="math inline">\(p &lt; 0.01\)</span> or even <span class="math inline">\(p &lt; 0.001\)</span> may be used</li>
 <li>For more information about the math, see the hypothesis testing section of any statistics textbook</li>
-<li>Logistic regression hypothesis tests are computed just like linear regression, except using the normal instead of <span class="math inline">t</span> distribution</li>
+<li>Logistic regression hypothesis tests are computed just like linear regression, except using the normal instead of <span class="math inline">\(t\)</span> distribution</li>
 </ul>
 </section>
 <section id="odds-ratios" class="slide level2">
 <h2>Odds ratios</h2>
-<div id="2d7a1d43" class="cell" data-execution_count="7">
-<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="6">
+<div id="7a9ca648" class="cell" data-execution_count="6">
+<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="50">
 <table class="caption-top">
 <thead>
 <tr class="header">
 <th></th>
 <th style="text-align: left;">Coefficient</th>
 <th style="text-align: left;">Std. Err.</th>
-<th style="text-align: left;"><span class="math inline">t</span></th>
+<th style="text-align: left;"><span class="math inline">\(t\)</span></th>
 <th style="text-align: right;">p</th>
 </tr>
 </thead>
@@ -738,24 +525,22 @@ p(y = 1) = p(y^* &gt; 0) = \frac{e^{y^*}}{1 + e^{y^*}}
 </table>
 </div>
 </div>
-<div>
 <ul>
 <li class="fragment">What does a “0.93 increase in log-odds” mean anyways?</li>
 <li class="fragment">Because this is hard to interpret, we often use an <em>odds ratio</em> instead</li>
 <li class="fragment">This is just the exponentiation of the coefficient</li>
 </ul>
-</div>
 </section>
 <section id="interpreting-odds-ratios-i" class="slide level2">
 <h2>Interpreting odds ratios I</h2>
-<div id="40f84f80" class="cell" data-execution_count="8">
-<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="7">
+<div id="b222c0b3" class="cell" data-execution_count="7">
+<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="51">
 <table class="caption-top">
 <thead>
 <tr class="header">
 <th></th>
 <th style="text-align: left;">Odds ratio</th>
-<th style="text-align: left;"><span class="math inline">t</span></th>
+<th style="text-align: left;"><span class="math inline">\(t\)</span></th>
 <th style="text-align: right;">p</th>
 </tr>
 </thead>
@@ -812,7 +597,6 @@ p(y = 1) = p(y^* &gt; 0) = \frac{e^{y^*}}{1 + e^{y^*}}
 </table>
 </div>
 </div>
-<div>
 <ul>
 <li class="fragment">Odds ratios measure the change in the <em>odds</em> of an event happening
 <ul>
@@ -821,18 +605,17 @@ p(y = 1) = p(y^* &gt; 0) = \frac{e^{y^*}}{1 + e^{y^*}}
 </ul></li>
 <li class="fragment">They are multiplicative, so an odds ratio of 1.287 means that men have 28.7% higher odds of being able to work from home</li>
 </ul>
-</div>
 </section>
 <section id="interpreting-odds-ratios-ii" class="slide level2">
 <h2>Interpreting odds ratios II</h2>
-<div id="3826ae5f" class="cell" data-execution_count="9">
-<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="8">
+<div id="69c885b9" class="cell" data-execution_count="8">
+<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="52">
 <table class="caption-top">
 <thead>
 <tr class="header">
 <th></th>
 <th style="text-align: left;">Odds ratio</th>
-<th style="text-align: left;"><span class="math inline">t</span></th>
+<th style="text-align: left;"><span class="math inline">\(t\)</span></th>
 <th style="text-align: right;">p</th>
 </tr>
 </thead>
@@ -889,14 +672,12 @@ p(y = 1) = p(y^* &gt; 0) = \frac{e^{y^*}}{1 + e^{y^*}}
 </table>
 </div>
 </div>
-<div>
 <ul>
 <li class="fragment">What does an odds ratio of 0.977 mean?
 <ul>
 <li class="fragment">Each additional year of age is associated with 2.3% <em>lower</em> odds of being able to work from home</li>
 </ul></li>
 </ul>
-</div>
 </section>
 <section id="odds-ratios-are-not-risk-ratios" class="slide level2">
 <h2>Odds ratios are not risk ratios</h2>
@@ -910,7 +691,7 @@ p(y = 1) = p(y^* &gt; 0) = \frac{e^{y^*}}{1 + e^{y^*}}
 </section>
 <section id="running-a-logistic-regression-in-python" class="slide level2">
 <h2>Running a logistic regression in Python</h2>
-<div id="a8f3e1a3" class="cell" data-execution_count="10">
+<div id="1fcf7eb3" class="cell" data-execution_count="9">
 <div class="code-with-filename">
 <div class="code-with-filename-file">
 <pre><strong>logistic_basic.py</strong></pre>
@@ -937,8 +718,8 @@ p(y = 1) = p(y^* &gt; 0) = \frac{e^{y^*}}{1 + e^{y^*}}
 </section>
 <section id="running-a-logistic-regression-in-python-results" class="slide level2">
 <h2>Running a logistic regression in Python: results</h2>
-<div id="4f336153" class="cell" data-execution_count="11">
-<div class="cell-output cell-output-display" data-execution_count="10">
+<div id="2ebad654" class="cell" data-execution_count="10">
+<div class="cell-output cell-output-display" data-execution_count="54">
 <table class="simpletable caption-top" data-quarto-postprocess="true">
 <caption>Logit Regression Results</caption>
 <tbody>
@@ -962,13 +743,13 @@ p(y = 1) = p(y^* &gt; 0) = \frac{e^{y^*}}{1 + e^{y^*}}
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">Date:</td>
-<td>Sun, 06 Apr 2025</td>
+<td>Thu, 25 Sep 2025</td>
 <td data-quarto-table-cell-role="th">Pseudo R-squ.:</td>
 <td>0.05368</td>
 </tr>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">Time:</td>
-<td>08:37:36</td>
+<td>18:39:57</td>
 <td data-quarto-table-cell-role="th">Log-Likelihood:</td>
 <td>-755.40</td>
 </tr>
@@ -1042,7 +823,7 @@ p(y = 1) = p(y^* &gt; 0) = \frac{e^{y^*}}{1 + e^{y^*}}
 </section>
 <section id="exercise-add-the-black-and-hispanic-variables-to-the-model" class="slide level2">
 <h2>Exercise: add the <code>black</code> and <code>hispanic</code> variables to the model</h2>
-<div id="2d2ec4a6" class="cell" data-execution_count="12">
+<div id="f2cc2c7f" class="cell" data-execution_count="11">
 <div class="code-with-filename">
 <div class="code-with-filename-file">
 <pre><strong>logistic_black_hispanic.py</strong></pre>
@@ -1069,8 +850,8 @@ p(y = 1) = p(y^* &gt; 0) = \frac{e^{y^*}}{1 + e^{y^*}}
 </section>
 <section id="exercise-add-the-black-and-hispanic-variables-to-the-model-result" class="slide level2">
 <h2>Exercise: add the <code>black</code> and <code>hispanic</code> variables to the model: result</h2>
-<div id="58568ff1" class="cell" data-execution_count="13">
-<div class="cell-output cell-output-display" data-execution_count="12">
+<div id="c9554725" class="cell" data-execution_count="12">
+<div class="cell-output cell-output-display" data-execution_count="56">
 <table class="simpletable caption-top" data-quarto-postprocess="true">
 <caption>Logit Regression Results</caption>
 <tbody>
@@ -1094,13 +875,13 @@ p(y = 1) = p(y^* &gt; 0) = \frac{e^{y^*}}{1 + e^{y^*}}
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">Date:</td>
-<td>Sun, 06 Apr 2025</td>
+<td>Thu, 25 Sep 2025</td>
 <td data-quarto-table-cell-role="th">Pseudo R-squ.:</td>
 <td>0.05437</td>
 </tr>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">Time:</td>
-<td>08:37:36</td>
+<td>18:39:57</td>
 <td data-quarto-table-cell-role="th">Log-Likelihood:</td>
 <td>-754.85</td>
 </tr>
@@ -1189,11 +970,9 @@ p(y = 1) = p(y^* &gt; 0) = \frac{e^{y^*}}{1 + e^{y^*}}
 </table>
 </div>
 </div>
-<div>
 <ul>
 <li class="fragment">Is either statistically significant?</li>
 </ul>
-</div>
 </section>
 <section id="an-alternate-conceptualization-of-the-logistic-regression-model-random-utility-theory" class="slide level2">
 <h2>An alternate conceptualization of the logistic regression model: random utility theory</h2>
@@ -1206,30 +985,29 @@ p(y = 1) = p(y^* &gt; 0) = \frac{e^{y^*}}{1 + e^{y^*}}
 <section id="logistic-regression-as-a-random-utility-model" class="slide level2">
 <h2>Logistic regression as a random utility model</h2>
 <ul>
-<li>We define the systematic utility (i.e.&nbsp;no random error) of one alternative (e.g.&nbsp;working from home) as V: <span class="math display">
+<li>We define the systematic utility (i.e.&nbsp;no random error) of one alternative (e.g.&nbsp;working from home) as V: <span class="math display">\[
 V_{wfh} = \alpha + \beta_1 x_1 + \beta_2 x_2 \cdots
-</span></li>
+\]</span></li>
 </ul>
 <p>The full utility U has an error term:</p>
-<p><span class="math display">
+<p><span class="math display">\[
 U_{wfh} = V_{wfh} + \epsilon_{wfh}
-</span></p>
+\]</span></p>
 <ul>
 <li>Only differences in utility are meaningful, so we can arbitrarily define the systematic portion of the utility of the other option as zero</li>
 </ul>
-<p><span class="math display">
+<p><span class="math display">\[
 U_{notwfh} = 0 + \epsilon_{notwfh}
-</span></p>
+\]</span></p>
 <p>The probability of working from home then becomes</p>
-<p><span class="math display">
+<p><span class="math display">\[
 P\left(U_{wfh} &gt; U_{notwfh}\right)
-</span></p>
+\]</span></p>
 </section>
 <section id="error-term-distribution" class="slide level2">
 <h2>Error term distribution</h2>
-<div>
 <ul>
-<li class="fragment">We assume the <span class="math inline">\epsilon</span>’s are Gumbel-distributed</li>
+<li class="fragment">We assume the <span class="math inline">\(\epsilon\)</span>’s are Gumbel-distributed</li>
 <li class="fragment">The Gumbel distribution is an approximation of the normal distribution with some attractive properties
 <ul>
 <li class="fragment">More on this later</li>
@@ -1239,19 +1017,18 @@ P\left(U_{wfh} &gt; U_{notwfh}\right)
 <li class="fragment">Just like the error term in our logistic regression model</li>
 </ul></li>
 </ul>
-</div>
 </section>
 <section id="showing-the-equivalence-to-the-binary-logistic-regression-model-i" class="slide level2">
 <h2>Showing the equivalence to the binary logistic regression model I</h2>
 <p>We have</p>
-<p><span class="math display">
+<p><span class="math display">\[
 P\left(U_{wfh} &gt; U_{notwfh}\right)
-</span></p>
+\]</span></p>
 <div class="fragment">
 <p>which we can re-write as</p>
-<p><span class="math display">
+<p><span class="math display">\[
 P\left(V_{wfh} + \epsilon_{wfh} - (0 + \epsilon_{notwfh}) &gt; 0\right)
-</span></p>
+\]</span></p>
 </div>
 </section>
 <section id="showing-the-equivalence-to-the-binary-logistic-regression-model-ii" class="slide level2">
@@ -1259,10 +1036,10 @@ P\left(V_{wfh} + \epsilon_{wfh} - (0 + \epsilon_{notwfh}) &gt; 0\right)
 <ul>
 <li>Since the difference of our Gumbel-distributed error terms is Logistic-distributed, we have</li>
 </ul>
-<p><span class="math display">
+<p><span class="math display">\[
 P\left(V_{wfh} + \epsilon_{\Delta} &gt; 0\right)
-</span></p>
-<p>with <span class="math inline">\epsilon_\Delta</span> Logistic-distributed, which is the same as our formula for logistic regression.</p>
+\]</span></p>
+<p>with <span class="math inline">\(\epsilon_\Delta\)</span> Logistic-distributed, which is the same as our formula for logistic regression.</p>
 </section>
 <section id="estimating-our-binary-logistic-regression-as-a-random-utility-model" class="slide level2">
 <h2>Estimating our binary logistic regression as a random utility model</h2>
@@ -1273,7 +1050,7 @@ P\left(V_{wfh} + \epsilon_{\Delta} &gt; 0\right)
 </section>
 <section id="estimation-code" class="slide level2">
 <h2>Estimation code</h2>
-<div id="7f82472a" class="cell" data-execution_count="14">
+<div id="d84a56b2" class="cell" data-execution_count="13">
 <div class="code-with-filename">
 <div class="code-with-filename-file">
 <pre><strong>biogeme_binary.py</strong></pre>
@@ -1322,7 +1099,7 @@ P\left(V_{wfh} + \epsilon_{\Delta} &gt; 0\right)
 <span id="cb3-42"><a></a>model.calculate_null_loglikelihood(av)</span>
 <span id="cb3-43"><a></a>result <span class="op">=</span> model.estimate()</span>
 <span id="cb3-44"><a></a></span>
-<span id="cb3-45"><a></a><span class="cf">assert</span> result.algorithm_has_converged()</span>
+<span id="cb3-45"><a></a><span class="cf">assert</span> result.algorithm_has_converged</span>
 <span id="cb3-46"><a></a><span class="bu">print</span>(result.short_summary())</span>
 <span id="cb3-47"><a></a><span class="bu">print</span>(result.get_estimated_parameters())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -1330,7 +1107,7 @@ P\left(V_{wfh} + \epsilon_{\Delta} &gt; 0\right)
 </section>
 <section id="result" class="slide level2">
 <h2>Result</h2>
-<div id="dd24b202" class="cell" data-execution_count="15">
+<div id="f7f1061d" class="cell" data-execution_count="14">
 <div class="cell-output cell-output-stdout">
 <pre><code>Results for model biogeme_binary
 Nbr of parameters:      4
@@ -1344,25 +1121,25 @@ Rho bar square (null):          0.0644
 Akaike Information Criterion:   1518.795
 Bayesian Information Criterion: 1539.057
 
-              Value  Rob. Std err  Rob. t-test  Rob. p-value
-Intercept  0.725756      0.246210     2.947712  3.201357e-03
-b_age     -0.023037      0.004531    -5.084153  3.692710e-07
-b_college  0.927291      0.130311     7.115971  1.111333e-12
-b_male     0.251951      0.127537     1.975508  4.821053e-02</code></pre>
+        Name     Value  Robust std err.  Robust t-stat.  Robust p-value
+0  Intercept  0.725756         0.246210        2.947712    3.201357e-03
+1      b_age -0.023037         0.004531       -5.084153    3.692710e-07
+2  b_college  0.927291         0.130311        7.115971    1.111333e-12
+3     b_male  0.251951         0.127537        1.975508    4.821053e-02</code></pre>
 </div>
 </div>
 </section>
 <section id="how-does-the-result-compare-to-the-original-model-we-estimated" class="slide level2">
 <h2>How does the result compare to the original model we estimated?</h2>
-<div id="cbb692e6" class="cell" data-execution_count="16">
-<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="15">
+<div id="c0e34afc" class="cell" data-execution_count="15">
+<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="59">
 <table class="caption-top">
 <thead>
 <tr class="header">
 <th></th>
 <th style="text-align: left;">Coefficient</th>
 <th style="text-align: left;">Std. Err.</th>
-<th style="text-align: left;"><span class="math inline">t</span></th>
+<th style="text-align: left;"><span class="math inline">\(t\)</span></th>
 <th style="text-align: right;">p</th>
 <th style="text-align: left;">Odds ratio</th>
 </tr>
@@ -1436,18 +1213,16 @@ b_male     0.251951      0.127537     1.975508  4.821053e-02</code></pre>
 </table>
 </div>
 </div>
-<div>
 <ul>
 <li class="fragment">It should be the same</li>
 </ul>
-</div>
 </section>
 <section id="detailed-result" class="slide level2">
 <h2>Detailed result</h2>
 <p>Stored in “biogeme_binary.html”, or some variation—look for most recent.</p>
-<div id="9997c408" class="cell" data-execution_count="17">
-<div class="cell-output cell-output-display" data-execution_count="16">
-<iframe width="1850" height="800px" src="biogeme_binary.html" data-external="1"></iframe>
+<div id="73152bb5" class="cell" data-execution_count="16">
+<div class="cell-output cell-output-display" data-execution_count="60">
+<iframe width="1850" height="800px" src="biogeme_binary~12.html" data-external="1"></iframe>
 </div>
 </div>
 </section>
@@ -1459,7 +1234,7 @@ b_male     0.251951      0.127537     1.975508  4.821053e-02</code></pre>
 </section>
 <section id="exercise-result" class="slide level2">
 <h2>Exercise: result</h2>
-<div id="90f011fe" class="cell" data-execution_count="18">
+<div id="8088de9c" class="cell" data-execution_count="17">
 <div class="code-with-filename">
 <div class="code-with-filename-file">
 <pre><strong>biogeme_binary_race.py</strong></pre>
@@ -1513,7 +1288,7 @@ b_male     0.251951      0.127537     1.975508  4.821053e-02</code></pre>
 <span id="cb5-47"><a></a>model.calculate_null_loglikelihood(av)</span>
 <span id="cb5-48"><a></a>result <span class="op">=</span> model.estimate()</span>
 <span id="cb5-49"><a></a></span>
-<span id="cb5-50"><a></a><span class="cf">assert</span> result.algorithm_has_converged()</span>
+<span id="cb5-50"><a></a><span class="cf">assert</span> result.algorithm_has_converged</span>
 <span id="cb5-51"><a></a><span class="bu">print</span>(result.short_summary())</span>
 <span id="cb5-52"><a></a><span class="bu">print</span>(result.get_estimated_parameters())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -1530,19 +1305,19 @@ Rho bar square (null):          0.0626
 Akaike Information Criterion:   1521.699
 Bayesian Information Criterion: 1552.093
 
-               Value  Rob. Std err  Rob. t-test  Rob. p-value
-Intercept   0.772054      0.258984     2.981089  2.872257e-03
-b_age      -0.023654      0.004630    -5.108776  3.242527e-07
-b_black     0.080118      0.232280     0.344920  7.301544e-01
-b_college   0.924482      0.130676     7.074599  1.498801e-12
-b_hispanic -0.197129      0.197385    -0.998704  3.179383e-01
-b_male      0.254622      0.127658     1.994570  4.608975e-02</code></pre>
+         Name     Value  Robust std err.  Robust t-stat.  Robust p-value
+0   Intercept  0.772060         0.258984        2.981108    2.872076e-03
+1       b_age -0.023654         0.004630       -5.108796    3.242180e-07
+2   b_college  0.924481         0.130676        7.074590    1.499023e-12
+3      b_male  0.254620         0.127658        1.994551    4.609182e-02
+4     b_black  0.080132         0.232280        0.344981    7.301088e-01
+5  b_hispanic -0.197120         0.197385       -0.998655    3.179621e-01</code></pre>
 </div>
 </div>
 </section>
 <section id="results" class="slide level2">
 <h2>Results</h2>
-<div id="cd1b29e5" class="cell" data-execution_count="19">
+<div id="1ab71c22" class="cell" data-execution_count="18">
 <div class="cell-output cell-output-stdout">
 <pre><code>Results for model biogeme_binary_race
 Nbr of parameters:      6
@@ -1556,13 +1331,13 @@ Rho bar square (null):          0.0626
 Akaike Information Criterion:   1521.699
 Bayesian Information Criterion: 1552.093
 
-               Value  Rob. Std err  Rob. t-test  Rob. p-value
-Intercept   0.772054      0.258984     2.981089  2.872257e-03
-b_age      -0.023654      0.004630    -5.108776  3.242527e-07
-b_black     0.080118      0.232280     0.344920  7.301544e-01
-b_college   0.924482      0.130676     7.074599  1.498801e-12
-b_hispanic -0.197129      0.197385    -0.998704  3.179383e-01
-b_male      0.254622      0.127658     1.994570  4.608975e-02</code></pre>
+         Name     Value  Robust std err.  Robust t-stat.  Robust p-value
+0   Intercept  0.772060         0.258984        2.981108    2.872076e-03
+1       b_age -0.023654         0.004630       -5.108796    3.242180e-07
+2   b_college  0.924481         0.130676        7.074590    1.499023e-12
+3      b_male  0.254620         0.127658        1.994551    4.609182e-02
+4     b_black  0.080132         0.232280        0.344981    7.301088e-01
+5  b_hispanic -0.197120         0.197385       -0.998655    3.179621e-01</code></pre>
 </div>
 </div>
 </section>
@@ -1592,29 +1367,29 @@ b_male      0.254622      0.127658     1.994570  4.608975e-02</code></pre>
 <ul>
 <li>Each alternative gets a utility function, with systematic and random components</li>
 </ul>
-<p><span class="math display">
+<p><span class="math display">\[
 U_{car} = V_{car} + \epsilon_{car} \\
 U_{transit} = V_{transit} + \epsilon_{transit} \\
 U_{bike} = V_{bike} + \epsilon_{bike} \\
 U_{walk} = V_{walk} + \epsilon_{walk} \\
-</span></p>
+\]</span></p>
 </section>
 <section id="the-multinomial-logit-model-in-math-ii" class="slide level2">
 <h2>The multinomial logit model, in math II</h2>
 <ul>
 <li>Like in a logistic regression, the systematic portion of utility is usually a linear combination of predictors</li>
 </ul>
-<p><span class="math display">
+<p><span class="math display">\[
 V_{car} = \alpha_{car} + \beta_{car,income} x_{income} \cdots \\
 V_{transit} = \alpha_{transit} + \beta_{transit,income} x_{income} \cdots \\
 V_{bike} = \alpha_{bike} + \beta_{bike,income} x_{income} \cdots \\
 V_{walk} = \alpha_{walk} + \beta_{walk,income} x_{income} \cdots \\
-</span></p>
+\]</span></p>
 </section>
 <section id="alternative-specific-constants" class="slide level2">
 <h2>Alternative specific constants</h2>
 <ul>
-<li>Unlike the binary logit model, there is now an <span class="math inline">\alpha</span> for each mode</li>
+<li>Unlike the binary logit model, there is now an <span class="math inline">\(\alpha\)</span> for each mode</li>
 <li>This is known as an <em>alternative specific constant</em></li>
 <li>It measures the relative popularity of each option with all other coefficients held at zero
 <ul>
@@ -1634,14 +1409,14 @@ V_{walk} = \alpha_{walk} + \beta_{walk,income} x_{income} \cdots \\
 <section id="identification-issues" class="slide level2">
 <h2>Identification issues</h2>
 <ul>
-<li>Looking again at our mode choice model, how do the differences between utilities change if we add 1 to all of the <span class="math inline">\alpha</span>’s or <span class="math inline">\beta</span>’s?</li>
+<li>Looking again at our mode choice model, how do the differences between utilities change if we add 1 to all of the <span class="math inline">\(\alpha\)</span>’s or <span class="math inline">\(\beta\)</span>’s?</li>
 </ul>
-<p><span class="math display">
+<p><span class="math display">\[
 V_{car} = \alpha_{car} + \beta_{car,income} x_{income} \cdots \\
 V_{transit} = \alpha_{transit} + \beta_{transit,income} x_{income} \cdots \\
 V_{bike} = \alpha_{bike} + \beta_{bike,income} x_{income} \cdots \\
 V_{walk} = \alpha_{walk} + \beta_{walk,income} x_{income} \cdots \\
-</span></p>
+\]</span></p>
 </section>
 <section id="an-identified-model" class="slide level2">
 <h2>An identified model</h2>
@@ -1652,12 +1427,12 @@ V_{walk} = \alpha_{walk} + \beta_{walk,income} x_{income} \cdots \\
 </ul></li>
 <li>For instance, we might do</li>
 </ul>
-<p><span class="math display">
+<p><span class="math display">\[
 V_{car} = 0 \\
 V_{transit} = \alpha_{transit} + \beta_{transit,income} x_{income} \cdots \\
 V_{bike} = \alpha_{bike} + \beta_{bike,income} x_{income} \cdots \\
 V_{walk} = \alpha_{walk} + \beta_{walk,income} x_{income} \cdots \\
-</span></p>
+\]</span></p>
 <ul>
 <li>This is exactly what a binary logistic regression does—you have coefficients for one outcome, and the utility of the other outcome is zero</li>
 </ul>
@@ -1666,7 +1441,7 @@ V_{walk} = \alpha_{walk} + \beta_{walk,income} x_{income} \cdots \\
 <h2>Interpreting the model</h2>
 <ul>
 <li>All of the other coefficients are relative to the alternative that has its utility set to zero</li>
-<li>For instance, <span class="math inline">\beta_{bike,income}</span> represents how income changes the <em>relative</em> attractiveness of biking and driving</li>
+<li>For instance, <span class="math inline">\(\beta_{bike,income}\)</span> represents how income changes the <em>relative</em> attractiveness of biking and driving</li>
 </ul>
 </section>
 <section id="an-example-multinomial-logit-model-seattle-mode-choice" class="slide level2">
@@ -1695,7 +1470,7 @@ V_{walk} = \alpha_{walk} + \beta_{walk,income} x_{income} \cdots \\
 <ul>
 <li>We’re going to start with a very simple multinomial logit model, modeling the relationship between income and mode choice</li>
 </ul>
-<div id="58180ff3" class="cell" data-execution_count="20">
+<div id="082f65dd" class="cell" data-execution_count="19">
 <div class="cell-output cell-output-stdout">
 <pre><code>Results for model seattle_mode_choice
 Nbr of parameters:      6
@@ -1709,57 +1484,64 @@ Rho bar square (null):          0.495
 Akaike Information Criterion:   12430.14
 Bayesian Information Criterion: 12472.7
 
-                               Value  Rob. Std err  Rob. t-test  Rob. p-value
-asc_bike                   -4.005212      0.127118   -31.507711      0.000000
-asc_transit                -2.510091      0.062032   -40.464744      0.000000
-asc_walk                   -1.527040      0.040259   -37.930872      0.000000
-b_income_over_100k_bike     0.122133      0.176544     0.691802      0.489062
-b_income_over_100k_transit -1.465361      0.142407   -10.289965      0.000000
-b_income_over_100k_walk     0.223509      0.055121     4.054884      0.000050</code></pre>
+                         Name     Value  Robust std err.  Robust t-stat.  \
+0                 asc_transit -2.510091         0.062031      -40.464799   
+1  b_income_over_100k_transit -1.465361         0.142407      -10.289965   
+2                    asc_walk -1.527040         0.040258      -37.930924   
+3     b_income_over_100k_walk  0.223509         0.055121        4.054887   
+4                    asc_bike -4.005311         0.127131      -31.505472   
+5     b_income_over_100k_bike  0.122244         0.176552        0.692396   
+
+   Robust p-value  
+0        0.000000  
+1        0.000000  
+2        0.000000  
+3        0.000050  
+4        0.000000  
+5        0.488689  </code></pre>
 </div>
 </div>
 </section>
 <section id="interpreting-a-multinomial-logit-model-alternative-specific-constants" class="slide level2">
 <h2>Interpreting a multinomial logit model: alternative-specific constants</h2>
-<div id="4b0d1c5e" class="cell" data-execution_count="21">
-<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="20">
+<div id="2e523cc9" class="cell" data-execution_count="20">
+<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="64">
 <table class="caption-top">
 <thead>
 <tr class="header">
 <th></th>
 <th style="text-align: right;">Value</th>
-<th style="text-align: right;">Rob. Std err</th>
-<th style="text-align: right;">Rob. t-test</th>
-<th style="text-align: right;">Rob. p-value</th>
+<th style="text-align: right;">Robust std err.</th>
+<th style="text-align: right;">Robust t-stat.</th>
+<th style="text-align: right;">Robust p-value</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>asc_bike</td>
-<td style="text-align: right;">-4.00521</td>
-<td style="text-align: right;">0.127118</td>
-<td style="text-align: right;">-31.5077</td>
+<td>asc_transit</td>
+<td style="text-align: right;">-2.51009</td>
+<td style="text-align: right;">0.0620315</td>
+<td style="text-align: right;">-40.4648</td>
 <td style="text-align: right;">0</td>
 </tr>
 <tr class="even">
-<td>asc_transit</td>
-<td style="text-align: right;">-2.51009</td>
-<td style="text-align: right;">0.0620316</td>
-<td style="text-align: right;">-40.4647</td>
+<td>asc_walk</td>
+<td style="text-align: right;">-1.52704</td>
+<td style="text-align: right;">0.0402584</td>
+<td style="text-align: right;">-37.9309</td>
 <td style="text-align: right;">0</td>
 </tr>
 <tr class="odd">
-<td>asc_walk</td>
-<td style="text-align: right;">-1.52704</td>
-<td style="text-align: right;">0.0402585</td>
-<td style="text-align: right;">-37.9309</td>
+<td>asc_bike</td>
+<td style="text-align: right;">-4.00531</td>
+<td style="text-align: right;">0.127131</td>
+<td style="text-align: right;">-31.5055</td>
 <td style="text-align: right;">0</td>
 </tr>
 </tbody>
 </table>
 </div>
 </div>
-<div>
 <ul>
 <li class="fragment">For households making less than $100,000/year
 <ul>
@@ -1769,49 +1551,47 @@ b_income_over_100k_walk     0.223509      0.055121     4.054884      0.000050</c
 <li class="fragment">Driving is most prevalent</li>
 </ul></li>
 </ul>
-</div>
 </section>
 <section id="interpreting-a-multinomial-logit-model-coefficients" class="slide level2">
 <h2>Interpreting a multinomial logit model: coefficients</h2>
-<div id="86fb24a6" class="cell" data-execution_count="22">
-<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="21">
+<div id="54780115" class="cell" data-execution_count="21">
+<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="65">
 <table class="caption-top">
 <thead>
 <tr class="header">
 <th></th>
 <th style="text-align: right;">Value</th>
-<th style="text-align: right;">Rob. Std err</th>
-<th style="text-align: right;">Rob. t-test</th>
-<th style="text-align: right;">Rob. p-value</th>
+<th style="text-align: right;">Robust std err.</th>
+<th style="text-align: right;">Robust t-stat.</th>
+<th style="text-align: right;">Robust p-value</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>asc_bike</td>
-<td style="text-align: right;">-4.00521</td>
-<td style="text-align: right;">0.127118</td>
-<td style="text-align: right;">-31.5077</td>
+<td>asc_transit</td>
+<td style="text-align: right;">-2.51009</td>
+<td style="text-align: right;">0.0620315</td>
+<td style="text-align: right;">-40.4648</td>
 <td style="text-align: right;">0</td>
 </tr>
 <tr class="even">
-<td>asc_transit</td>
-<td style="text-align: right;">-2.51009</td>
-<td style="text-align: right;">0.0620316</td>
-<td style="text-align: right;">-40.4647</td>
+<td>asc_walk</td>
+<td style="text-align: right;">-1.52704</td>
+<td style="text-align: right;">0.0402584</td>
+<td style="text-align: right;">-37.9309</td>
 <td style="text-align: right;">0</td>
 </tr>
 <tr class="odd">
-<td>asc_walk</td>
-<td style="text-align: right;">-1.52704</td>
-<td style="text-align: right;">0.0402585</td>
-<td style="text-align: right;">-37.9309</td>
+<td>asc_bike</td>
+<td style="text-align: right;">-4.00531</td>
+<td style="text-align: right;">0.127131</td>
+<td style="text-align: right;">-31.5055</td>
 <td style="text-align: right;">0</td>
 </tr>
 </tbody>
 </table>
 </div>
 </div>
-<div>
 <ul>
 <li class="fragment">In higher income households, relative to lower income households and relative to driving
 <ul>
@@ -1824,11 +1604,10 @@ b_income_over_100k_walk     0.223509      0.055121     4.054884      0.000050</c
 <li class="fragment">Walking is relatively more prevalent</li>
 </ul></li>
 </ul>
-</div>
 </section>
 <section id="estimating-a-multinomial-logit-model-yourself" class="slide level2">
 <h2>Estimating a multinomial logit model yourself</h2>
-<div id="78bd3579" class="cell" data-execution_count="23">
+<div id="612c964d" class="cell" data-execution_count="22">
 <div class="code-with-filename">
 <div class="code-with-filename-file">
 <pre><strong>seattle_mnl_income.py</strong></pre>
@@ -1888,7 +1667,7 @@ b_income_over_100k_walk     0.223509      0.055121     4.054884      0.000050</c
 <span id="cb9-53"><a></a>model.calculate_null_loglikelihood(av)</span>
 <span id="cb9-54"><a></a>result <span class="op">=</span> model.estimate()</span>
 <span id="cb9-55"><a></a></span>
-<span id="cb9-56"><a></a><span class="cf">assert</span> result.algorithm_has_converged()</span>
+<span id="cb9-56"><a></a><span class="cf">assert</span> result.algorithm_has_converged</span>
 <span id="cb9-57"><a></a><span class="bu">print</span>(result.short_summary())</span>
 <span id="cb9-58"><a></a><span class="bu">print</span>(result.get_estimated_parameters())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -1905,30 +1684,36 @@ Rho bar square (null):          0.495
 Akaike Information Criterion:   12430.14
 Bayesian Information Criterion: 12472.7
 
-                               Value  Rob. Std err  Rob. t-test  Rob. p-value
-asc_bike                   -4.005212      0.127118   -31.507711      0.000000
-asc_transit                -2.510091      0.062032   -40.464744      0.000000
-asc_walk                   -1.527040      0.040259   -37.930872      0.000000
-b_income_over_100k_bike     0.122133      0.176544     0.691802      0.489062
-b_income_over_100k_transit -1.465361      0.142407   -10.289965      0.000000
-b_income_over_100k_walk     0.223509      0.055121     4.054884      0.000050</code></pre>
+                         Name     Value  Robust std err.  Robust t-stat.  \
+0                 asc_transit -2.510091         0.062031      -40.464799   
+1  b_income_over_100k_transit -1.465361         0.142407      -10.289965   
+2                    asc_walk -1.527040         0.040258      -37.930924   
+3     b_income_over_100k_walk  0.223509         0.055121        4.054887   
+4                    asc_bike -4.005311         0.127131      -31.505472   
+5     b_income_over_100k_bike  0.122244         0.176552        0.692396   
+
+   Robust p-value  
+0        0.000000  
+1        0.000000  
+2        0.000000  
+3        0.000050  
+4        0.000000  
+5        0.488689  </code></pre>
 </div>
 </div>
 </section>
 <section id="exercise-add-a-variable" class="slide level2">
 <h2>Exercise: add a variable</h2>
-<div>
 <ul>
 <li class="fragment">Add the <code>rush_hour</code> variable to the model - this is a binary variable for trips that occur during the AM or PM rush hours
 <ul>
 <li class="fragment">Hint: you need to add it to the bike, walk, and transit utility function, with different betas</li>
 </ul></li>
 </ul>
-</div>
 </section>
 <section id="exercise-add-a-variable-answer" class="slide level2">
 <h2>Exercise: add a variable: answer</h2>
-<div id="8b10847c" class="cell" data-execution_count="24">
+<div id="8fea37f3" class="cell" data-execution_count="23">
 <div class="code-with-filename">
 <div class="code-with-filename-file">
 <pre><strong>seattle_mnl_income_rush.py</strong></pre>
@@ -1992,7 +1777,7 @@ b_income_over_100k_walk     0.223509      0.055121     4.054884      0.000050</c
 <span id="cb11-57"><a></a>model.calculate_null_loglikelihood(av)</span>
 <span id="cb11-58"><a></a>result <span class="op">=</span> model.estimate()</span>
 <span id="cb11-59"><a></a></span>
-<span id="cb11-60"><a></a><span class="cf">assert</span> result.algorithm_has_converged()</span>
+<span id="cb11-60"><a></a><span class="cf">assert</span> result.algorithm_has_converged</span>
 <span id="cb11-61"><a></a><span class="bu">print</span>(result.short_summary())</span>
 <span id="cb11-62"><a></a><span class="bu">print</span>(result.get_estimated_parameters())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -2009,199 +1794,226 @@ Rho bar square (null):          0.497
 Akaike Information Criterion:   12386.13
 Bayesian Information Criterion: 12449.96
 
-                               Value  Rob. Std err  Rob. t-test  Rob. p-value
-asc_bike                   -4.008837      0.134121   -29.889667  0.000000e+00
-asc_transit                -2.617443      0.071685   -36.513098  0.000000e+00
-asc_walk                   -1.449042      0.041688   -34.759410  0.000000e+00
-b_income_over_100k_bike     0.122119      0.176574     0.691606  4.891848e-01
-b_income_over_100k_transit -1.466734      0.142462   -10.295601  0.000000e+00
-b_income_over_100k_walk     0.224605      0.055248     4.065401  4.794995e-05
-b_rush_hour_bike            0.016448      0.212542     0.077387  9.383157e-01
-b_rush_hour_transit         0.420138      0.122775     3.422028  6.215582e-04
-b_rush_hour_walk           -0.424242      0.074428    -5.700050  1.197720e-08</code></pre>
+                         Name     Value  Robust std err.  Robust t-stat.  \
+0                 asc_transit -2.617443         0.071685      -36.513132   
+1  b_income_over_100k_transit -1.466734         0.142462      -10.295602   
+2         b_rush_hour_transit  0.420138         0.122775        3.422028   
+3                    asc_walk -1.449042         0.041688      -34.759443   
+4     b_income_over_100k_walk  0.224605         0.055248        4.065404   
+5            b_rush_hour_walk -0.424242         0.074428       -5.700046   
+6                    asc_bike -4.008908         0.134130      -29.888304   
+7     b_income_over_100k_bike  0.122184         0.176580        0.691947   
+8            b_rush_hour_bike  0.016470         0.212546        0.077487   
+
+   Robust p-value  
+0    0.000000e+00  
+1    0.000000e+00  
+2    6.215596e-04  
+3    0.000000e+00  
+4    4.794942e-05  
+5    1.197753e-08  
+6    0.000000e+00  
+7    4.889707e-01  
+8    9.382360e-01  </code></pre>
 </div>
 </div>
 </section>
 <section id="interpreting-the-coefficient-changes-i" class="slide level2">
 <h2>Interpreting the coefficient changes I</h2>
-<div id="fc14c661" class="cell" data-execution_count="25">
-<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="24">
+<div id="ff1b4495" class="cell" data-execution_count="24">
+<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="68">
 <table class="caption-top">
 <thead>
 <tr class="header">
 <th></th>
+<th style="text-align: left;">Name</th>
 <th style="text-align: right;">Value</th>
-<th style="text-align: right;">Rob. Std err</th>
-<th style="text-align: right;">Rob. t-test</th>
-<th style="text-align: right;">Rob. p-value</th>
+<th style="text-align: right;">Robust std err.</th>
+<th style="text-align: right;">Robust t-stat.</th>
+<th style="text-align: right;">Robust p-value</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>asc_bike</td>
-<td style="text-align: right;">-4.00884</td>
-<td style="text-align: right;">0.134121</td>
-<td style="text-align: right;">-29.8897</td>
-<td style="text-align: right;">0</td>
-</tr>
-<tr class="even">
-<td>asc_transit</td>
+<td>0</td>
+<td style="text-align: left;">asc_transit</td>
 <td style="text-align: right;">-2.61744</td>
 <td style="text-align: right;">0.071685</td>
 <td style="text-align: right;">-36.5131</td>
 <td style="text-align: right;">0</td>
 </tr>
-<tr class="odd">
-<td>asc_walk</td>
-<td style="text-align: right;">-1.44904</td>
-<td style="text-align: right;">0.0416878</td>
-<td style="text-align: right;">-34.7594</td>
-<td style="text-align: right;">0</td>
-</tr>
 <tr class="even">
-<td>b_income_over_100k_bike</td>
-<td style="text-align: right;">0.122119</td>
-<td style="text-align: right;">0.176574</td>
-<td style="text-align: right;">0.691606</td>
-<td style="text-align: right;">0.489185</td>
-</tr>
-<tr class="odd">
-<td>b_income_over_100k_transit</td>
+<td>1</td>
+<td style="text-align: left;">b_income_over_100k_transit</td>
 <td style="text-align: right;">-1.46673</td>
 <td style="text-align: right;">0.142462</td>
 <td style="text-align: right;">-10.2956</td>
 <td style="text-align: right;">0</td>
 </tr>
-<tr class="even">
-<td>b_income_over_100k_walk</td>
-<td style="text-align: right;">0.224605</td>
-<td style="text-align: right;">0.0552479</td>
-<td style="text-align: right;">4.0654</td>
-<td style="text-align: right;">4.795e-05</td>
-</tr>
 <tr class="odd">
-<td>b_rush_hour_bike</td>
-<td style="text-align: right;">0.016448</td>
-<td style="text-align: right;">0.212542</td>
-<td style="text-align: right;">0.0773869</td>
-<td style="text-align: right;">0.938316</td>
-</tr>
-<tr class="even">
-<td>b_rush_hour_transit</td>
+<td>2</td>
+<td style="text-align: left;">b_rush_hour_transit</td>
 <td style="text-align: right;">0.420138</td>
 <td style="text-align: right;">0.122775</td>
 <td style="text-align: right;">3.42203</td>
-<td style="text-align: right;">0.000621558</td>
+<td style="text-align: right;">0.00062156</td>
+</tr>
+<tr class="even">
+<td>3</td>
+<td style="text-align: left;">asc_walk</td>
+<td style="text-align: right;">-1.44904</td>
+<td style="text-align: right;">0.0416877</td>
+<td style="text-align: right;">-34.7594</td>
+<td style="text-align: right;">0</td>
 </tr>
 <tr class="odd">
-<td>b_rush_hour_walk</td>
+<td>4</td>
+<td style="text-align: left;">b_income_over_100k_walk</td>
+<td style="text-align: right;">0.224605</td>
+<td style="text-align: right;">0.0552479</td>
+<td style="text-align: right;">4.0654</td>
+<td style="text-align: right;">4.79494e-05</td>
+</tr>
+<tr class="even">
+<td>5</td>
+<td style="text-align: left;">b_rush_hour_walk</td>
 <td style="text-align: right;">-0.424242</td>
-<td style="text-align: right;">0.0744278</td>
+<td style="text-align: right;">0.0744277</td>
 <td style="text-align: right;">-5.70005</td>
-<td style="text-align: right;">1.19772e-08</td>
+<td style="text-align: right;">1.19775e-08</td>
+</tr>
+<tr class="odd">
+<td>6</td>
+<td style="text-align: left;">asc_bike</td>
+<td style="text-align: right;">-4.00891</td>
+<td style="text-align: right;">0.13413</td>
+<td style="text-align: right;">-29.8883</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td>7</td>
+<td style="text-align: left;">b_income_over_100k_bike</td>
+<td style="text-align: right;">0.122184</td>
+<td style="text-align: right;">0.17658</td>
+<td style="text-align: right;">0.691947</td>
+<td style="text-align: right;">0.488971</td>
+</tr>
+<tr class="odd">
+<td>8</td>
+<td style="text-align: left;">b_rush_hour_bike</td>
+<td style="text-align: right;">0.0164696</td>
+<td style="text-align: right;">0.212546</td>
+<td style="text-align: right;">0.0774871</td>
+<td style="text-align: right;">0.938236</td>
 </tr>
 </tbody>
 </table>
 </div>
 </div>
-<div>
 <ul>
 <li class="fragment">Biking is about the same at rush hour vs.&nbsp;not</li>
 <li class="fragment">Transit ridership is relatively higher during rush hour</li>
 <li class="fragment">Walking is relatively lower during during rush hour</li>
 </ul>
-</div>
 </section>
 <section id="interpreting-the-coefficient-changes-ii" class="slide level2">
 <h2>Interpreting the coefficient changes II</h2>
-<div id="87874acf" class="cell" data-execution_count="26">
-<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="25">
+<div id="40f5bab9" class="cell" data-execution_count="25">
+<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="69">
 <table class="caption-top">
 <thead>
 <tr class="header">
 <th></th>
+<th style="text-align: left;">Name</th>
 <th style="text-align: right;">Value</th>
-<th style="text-align: right;">Rob. Std err</th>
-<th style="text-align: right;">Rob. t-test</th>
-<th style="text-align: right;">Rob. p-value</th>
+<th style="text-align: right;">Robust std err.</th>
+<th style="text-align: right;">Robust t-stat.</th>
+<th style="text-align: right;">Robust p-value</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>asc_bike</td>
-<td style="text-align: right;">-4.00884</td>
-<td style="text-align: right;">0.134121</td>
-<td style="text-align: right;">-29.8897</td>
-<td style="text-align: right;">0</td>
-</tr>
-<tr class="even">
-<td>asc_transit</td>
+<td>0</td>
+<td style="text-align: left;">asc_transit</td>
 <td style="text-align: right;">-2.61744</td>
 <td style="text-align: right;">0.071685</td>
 <td style="text-align: right;">-36.5131</td>
 <td style="text-align: right;">0</td>
 </tr>
-<tr class="odd">
-<td>asc_walk</td>
-<td style="text-align: right;">-1.44904</td>
-<td style="text-align: right;">0.0416878</td>
-<td style="text-align: right;">-34.7594</td>
-<td style="text-align: right;">0</td>
-</tr>
 <tr class="even">
-<td>b_income_over_100k_bike</td>
-<td style="text-align: right;">0.122119</td>
-<td style="text-align: right;">0.176574</td>
-<td style="text-align: right;">0.691606</td>
-<td style="text-align: right;">0.489185</td>
-</tr>
-<tr class="odd">
-<td>b_income_over_100k_transit</td>
+<td>1</td>
+<td style="text-align: left;">b_income_over_100k_transit</td>
 <td style="text-align: right;">-1.46673</td>
 <td style="text-align: right;">0.142462</td>
 <td style="text-align: right;">-10.2956</td>
 <td style="text-align: right;">0</td>
 </tr>
-<tr class="even">
-<td>b_income_over_100k_walk</td>
-<td style="text-align: right;">0.224605</td>
-<td style="text-align: right;">0.0552479</td>
-<td style="text-align: right;">4.0654</td>
-<td style="text-align: right;">4.795e-05</td>
-</tr>
 <tr class="odd">
-<td>b_rush_hour_bike</td>
-<td style="text-align: right;">0.016448</td>
-<td style="text-align: right;">0.212542</td>
-<td style="text-align: right;">0.0773869</td>
-<td style="text-align: right;">0.938316</td>
-</tr>
-<tr class="even">
-<td>b_rush_hour_transit</td>
+<td>2</td>
+<td style="text-align: left;">b_rush_hour_transit</td>
 <td style="text-align: right;">0.420138</td>
 <td style="text-align: right;">0.122775</td>
 <td style="text-align: right;">3.42203</td>
-<td style="text-align: right;">0.000621558</td>
+<td style="text-align: right;">0.00062156</td>
+</tr>
+<tr class="even">
+<td>3</td>
+<td style="text-align: left;">asc_walk</td>
+<td style="text-align: right;">-1.44904</td>
+<td style="text-align: right;">0.0416877</td>
+<td style="text-align: right;">-34.7594</td>
+<td style="text-align: right;">0</td>
 </tr>
 <tr class="odd">
-<td>b_rush_hour_walk</td>
+<td>4</td>
+<td style="text-align: left;">b_income_over_100k_walk</td>
+<td style="text-align: right;">0.224605</td>
+<td style="text-align: right;">0.0552479</td>
+<td style="text-align: right;">4.0654</td>
+<td style="text-align: right;">4.79494e-05</td>
+</tr>
+<tr class="even">
+<td>5</td>
+<td style="text-align: left;">b_rush_hour_walk</td>
 <td style="text-align: right;">-0.424242</td>
-<td style="text-align: right;">0.0744278</td>
+<td style="text-align: right;">0.0744277</td>
 <td style="text-align: right;">-5.70005</td>
-<td style="text-align: right;">1.19772e-08</td>
+<td style="text-align: right;">1.19775e-08</td>
+</tr>
+<tr class="odd">
+<td>6</td>
+<td style="text-align: left;">asc_bike</td>
+<td style="text-align: right;">-4.00891</td>
+<td style="text-align: right;">0.13413</td>
+<td style="text-align: right;">-29.8883</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td>7</td>
+<td style="text-align: left;">b_income_over_100k_bike</td>
+<td style="text-align: right;">0.122184</td>
+<td style="text-align: right;">0.17658</td>
+<td style="text-align: right;">0.691947</td>
+<td style="text-align: right;">0.488971</td>
+</tr>
+<tr class="odd">
+<td>8</td>
+<td style="text-align: left;">b_rush_hour_bike</td>
+<td style="text-align: right;">0.0164696</td>
+<td style="text-align: right;">0.212546</td>
+<td style="text-align: right;">0.0774871</td>
+<td style="text-align: right;">0.938236</td>
 </tr>
 </tbody>
 </table>
 </div>
 </div>
-<div>
 <ul>
 <li class="fragment">What happens to driving?
 <ul>
 <li class="fragment">We have set driving as the reference level, so all of these other changes are relative to the change in driving</li>
 </ul></li>
 </ul>
-</div>
 </section>
 <section id="availability" class="slide level2">
 <h2>Availability</h2>
@@ -2216,7 +2028,7 @@ b_rush_hour_walk           -0.424242      0.074428    -5.700050  1.197720e-08</c
 </ul></li>
 </ul></li>
 <li>We can add an availability constraint to our model to indicate which alternatives are available to which decisionmakers</li>
-<li>This effectively sets <span class="math inline">V_{mode} = -\infty</span>, so it will always be worse than every other option</li>
+<li>This effectively sets <span class="math inline">\(V_{mode} = -\infty\)</span>, so it will always be worse than every other option</li>
 </ul>
 </section>
 <section id="adding-a-transit-availability-constraint" class="slide level2">
@@ -2224,7 +2036,7 @@ b_rush_hour_walk           -0.424242      0.074428    -5.700050  1.197720e-08</c
 <ul>
 <li>We constrain choices in the model to indicate that transit is unavailable for some trips</li>
 </ul>
-<div id="87f032d9" class="cell" data-execution_count="27">
+<div id="9fec1382" class="cell" data-execution_count="26">
 <div class="code-with-filename">
 <div class="code-with-filename-file">
 <pre><strong>seattle_mnl_availability.py</strong></pre>
@@ -2290,7 +2102,7 @@ b_rush_hour_walk           -0.424242      0.074428    -5.700050  1.197720e-08</c
 <span id="cb13-59"><a></a>model.calculate_null_loglikelihood(av)</span>
 <span id="cb13-60"><a></a>result <span class="op">=</span> model.estimate()</span>
 <span id="cb13-61"><a></a></span>
-<span id="cb13-62"><a></a><span class="cf">assert</span> result.algorithm_has_converged()</span>
+<span id="cb13-62"><a></a><span class="cf">assert</span> result.algorithm_has_converged</span>
 <span id="cb13-63"><a></a><span class="bu">print</span>(result.short_summary())</span>
 <span id="cb13-64"><a></a><span class="bu">print</span>(result.get_estimated_parameters())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -2307,16 +2119,27 @@ Rho bar square (null):          -1.8e+308
 Akaike Information Criterion:   inf
 Bayesian Information Criterion: inf
 
-                            Value  Rob. Std err  Rob. t-test  Rob. p-value
-asc_bike                      0.0      0.053661          0.0           1.0
-asc_transit                   0.0      0.056451          0.0           1.0
-asc_walk                      0.0      0.058790          0.0           1.0
-b_income_over_100k_bike       0.0      0.071824          0.0           1.0
-b_income_over_100k_transit    0.0      0.074577          0.0           1.0
-b_income_over_100k_walk       0.0      0.079367          0.0           1.0
-b_rush_hour_bike              0.0      0.089161          0.0           1.0
-b_rush_hour_transit           0.0      0.094065          0.0           1.0
-b_rush_hour_walk              0.0      0.096364          0.0           1.0</code></pre>
+                         Name  Value  Robust std err.  Robust t-stat.  \
+0                 asc_transit    0.0         0.056451             0.0   
+1  b_income_over_100k_transit    0.0         0.074577             0.0   
+2         b_rush_hour_transit    0.0         0.094065             0.0   
+3                    asc_walk    0.0         0.058790             0.0   
+4     b_income_over_100k_walk    0.0         0.079367             0.0   
+5            b_rush_hour_walk    0.0         0.096364             0.0   
+6                    asc_bike    0.0         0.053661             0.0   
+7     b_income_over_100k_bike    0.0         0.071824             0.0   
+8            b_rush_hour_bike    0.0         0.089161             0.0   
+
+   Robust p-value  
+0             1.0  
+1             1.0  
+2             1.0  
+3             1.0  
+4             1.0  
+5             1.0  
+6             1.0  
+7             1.0  
+8             1.0  </code></pre>
 </div>
 </div>
 </section>
@@ -2337,7 +2160,7 @@ b_rush_hour_walk              0.0      0.096364          0.0           1.0</code
 </section>
 <section id="fixing-the-issue" class="slide level2">
 <h2>Fixing the issue</h2>
-<div id="976a8a19" class="cell" data-execution_count="28">
+<div id="6571fd96" class="cell" data-execution_count="27">
 <div class="code-with-filename">
 <div class="code-with-filename-file">
 <pre><strong>seattle_mnl_availability_fixed.py</strong></pre>
@@ -2406,7 +2229,7 @@ b_rush_hour_walk              0.0      0.096364          0.0           1.0</code
 <span id="cb15-62"><a></a>model.calculate_null_loglikelihood(av)</span>
 <span id="cb15-63"><a></a>result <span class="op">=</span> model.estimate()</span>
 <span id="cb15-64"><a></a></span>
-<span id="cb15-65"><a></a><span class="cf">assert</span> result.algorithm_has_converged()</span>
+<span id="cb15-65"><a></a><span class="cf">assert</span> result.algorithm_has_converged</span>
 <span id="cb15-66"><a></a><span class="bu">print</span>(result.short_summary())</span>
 <span id="cb15-67"><a></a><span class="bu">print</span>(result.get_estimated_parameters())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -2423,16 +2246,27 @@ Rho bar square (null):          0.49
 Akaike Information Criterion:   12223.45
 Bayesian Information Criterion: 12287.27
 
-                               Value  Rob. Std err  Rob. t-test  Rob. p-value
-asc_bike                   -4.008824      0.134137   -29.886108  0.000000e+00
-asc_transit                -2.499443      0.072314   -34.563646  0.000000e+00
-asc_walk                   -1.449008      0.041692   -34.754804  0.000000e+00
-b_income_over_100k_bike     0.122101      0.176569     0.691521  4.892380e-01
-b_income_over_100k_transit -1.529168      0.147781   -10.347520  0.000000e+00
-b_income_over_100k_walk     0.224511      0.055248     4.063663  4.830857e-05
-b_rush_hour_bike            0.016484      0.212537     0.077560  9.381783e-01
-b_rush_hour_transit         0.446924      0.125502     3.561087  3.693233e-04
-b_rush_hour_walk           -0.424159      0.074426    -5.699037  1.204861e-08</code></pre>
+                         Name     Value  Robust std err.  Robust t-stat.  \
+0                 asc_transit -2.499443         0.072314      -34.563689   
+1  b_income_over_100k_transit -1.529168         0.147781      -10.347521   
+2         b_rush_hour_transit  0.446923         0.125502        3.561086   
+3                    asc_walk -1.449009         0.041692      -34.754849   
+4     b_income_over_100k_walk  0.224511         0.055248        4.063667   
+5            b_rush_hour_walk -0.424158         0.074426       -5.699032   
+6                    asc_bike -4.008920         0.134148      -29.884265   
+7     b_income_over_100k_bike  0.122188         0.176577        0.691980   
+8            b_rush_hour_bike  0.016515         0.212543        0.077700   
+
+   Robust p-value  
+0    0.000000e+00  
+1    0.000000e+00  
+2    3.693244e-04  
+3    0.000000e+00  
+4    4.830777e-05  
+5    1.204895e-08  
+6    0.000000e+00  
+7    4.889500e-01  
+8    9.380666e-01  </code></pre>
 </div>
 </div>
 </section>
@@ -2460,7 +2294,7 @@ b_rush_hour_walk           -0.424159      0.074426    -5.699037  1.204861e-08</c
 </section>
 <section id="adding-a-generic-variable-in-biogeme" class="slide level2">
 <h2>Adding a generic variable in Biogeme</h2>
-<div id="4044edb7" class="cell" data-execution_count="29">
+<div id="e1f9000d" class="cell" data-execution_count="28">
 <div class="code-with-filename">
 <div class="code-with-filename-file">
 <pre><strong>seattle_mnl_generic.py</strong></pre>
@@ -2537,7 +2371,7 @@ b_rush_hour_walk           -0.424159      0.074426    -5.699037  1.204861e-08</c
 <span id="cb17-70"><a></a>model.calculate_null_loglikelihood(av)</span>
 <span id="cb17-71"><a></a>result <span class="op">=</span> model.estimate()</span>
 <span id="cb17-72"><a></a></span>
-<span id="cb17-73"><a></a><span class="cf">assert</span> result.algorithm_has_converged()</span>
+<span id="cb17-73"><a></a><span class="cf">assert</span> result.algorithm_has_converged</span>
 <span id="cb17-74"><a></a><span class="bu">print</span>(result.short_summary())</span>
 <span id="cb17-75"><a></a><span class="bu">print</span>(result.get_estimated_parameters())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -2554,23 +2388,35 @@ Rho bar square (null):          0.613
 Akaike Information Criterion:   9264.329
 Bayesian Information Criterion: 9335.237
 
-                               Value  Rob. Std err  Rob. t-test  Rob. p-value
-asc_bike                   -3.218041      0.135727   -23.709736  0.000000e+00
-asc_transit                -1.170366      0.079567   -14.709193  0.000000e+00
-asc_walk                    0.156171      0.057446     2.718556  6.556752e-03
-b_income_over_100k_bike     0.190055      0.178026     1.067567  2.857157e-01
-b_income_over_100k_transit -1.462927      0.148960    -9.820969  0.000000e+00
-b_income_over_100k_walk     0.384590      0.064497     5.962942  2.477359e-09
-b_rush_hour_bike            0.118855      0.214430     0.554284  5.793848e-01
-b_rush_hour_transit         0.417214      0.130249     3.203190  1.359144e-03
-b_rush_hour_walk           -0.160472      0.088025    -1.823024  6.829975e-02
-b_travel_time              -0.049626      0.001703   -29.139448  0.000000e+00</code></pre>
+                         Name     Value  Robust std err.  Robust t-stat.  \
+0               b_travel_time -0.049626         0.001703      -29.139447   
+1                 asc_transit -1.170366         0.079567      -14.709189   
+2  b_income_over_100k_transit -1.462928         0.148960       -9.820971   
+3         b_rush_hour_transit  0.417214         0.130249        3.203193   
+4                    asc_walk  0.156172         0.057446        2.718571   
+5     b_income_over_100k_walk  0.384589         0.064497        5.962930   
+6            b_rush_hour_walk -0.160474         0.088025       -1.823042   
+7                    asc_bike -3.218042         0.135727      -23.709717   
+8     b_income_over_100k_bike  0.190056         0.178026        1.067575   
+9            b_rush_hour_bike  0.118855         0.214430        0.554284   
+
+   Robust p-value  
+0    0.000000e+00  
+1    0.000000e+00  
+2    0.000000e+00  
+3    1.359131e-03  
+4    6.556463e-03  
+5    2.477540e-09  
+6    6.829707e-02  
+7    0.000000e+00  
+8    2.857124e-01  
+9    5.793847e-01  </code></pre>
 </div>
 </div>
 </section>
 <section id="exercise-add-the-cost-variable" class="slide level2">
 <h2>Exercise: add the cost variable</h2>
-<div id="71699679" class="cell" data-execution_count="30">
+<div id="1c7c976c" class="cell" data-execution_count="29">
 <div class="code-with-filename">
 <div class="code-with-filename-file">
 <pre><strong>seattle_mnl_generic_cost.py</strong></pre>
@@ -2653,7 +2499,7 @@ b_travel_time              -0.049626      0.001703   -29.139448  0.000000e+00</c
 <span id="cb19-76"><a></a>model.calculate_null_loglikelihood(av)</span>
 <span id="cb19-77"><a></a>result <span class="op">=</span> model.estimate()</span>
 <span id="cb19-78"><a></a></span>
-<span id="cb19-79"><a></a><span class="cf">assert</span> result.algorithm_has_converged()</span>
+<span id="cb19-79"><a></a><span class="cf">assert</span> result.algorithm_has_converged</span>
 <span id="cb19-80"><a></a><span class="bu">print</span>(result.short_summary())</span>
 <span id="cb19-81"><a></a><span class="bu">print</span>(result.get_estimated_parameters())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -2670,18 +2516,31 @@ Rho bar square (null):          0.622
 Akaike Information Criterion:   9053.902
 Bayesian Information Criterion: 9131.9
 
-                               Value  Rob. Std err  Rob. t-test  Rob. p-value
-asc_bike                   -3.432102      0.141656   -24.228346  0.000000e+00
-asc_transit                -1.207818      0.081015   -14.908553  0.000000e+00
-asc_walk                    0.044614      0.057455     0.776500  4.374539e-01
-b_income_over_100k_bike     0.200002      0.184747     1.082572  2.789986e-01
-b_income_over_100k_transit -1.511829      0.153046    -9.878264  0.000000e+00
-b_income_over_100k_walk     0.423144      0.065608     6.449539  1.121907e-10
-b_rush_hour_bike            0.058073      0.221673     0.261977  7.933389e-01
-b_rush_hour_transit         0.145843      0.140794     1.035859  3.002679e-01
-b_rush_hour_walk           -0.197598      0.088647    -2.229053  2.581040e-02
-b_travel_cost              -0.102266      0.010528    -9.713611  0.000000e+00
-b_travel_time              -0.055375      0.001872   -29.577801  0.000000e+00</code></pre>
+                          Name     Value  Robust std err.  Robust t-stat.  \
+0                b_travel_time -0.055375         0.001872      -29.577721   
+1                b_travel_cost -0.102267         0.010528       -9.713571   
+2                  asc_transit -1.207753         0.081013      -14.908198   
+3   b_income_over_100k_transit -1.511950         0.153055       -9.878456   
+4          b_rush_hour_transit  0.145748         0.140798        1.035157   
+5                     asc_walk  0.044621         0.057456        0.776610   
+6      b_income_over_100k_walk  0.423135         0.065609        6.449382   
+7             b_rush_hour_walk -0.197586         0.088647       -2.228911   
+8                     asc_bike -3.432096         0.141653      -24.228822   
+9      b_income_over_100k_bike  0.199996         0.184738        1.082590   
+10            b_rush_hour_bike  0.058301         0.221636        0.263050   
+
+    Robust p-value  
+0     0.000000e+00  
+1     0.000000e+00  
+2     0.000000e+00  
+3     0.000000e+00  
+4     3.005957e-01  
+5     4.373887e-01  
+6     1.123073e-10  
+7     2.581982e-02  
+8     0.000000e+00  
+9     2.789903e-01  
+10    7.925123e-01  </code></pre>
 </div>
 </div>
 </section>
@@ -2697,17 +2556,16 @@ b_travel_time              -0.055375      0.001872   -29.577801  0.000000e+00</c
 <h2>Willingness to pay: calculation</h2>
 <ul>
 <li>The units of utility are arbitrarily defined as <em>utils</em></li>
-<li>The units of <span class="math inline">\beta_{cost}</span> are utils per dollar</li>
-<li>The units of <span class="math inline">\beta_{time}</span> are utils per minute</li>
-<li>Thus, the units of <span class="math inline">\frac{\beta_{time}}{\beta_{cost}}</span> are dollars per minute</li>
+<li>The units of <span class="math inline">\(\beta_{cost}\)</span> are utils per dollar</li>
+<li>The units of <span class="math inline">\(\beta_{time}\)</span> are utils per minute</li>
+<li>Thus, the units of <span class="math inline">\(\frac{\beta_{time}}{\beta_{cost}}\)</span> are dollars per minute</li>
 </ul>
 </section>
 <section id="willingness-to-pay-calculation-1" class="slide level2">
 <h2>Willingness to pay: calculation</h2>
-<p><span class="math display">
+<p><span class="math display">\[
 \frac{\beta_{time}}{\beta_{cost}} \times 60 = \frac{-0.055}{-0.102} \times 60 = \$32.35 / \mathrm{hour}
-</span></p>
-<div>
+\]</span></p>
 <ul>
 <li class="fragment">In theory, this is how much people are willing to spend to avoid an hour of travel time</li>
 <li class="fragment">This is in the ballpark of what I would expect, but is rather high
@@ -2719,7 +2577,6 @@ b_travel_time              -0.055375      0.001872   -29.577801  0.000000e+00</c
 <li class="fragment">Driving costs are 0.39/mile plus $10 for parking downtown, bike costs are 0.17/mile, and walk costs are 0.10/mile</li>
 <li class="fragment">Transit costs are loosely based on actual fares, but many transit users have monthly passes</li>
 </ul>
-</div>
 </section>
 <section id="digging-more-into-the-math-of-the-multinomial-logit-model" class="slide level2">
 <h2>Digging more into the math of the multinomial logit model</h2>
@@ -2734,15 +2591,15 @@ b_travel_time              -0.055375      0.001872   -29.577801  0.000000e+00</c
 </section>
 <section id="calculating-predicted-probabilities-with-the-multinomial-logit-model" class="slide level2">
 <h2>Calculating predicted probabilities with the multinomial logit model</h2>
-<p>We want to calculate the probability that decisionmaker <span class="math inline">n</span> chooses alternative <span class="math inline">i</span></p>
-<p><span class="math display">
+<p>We want to calculate the probability that decisionmaker <span class="math inline">\(n\)</span> chooses alternative <span class="math inline">\(i\)</span></p>
+<p><span class="math display">\[
 P_{ni} = P\left[U_{ni}~~\geq~~\max_{\forall j\neq i}~~U_{nj}\right]
-</span></p>
+\]</span></p>
 <div class="fragment">
 <p>Which is probabilistic because of the error terms</p>
-<p><span class="math display">
+<p><span class="math display">\[
 P_{ni} = P\left[\left(V_{ni} + \epsilon_{ni}\right)~~\geq~~\max_{\forall j\neq i}~~\left(V_{nj} + \epsilon_{nj}\right)\right]
-</span></p>
+\]</span></p>
 </div>
 <div class="fragment">
 <p>which still isn’t something we can directly calculate without accounting for (integrating over) the error terms</p>
@@ -2753,16 +2610,16 @@ P_{ni} = P\left[\left(V_{ni} + \epsilon_{ni}\right)~~\geq~~\max_{\forall j\neq i
 <div class="columns">
 <div class="column" style="width:50%;">
 <ul>
-<li>The <span class="math inline">\epsilon</span>’s in the multinomial logit model are Gumbel-distributed
+<li>The <span class="math inline">\(\epsilon\)</span>’s in the multinomial logit model are Gumbel-distributed
 <ul>
 <li>aka Type I Extreme Value</li>
 </ul></li>
 <li>The Gumbel distribution is an approximation of the normal with attractive statistical properties</li>
 <li>Notably, the maximum of a set of Gumbel-distributed variables is also Gumbel-distributed</li>
-<li>This gives us a <em>closed-form</em> solution to find <span class="math inline">\displaystyle\max_{\forall j\neq i} \left(V_{nj} + \epsilon_{nj}\right)</span></li>
+<li>This gives us a <em>closed-form</em> solution to find <span class="math inline">\(\displaystyle\max_{\forall j\neq i} \left(V_{nj} + \epsilon_{nj}\right)\)</span></li>
 </ul>
 </div><div class="column" style="width:50%;">
-<div id="c29739ee" class="cell" data-execution_count="31">
+<div id="69e2a67e" class="cell" data-execution_count="30">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -2776,54 +2633,62 @@ P_{ni} = P\left[\left(V_{ni} + \epsilon_{ni}\right)~~\geq~~\max_{\forall j\neq i
 <section id="using-the-gumbel-distribution" class="slide level2">
 <h2>Using the Gumbel distribution</h2>
 <p>Because of the properties of the Gumbel distribution,</p>
-<p><span class="math display">
-\max_{\forall j\neq i} \left(V_{nj} + \epsilon_{nj}\right) = \ln \sum_{\forall j\neq i} e^{V_{nj}}
-</span></p>
+<p><span class="math display">\[
+E[\max_{\forall j\neq i} \left(V_{nj} + \epsilon_{nj}\right)] = \ln \sum_{\forall j\neq i} e^{V_{nj}}
+\]</span></p>
 </section>
 <section id="calculating-the-choice-probability" class="slide level2">
 <h2>Calculating the choice probability</h2>
 <p>Again because of the properties of the Gumbel distribution, namely that the difference of two Gumbel distributions is a Logistic distribution, we have</p>
-<p><span class="math display">
+<p><span class="math display">\[
 \begin{align*}
 P_{ni} =&amp;~P\left[\left(V_{ni} + \epsilon_{ni}\right)~~\geq~~\max_{\forall j\neq i}~~\left(V_{nj} + \epsilon_{nj}\right)\right]\\
 =&amp;~P\left[\left(V_{ni} + \epsilon_{ni}\right)~~\geq~~\ln \sum_{\forall j\neq i} e^{V_{nj}}\right]\\
 =&amp;~\frac{e^{V_{ni}}}{e^{V_{ni}} + e^{\ln \sum_{\forall j\neq i} e^{V_{nj}}}}\\
 =&amp;~\frac{e^{V_{ni}}}{\displaystyle\sum_{\forall j} e^{V_{nj}}}
 \end{align*}
-</span></p>
+\]</span></p>
 <p>which is also known as the softmax function. More detail: see Section 5.2 of <span class="citation" data-cites="ben-akiva_discrete_1985">Ben-Akiva &amp; Lerman <a href="#/questions" role="doc-biblioref" onclick="">(1985) <em>Discrete <span>Choice Analysis</span>: <span>Theory</span> and <span>Application</span> to <span>Travel Demand</span></em></a></span></p>
+</section>
+<section id="the-expected-maximum-utilitylogsum" class="slide level2">
+<h2>The expected maximum utility/logsum</h2>
+<ul>
+<li class="fragment">The denominator of the probability function is the “expected maximum utility” (in exponentiated form), also called the “logsum”</li>
+<li class="fragment">This estimates how much utility a decisionmaker will derive from their chosen outcome, <em>without having to know what they choose</em></li>
+<li class="fragment">For instance, in a mode choice model, this might be used as an <em>accessibility metric</em>,</li>
+</ul>
 </section>
 <section id="only-utility-differences-matter-1" class="slide level2">
 <h2>Only utility differences matter</h2>
 <p>What happens if we add 1.5 to all utilities?</p>
-<p><span class="math display">
+<p><span class="math display">\[
 \begin{align*}
 P_{ni} &amp;= \frac{e^{V_{ni} + 1.5}}{\displaystyle\sum_{\forall j} e^{V_{nj} + 1.5}} \\
 &amp;= \frac{e^{V_{ni}}e^{1.5}}{\displaystyle\sum_{\forall j} e^{V_{nj}}e^{1.5}} \\
 &amp;= \frac{e^{V_{ni}}e^{1.5}}{e^{1.5}\displaystyle\sum_{\forall j} e^{V_{nj}}} \\
 &amp;= \frac{e^{V_{ni}}}{\displaystyle\sum_{\forall j} e^{V_{nj}}} \\
 \end{align*}
-</span></p>
+\]</span></p>
 </section>
 <section id="the-binary-and-multinomial-logit-are-the-same-model" class="slide level2">
 <h2>The binary and multinomial logit are the same model</h2>
 <ul>
 <li>The binary logit model is just a multinomial logit model with two outcome and no generic variables</li>
-<li>If we had two outcomes, 0 and 1, with systematic utilities <span class="math inline">V_0</span> and <span class="math inline">V_1</span>, the choice probability would be, with <span class="math inline">V_0 = 0</span></li>
+<li>If we had two outcomes, 0 and 1, with systematic utilities <span class="math inline">\(V_0\)</span> and <span class="math inline">\(V_1\)</span>, the choice probability would be, with <span class="math inline">\(V_0 = 0\)</span></li>
 </ul>
-<p><span class="math display">
+<p><span class="math display">\[
 \begin{align}
 P(y = 1) &amp;= \frac{e^{V_1}}{e^{V_0} + e^{V_1}}\\
 &amp;= \frac{e^{V_1}}{e^0 + e^{V_1}}\\
 &amp;= \frac{e^{V_1}}{1 + e^{V_1}}
 \end{align}
-</span></p>
+\]</span></p>
 <p>Which is the same as the predicted probability in binary logistic regression</p>
 </section>
 <section id="calculating-choice-probabilities-in-biogeme" class="slide level2">
 <h2>Calculating choice probabilities in Biogeme</h2>
 <p>Add to the end of your most recent model, and run</p>
-<div id="fc3ff528" class="cell" data-execution_count="32">
+<div id="42b9614b" class="cell" data-execution_count="31">
 <div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a></a><span class="co"># models.loglogit(V, av, Variable("mode_choice")) represents the log-probability of the chosen alternative</span></span>
 <span id="cb21-2"><a></a><span class="co"># models.logit(V, av, 1) represents the probability (not logged) of alternative 1</span></span>
 <span id="cb21-3"><a></a>sim_model <span class="op">=</span> bio.BIOGEME(data, {</span>
@@ -2833,21 +2698,21 @@ P(y = 1) &amp;= \frac{e^{V_1}}{e^{V_0} + e^{V_1}}\\
 <span id="cb21-7"><a></a>    <span class="st">"Bike"</span>: models.logit(V, av, <span class="dv">4</span>)</span>
 <span id="cb21-8"><a></a>})</span>
 <span id="cb21-9"><a></a></span>
-<span id="cb21-10"><a></a>choice_probabilities <span class="op">=</span> sim_model.simulate(result.getBetaValues())</span>
+<span id="cb21-10"><a></a>choice_probabilities <span class="op">=</span> sim_model.simulate(result.get_beta_values())</span>
 <span id="cb21-11"><a></a><span class="bu">print</span>(choice_probabilities)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>           Car   Transit          Walk      Bike
-0     0.998260  0.000000  4.856587e-06  0.001736
-1     0.998383  0.000000  4.638832e-06  0.001613
-2     0.976720  0.000000  9.568543e-03  0.013712
-3     0.980815  0.007713  9.379387e-04  0.010534
-4     0.618457  0.020161  3.409855e-01  0.020396
+0     0.998260  0.000000  4.856248e-06  0.001736
+1     0.998383  0.000000  4.638507e-06  0.001613
+2     0.976717  0.000000  9.568361e-03  0.013715
+3     0.980814  0.007712  9.379111e-04  0.010536
+4     0.618460  0.020160  3.409841e-01  0.020396
 ...        ...       ...           ...       ...
-8878  0.999776  0.000000  7.370047e-10  0.000224
-8879  0.998289  0.000000  1.323592e-06  0.001710
-8880  0.999972  0.000000  1.219600e-13  0.000028
-8881  0.999776  0.000000  7.370047e-10  0.000224
-8882  0.850032  0.144231  1.193346e-05  0.005725
+8868  0.999776  0.000000  7.369275e-10  0.000224
+8869  0.998289  0.000000  1.323505e-06  0.001710
+8870  0.999972  0.000000  1.219416e-13  0.000028
+8871  0.999776  0.000000  7.369275e-10  0.000224
+8872  0.850049  0.144213  1.193309e-05  0.005726
 
 [8873 rows x 4 columns]</code></pre>
 </div>
@@ -2858,20 +2723,20 @@ P(y = 1) &amp;= \frac{e^{V_1}}{e^{V_0} + e^{V_1}}\\
 <ul>
 <li>Market shares are just the mean probability across all individuals</li>
 </ul>
-<div id="8d3ae870" class="cell" data-execution_count="33">
+<div id="c7de47bb" class="cell" data-execution_count="32">
 <div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a></a><span class="bu">print</span>(choice_probabilities.<span class="bu">apply</span>(np.mean))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Car        0.761975
+<pre><code>Car        0.761974
 Transit    0.037530
 Walk       0.185732
-Bike       0.014764
+Bike       0.014765
 dtype: float64</code></pre>
 </div>
 </div>
 <p>This is exactly the same as the market shares in the original data. This will always be the case when we have ASCs.</p>
-<div id="348b2d5d" class="cell" data-execution_count="34">
+<div id="a5c380a5" class="cell" data-execution_count="33">
 <div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a></a>df.mode_choice.value_counts() <span class="op">/</span> <span class="bu">len</span>(df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="33">
+<div class="cell-output cell-output-display" data-execution_count="77">
 <pre><code>mode_choice
 Car        0.761975
 Walk       0.185732
@@ -2894,7 +2759,7 @@ Name: count, dtype: float64</code></pre>
 </section>
 <section id="simulation-1" class="slide level2">
 <h2>Simulation</h2>
-<div id="bd9027d7" class="cell" data-execution_count="35">
+<div id="d0595145" class="cell" data-execution_count="34">
 <div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a></a>df_road_cost <span class="op">=</span> df.copy() <span class="co"># create a copy of the data to modify</span></span>
 <span id="cb27-2"><a></a>df_road_cost[<span class="st">"car_travel_cost"</span>] <span class="op">+=</span> df_road_cost.car_distance_km <span class="op">*</span> <span class="fl">0.025</span> <span class="op">/</span> <span class="fl">1.609</span></span>
 <span id="cb27-3"><a></a>data_road_cost <span class="op">=</span> db.Database(<span class="st">"Seattle road cost"</span>, pd.get_dummies(df_road_cost).astype(<span class="st">"float64"</span>))</span>
@@ -2906,13 +2771,13 @@ Name: count, dtype: float64</code></pre>
 <span id="cb27-9"><a></a>    <span class="st">"Bike"</span>: models.logit(V, av, <span class="dv">4</span>)</span>
 <span id="cb27-10"><a></a>})</span>
 <span id="cb27-11"><a></a></span>
-<span id="cb27-12"><a></a>choice_probabilities <span class="op">=</span> road_cost_model.simulate(result.getBetaValues())</span>
+<span id="cb27-12"><a></a>choice_probabilities <span class="op">=</span> road_cost_model.simulate(result.get_beta_values())</span>
 <span id="cb27-13"><a></a><span class="bu">print</span>(choice_probabilities.<span class="bu">apply</span>(np.mean))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Car        0.760968
 Transit    0.037977
-Walk       0.186167
-Bike       0.014888
+Walk       0.186166
+Bike       0.014889
 dtype: float64</code></pre>
 </div>
 </div>
@@ -2933,7 +2798,7 @@ dtype: float64</code></pre>
 </section>
 <section id="exercise-answers" class="slide level2">
 <h2>Exercise answers</h2>
-<div id="1a16fa7c" class="cell" data-execution_count="36">
+<div id="25ce6003" class="cell" data-execution_count="35">
 <div class="sourceCode cell-code" id="cb29"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a></a>df_transit_time <span class="op">=</span> df.copy() <span class="co"># create a copy of the data to modify</span></span>
 <span id="cb29-2"><a></a>df_transit_time[<span class="st">"transit_travel_time_mins"</span>] <span class="op">*=</span> <span class="fl">0.75</span></span>
 <span id="cb29-3"><a></a>data_transit_time <span class="op">=</span> db.Database(<span class="st">"Seattle transit time"</span>, pd.get_dummies(df_transit_time).astype(<span class="st">"float64"</span>))</span>
@@ -2945,13 +2810,13 @@ dtype: float64</code></pre>
 <span id="cb29-9"><a></a>    <span class="st">"Bike"</span>: models.logit(V, av, <span class="dv">4</span>)</span>
 <span id="cb29-10"><a></a>})</span>
 <span id="cb29-11"><a></a></span>
-<span id="cb29-12"><a></a>choice_probabilities <span class="op">=</span> transit_time_model.simulate(result.getBetaValues())</span>
+<span id="cb29-12"><a></a>choice_probabilities <span class="op">=</span> transit_time_model.simulate(result.get_beta_values())</span>
 <span id="cb29-13"><a></a><span class="bu">print</span>(choice_probabilities.<span class="bu">apply</span>(np.mean))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Car        0.741875
-Transit    0.059872
+<pre><code>Car        0.741874
+Transit    0.059873
 Walk       0.183807
-Bike       0.014446
+Bike       0.014447
 dtype: float64</code></pre>
 </div>
 </div>
@@ -2988,12 +2853,12 @@ dtype: float64</code></pre>
 <ul>
 <li>The likelihood function for a discrete choice model is just the product of the choice probabilities of the chosen outcome for each decisionmaker</li>
 </ul>
-<p><span class="math display">
+<p><span class="math display">\[
 \begin{align*}
 L =&amp;~\prod_n P_{n,i=\mathrm{chosen}(n)}\\
   =&amp;~\prod_n \frac{e^{V_{n,i=\mathrm{chosen}(n)}}}{\sum_j e^{V_{nj}}}
 \end{align*}
-</span></p>
+\]</span></p>
 <div class="fragment">
 <ul>
 <li>Is this likely to be a large number?</li>
@@ -3005,8 +2870,8 @@ L =&amp;~\prod_n P_{n,i=\mathrm{chosen}(n)}\\
 <ul>
 <li>The likelihood is too small to comptue with
 <ul>
-<li>The smallest non-zero number than can be represented varies by machine, but is in the neighborhood of <span class="math inline">5 \times 10^{-324}</span></li>
-<li>The likelihood for the model we just estimated is about <span class="math inline">10^{-1961}</span></li>
+<li>The smallest non-zero number than can be represented varies by machine, but is in the neighborhood of <span class="math inline">\(5 \times 10^{-324}\)</span></li>
+<li>The likelihood for the model we just estimated is about <span class="math inline">\(10^{-1961}\)</span></li>
 <li>You can confirm this if you want by running <code>10 ** -1961</code> in Python, you will get 0</li>
 </ul></li>
 <li>Instead, we compute with the <i>log</i>likelihood - i.e.&nbsp;the natural logarithm of the likelihood</li>
@@ -3017,12 +2882,12 @@ L =&amp;~\prod_n P_{n,i=\mathrm{chosen}(n)}\\
 <div class="columns">
 <div class="column">
 <ul>
-<li>Logs map numbers between 0 and 1 to <span class="math inline">-\infty</span> to 0</li>
+<li>Logs map numbers between 0 and 1 to <span class="math inline">\(-\infty\)</span> to 0</li>
 <li>Very small probabilities are very large negative numbers, avoiding rounding problems</li>
-<li><span class="math inline">\ln ab = \ln a + \ln b</span></li>
+<li><span class="math inline">\(\ln ab = \ln a + \ln b\)</span></li>
 </ul>
 </div><div class="column">
-<div id="1c27d60d" class="cell" data-execution_count="37">
+<div id="7f89a01c" class="cell" data-execution_count="36">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -3035,25 +2900,25 @@ L =&amp;~\prod_n P_{n,i=\mathrm{chosen}(n)}\\
 </section>
 <section id="the-log-likelihood-function-for-a-multinomial-logit-model" class="slide level2">
 <h2>The log-likelihood function for a multinomial logit model</h2>
-<p><span class="math display">
+<p><span class="math display">\[
 \ell = \sum_{n} \ln \frac{e^{V_{n,i=\mathrm{chosen}(n)}}}{\sum_j e^{V_{nj}}}
-</span></p>
+\]</span></p>
 <ul>
 <li>We take the log of each probability</li>
 <li>The product becomes a summation</li>
 <li>We see the log-likelihood in the Biogeme output</li>
-<li>Why was the log-likelihood <span class="math inline">-\infty</span> when we first added the availability constraint?
+<li>Why was the log-likelihood <span class="math inline">\(-\infty\)</span> when we first added the availability constraint?
 <ul>
 <li><span class="fragment">Because some people chose a mode that was not available to them, making the probability 0</span></li>
 </ul></li>
 </ul>
 </section>
 <section id="pseudo-r2-statistics" class="slide level2">
-<h2>Pseudo-<span class="math inline">R^2</span> statistics</h2>
+<h2>Pseudo-<span class="math inline">\(R^2\)</span> statistics</h2>
 <ul>
-<li>In linear regression, we have the <span class="math inline">R^2</span> statistic that tells us how well the model fits the data</li>
+<li>In linear regression, we have the <span class="math inline">\(R^2\)</span> statistic that tells us how well the model fits the data</li>
 <li>We don’t have anything quite the same for discrete choice models</li>
-<li>Many authors have created pseudo-<span class="math inline">R^2</span> (sometimes called <span class="math inline">\rho^2</span>) metrics based on loglikelihoods</li>
+<li>Many authors have created pseudo-<span class="math inline">\(R^2\)</span> (sometimes called <span class="math inline">\(\rho^2\)</span>) metrics based on loglikelihoods</li>
 <li>These measure the loglikelihood of your model relative to a <em>null model</em>, either
 <ul>
 <li>a model with no coefficients, predicting equal probabilities for all alternatives, or</li>
@@ -3062,20 +2927,20 @@ L =&amp;~\prod_n P_{n,i=\mathrm{chosen}(n)}\\
 </ul>
 </section>
 <section id="mcfaddens-pseudo-r2" class="slide level2">
-<h2>McFadden’s pseudo-<span class="math inline">R^2</span></h2>
+<h2>McFadden’s pseudo-<span class="math inline">\(R^2\)</span></h2>
 <ul>
-<li>Most common is probably McFadden’s, <span class="math inline">1 - \frac{\ell}{\ell_C}</span></li>
-<li>Or McFadden’s adjusted, <span class="math inline">1 - \frac{\ell - K}{\ell_C}</span> where <span class="math inline">K</span> is number of estimated coefficients that weren’t in the null model, which attempts to correct for overfitting</li>
-<li>Anecdotally, pseudo-<span class="math inline">R^2</span> statistics tend to be fairly low</li>
+<li>Most common is probably McFadden’s, <span class="math inline">\(1 - \frac{\ell}{\ell_C}\)</span></li>
+<li>Or McFadden’s adjusted, <span class="math inline">\(1 - \frac{\ell - K}{\ell_C}\)</span> where <span class="math inline">\(K\)</span> is number of estimated coefficients that weren’t in the null model, which attempts to correct for overfitting</li>
+<li>Anecdotally, pseudo-<span class="math inline">\(R^2\)</span> statistics tend to be fairly low</li>
 </ul>
 </section>
 <section id="calculating-pseudo-r2-in-biogeme" class="slide level2">
-<h2>Calculating pseudo-<span class="math inline">R^2</span> in Biogeme</h2>
+<h2>Calculating pseudo-<span class="math inline">\(R^2\)</span> in Biogeme</h2>
 <ul>
 <li>Biogeme automatically calculates the log-likelihood at zero</li>
 <li>However, comparing to log-likelihood at constants is generally preferred
 <ul>
-<li>This is more similar to linear regression, where the <span class="math inline">R^2</span> is relative to a model with only an intercept</li>
+<li>This is more similar to linear regression, where the <span class="math inline">\(R^2\)</span> is relative to a model with only an intercept</li>
 </ul></li>
 <li>Unfortunately, Biogeme does not calculate this automatically</li>
 <li>It is pretty easy to calculate though, by removing everything but the ASCs</li>
@@ -3083,8 +2948,8 @@ L =&amp;~\prod_n P_{n,i=\mathrm{chosen}(n)}\\
 </ul>
 </section>
 <section id="calculating-pseudo-r2-in-biogeme-results" class="slide level2">
-<h2>Calculating pseudo-<span class="math inline">R^2</span> in Biogeme: results</h2>
-<div id="121000b3" class="cell" data-execution_count="38">
+<h2>Calculating pseudo-<span class="math inline">\(R^2\)</span> in Biogeme: results</h2>
+<div id="6e4c8819" class="cell" data-execution_count="37">
 <div class="code-with-filename">
 <div class="code-with-filename-file">
 <pre><strong>seattle_constants.py</strong></pre>
@@ -3147,7 +3012,7 @@ L =&amp;~\prod_n P_{n,i=\mathrm{chosen}(n)}\\
 <span id="cb31-56"><a></a>model.calculate_null_loglikelihood(av)</span>
 <span id="cb31-57"><a></a>result <span class="op">=</span> model.estimate()</span>
 <span id="cb31-58"><a></a></span>
-<span id="cb31-59"><a></a><span class="cf">assert</span> result.algorithm_has_converged()</span>
+<span id="cb31-59"><a></a><span class="cf">assert</span> result.algorithm_has_converged</span>
 <span id="cb31-60"><a></a><span class="bu">print</span>(result.short_summary())</span>
 <span id="cb31-61"><a></a><span class="bu">print</span>(result.get_estimated_parameters())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -3164,21 +3029,21 @@ Rho bar square (null):          0.481
 Akaike Information Criterion:   12428.26
 Bayesian Information Criterion: 12449.53
 
-                Value  Rob. Std err  Rob. t-test  Rob. p-value
-asc_bike    -3.943729      0.088213   -44.706999           0.0
-asc_transit -2.868313      0.056243   -50.998228           0.0
-asc_walk    -1.411608      0.027472   -51.383789           0.0</code></pre>
+          Name     Value  Robust std err.  Robust t-stat.  Robust p-value
+0  asc_transit -2.868313         0.056243      -50.998228             0.0
+1     asc_walk -1.411608         0.027472      -51.383789             0.0
+2     asc_bike -3.943729         0.088213      -44.706999             0.0</code></pre>
 </div>
 </div>
 </section>
 <section id="calculating-pseudo-r2-in-biogeme-1" class="slide level2">
-<h2>Calculating pseudo-<span class="math inline">R^2</span> in Biogeme</h2>
+<h2>Calculating pseudo-<span class="math inline">\(R^2\)</span> in Biogeme</h2>
 <ul>
 <li>Log-likelihood at constants: -6211.13</li>
 <li>Log-likelihood at convergence: -4515.951</li>
-<li>McFadden’s pseudo-<span class="math inline">R^2</span>: <span class="math inline">1 - \frac{-4515.951}{-6211.13} = 0.273</span></li>
+<li>McFadden’s pseudo-<span class="math inline">\(R^2\)</span>: <span class="math inline">\(1 - \frac{-4515.951}{-6211.13} = 0.273\)</span></li>
 <li>Estimated parameters other than ASCs: 8</li>
-<li>McFadden’s adjusted pseudo-<span class="math inline">R^2</span>: <span class="math inline">1 - \frac{-4515.951 - 8}{-6211.13} = 0.272</span></li>
+<li>McFadden’s adjusted pseudo-<span class="math inline">\(R^2\)</span>: <span class="math inline">\(1 - \frac{-4515.951 - 8}{-6211.13} = 0.272\)</span></li>
 </ul>
 </section>
 <section id="comparing-coefficients-of-logistic-regression-models" class="slide level2">
@@ -3195,8 +3060,8 @@ asc_walk    -1.411608      0.027472   -51.383789           0.0</code></pre>
 <div class="columns">
 <div class="column" style="width:50%;">
 <ul>
-<li>True model: <span class="math inline">V_1 = 0.3 + 2x_1 + 2x_2 + 2x_3</span></li>
-<li><span class="math inline">x_1</span>, <span class="math inline">x_2</span>, <span class="math inline">x_3</span> uncorrelated</li>
+<li>True model: <span class="math inline">\(V_1 = 0.3 + 2x_1 + 2x_2 + 2x_3\)</span></li>
+<li><span class="math inline">\(x_1\)</span>, <span class="math inline">\(x_2\)</span>, <span class="math inline">\(x_3\)</span> uncorrelated</li>
 </ul>
 </div><div class="column" style="width:50%;">
 <table>
@@ -3370,7 +3235,7 @@ x3
 <section id="independence-of-irrelevant-alternatives" class="slide level2">
 <h2>Independence of irrelevant alternatives</h2>
 <ul>
-<li>The multinomial logit model assumes the <span class="math inline">\epsilon</span>’s are independent</li>
+<li>The multinomial logit model assumes the <span class="math inline">\(\epsilon\)</span>’s are independent</li>
 <li>That is, there are no shared <em>unobserved</em> attributes of alternatives (i.e.&nbsp;not in the model)</li>
 <li>A significant implication of this assumption is the <em>independence of irrelevant alternatives</em> property</li>
 <li>This says that when the probability of choosing one alternative increases (decreases), the probability of choosing the others decreases (increases) proportionally to the original probability of choosing that mode
@@ -3414,12 +3279,19 @@ x3
 </ul></li>
 <li>We will estimate this nested logit model</li>
 </ul>
-<div class="cell" data-layout-align="default">
+<div class="cell" data-reveal="true" data-fig-width="8" data-layout-align="default">
 <div class="cell-output-display">
 <div>
 <p></p><figure class=""><p></p>
 <div>
-<p><img data-src="discrete-choice_files/figure-revealjs/mermaid-figure-1.png" style="width:8in;height:5.35in"></p>
+<pre class="mermaid mermaid-js">flowchart TD
+    mc["Mode choice"]
+    mc --&gt; Motorized
+    mc --&gt; Walk
+    mc --&gt; Bike
+    Motorized --&gt; Car
+    Motorized --&gt; Transit
+</pre>
 </div>
 <p></p></figure><p></p>
 </div>
@@ -3437,9 +3309,9 @@ x3
 <li>At the top level, the utility of a nest is based on the utility of the items within that nest</li>
 <li>The probability of choosing an alternative within a nest is the probability of choosing that nest multiplied by the probability of choosing the alternative given that the nest is chosen, e.g.</li>
 </ul>
-<p><span class="math display">
+<p><span class="math display">\[
 P(car) = P(motorized) \times P(car|motorized)
-</span></p>
+\]</span></p>
 <ul>
 <li>Some people actually implement the nested logit model by estimating separate multinomial logit models for each nest and between the nests
 <ul>
@@ -3453,25 +3325,25 @@ P(car) = P(motorized) \times P(car|motorized)
 <li>The utility of a nest is the maximum of the utilities of the members of that nest</li>
 <li>We’ve already seen the formula for this, thanks to our Gumbel-distributed errors:</li>
 </ul>
-<p><span class="math display">
+<p><span class="math display">\[
 \Gamma_{\mathrm{nest}} = \ln \sum_{j \in \mathrm{nest}} e^V_{j}
-</span></p>
+\]</span></p>
 </section>
 <section id="top-level-choice-probability" class="slide level2">
 <h2>Top-level choice probability</h2>
 <ul>
 <li>The top-level choice probability is like a multinomial logit, with the expected maximum utility for the nest</li>
 </ul>
-<p><span class="math display">
+<p><span class="math display">\[
 P(motorized) = \frac{e^{\ln \sum_{j \in \mathrm{motorized}} e^{V_{j}}}}{e^{\ln \sum_{j \in \mathrm{motorized}} V_{j}} + e^{V_{bike}} + e^{V_{walk}}}
-</span></p>
+\]</span></p>
 </section>
 <section id="this-reduces-to-the-multinomial-logit" class="slide level2">
 <h2>This reduces to the multinomial logit</h2>
 <ul>
 <li>With some math we can show this is equivalent to the multinomial logit model</li>
 </ul>
-<p><span class="math display">
+<p><span class="math display">\[
 \begin{align*}
 P(motorized) &amp;= \frac{e^{\ln \sum_{j \in \mathrm{motorized}} e^{V_{j}}}}{e^{\ln \sum_{j \in \mathrm{motorized}} e^{V_j}} + e^{V_{bike}} + e^{V_{walk}}} \\
              &amp;= \frac{\sum_{j \in \mathrm{motorized}} e^{V_j}}{\sum_{j \in \mathrm{motorized}} e^{V_j} + e^{V_{bike}} + e^{V_{walk}}} \\
@@ -3479,26 +3351,26 @@ P(motorized) &amp;= \frac{e^{\ln \sum_{j \in \mathrm{motorized}} e^{V_{j}}}}{e^{
              &amp;= \frac{e^{V_{car}}}{e^{V_{car}} + e^{V_{transit}} + e^{V_{bike}} + e^{V_{walk}}} + \frac{e^{V_{transit}}}{e^{V_{car}} + e^{V_{bike}} + e^{V_{bike}} + e^{V_{walk}}} \\
              &amp;= P_{mnl}(car) + P_{mnl}(transit)
 \end{align*}
-</span></p>
+\]</span></p>
 </section>
 <section id="scale-parameters" class="slide level2">
 <h2>Scale parameters</h2>
 <ul>
 <li>If the nested logit is equivalent to the multinomial logit, why bother?</li>
-<li>There is an additional term that is introduced in the nested logit, the <em>inclusive value</em> parameter <span class="math inline">\theta</span></li>
+<li>There is an additional term that is introduced in the nested logit, the <em>inclusive value</em> parameter <span class="math inline">\(\theta\)</span></li>
 <li>The utility of choosing a nest, then, is</li>
 </ul>
-<p><span class="math display">
+<p><span class="math display">\[
 \theta \ln \sum_{j \in nest} e^{V_j / \theta}
-</span></p>
+\]</span></p>
 </section>
 <section id="what-does-the-scaling-parameter-do" class="slide level2">
 <h2>What does the scaling parameter do?</h2>
-<p><span class="math display">
+<p><span class="math display">\[
 \theta \ln \sum_{j \in nest} e^{V_j / \theta}
-</span></p>
+\]</span></p>
 <ul>
-<li>The first <span class="math inline">\theta</span> scales the expected maximum utility to account for correlation between the error terms of the items in the nest</li>
+<li>The first <span class="math inline">\(\theta\)</span> scales the expected maximum utility to account for correlation between the error terms of the items in the nest</li>
 <li>When the error terms are uncorrelated, it is fairly likely that one of them will result in relatively high utility, just by chance
 <ul>
 <li>Because there are many chances for an error term to be large</li>
@@ -3507,13 +3379,13 @@ P(motorized) &amp;= \frac{e^{\ln \sum_{j \in \mathrm{motorized}} e^{V_{j}}}}{e^{
 <ul>
 <li>At the extreme, if the error terms were perfectly correlated, there would only be one chance for the error term to result in a large utility</li>
 </ul></li>
-<li>The second <span class="math inline">\theta</span> normalizes the utilities so that the coefficients are comparable across alternatives in different nests</li>
+<li>The second <span class="math inline">\(\theta\)</span> normalizes the utilities so that the coefficients are comparable across alternatives in different nests</li>
 </ul>
 </section>
 <section id="the-range-of-theta" class="slide level2">
-<h2>The range of <span class="math inline">\theta</span></h2>
+<h2>The range of <span class="math inline">\(\theta\)</span></h2>
 <ul>
-<li><span class="math inline">\theta</span> should be between 0 and 1</li>
+<li><span class="math inline">\(\theta\)</span> should be between 0 and 1</li>
 <li>If it is not, the model is not consistent with random utility theory</li>
 </ul>
 </section>
@@ -3521,12 +3393,12 @@ P(motorized) &amp;= \frac{e^{\ln \sum_{j \in \mathrm{motorized}} e^{V_{j}}}}{e^{
 <h2>Estimating a nested logit model in Biogeme</h2>
 <ul>
 <li>We will put transit and driving together in a “motorized” nest.</li>
-<li>Biogeme does not estimated <span class="math inline">\theta</span>, instead it estimates <span class="math inline">\mu</span> which is <span class="math inline">\frac{1}{\theta}</span></li>
+<li>Biogeme does not estimated <span class="math inline">\(\theta\)</span>, instead it estimates <span class="math inline">\(\mu\)</span> which is <span class="math inline">\(\frac{1}{\theta}\)</span></li>
 </ul>
 </section>
 <section id="estimating-a-nested-logit-model-in-biogeme-code" class="slide level2">
 <h2>Estimating a nested logit model in Biogeme: code</h2>
-<div id="89c5d5ec" class="cell" data-execution_count="39">
+<div id="fb627ee9" class="cell" data-execution_count="38">
 <div class="code-with-filename">
 <div class="code-with-filename-file">
 <pre><strong>seattle_nested.py</strong></pre>
@@ -3618,7 +3490,7 @@ P(motorized) &amp;= \frac{e^{\ln \sum_{j \in \mathrm{motorized}} e^{V_{j}}}}{e^{
 <span id="cb33-85"><a></a>model.calculate_null_loglikelihood(av)</span>
 <span id="cb33-86"><a></a>result <span class="op">=</span> model.estimate()</span>
 <span id="cb33-87"><a></a></span>
-<span id="cb33-88"><a></a><span class="cf">assert</span> result.algorithm_has_converged()</span>
+<span id="cb33-88"><a></a><span class="cf">assert</span> result.algorithm_has_converged</span>
 <span id="cb33-89"><a></a><span class="bu">print</span>(result.short_summary())</span>
 <span id="cb33-90"><a></a><span class="bu">print</span>(result.get_estimated_parameters())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -3635,120 +3507,147 @@ Rho bar square (null):          0.622
 Akaike Information Criterion:   9043.314
 Bayesian Information Criterion: 9128.403
 
-                               Value  Rob. Std err  Rob. t-test  Rob. p-value
-asc_bike                   -3.404344      0.144008   -23.639966  0.000000e+00
-asc_transit                -1.900991      0.333021    -5.708316  1.140995e-08
-asc_walk                    0.093281      0.061558     1.515322  1.296908e-01
-b_income_over_100k_bike     0.188910      0.185917     1.016098  3.095829e-01
-b_income_over_100k_transit -1.964308      0.268532    -7.314977  2.573497e-13
-b_income_over_100k_walk     0.412684      0.067211     6.140109  8.246481e-10
-b_rush_hour_bike            0.062846      0.223183     0.281587  7.782604e-01
-b_rush_hour_transit         0.268278      0.186497     1.438512  1.502887e-01
-b_rush_hour_walk           -0.191107      0.090473    -2.112313  3.465959e-02
-b_travel_cost              -0.109086      0.013781    -7.915751  2.442491e-15
-b_travel_time              -0.057707      0.002075   -27.806646  0.000000e+00
-mu_motorized                0.758889      0.080916     9.378704  0.000000e+00</code></pre>
+                          Name     Value  Robust std err.  Robust t-stat.  \
+0                b_travel_time -0.057707         0.002075      -27.806855   
+1                b_travel_cost -0.109088         0.013781       -7.916038   
+2                 mu_motorized  0.758906         0.080905        9.380201   
+3                  asc_transit -1.900959         0.332973       -5.709042   
+4   b_income_over_100k_transit -1.964144         0.268476       -7.315903   
+5          b_rush_hour_transit  0.268330         0.186491        1.438841   
+6                     asc_walk  0.093255         0.061557        1.514949   
+7      b_income_over_100k_walk  0.412714         0.067211        6.140570   
+8             b_rush_hour_walk -0.191103         0.090473       -2.112273   
+9                     asc_bike -3.404355         0.144008      -23.640075   
+10     b_income_over_100k_bike  0.188942         0.185916        1.016276   
+11            b_rush_hour_bike  0.062802         0.223188        0.281386   
+
+    Robust p-value  
+0     0.000000e+00  
+1     2.442491e-15  
+2     0.000000e+00  
+3     1.136138e-08  
+4     2.555733e-13  
+5     1.501956e-01  
+6     1.297854e-01  
+7     8.222605e-10  
+8     3.466300e-02  
+9     0.000000e+00  
+10    3.094982e-01  
+11    7.784143e-01  </code></pre>
 </div>
 </div>
 </section>
 <section id="nested-logit-results" class="slide level2">
 <h2>Nested logit results</h2>
-<div id="c01f865e" class="cell" data-execution_count="40">
-<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="39">
+<div id="9fa29216" class="cell" data-execution_count="39">
+<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="83">
 <table class="caption-top">
 <thead>
 <tr class="header">
 <th></th>
+<th style="text-align: left;">Name</th>
 <th style="text-align: right;">Value</th>
-<th style="text-align: right;">Rob. Std err</th>
-<th style="text-align: right;">Rob. t-test</th>
-<th style="text-align: right;">Rob. p-value</th>
+<th style="text-align: right;">Robust std err.</th>
+<th style="text-align: right;">Robust t-stat.</th>
+<th style="text-align: right;">Robust p-value</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>asc_bike</td>
-<td style="text-align: right;">-3.40434</td>
-<td style="text-align: right;">0.144008</td>
-<td style="text-align: right;">-23.64</td>
+<td>0</td>
+<td style="text-align: left;">b_travel_time</td>
+<td style="text-align: right;">-0.0577069</td>
+<td style="text-align: right;">0.00207528</td>
+<td style="text-align: right;">-27.8069</td>
 <td style="text-align: right;">0</td>
 </tr>
 <tr class="even">
-<td>asc_transit</td>
-<td style="text-align: right;">-1.90099</td>
-<td style="text-align: right;">0.333021</td>
-<td style="text-align: right;">-5.70832</td>
-<td style="text-align: right;">1.141e-08</td>
-</tr>
-<tr class="odd">
-<td>asc_walk</td>
-<td style="text-align: right;">0.0932806</td>
-<td style="text-align: right;">0.0615583</td>
-<td style="text-align: right;">1.51532</td>
-<td style="text-align: right;">0.129691</td>
-</tr>
-<tr class="even">
-<td>b_income_over_100k_bike</td>
-<td style="text-align: right;">0.18891</td>
-<td style="text-align: right;">0.185917</td>
-<td style="text-align: right;">1.0161</td>
-<td style="text-align: right;">0.309583</td>
-</tr>
-<tr class="odd">
-<td>b_income_over_100k_transit</td>
-<td style="text-align: right;">-1.96431</td>
-<td style="text-align: right;">0.268532</td>
-<td style="text-align: right;">-7.31498</td>
-<td style="text-align: right;">2.5735e-13</td>
-</tr>
-<tr class="even">
-<td>b_income_over_100k_walk</td>
-<td style="text-align: right;">0.412684</td>
-<td style="text-align: right;">0.0672112</td>
-<td style="text-align: right;">6.14011</td>
-<td style="text-align: right;">8.24648e-10</td>
-</tr>
-<tr class="odd">
-<td>b_rush_hour_bike</td>
-<td style="text-align: right;">0.0628455</td>
-<td style="text-align: right;">0.223183</td>
-<td style="text-align: right;">0.281587</td>
-<td style="text-align: right;">0.77826</td>
-</tr>
-<tr class="even">
-<td>b_rush_hour_transit</td>
-<td style="text-align: right;">0.268278</td>
-<td style="text-align: right;">0.186497</td>
-<td style="text-align: right;">1.43851</td>
-<td style="text-align: right;">0.150289</td>
-</tr>
-<tr class="odd">
-<td>b_rush_hour_walk</td>
-<td style="text-align: right;">-0.191107</td>
-<td style="text-align: right;">0.0904727</td>
-<td style="text-align: right;">-2.11231</td>
-<td style="text-align: right;">0.0346596</td>
-</tr>
-<tr class="even">
-<td>b_travel_cost</td>
-<td style="text-align: right;">-0.109086</td>
-<td style="text-align: right;">0.0137809</td>
-<td style="text-align: right;">-7.91575</td>
+<td>1</td>
+<td style="text-align: left;">b_travel_cost</td>
+<td style="text-align: right;">-0.109088</td>
+<td style="text-align: right;">0.0137806</td>
+<td style="text-align: right;">-7.91604</td>
 <td style="text-align: right;">2.44249e-15</td>
 </tr>
 <tr class="odd">
-<td>b_travel_time</td>
-<td style="text-align: right;">-0.057707</td>
-<td style="text-align: right;">0.00207529</td>
-<td style="text-align: right;">-27.8066</td>
+<td>2</td>
+<td style="text-align: left;">mu_motorized</td>
+<td style="text-align: right;">0.758906</td>
+<td style="text-align: right;">0.0809051</td>
+<td style="text-align: right;">9.3802</td>
 <td style="text-align: right;">0</td>
 </tr>
 <tr class="even">
-<td>mu_motorized</td>
-<td style="text-align: right;">0.758889</td>
-<td style="text-align: right;">0.0809162</td>
-<td style="text-align: right;">9.3787</td>
+<td>3</td>
+<td style="text-align: left;">asc_transit</td>
+<td style="text-align: right;">-1.90096</td>
+<td style="text-align: right;">0.332973</td>
+<td style="text-align: right;">-5.70904</td>
+<td style="text-align: right;">1.13614e-08</td>
+</tr>
+<tr class="odd">
+<td>4</td>
+<td style="text-align: left;">b_income_over_100k_transit</td>
+<td style="text-align: right;">-1.96414</td>
+<td style="text-align: right;">0.268476</td>
+<td style="text-align: right;">-7.3159</td>
+<td style="text-align: right;">2.55573e-13</td>
+</tr>
+<tr class="even">
+<td>5</td>
+<td style="text-align: left;">b_rush_hour_transit</td>
+<td style="text-align: right;">0.26833</td>
+<td style="text-align: right;">0.186491</td>
+<td style="text-align: right;">1.43884</td>
+<td style="text-align: right;">0.150196</td>
+</tr>
+<tr class="odd">
+<td>6</td>
+<td style="text-align: left;">asc_walk</td>
+<td style="text-align: right;">0.0932552</td>
+<td style="text-align: right;">0.0615567</td>
+<td style="text-align: right;">1.51495</td>
+<td style="text-align: right;">0.129785</td>
+</tr>
+<tr class="even">
+<td>7</td>
+<td style="text-align: left;">b_income_over_100k_walk</td>
+<td style="text-align: right;">0.412714</td>
+<td style="text-align: right;">0.0672111</td>
+<td style="text-align: right;">6.14057</td>
+<td style="text-align: right;">8.2226e-10</td>
+</tr>
+<tr class="odd">
+<td>8</td>
+<td style="text-align: left;">b_rush_hour_walk</td>
+<td style="text-align: right;">-0.191103</td>
+<td style="text-align: right;">0.0904728</td>
+<td style="text-align: right;">-2.11227</td>
+<td style="text-align: right;">0.034663</td>
+</tr>
+<tr class="even">
+<td>9</td>
+<td style="text-align: left;">asc_bike</td>
+<td style="text-align: right;">-3.40435</td>
+<td style="text-align: right;">0.144008</td>
+<td style="text-align: right;">-23.6401</td>
 <td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td>10</td>
+<td style="text-align: left;">b_income_over_100k_bike</td>
+<td style="text-align: right;">0.188942</td>
+<td style="text-align: right;">0.185916</td>
+<td style="text-align: right;">1.01628</td>
+<td style="text-align: right;">0.309498</td>
+</tr>
+<tr class="even">
+<td>11</td>
+<td style="text-align: left;">b_rush_hour_bike</td>
+<td style="text-align: right;">0.0628021</td>
+<td style="text-align: right;">0.223188</td>
+<td style="text-align: right;">0.281386</td>
+<td style="text-align: right;">0.778414</td>
 </tr>
 </tbody>
 </table>
@@ -3757,22 +3656,28 @@ mu_motorized                0.758889      0.080916     9.378704  0.000000e+00</c
 </section>
 <section id="interpreting-the-nested-logit-model" class="slide level2">
 <h2>Interpreting the nested logit model</h2>
-<div>
 <ul>
-<li class="fragment"><span class="math inline">\mu</span> is 0.76. What is <span class="math inline">\theta</span>?</li>
+<li class="fragment"><span class="math inline">\(\mu\)</span> is 0.76. What is <span class="math inline">\(\theta\)</span>?</li>
 <li class="fragment">1 / 0.76 = 1.32</li>
 <li class="fragment">Do we accept this as a valid nested logit model?</li>
 </ul>
-</div>
 </section>
 <section id="exercise-estimate-a-different-nesting-structure-bike-and-walk-together-in-a-nest" class="slide level2">
 <h2>Exercise: estimate a different nesting structure: bike and walk together in a nest</h2>
-<div class="cell" data-layout-align="default">
+<div class="cell" data-reveal="true" data-fig-width="8" data-layout-align="default">
 <div class="cell-output-display">
 <div>
 <p></p><figure class=""><p></p>
 <div>
-<p><img data-src="discrete-choice_files/figure-revealjs/mermaid-figure-3.png" style="width:8in;height:5.39in"></p>
+<pre class="mermaid mermaid-js">flowchart TD
+    mc[Mode choice]
+
+    mc --&gt; Car
+    mc --&gt; Transit
+    mc --&gt; Active
+    Active --&gt; Bike
+    Active --&gt; Walk
+</pre>
 </div>
 <p></p></figure><p></p>
 </div>
@@ -3781,7 +3686,7 @@ mu_motorized                0.758889      0.080916     9.378704  0.000000e+00</c
 </section>
 <section id="exercise-answer" class="slide level2">
 <h2>Exercise answer</h2>
-<div id="774895ba" class="cell" data-execution_count="41">
+<div id="79ae4cb1" class="cell" data-execution_count="40">
 <div class="code-with-filename">
 <div class="code-with-filename-file">
 <pre><strong>seattle_nested_active.py</strong></pre>
@@ -3873,7 +3778,7 @@ mu_motorized                0.758889      0.080916     9.378704  0.000000e+00</c
 <span id="cb35-85"><a></a>model.calculate_null_loglikelihood(av)</span>
 <span id="cb35-86"><a></a>result <span class="op">=</span> model.estimate()</span>
 <span id="cb35-87"><a></a></span>
-<span id="cb35-88"><a></a><span class="cf">assert</span> result.algorithm_has_converged()</span>
+<span id="cb35-88"><a></a><span class="cf">assert</span> result.algorithm_has_converged</span>
 <span id="cb35-89"><a></a><span class="bu">print</span>(result.short_summary())</span>
 <span id="cb35-90"><a></a><span class="bu">print</span>(result.get_estimated_parameters())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -3890,120 +3795,147 @@ Rho bar square (null):          0.622
 Akaike Information Criterion:   9054.972
 Bayesian Information Criterion: 9140.062
 
-                               Value  Rob. Std err  Rob. t-test  Rob. p-value
-asc_bike                   -3.288892      0.214599   -15.325765  0.000000e+00
-asc_transit                -1.210504      0.080964   -14.951203  0.000000e+00
-asc_walk                    0.046756      0.057345     0.815348  4.148733e-01
-b_income_over_100k_bike     0.210226      0.175634     1.196954  2.313244e-01
-b_income_over_100k_transit -1.511167      0.152876    -9.884944  0.000000e+00
-b_income_over_100k_walk     0.420584      0.065411     6.429860  1.277216e-10
-b_rush_hour_bike            0.020700      0.215682     0.095974  9.235412e-01
-b_rush_hour_transit         0.148930      0.140581     1.059390  2.894223e-01
-b_rush_hour_walk           -0.194607      0.088373    -2.202104  2.765795e-02
-b_travel_cost              -0.101328      0.010511    -9.639797  0.000000e+00
-b_travel_time              -0.055173      0.001863   -29.609326  0.000000e+00
-mu_active                   1.071948      0.084551    12.678100  0.000000e+00</code></pre>
+                          Name     Value  Robust std err.  Robust t-stat.  \
+0                b_travel_time -0.055173         0.001863      -29.609326   
+1                b_travel_cost -0.101328         0.010511       -9.639797   
+2                  asc_transit -1.210504         0.080964      -14.951203   
+3   b_income_over_100k_transit -1.511167         0.152876       -9.884944   
+4          b_rush_hour_transit  0.148930         0.140581        1.059390   
+5                     asc_walk  0.046756         0.057345        0.815348   
+6      b_income_over_100k_walk  0.420584         0.065411        6.429860   
+7             b_rush_hour_walk -0.194607         0.088373       -2.202104   
+8                    mu_active  1.071948         0.084551       12.678100   
+9                     asc_bike -3.288892         0.214599      -15.325765   
+10     b_income_over_100k_bike  0.210226         0.175634        1.196954   
+11            b_rush_hour_bike  0.020700         0.215682        0.095974   
+
+    Robust p-value  
+0     0.000000e+00  
+1     0.000000e+00  
+2     0.000000e+00  
+3     0.000000e+00  
+4     2.894223e-01  
+5     4.148733e-01  
+6     1.277216e-10  
+7     2.765795e-02  
+8     0.000000e+00  
+9     0.000000e+00  
+10    2.313244e-01  
+11    9.235412e-01  </code></pre>
 </div>
 </div>
 </section>
 <section id="nested-logit-results-again" class="slide level2">
 <h2>Nested logit results, again</h2>
-<div id="5d66907d" class="cell" data-execution_count="42">
-<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="41">
+<div id="4f896cf1" class="cell" data-execution_count="41">
+<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="85">
 <table class="caption-top">
 <thead>
 <tr class="header">
 <th></th>
+<th style="text-align: left;">Name</th>
 <th style="text-align: right;">Value</th>
-<th style="text-align: right;">Rob. Std err</th>
-<th style="text-align: right;">Rob. t-test</th>
-<th style="text-align: right;">Rob. p-value</th>
+<th style="text-align: right;">Robust std err.</th>
+<th style="text-align: right;">Robust t-stat.</th>
+<th style="text-align: right;">Robust p-value</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>asc_bike</td>
-<td style="text-align: right;">-3.28889</td>
-<td style="text-align: right;">0.214599</td>
-<td style="text-align: right;">-15.3258</td>
-<td style="text-align: right;">0</td>
-</tr>
-<tr class="even">
-<td>asc_transit</td>
-<td style="text-align: right;">-1.2105</td>
-<td style="text-align: right;">0.0809636</td>
-<td style="text-align: right;">-14.9512</td>
-<td style="text-align: right;">0</td>
-</tr>
-<tr class="odd">
-<td>asc_walk</td>
-<td style="text-align: right;">0.0467565</td>
-<td style="text-align: right;">0.0573455</td>
-<td style="text-align: right;">0.815348</td>
-<td style="text-align: right;">0.414873</td>
-</tr>
-<tr class="even">
-<td>b_income_over_100k_bike</td>
-<td style="text-align: right;">0.210226</td>
-<td style="text-align: right;">0.175634</td>
-<td style="text-align: right;">1.19695</td>
-<td style="text-align: right;">0.231324</td>
-</tr>
-<tr class="odd">
-<td>b_income_over_100k_transit</td>
-<td style="text-align: right;">-1.51117</td>
-<td style="text-align: right;">0.152876</td>
-<td style="text-align: right;">-9.88494</td>
-<td style="text-align: right;">0</td>
-</tr>
-<tr class="even">
-<td>b_income_over_100k_walk</td>
-<td style="text-align: right;">0.420584</td>
-<td style="text-align: right;">0.065411</td>
-<td style="text-align: right;">6.42986</td>
-<td style="text-align: right;">1.27722e-10</td>
-</tr>
-<tr class="odd">
-<td>b_rush_hour_bike</td>
-<td style="text-align: right;">0.0206998</td>
-<td style="text-align: right;">0.215682</td>
-<td style="text-align: right;">0.0959741</td>
-<td style="text-align: right;">0.923541</td>
-</tr>
-<tr class="even">
-<td>b_rush_hour_transit</td>
-<td style="text-align: right;">0.14893</td>
-<td style="text-align: right;">0.140581</td>
-<td style="text-align: right;">1.05939</td>
-<td style="text-align: right;">0.289422</td>
-</tr>
-<tr class="odd">
-<td>b_rush_hour_walk</td>
-<td style="text-align: right;">-0.194607</td>
-<td style="text-align: right;">0.0883733</td>
-<td style="text-align: right;">-2.2021</td>
-<td style="text-align: right;">0.0276579</td>
-</tr>
-<tr class="even">
-<td>b_travel_cost</td>
-<td style="text-align: right;">-0.101328</td>
-<td style="text-align: right;">0.0105114</td>
-<td style="text-align: right;">-9.6398</td>
-<td style="text-align: right;">0</td>
-</tr>
-<tr class="odd">
-<td>b_travel_time</td>
+<td>0</td>
+<td style="text-align: left;">b_travel_time</td>
 <td style="text-align: right;">-0.055173</td>
 <td style="text-align: right;">0.00186336</td>
 <td style="text-align: right;">-29.6093</td>
 <td style="text-align: right;">0</td>
 </tr>
 <tr class="even">
-<td>mu_active</td>
+<td>1</td>
+<td style="text-align: left;">b_travel_cost</td>
+<td style="text-align: right;">-0.101328</td>
+<td style="text-align: right;">0.0105114</td>
+<td style="text-align: right;">-9.6398</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td>2</td>
+<td style="text-align: left;">asc_transit</td>
+<td style="text-align: right;">-1.2105</td>
+<td style="text-align: right;">0.0809636</td>
+<td style="text-align: right;">-14.9512</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td>3</td>
+<td style="text-align: left;">b_income_over_100k_transit</td>
+<td style="text-align: right;">-1.51117</td>
+<td style="text-align: right;">0.152876</td>
+<td style="text-align: right;">-9.88494</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td>4</td>
+<td style="text-align: left;">b_rush_hour_transit</td>
+<td style="text-align: right;">0.14893</td>
+<td style="text-align: right;">0.140581</td>
+<td style="text-align: right;">1.05939</td>
+<td style="text-align: right;">0.289422</td>
+</tr>
+<tr class="even">
+<td>5</td>
+<td style="text-align: left;">asc_walk</td>
+<td style="text-align: right;">0.0467565</td>
+<td style="text-align: right;">0.0573455</td>
+<td style="text-align: right;">0.815348</td>
+<td style="text-align: right;">0.414873</td>
+</tr>
+<tr class="odd">
+<td>6</td>
+<td style="text-align: left;">b_income_over_100k_walk</td>
+<td style="text-align: right;">0.420584</td>
+<td style="text-align: right;">0.065411</td>
+<td style="text-align: right;">6.42986</td>
+<td style="text-align: right;">1.27722e-10</td>
+</tr>
+<tr class="even">
+<td>7</td>
+<td style="text-align: left;">b_rush_hour_walk</td>
+<td style="text-align: right;">-0.194607</td>
+<td style="text-align: right;">0.0883733</td>
+<td style="text-align: right;">-2.2021</td>
+<td style="text-align: right;">0.0276579</td>
+</tr>
+<tr class="odd">
+<td>8</td>
+<td style="text-align: left;">mu_active</td>
 <td style="text-align: right;">1.07195</td>
 <td style="text-align: right;">0.0845512</td>
 <td style="text-align: right;">12.6781</td>
 <td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td>9</td>
+<td style="text-align: left;">asc_bike</td>
+<td style="text-align: right;">-3.28889</td>
+<td style="text-align: right;">0.214599</td>
+<td style="text-align: right;">-15.3258</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td>10</td>
+<td style="text-align: left;">b_income_over_100k_bike</td>
+<td style="text-align: right;">0.210226</td>
+<td style="text-align: right;">0.175634</td>
+<td style="text-align: right;">1.19695</td>
+<td style="text-align: right;">0.231324</td>
+</tr>
+<tr class="even">
+<td>11</td>
+<td style="text-align: left;">b_rush_hour_bike</td>
+<td style="text-align: right;">0.0206998</td>
+<td style="text-align: right;">0.215682</td>
+<td style="text-align: right;">0.0959741</td>
+<td style="text-align: right;">0.923541</td>
 </tr>
 </tbody>
 </table>
@@ -4012,25 +3944,23 @@ mu_active                   1.071948      0.084551    12.678100  0.000000e+00</c
 </section>
 <section id="interpreting-the-nested-logit-model-again" class="slide level2">
 <h2>Interpreting the nested logit model, again</h2>
-<div>
 <ul>
-<li class="fragment"><span class="math inline">\mu</span> is 1.07. What is <span class="math inline">\theta</span>?</li>
+<li class="fragment"><span class="math inline">\(\mu\)</span> is 1.07. What is <span class="math inline">\(\theta\)</span>?</li>
 <li class="fragment">1 / 1.07 = 0.93</li>
 <li class="fragment">Do we accept this as a valid nested logit model?</li>
 <li class="fragment">What does this mean about the error correlation between walking and biking?</li>
 </ul>
-</div>
 </section>
 <section id="testing-the-nested-logit-model" class="slide level2">
 <h2>Testing the nested logit model</h2>
 <ul>
-<li>If <span class="math inline">\theta</span> were 1, the results would be the same as the multinomial logit model, and we wouldn’t need a nested logit model</li>
+<li>If <span class="math inline">\(\theta\)</span> were 1, the results would be the same as the multinomial logit model, and we wouldn’t need a nested logit model</li>
 <li>0.93 isn’t that different from 1</li>
 <li>How do we know we need a nested logit model?</li>
-<li>When there’s just one nest we can use a standard <span class="math inline">z</span>-test and <span class="math inline">p</span>-value
+<li>When there’s just one nest we can use a standard <span class="math inline">\(z\)</span>-test and <span class="math inline">\(p\)</span>-value
 <ul>
-<li>Much software doesn’t do the right test, though—we need to test that the nesting parameter (<span class="math inline">\theta</span> or <span class="math inline">\mu</span>) is different from one, not zero like most coefficients</li>
-<li>In our case, <span class="math inline">\mu</span> is just under one standard error above 1, so is <em>not</em> statistically significant</li>
+<li>Much software doesn’t do the right test, though—we need to test that the nesting parameter (<span class="math inline">\(\theta\)</span> or <span class="math inline">\(\mu\)</span>) is different from one, not zero like most coefficients</li>
+<li>In our case, <span class="math inline">\(\mu\)</span> is just under one standard error above 1, so is <em>not</em> statistically significant</li>
 <li>We can reject <em>this</em> nesting structure as not being superior to multinomial logit, though there may be other nesting structures that are</li>
 </ul></li>
 </ul>
@@ -4041,17 +3971,16 @@ mu_active                   1.071948      0.084551    12.678100  0.000000e+00</c
 <li>The standard test for a nested-logit model versus a multinomial logit model is a likelihood-ratio test</li>
 <li>This works even when there are multiple nests</li>
 <li>The likelihood-ratio is a statistical test for whether the overall improvement in the model justifies the added parameters</li>
-<li>The <em>test statistic</em> is <span class="math inline">-2 (\ell_{mnl} - \ell_{nl})</span>
+<li>The <em>test statistic</em> is <span class="math inline">\(-2 (\ell_{mnl} - \ell_{nl})\)</span>
 <ul>
 <li>This is called a likelihood-<em>ratio</em> test because a difference in logarithms is equivalent to division</li>
 </ul></li>
-<li>It has a <span class="math inline">\chi^2</span> distribution (yay another distribution)</li>
+<li>It has a <span class="math inline">\(\chi^2\)</span> distribution (yay another distribution)</li>
 <li>The number of degrees of freedom is the number of nests you have</li>
 </ul>
 </section>
 <section id="the-likelihood-ratio-test-1" class="slide level2">
 <h2>The likelihood-ratio test</h2>
-<div>
 <ul>
 <li class="fragment">Our log-likelihoods are:
 <ul>
@@ -4060,20 +3989,19 @@ mu_active                   1.071948      0.084551    12.678100  0.000000e+00</c
 </ul></li>
 <li class="fragment">Difference: -0.465</li>
 <li class="fragment">Test statistic: 0.930</li>
-<li class="fragment"><span class="math inline">\chi^2</span> p-value: 0.34</li>
+<li class="fragment"><span class="math inline">\(\chi^2\)</span> p-value: 0.34</li>
 <li class="fragment">Can we conclude that the NL model is superior to the MNL?</li>
 </ul>
-</div>
 </section>
 <section id="the-likelihood-ratio-test-in-code" class="slide level2">
 <h2>The likelihood-ratio test, in code</h2>
-<div id="4c6a75cd" class="cell" data-execution_count="43">
+<div id="058e49e8" class="cell" data-execution_count="42">
 <div class="sourceCode cell-code" id="cb37"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a></a><span class="im">import</span> scipy</span>
 <span id="cb37-2"><a></a></span>
 <span id="cb37-3"><a></a><span class="co"># 0.930 is our test statistic, 1 is the number of degrees of freedom</span></span>
 <span id="cb37-4"><a></a><span class="co"># sf is the "survival function", 1 minus the cumulative distribution function</span></span>
 <span id="cb37-5"><a></a>scipy.stats.chi2.sf(<span class="fl">0.930</span>, <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="42">
+<div class="cell-output cell-output-display" data-execution_count="86">
 <pre><code>np.float64(0.33486292507904936)</code></pre>
 </div>
 </div>
@@ -4085,7 +4013,7 @@ mu_active                   1.071948      0.084551    12.678100  0.000000e+00</c
 <ul>
 <li>Confusingly, not the same as a nested-logit model</li>
 <li>Nested models mean that the more complex model can be transformed into the simple model by restricting some coefficients</li>
-<li>For instance, a nested logit can be transformed into an MNL by restricting the <span class="math inline">\theta</span>’s to 1</li>
+<li>For instance, a nested logit can be transformed into an MNL by restricting the <span class="math inline">\(\theta\)</span>’s to 1</li>
 <li>Or two multinomial logit models where one has a few added coefficients, the more complex model is equivalent to the simpler model if those coefficients are restricted to zero</li>
 <li>The number of degrees of freedom is just the number of restrictions</li>
 </ul></li>
@@ -4098,23 +4026,35 @@ mu_active                   1.071948      0.084551    12.678100  0.000000e+00</c
 <li>You can estimate nested logit models with multiple nests, and even multiple levels of nests</li>
 <li>For instance, you could estimate this model</li>
 </ul>
-<div class="cell" data-layout-align="default">
+<div class="cell" data-reveal="true" data-layout-align="default">
 <div class="cell-output-display">
 <div>
 <p></p><figure class=""><p></p>
 <div>
-<p><img data-src="discrete-choice_files/figure-revealjs/mermaid-figure-2.png" style="width:4.77in;height:3.13in"></p>
+<pre class="mermaid mermaid-js">flowchart TD
+    mc[Mode choice]
+    da[Drive alone]
+
+    mc --&gt; Motorized
+    mc --&gt; Nonmotorized
+    Motorized --&gt; Car
+    Motorized --&gt; Transit
+    Car --&gt; da
+    Car --&gt; Carpool
+    Nonmotorized --&gt; Walk
+    Nonmotorized --&gt; Bike
+</pre>
 </div>
 <p></p></figure><p></p>
 </div>
 </div>
 </div>
 <ul>
-<li>We will have one <span class="math inline">\theta</span> for each nest</li>
-<li><span class="math inline">\theta</span>’s for top-level nests should be between 0 and 1</li>
-<li><span class="math inline">\theta</span>’s for subnests should be between 0 and the <span class="math inline">\theta</span> in the next higher level nest
+<li>We will have one <span class="math inline">\(\theta\)</span> for each nest</li>
+<li><span class="math inline">\(\theta\)</span>’s for top-level nests should be between 0 and 1</li>
+<li><span class="math inline">\(\theta\)</span>’s for subnests should be between 0 and the <span class="math inline">\(\theta\)</span> in the next higher level nest
 <ul>
-<li>And a <span class="math inline">z</span>-test should be relative to the <span class="math inline">\theta</span> in the next higher nest, or just use a likelihood-ratio test</li>
+<li>And a <span class="math inline">\(z\)</span>-test should be relative to the <span class="math inline">\(\theta\)</span> in the next higher nest, or just use a likelihood-ratio test</li>
 </ul></li>
 <li>Biogeme can’t directly estimate this type of model; <a href="https://larch.newman.me/">larch</a> (Python) or <a href="http://www.apollochoicemodelling.com">Apollo</a> (R) can.</li>
 </ul>
@@ -4125,15 +4065,15 @@ mu_active                   1.071948      0.084551    12.678100  0.000000e+00</c
 <li>Another way to think about the nested logit model is that it allows an error term that varies between nests/top-level alternatives and another that varies within each nest</li>
 <li>So, for instance, the utilities of biking and walking in our nested logit model above are</li>
 </ul>
-<p><span class="math display">
+<p><span class="math display">\[
 \begin{align}
 U_{bike} &amp;= V_{bike} + \epsilon_{nonmotorized} + \epsilon_{bike} \\
 U_{walk} &amp;= V_{walk} + \epsilon_{nonmotorized} + \epsilon_{walk}
 \end{align}
-</span></p>
+\]</span></p>
 <ul>
-<li>What <span class="math inline">\theta</span> actually represents is the ratio of the scales of the error terms at the top-level portion of the model and in the nest</li>
-<li>As <span class="math inline">\theta</span> approaches 1, the scales of the error approach equality. When they are equal, the within nest variation is contributing all of the error term, and there is no shared unobserved variation.</li>
+<li>What <span class="math inline">\(\theta\)</span> actually represents is the ratio of the scales of the error terms at the top-level portion of the model and in the nest</li>
+<li>As <span class="math inline">\(\theta\)</span> approaches 1, the scales of the error approach equality. When they are equal, the within nest variation is contributing all of the error term, and there is no shared unobserved variation.</li>
 </ul>
 </section>
 <section id="estimation-challenges-with-the-nested-logit-local-optima-i" class="slide level2">
@@ -4146,7 +4086,7 @@ U_{walk} &amp;= V_{walk} + \epsilon_{nonmotorized} + \epsilon_{walk}
 <li>The <em>multinomial logit</em> model is globally convex—there is only one place where moving the coefficients does not improve the loglikelihood—at the solution</li>
 </ul>
 </div><div class="column">
-<div id="69c01809" class="cell" data-execution_count="44">
+<div id="f1a295f5" class="cell" data-execution_count="43">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -4164,10 +4104,10 @@ U_{walk} &amp;= V_{walk} + \epsilon_{nonmotorized} + \epsilon_{walk}
 <ul>
 <li>The <em>nested logit</em> model is not—there may be local optima where moving the coefficients a small amount cannot improve the loglikelihood, even if moving them quite a bit might find a set of coefficients with a better loglikelihood</li>
 <li>You can experiment with this by adjusting the <em>starting values</em> of the coefficients—the first number in the call to <code>Beta()</code></li>
-<li><span class="citation" data-cites="koppelman_self_2006">Koppelman &amp; Bhat <a href="#/questions" role="doc-biblioref" onclick="">(2006) <em>A <span>Self Instructing Course</span> in <span>Mode Choice Modeling</span>: <span>Multinomial</span> and <span>Nested Logit Models</span></em></a></span> recommends trying starting with <span class="math inline">\theta = 0.5</span> (<span class="math inline">\mu = 2</span>) as this may lead to a higher likelihood of finding a valid nested logit solution</li>
+<li><span class="citation" data-cites="koppelman_self_2006">Koppelman &amp; Bhat <a href="#/questions" role="doc-biblioref" onclick="">(2006) <em>A <span>Self Instructing Course</span> in <span>Mode Choice Modeling</span>: <span>Multinomial</span> and <span>Nested Logit Models</span></em></a></span> recommends trying starting with <span class="math inline">\(\theta = 0.5\)</span> (<span class="math inline">\(\mu = 2\)</span>) as this may lead to a higher likelihood of finding a valid nested logit solution</li>
 </ul>
 </div><div class="column">
-<div id="be2f0204" class="cell" data-execution_count="45">
+<div id="62da0ef8" class="cell" data-execution_count="44">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -4214,12 +4154,7 @@ U_{walk} &amp;= V_{walk} + \epsilon_{nonmotorized} + \epsilon_{walk}
 </ul>
 <p>Part of my job is one-on-one statistical support. Email me: <a href="mailto:mwbc@unc.edu">mwbc@unc.edu</a></p>
 
-<div class="quarto-auto-generated-content">
-<p><img src="UNC_logo_RGB.png" class="slide-logo"></p>
-<div class="footer footer-default">
 
-</div>
-</div>
 <div id="refs" class="references csl-bib-body" role="list">
 <div id="ref-ben-akiva_discrete_1985" class="csl-entry" role="listitem">
 
@@ -4233,7 +4168,12 @@ U_{walk} &amp;= V_{walk} + \epsilon_{nonmotorized} + \epsilon_{walk}
 </div>
 </section>
     </div>
-  </div>
+  <div class="quarto-auto-generated-content" style="display: none;">
+<p><img src="UNC_logo_RGB.png" class="slide-logo"></p>
+<div class="footer footer-default">
+
+</div>
+</div></div>
 
   <script>window.backupDefine = window.define; window.define = undefined;</script>
   <script src="site_libs/revealjs/dist/reveal.js"></script>
@@ -4248,6 +4188,7 @@ U_{walk} &amp;= V_{walk} + \epsilon_{nonmotorized} + \epsilon_{walk}
   <script src="site_libs/revealjs/plugin/notes/notes.js"></script>
   <script src="site_libs/revealjs/plugin/search/search.js"></script>
   <script src="site_libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="site_libs/revealjs/plugin/math/math.js"></script>
   <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
 
   <script>
@@ -4261,7 +4202,8 @@ U_{walk} &amp;= V_{walk} + \epsilon_{nonmotorized} + \epsilon_{walk}
 'autoAnimateEasing': "ease",
 'autoAnimateDuration': 1,
 'autoAnimateUnmatched': true,
-'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'jumpToSlide': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
 'smaller': false,
  
         // Display controls in the bottom right corner
@@ -4414,9 +4356,27 @@ U_{walk} &amp;= V_{walk} + \epsilon_{nonmotorized} + \epsilon_{walk}
         // Factor of the display size that should remain empty around the content
         margin: 0.1,
 
+        math: {
+          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
         // reveal.js plugins
         plugins: [QuartoLineHighlight, PdfExport, RevealMenu, QuartoSupport,
 
+          RevealMath,
           RevealNotes,
           RevealSearch,
           RevealZoom
@@ -4424,192 +4384,172 @@ U_{walk} &amp;= V_{walk} + \epsilon_{nonmotorized} + \epsilon_{walk}
       });
     </script>
     <script id="quarto-html-after-body" type="application/javascript">
-    window.document.addEventListener("DOMContentLoaded", function (event) {
-      const toggleBodyColorMode = (bsSheetEl) => {
-        const mode = bsSheetEl.getAttribute("data-mode");
-        const bodyEl = window.document.querySelector("body");
-        if (mode === "dark") {
-          bodyEl.classList.add("quarto-dark");
-          bodyEl.classList.remove("quarto-light");
-        } else {
-          bodyEl.classList.add("quarto-light");
-          bodyEl.classList.remove("quarto-dark");
-        }
-      }
-      const toggleBodyColorPrimary = () => {
-        const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
-        if (bsSheetEl) {
-          toggleBodyColorMode(bsSheetEl);
-        }
-      }
-      toggleBodyColorPrimary();  
-      const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
-      tabsets.forEach(function(tabset) {
-        const tabby = new Tabby('#' + tabset.id);
-      });
-      const isCodeAnnotation = (el) => {
-        for (const clz of el.classList) {
-          if (clz.startsWith('code-annotation-')) {                     
-            return true;
-          }
-        }
-        return false;
-      }
-      const onCopySuccess = function(e) {
-        // button target
-        const button = e.trigger;
-        // don't keep focus
-        button.blur();
-        // flash "checked"
-        button.classList.add('code-copy-button-checked');
-        var currentTitle = button.getAttribute("title");
-        button.setAttribute("title", "Copied!");
-        let tooltip;
-        if (window.bootstrap) {
-          button.setAttribute("data-bs-toggle", "tooltip");
-          button.setAttribute("data-bs-placement", "left");
-          button.setAttribute("data-bs-title", "Copied!");
-          tooltip = new bootstrap.Tooltip(button, 
-            { trigger: "manual", 
-              customClass: "code-copy-button-tooltip",
-              offset: [0, -8]});
-          tooltip.show();    
-        }
-        setTimeout(function() {
-          if (tooltip) {
-            tooltip.hide();
-            button.removeAttribute("data-bs-title");
-            button.removeAttribute("data-bs-toggle");
-            button.removeAttribute("data-bs-placement");
-          }
-          button.setAttribute("title", currentTitle);
-          button.classList.remove('code-copy-button-checked');
-        }, 1000);
-        // clear code selection
-        e.clearSelection();
-      }
-      const getTextToCopy = function(trigger) {
-          const codeEl = trigger.previousElementSibling.cloneNode(true);
-          for (const childEl of codeEl.children) {
-            if (isCodeAnnotation(childEl)) {
-              childEl.remove();
+      window.document.addEventListener("DOMContentLoaded", function (event) {
+        const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+        tabsets.forEach(function(tabset) {
+          const tabby = new Tabby('#' + tabset.id);
+        });
+        const isCodeAnnotation = (el) => {
+          for (const clz of el.classList) {
+            if (clz.startsWith('code-annotation-')) {                     
+              return true;
             }
           }
-          return codeEl.innerText;
-      }
-      const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
-        text: getTextToCopy
-      });
-      clipboard.on('success', onCopySuccess);
-      if (window.document.getElementById('quarto-embedded-source-code-modal')) {
-        // For code content inside modals, clipBoardJS needs to be initialized with a container option
-        // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
-        const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
-          text: getTextToCopy,
-          container: window.document.getElementById('quarto-embedded-source-code-modal')
-        });
-        clipboardModal.on('success', onCopySuccess);
-      }
-        var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
-        var mailtoRegex = new RegExp(/^mailto:/);
-          var filterRegex = new RegExp('/' + window.location.host + '/');
-        var isInternal = (href) => {
-            return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+          return false;
         }
-        // Inspect non-navigation links and adorn them if external
-     	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
-        for (var i=0; i<links.length; i++) {
-          const link = links[i];
-          if (!isInternal(link.href)) {
-            // undo the damage that might have been done by quarto-nav.js in the case of
-            // links that we want to consider external
-            if (link.dataset.originalHref !== undefined) {
-              link.href = link.dataset.originalHref;
+        const onCopySuccess = function(e) {
+          // button target
+          const button = e.trigger;
+          // don't keep focus
+          button.blur();
+          // flash "checked"
+          button.classList.add('code-copy-button-checked');
+          var currentTitle = button.getAttribute("title");
+          button.setAttribute("title", "Copied!");
+          let tooltip;
+          if (window.bootstrap) {
+            button.setAttribute("data-bs-toggle", "tooltip");
+            button.setAttribute("data-bs-placement", "left");
+            button.setAttribute("data-bs-title", "Copied!");
+            tooltip = new bootstrap.Tooltip(button, 
+              { trigger: "manual", 
+                customClass: "code-copy-button-tooltip",
+                offset: [0, -8]});
+            tooltip.show();    
+          }
+          setTimeout(function() {
+            if (tooltip) {
+              tooltip.hide();
+              button.removeAttribute("data-bs-title");
+              button.removeAttribute("data-bs-toggle");
+              button.removeAttribute("data-bs-placement");
             }
-          }
+            button.setAttribute("title", currentTitle);
+            button.classList.remove('code-copy-button-checked');
+          }, 1000);
+          // clear code selection
+          e.clearSelection();
         }
-      function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
-        const config = {
-          allowHTML: true,
-          maxWidth: 500,
-          delay: 100,
-          arrow: false,
-          appendTo: function(el) {
-              return el.closest('section.slide') || el.parentElement;
-          },
-          interactive: true,
-          interactiveBorder: 10,
-          theme: 'light-border',
-          placement: 'bottom-start',
-        };
-        if (contentFn) {
-          config.content = contentFn;
-        }
-        if (onTriggerFn) {
-          config.onTrigger = onTriggerFn;
-        }
-        if (onUntriggerFn) {
-          config.onUntrigger = onUntriggerFn;
-        }
-          config['offset'] = [0,0];
-          config['maxWidth'] = 700;
-        window.tippy(el, config); 
-      }
-      const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
-      for (var i=0; i<noterefs.length; i++) {
-        const ref = noterefs[i];
-        tippyHover(ref, function() {
-          // use id or data attribute instead here
-          let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
-          try { href = new URL(href).hash; } catch {}
-          const id = href.replace(/^#\/?/, "");
-          const note = window.document.getElementById(id);
-          if (note) {
-            return note.innerHTML;
-          } else {
-            return "";
-          }
-        });
-      }
-      const findCites = (el) => {
-        const parentEl = el.parentElement;
-        if (parentEl) {
-          const cites = parentEl.dataset.cites;
-          if (cites) {
-            return {
-              el,
-              cites: cites.split(' ')
-            };
-          } else {
-            return findCites(el.parentElement)
-          }
-        } else {
-          return undefined;
-        }
-      };
-      var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
-      for (var i=0; i<bibliorefs.length; i++) {
-        const ref = bibliorefs[i];
-        const citeInfo = findCites(ref);
-        if (citeInfo) {
-          tippyHover(citeInfo.el, function() {
-            var popup = window.document.createElement('div');
-            citeInfo.cites.forEach(function(cite) {
-              var citeDiv = window.document.createElement('div');
-              citeDiv.classList.add('hanging-indent');
-              citeDiv.classList.add('csl-entry');
-              var biblioDiv = window.document.getElementById('ref-' + cite);
-              if (biblioDiv) {
-                citeDiv.innerHTML = biblioDiv.innerHTML;
+        const getTextToCopy = function(trigger) {
+            const codeEl = trigger.previousElementSibling.cloneNode(true);
+            for (const childEl of codeEl.children) {
+              if (isCodeAnnotation(childEl)) {
+                childEl.remove();
               }
-              popup.appendChild(citeDiv);
-            });
-            return popup.innerHTML;
+            }
+            return codeEl.innerText;
+        }
+        const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+          text: getTextToCopy
+        });
+        clipboard.on('success', onCopySuccess);
+        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+            text: getTextToCopy,
+            container: window.document.getElementById('quarto-embedded-source-code-modal')
+          });
+          clipboardModal.on('success', onCopySuccess);
+        }
+          var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+          var mailtoRegex = new RegExp(/^mailto:/);
+            var filterRegex = new RegExp('/' + window.location.host + '/');
+          var isInternal = (href) => {
+              return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+          }
+          // Inspect non-navigation links and adorn them if external
+         var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+          for (var i=0; i<links.length; i++) {
+            const link = links[i];
+            if (!isInternal(link.href)) {
+              // undo the damage that might have been done by quarto-nav.js in the case of
+              // links that we want to consider external
+              if (link.dataset.originalHref !== undefined) {
+                link.href = link.dataset.originalHref;
+              }
+            }
+          }
+        function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+          const config = {
+            allowHTML: true,
+            maxWidth: 500,
+            delay: 100,
+            arrow: false,
+            appendTo: function(el) {
+                return el.closest('section.slide') || el.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'light-border',
+            placement: 'bottom-start',
+          };
+          if (contentFn) {
+            config.content = contentFn;
+          }
+          if (onTriggerFn) {
+            config.onTrigger = onTriggerFn;
+          }
+          if (onUntriggerFn) {
+            config.onUntrigger = onUntriggerFn;
+          }
+            config['offset'] = [0,0];
+            config['maxWidth'] = 700;
+          window.tippy(el, config); 
+        }
+        const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+        for (var i=0; i<noterefs.length; i++) {
+          const ref = noterefs[i];
+          tippyHover(ref, function() {
+            // use id or data attribute instead here
+            let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+            try { href = new URL(href).hash; } catch {}
+            const id = href.replace(/^#\/?/, "");
+            const note = window.document.getElementById(id);
+            if (note) {
+              return note.innerHTML;
+            } else {
+              return "";
+            }
           });
         }
-      }
-    });
-    </script>
+        const findCites = (el) => {
+          const parentEl = el.parentElement;
+          if (parentEl) {
+            const cites = parentEl.dataset.cites;
+            if (cites) {
+              return {
+                el,
+                cites: cites.split(' ')
+              };
+            } else {
+              return findCites(el.parentElement)
+            }
+          } else {
+            return undefined;
+          }
+        };
+        var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+        for (var i=0; i<bibliorefs.length; i++) {
+          const ref = bibliorefs[i];
+          const citeInfo = findCites(ref);
+          if (citeInfo) {
+            tippyHover(citeInfo.el, function() {
+              var popup = window.document.createElement('div');
+              citeInfo.cites.forEach(function(cite) {
+                var citeDiv = window.document.createElement('div');
+                citeDiv.classList.add('hanging-indent');
+                citeDiv.classList.add('csl-entry');
+                var biblioDiv = window.document.getElementById('ref-' + cite);
+                if (biblioDiv) {
+                  citeDiv.innerHTML = biblioDiv.innerHTML;
+                }
+                popup.appendChild(citeDiv);
+              });
+              return popup.innerHTML;
+            });
+          }
+        }
+      });
+      </script>
     
 
 </body></html>
