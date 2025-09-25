@@ -9,16 +9,15 @@ format:
         height: 1080
         logo: UNC_logo_RGB.png
         slide-number: true
-        html-math-method: katex
+        html-math-method: mathjax
 jupyter: odum-discrete
 execute:
     eval: true
     echo: true
     output: true
-    cache: true
+    cache: false
 bibliography: bibliography.bib
 csl: presentation.csl
-mermaid-format: png
 from: markdown+emoji
 ---
 
@@ -434,7 +433,7 @@ model.modelName = "biogeme_binary"
 model.calculate_null_loglikelihood(av)
 result = model.estimate()
 
-assert result.algorithm_has_converged()
+assert result.algorithm_has_converged
 print(result.short_summary())
 print(result.get_estimated_parameters())
 ```
@@ -444,7 +443,7 @@ print(result.get_estimated_parameters())
 ```{python}
 #| echo: false
 
-assert result.algorithm_has_converged()
+assert result.algorithm_has_converged
 print(result.short_summary())
 print(result.get_estimated_parameters())
 ```
@@ -476,9 +475,9 @@ def fixHtmlFile(fn):
     with open(fn, "w") as f:
         f.write(htxt)
 
-fixHtmlFile(result.data.htmlFileName)
+fixHtmlFile(model.html_filename)
 # https://stackoverflow.com/questions/1061697, https://github.com/quarto-dev/quarto-cli/issues/718
-HTML('<iframe width="1850" height="800px" src="{}" data-external="1"></iframe>'.format(html.escape(result.data.htmlFileName)))
+HTML('<iframe width="1850" height="800px" src="{}" data-external="1"></iframe>'.format(html.escape(model.html_filename)))
 ```
 
 
@@ -539,7 +538,7 @@ model.modelName = "biogeme_binary_race"
 model.calculate_null_loglikelihood(av)
 result = model.estimate()
 
-assert result.algorithm_has_converged()
+assert result.algorithm_has_converged
 print(result.short_summary())
 print(result.get_estimated_parameters())
 ```
@@ -549,7 +548,7 @@ print(result.get_estimated_parameters())
 ```{python}
 #| echo: false
 
-assert result.algorithm_has_converged()
+assert result.algorithm_has_converged
 print(result.short_summary())
 print(result.get_estimated_parameters())
 ```
@@ -716,7 +715,7 @@ model.modelName = "seattle_mode_choice"
 model.calculate_null_loglikelihood(av)
 result = model.estimate()
 
-assert result.algorithm_has_converged()
+assert result.algorithm_has_converged
 print(result.short_summary())
 print(result.get_estimated_parameters())
 ```
@@ -725,7 +724,7 @@ print(result.get_estimated_parameters())
 
 ```{python}
 #| echo: false
-params = result.get_estimated_parameters()
+params = result.get_estimated_parameters().set_index("Name")
 Markdown(
     tabulate.tabulate(
         params.loc[[i for i in params.index if i.startswith("asc")]],
@@ -746,7 +745,7 @@ Markdown(
 
 ```{python}
 #| echo: false
-params = result.get_estimated_parameters()
+params = result.get_estimated_parameters().set_index("Name")
 Markdown(
     tabulate.tabulate(
         params.loc[[i for i in params.index if i.startswith("asc")]],
@@ -823,7 +822,7 @@ model.modelName = "seattle_mnl_income"
 model.calculate_null_loglikelihood(av)
 result = model.estimate()
 
-assert result.algorithm_has_converged()
+assert result.algorithm_has_converged
 print(result.short_summary())
 print(result.get_estimated_parameters())
 ```
@@ -898,7 +897,7 @@ model.modelName = "seattle_mnl_income_rush"
 model.calculate_null_loglikelihood(av)
 result = model.estimate()
 
-assert result.algorithm_has_converged()
+assert result.algorithm_has_converged
 print(result.short_summary())
 print(result.get_estimated_parameters())
 ```
@@ -1007,7 +1006,7 @@ model.modelName = "seattle_mnl_availability"
 model.calculate_null_loglikelihood(av)
 result = model.estimate()
 
-assert result.algorithm_has_converged()
+assert result.algorithm_has_converged
 print(result.short_summary())
 print(result.get_estimated_parameters())
 ```
@@ -1091,7 +1090,7 @@ model.modelName = "seattle_mnl_availability_fixed"
 model.calculate_null_loglikelihood(av)
 result = model.estimate()
 
-assert result.algorithm_has_converged()
+assert result.algorithm_has_converged
 print(result.short_summary())
 print(result.get_estimated_parameters())
 ```
@@ -1187,7 +1186,7 @@ model.modelName = "seattle_mnl_generic"
 model.calculate_null_loglikelihood(av)
 result = model.estimate()
 
-assert result.algorithm_has_converged()
+assert result.algorithm_has_converged
 print(result.short_summary())
 print(result.get_estimated_parameters())
 ```
@@ -1274,7 +1273,7 @@ model.modelName = "seattle_mnl_generic_cost"
 model.calculate_null_loglikelihood(av)
 result = model.estimate()
 
-assert result.algorithm_has_converged()
+assert result.algorithm_has_converged
 print(result.short_summary())
 print(result.get_estimated_parameters())
 ```
@@ -1392,6 +1391,7 @@ which is also known as the softmax function. More detail: see Section 5.2 of @be
 ::: {.incremental}
 - The denominator of the probability function is the "expected maximum utility" (in exponentiated form), also called the "logsum"
 - This estimates how much utility a decisionmaker will derive from their chosen outcome, _without having to know what they choose_
+- For instance, in a mode choice model, this might be used as an _accessibility metric_, 
 :::
 
 
@@ -1437,7 +1437,7 @@ sim_model = bio.BIOGEME(data, {
     "Bike": models.logit(V, av, 4)
 })
 
-choice_probabilities = sim_model.simulate(result.getBetaValues())
+choice_probabilities = sim_model.simulate(result.get_beta_values())
 print(choice_probabilities)
 ```
 
@@ -1476,7 +1476,7 @@ road_cost_model = bio.BIOGEME(data_road_cost, {
     "Bike": models.logit(V, av, 4)
 })
 
-choice_probabilities = road_cost_model.simulate(result.getBetaValues())
+choice_probabilities = road_cost_model.simulate(result.get_beta_values())
 print(choice_probabilities.apply(np.mean))
 ```
 
@@ -1504,7 +1504,7 @@ transit_time_model = bio.BIOGEME(data_transit_time, {
     "Bike": models.logit(V, av, 4)
 })
 
-choice_probabilities = transit_time_model.simulate(result.getBetaValues())
+choice_probabilities = transit_time_model.simulate(result.get_beta_values())
 print(choice_probabilities.apply(np.mean))
 ```
 
@@ -1669,7 +1669,7 @@ model.modelName = "seattle_constants"
 model.calculate_null_loglikelihood(av)
 result = model.estimate()
 
-assert result.algorithm_has_converged()
+assert result.algorithm_has_converged
 print(result.short_summary())
 print(result.get_estimated_parameters())
 ```
@@ -1969,7 +1969,7 @@ model.modelName = "seattle_nested"
 model.calculate_null_loglikelihood(av)
 result = model.estimate()
 
-assert result.algorithm_has_converged()
+assert result.algorithm_has_converged
 print(result.short_summary())
 print(result.get_estimated_parameters())
 ```
@@ -2102,7 +2102,7 @@ model.modelName = "seattle_nested_active"
 model.calculate_null_loglikelihood(av)
 result = model.estimate()
 
-assert result.algorithm_has_converged()
+assert result.algorithm_has_converged
 print(result.short_summary())
 print(result.get_estimated_parameters())
 ```
