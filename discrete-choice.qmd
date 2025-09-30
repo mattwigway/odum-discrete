@@ -172,7 +172,7 @@ Markdown(tabulate.tabulate(modelRes.fillna(""), headers=modelRes.columns))
 
 - Coefficients are approximations to population-level parameters, and contain sampling error because we haven't sampled the entire population
 - The standard error ($\sigma$) is a measure of how precise the coefficient is
-- We assume coefficient estimates are asymtotically normal
+- We assume coefficient estimates are asymptotically normal
 - Based on a normal distribution, there is a 95% chance the population parameter is within $1.96 \times \sigma$ of the estimate
 
 ## Statistical significance and p-values
@@ -367,6 +367,18 @@ which we can re-write as
 
 $$
 P\left(V_{wfh} + \epsilon_{wfh} - (0 + \epsilon_{notwfh}) > 0\right)
+$$
+
+. . .
+
+$$
+P\left(V_{wfh} + \epsilon_{wfh} - \epsilon_{notwfh} > 0\right)
+$$
+
+. . .
+
+$$
+P\left(V_{wfh} + \epsilon_\Delta > 0\right)
 $$
 
 ## Showing the equivalence to the binary logistic regression model II
@@ -573,10 +585,12 @@ print(result.get_estimated_parameters())
 - Each alternative gets a utility function, with systematic and random components
 
 $$
-U_{car} = V_{car} + \epsilon_{car} \\
-U_{transit} = V_{transit} + \epsilon_{transit} \\
-U_{bike} = V_{bike} + \epsilon_{bike} \\
-U_{walk} = V_{walk} + \epsilon_{walk} \\
+\begin{align}
+U_{car} &= V_{car} + \epsilon_{car} \\
+U_{transit} &= V_{transit} + \epsilon_{transit} \\
+U_{bike} &= V_{bike} + \epsilon_{bike} \\
+U_{walk} &= V_{walk} + \epsilon_{walk} \\
+\end{align}
 $$
 
 ## The multinomial logit model, in math II
@@ -584,10 +598,12 @@ $$
 - Like in a logistic regression, the systematic portion of utility is usually a linear combination of predictors
 
 $$
-V_{car} = \alpha_{car} + \beta_{car,income} x_{income} \cdots \\
-V_{transit} = \alpha_{transit} + \beta_{transit,income} x_{income} \cdots \\
-V_{bike} = \alpha_{bike} + \beta_{bike,income} x_{income} \cdots \\
-V_{walk} = \alpha_{walk} + \beta_{walk,income} x_{income} \cdots \\
+\begin{align}
+V_{car} &= \alpha_{car} + \beta_{car,income} x_{income} \cdots \\
+V_{transit} &= \alpha_{transit} + \beta_{transit,income} x_{income} \cdots \\
+V_{bike} &= \alpha_{bike} + \beta_{bike,income} x_{income} \cdots \\
+V_{walk} &= \alpha_{walk} + \beta_{walk,income} x_{income} \cdots \\
+\end{align}
 $$
 
 ## Alternative specific constants
@@ -610,10 +626,12 @@ $$
 - Looking again at our mode choice model, how do the differences between utilities change if we add 1 to all of the $\alpha$'s or $\beta$'s?
 
 $$
-V_{car} = \alpha_{car} + \beta_{car,income} x_{income} \cdots \\
-V_{transit} = \alpha_{transit} + \beta_{transit,income} x_{income} \cdots \\
-V_{bike} = \alpha_{bike} + \beta_{bike,income} x_{income} \cdots \\
-V_{walk} = \alpha_{walk} + \beta_{walk,income} x_{income} \cdots \\
+\begin{align}
+V_{car} &= \alpha_{car} + \beta_{car,income} x_{income} \cdots \\
+V_{transit} &= \alpha_{transit} + \beta_{transit,income} x_{income} \cdots \\
+V_{bike} &= \alpha_{bike} + \beta_{bike,income} x_{income} \cdots \\
+V_{walk} &= \alpha_{walk} + \beta_{walk,income} x_{income} \cdots \\
+\end{align}
 $$
 
 ## An identified model
@@ -623,10 +641,12 @@ $$
 - For instance, we might do
 
 $$
-V_{car} = 0 \\
-V_{transit} = \alpha_{transit} + \beta_{transit,income} x_{income} \cdots \\
-V_{bike} = \alpha_{bike} + \beta_{bike,income} x_{income} \cdots \\
-V_{walk} = \alpha_{walk} + \beta_{walk,income} x_{income} \cdots \\
+\begin{align}
+V_{car} &= 0 \\
+V_{transit} &= \alpha_{transit} + \beta_{transit,income} x_{income} \cdots \\
+V_{bike} &= \alpha_{bike} + \beta_{bike,income} x_{income} \cdots \\
+V_{walk} &= \alpha_{walk} + \beta_{walk,income} x_{income} \cdots \\
+\end{align}
 $$
 
 - This is exactly what a binary logistic regression does—you have coefficients for one outcome, and the utility of the other outcome is zero
