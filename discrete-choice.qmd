@@ -2307,11 +2307,12 @@ plt.yticks([])
 - There may also be cases where there is an idenfication issue that does not fail to converge, but has unexpected coefficients, non-finite likelihoods, etc.—if anything looks off, identification is a good thing to think about
 - Some identification issues may not be apparent in results at all
 
-## Conclusion
+## Other packages for discrete choice modeling
 
-- We covered the binary, multinomial, and nested logit models
-- The multinomial logit model is used for multiple outcomes; the nested logit is used when you are concerned about independence of irrelevant alternatives
-- We estimated models using the Biogeme package, other packages are larch (Python) and apollo (R)
+- [`larch`](https://larch.driftless.xyz/) (Python, more "Pythonic" and better for integrating into larger codebases)
+- [`apollo`](https://www.apollochoicemodelling.com/) (R)
+- [`DiscreteChoiceModels.jl`](https://github.com/mattwigway/DiscreteChoiceModels.jl), (Julia, very fast and can handle extremely large datasets, still somewhat experimental)
+- Most general-purpose statistical software has multinomial and nested logit models, but they tend to be less flexible that purpose-built packages
 
 ## Questions?
 
