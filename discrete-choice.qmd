@@ -1747,6 +1747,81 @@ Of the following options for internet service, which would you select:
     - if you have ASCs in your model, this is even more of an issue—if fiber is always 1000 megabits/second, you won't be able to differentiate the speed from an inherent preference for fiber
 - There's a lot more that goes into designing good choice experiments; see [@bliemer_designing_2024](https://surveyengine.com/wp-content/uploads/2021/11/Designing-and-Conducting-Stated-Choice-Experiments.pdf)
 
+## Choice experiment design: labeled experiments
+
+- Two common ways to design a choice experiment and associated modeled structure
+- In a "labeled" experiment, the scenarios have labels that refer to some intrinsic aspect of the experiment, and associated bundle of unobserved attributes
+    - e.g. DSL, fiber, etc.
+- You can then add alternative specific constants for each of these outcomes except one, and proceed as normal
+
+## Labeled experiments and availability
+
+- When you have a large number of alternatives, you may not want to present all of them to respondents
+- You can leave some out, and then mark those as unavailable in estimation
+- You need to be a little careful, as the alternatives need to overlap between respondents
+    - e.g. if you had outcomes DSL, Fiber, Cable, and Satellite, you couldn't give half the people a choice between DSL and Fiber, and half the people a choice between Cable and Satellite, and then run a single model
+
+## Why not?
+
+$$
+\begin{align*}
+V_{DSL} &= 0 \\
+V_{fiber} &= \alpha_{fiber} + \beta_{fiber,urban} x_{urban} \\
+V_{cable} &= \alpha_{cable} + \beta_{cable,urban} x_{urban} \\
+V_{sat} &= \alpha_{sat} + \beta_{sat,urban} x_{urban}
+\end{align*}
+$$
+
+- What happens if we add 1 to $\alpha_{sat}$ and $\alpha_{cable}$?
+
+## Complete separation
+
+For someone who saw the choice between cable and satellite
+
+$$
+\begin{align*}
+P_{cable} &= \frac{e^{V_{cable}}}{\displaystyle\sum_i e^{V_i}} & \quad\quad &  P_{sat} &= \frac{e^{V_{cable}}}{\displaystyle\sum_i e^{V_i}}  \\
+P_{cable} &= \frac{e^{V_{cable}}}{e^{V_{cable}} + e^{V_{sat}}} & \quad\quad &  P_{sat} &= \frac{e^{V_{cable}}}{e^{V_{cable}} + e^{V_{sat}}}  \\
+\end{align*}
+$$
+
+## Adding one to the utilities
+
+$$
+\begin{align*}
+P_{cable} &= \frac{e^{V_{cable} + 1}}{e^{V_{cable} + 1} + e^{V_{sat} + 1}} & \quad\quad &  P_{sat} &= \frac{e^{V_{cable} + 1}}{e^{V_{cable} + 1} + e^{V_{sat} + 1}}  \\
+P_{cable} &= \frac{e^{V_{cable}}e^1}{e^{V_{cable}}e^1 + e^{V_{sat}}e^1} & \quad\quad &  P_{sat} &= \frac{e^{V_{cable}}e^1}{e^{V_{cable}}e^1 + e^{V_{sat}}e^1}  \\
+P_{cable} &= \frac{e^{V_{cable}}}{e^{V_{cable}} + e^{V_{sat}}} & \quad\quad &  P_{sat} &= \frac{e^{V_{cable}}}{e^{V_{cable}} + e^{V_{sat}}} \\
+P_{cable} &= \frac{e^{V_{cable}}}{\displaystyle\sum_i e^{V_i}} & \quad\quad &  P_{sat} &= \frac{e^{V_{cable}}}{\displaystyle\sum_i e^{V_i}} 
+\end{align*}
+$$
+
+. . . 
+
+Nothing changes!
+
+## Overlap and efficiency
+
+- You can't have groups of alternatives that don't overlap with any other group
+- This doesn't mean you have to have every possible combination, but the combinations you present have to overlap
+- There are specific tools and methods to design good choice experiments to avoid this, and to promote _efficiency_ - i.e. the most possible data from the fewest possible questions
+
+## Unlabeled experiments
+
+- Unlabeled experiments are where you present a few options to users that don't have any intrinsic characteristics
+- e.g. often used in residential location choice
+- So you have attributes of the homes (e.g. price, size, etc.) but there is nothing special about Home 1 vs Home 2 other than the attribute values
+- You then model the outcome using generic variables from the attributes
+- May leave out ASCs, or include them to account for order effects
+
+## Best-worst scaling
+
+- _Best-worst scaling_ is a tool to let you get more information from a choice experiment
+- Instead of having folks choose only the best option, you have them choose best _and_ worst
+- Or, in some cases, you present only one option and have them choose the best and worst _attributes_ of that option
+- You may follow up with asking second-best and second-worst, etc.
+- Lots more info in @louviere_bestworst_2015.
+
 ## Revealed preference data: attributes of alternatives
 
 - A key challenge with revealed preference data is that you don't observe the attributes of the alternatives, and have to estimate them somehow
