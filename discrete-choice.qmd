@@ -1391,9 +1391,10 @@ which is also known as the softmax function. More detail: see Section 5.2 of @be
 ::: {.incremental}
 - The denominator of the probability function is the "expected maximum utility" (in exponentiated form), also called the "logsum"
 - This estimates how much utility a decisionmaker will derive from their chosen outcome, _without having to know what they choose_
-- For instance, in a mode choice model, this might be used as an _accessibility metric_, 
+- For instance, in a mode choice model, this might be used as an _accessibility metric_, a measure of the destinations accessible via the transportation system
+- Conceptually similar to a weighted sum used for evaluation,
+    - but weights derived analytically from stated or revealed preferences
 :::
-
 
 ## Only utility differences matter
 
