@@ -585,12 +585,12 @@ print(result.get_estimated_parameters())
 - Each alternative gets a utility function, with systematic and random components
 
 $$
-\begin{align}
+\begin{align*}
 U_{car} &= V_{car} + \epsilon_{car} \\
 U_{transit} &= V_{transit} + \epsilon_{transit} \\
 U_{bike} &= V_{bike} + \epsilon_{bike} \\
 U_{walk} &= V_{walk} + \epsilon_{walk} \\
-\end{align}
+\end{align*}
 $$
 
 ## The multinomial logit model, in math II
@@ -598,12 +598,12 @@ $$
 - Like in a logistic regression, the systematic portion of utility is usually a linear combination of predictors
 
 $$
-\begin{align}
+\begin{align*}
 V_{car} &= \alpha_{car} + \beta_{car,income} x_{income} \cdots \\
 V_{transit} &= \alpha_{transit} + \beta_{transit,income} x_{income} \cdots \\
 V_{bike} &= \alpha_{bike} + \beta_{bike,income} x_{income} \cdots \\
 V_{walk} &= \alpha_{walk} + \beta_{walk,income} x_{income} \cdots \\
-\end{align}
+\end{align*}
 $$
 
 ## Alternative specific constants
@@ -626,12 +626,12 @@ $$
 - Looking again at our mode choice model, how do the differences between utilities change if we add 1 to all of the $\alpha$'s or $\beta$'s?
 
 $$
-\begin{align}
+\begin{align*}
 V_{car} &= \alpha_{car} + \beta_{car,income} x_{income} \cdots \\
 V_{transit} &= \alpha_{transit} + \beta_{transit,income} x_{income} \cdots \\
 V_{bike} &= \alpha_{bike} + \beta_{bike,income} x_{income} \cdots \\
 V_{walk} &= \alpha_{walk} + \beta_{walk,income} x_{income} \cdots \\
-\end{align}
+\end{align*}
 $$
 
 ## An identified model
@@ -641,12 +641,12 @@ $$
 - For instance, we might do
 
 $$
-\begin{align}
+\begin{align*}
 V_{car} &= 0 \\
 V_{transit} &= \alpha_{transit} + \beta_{transit,income} x_{income} \cdots \\
 V_{bike} &= \alpha_{bike} + \beta_{bike,income} x_{income} \cdots \\
 V_{walk} &= \alpha_{walk} + \beta_{walk,income} x_{income} \cdots \\
-\end{align}
+\end{align*}
 $$
 
 - This is exactly what a binary logistic regression does—you have coefficients for one outcome, and the utility of the other outcome is zero
@@ -768,7 +768,7 @@ Markdown(
 params = result.get_estimated_parameters().set_index("Name")
 Markdown(
     tabulate.tabulate(
-        params.loc[[i for i in params.index if i.startswith("asc")]],
+        params.loc[[i for i in params.index if i.startswith("b_income")]],
         headers=params.columns
     )
 )
@@ -1435,11 +1435,11 @@ $$
 - If we had two outcomes, 0 and 1, with systematic utilities $V_0$ and $V_1$, the choice probability would be, with $V_0 = 0$
 
 $$
-\begin{align}
+\begin{align*}
 P(y = 1) &= \frac{e^{V_1}}{e^{V_0} + e^{V_1}}\\
 &= \frac{e^{V_1}}{e^0 + e^{V_1}}\\
 &= \frac{e^{V_1}}{1 + e^{V_1}}
-\end{align}
+\end{align*}
 $$
 
 Which is the same as the predicted probability in binary logistic regression
@@ -1717,6 +1717,7 @@ print(result.get_estimated_parameters())
 
 - True model: $V_1 = 0.3 + 2x_1 + 2x_2 + 2x_3$
 - $x_1$, $x_2$, $x_3$ uncorrelated
+- [Deeper dive here](https://indicatrix.org/post/parameter-scaling-and-assertions/)
 
 ::::
 :::: {.column width="50%"}
@@ -1892,12 +1893,13 @@ $$
 ## The range of $\theta$
 
 - $\theta$ should be between 0 and 1
+    - 1: model is equivalent to multinomial logit model
 - If it is not, the model is not consistent with random utility theory
 
 ## Estimating a nested logit model in Biogeme
 
 - We will put transit and driving together in a "motorized" nest.
-- Biogeme does not estimated $\theta$, instead it estimates $\mu$ which is $\frac{1}{\theta}$
+- Biogeme does not estimate $\theta$, instead it estimates $\mu$ which is $\frac{1}{\theta}$
 
 ## Estimating a nested logit model in Biogeme: code
 
@@ -2236,10 +2238,10 @@ flowchart TD
 - So, for instance, the utilities of biking and walking in our nested logit model above are
 
 $$
-\begin{align}
+\begin{align*}
 U_{bike} &= V_{bike} + \epsilon_{nonmotorized} + \epsilon_{bike} \\
 U_{walk} &= V_{walk} + \epsilon_{nonmotorized} + \epsilon_{walk}
-\end{align}
+\end{align*}
 $$
 
 - What $\theta$ actually represents is the ratio of the scales of the error terms at the top-level portion of the model and in the nest
@@ -2302,7 +2304,7 @@ plt.yticks([])
 - In each of the models above, we checked for convergence
 - If the model did _not_ converge, it means Biogeme did not find a solution
 - This usually means an identification issue—for instance, multicollinearity, not excluding one ASC, etc.
-- There may also be cases where there is an idenfication issue that is indicated but unexpected coefficients, non-finite likelihoods, etc.—if anything looks off, identification is a good thing to think about
+- There may also be cases where there is an idenfication issue that does not fail to converge, but has unexpected coefficients, non-finite likelihoods, etc.—if anything looks off, identification is a good thing to think about
 - Some identification issues may not be apparent in results at all
 
 ## Conclusion
