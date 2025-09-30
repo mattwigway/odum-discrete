@@ -74,7 +74,7 @@
     "href": "discrete-choice.html#statistical-significance-and-p-values",
     "title": "Introduction to Discrete Choice Models",
     "section": "Statistical significance and p-values",
-    "text": "Statistical significance and p-values\n\nCoefficients are approximations to population-level parameters, and contain sampling error because we haven’t sampled the entire population\nThe standard error (\\(\\sigma\\)) is a measure of how precise the coefficient is\nWe assume coefficient estimates are asymtotically normal\nBased on a normal distribution, there is a 95% chance the population parameter is within \\(1.96 \\times \\sigma\\) of the estimate"
+    "text": "Statistical significance and p-values\n\nCoefficients are approximations to population-level parameters, and contain sampling error because we haven’t sampled the entire population\nThe standard error (\\(\\sigma\\)) is a measure of how precise the coefficient is\nWe assume coefficient estimates are asymptotically normal\nBased on a normal distribution, there is a 95% chance the population parameter is within \\(1.96 \\times \\sigma\\) of the estimate"
   },
   {
     "objectID": "discrete-choice.html#statistical-significance-and-p-values-1",
@@ -137,7 +137,7 @@
     "href": "discrete-choice.html#running-a-logistic-regression-in-python-results",
     "title": "Introduction to Discrete Choice Models",
     "section": "Running a logistic regression in Python: results",
-    "text": "Running a logistic regression in Python: results\n\n\n\nLogit Regression Results\n\n\nDep. Variable:\nwfh_expectation\nNo. Observations:\n1171\n\n\nModel:\nLogit\nDf Residuals:\n1167\n\n\nMethod:\nMLE\nDf Model:\n3\n\n\nDate:\nTue, 30 Sep 2025\nPseudo R-squ.:\n0.05368\n\n\nTime:\n11:18:23\nLog-Likelihood:\n-755.40\n\n\nconverged:\nTrue\nLL-Null:\n-798.25\n\n\nCovariance Type:\nnonrobust\nLLR p-value:\n1.837e-18\n\n\n\n\n\n\n\n\n\ncoef\nstd err\nz\nP&gt;|z|\n[0.025\n0.975]\n\n\nconst\n0.7258\n0.247\n2.944\n0.003\n0.243\n1.209\n\n\nage\n-0.0230\n0.005\n-5.065\n0.000\n-0.032\n-0.014\n\n\ncollege\n0.9273\n0.131\n7.102\n0.000\n0.671\n1.183\n\n\ngender_Male\n0.2520\n0.128\n1.967\n0.049\n0.001\n0.503"
+    "text": "Running a logistic regression in Python: results\n\n\n\nLogit Regression Results\n\n\nDep. Variable:\nwfh_expectation\nNo. Observations:\n1171\n\n\nModel:\nLogit\nDf Residuals:\n1167\n\n\nMethod:\nMLE\nDf Model:\n3\n\n\nDate:\nTue, 30 Sep 2025\nPseudo R-squ.:\n0.05368\n\n\nTime:\n11:52:47\nLog-Likelihood:\n-755.40\n\n\nconverged:\nTrue\nLL-Null:\n-798.25\n\n\nCovariance Type:\nnonrobust\nLLR p-value:\n1.837e-18\n\n\n\n\n\n\n\n\n\ncoef\nstd err\nz\nP&gt;|z|\n[0.025\n0.975]\n\n\nconst\n0.7258\n0.247\n2.944\n0.003\n0.243\n1.209\n\n\nage\n-0.0230\n0.005\n-5.065\n0.000\n-0.032\n-0.014\n\n\ncollege\n0.9273\n0.131\n7.102\n0.000\n0.671\n1.183\n\n\ngender_Male\n0.2520\n0.128\n1.967\n0.049\n0.001\n0.503"
   },
   {
     "objectID": "discrete-choice.html#exercise-add-the-black-and-hispanic-variables-to-the-model",
@@ -151,7 +151,7 @@
     "href": "discrete-choice.html#exercise-add-the-black-and-hispanic-variables-to-the-model-result",
     "title": "Introduction to Discrete Choice Models",
     "section": "Exercise: add the black and hispanic variables to the model: result",
-    "text": "Exercise: add the black and hispanic variables to the model: result\n\n\n\nLogit Regression Results\n\n\nDep. Variable:\nwfh_expectation\nNo. Observations:\n1171\n\n\nModel:\nLogit\nDf Residuals:\n1165\n\n\nMethod:\nMLE\nDf Model:\n5\n\n\nDate:\nTue, 30 Sep 2025\nPseudo R-squ.:\n0.05437\n\n\nTime:\n11:18:23\nLog-Likelihood:\n-754.85\n\n\nconverged:\nTrue\nLL-Null:\n-798.25\n\n\nCovariance Type:\nnonrobust\nLLR p-value:\n3.164e-17\n\n\n\n\n\n\n\n\n\ncoef\nstd err\nz\nP&gt;|z|\n[0.025\n0.975]\n\n\nconst\n0.7721\n0.261\n2.962\n0.003\n0.261\n1.283\n\n\nage\n-0.0237\n0.005\n-5.072\n0.000\n-0.033\n-0.015\n\n\ncollege\n0.9245\n0.131\n7.056\n0.000\n0.668\n1.181\n\n\nblack\n0.0801\n0.232\n0.346\n0.729\n-0.374\n0.534\n\n\nhispanic\n-0.1971\n0.201\n-0.979\n0.327\n-0.592\n0.197\n\n\ngender_Male\n0.2546\n0.128\n1.986\n0.047\n0.003\n0.506\n\n\n\n\n\n\nIs either statistically significant?"
+    "text": "Exercise: add the black and hispanic variables to the model: result\n\n\n\nLogit Regression Results\n\n\nDep. Variable:\nwfh_expectation\nNo. Observations:\n1171\n\n\nModel:\nLogit\nDf Residuals:\n1165\n\n\nMethod:\nMLE\nDf Model:\n5\n\n\nDate:\nTue, 30 Sep 2025\nPseudo R-squ.:\n0.05437\n\n\nTime:\n11:52:47\nLog-Likelihood:\n-754.85\n\n\nconverged:\nTrue\nLL-Null:\n-798.25\n\n\nCovariance Type:\nnonrobust\nLLR p-value:\n3.164e-17\n\n\n\n\n\n\n\n\n\ncoef\nstd err\nz\nP&gt;|z|\n[0.025\n0.975]\n\n\nconst\n0.7721\n0.261\n2.962\n0.003\n0.261\n1.283\n\n\nage\n-0.0237\n0.005\n-5.072\n0.000\n-0.033\n-0.015\n\n\ncollege\n0.9245\n0.131\n7.056\n0.000\n0.668\n1.181\n\n\nblack\n0.0801\n0.232\n0.346\n0.729\n-0.374\n0.534\n\n\nhispanic\n-0.1971\n0.201\n-0.979\n0.327\n-0.592\n0.197\n\n\ngender_Male\n0.2546\n0.128\n1.986\n0.047\n0.003\n0.506\n\n\n\n\n\n\nIs either statistically significant?"
   },
   {
     "objectID": "discrete-choice.html#an-alternate-conceptualization-of-the-logistic-regression-model-random-utility-theory",
@@ -179,7 +179,7 @@
     "href": "discrete-choice.html#showing-the-equivalence-to-the-binary-logistic-regression-model-i",
     "title": "Introduction to Discrete Choice Models",
     "section": "Showing the equivalence to the binary logistic regression model I",
-    "text": "Showing the equivalence to the binary logistic regression model I\nWe have\n\\[\nP\\left(U_{wfh} &gt; U_{notwfh}\\right)\n\\]\n\nwhich we can re-write as\n\\[\nP\\left(V_{wfh} + \\epsilon_{wfh} - (0 + \\epsilon_{notwfh}) &gt; 0\\right)\n\\]"
+    "text": "Showing the equivalence to the binary logistic regression model I\nWe have\n\\[\nP\\left(U_{wfh} &gt; U_{notwfh}\\right)\n\\]\n\nwhich we can re-write as\n\\[\nP\\left(V_{wfh} + \\epsilon_{wfh} - (0 + \\epsilon_{notwfh}) &gt; 0\\right)\n\\]\n\n\n\\[\nP\\left(V_{wfh} + \\epsilon_{wfh} - \\epsilon_{notwfh} &gt; 0\\right)\n\\]\n\n\n\\[\nP\\left(V_{wfh} + \\epsilon_\\Delta &gt; 0\\right)\n\\]"
   },
   {
     "objectID": "discrete-choice.html#showing-the-equivalence-to-the-binary-logistic-regression-model-ii",
@@ -263,14 +263,14 @@
     "href": "discrete-choice.html#the-multinomial-logit-model-in-math-i",
     "title": "Introduction to Discrete Choice Models",
     "section": "The multinomial logit model, in math I",
-    "text": "The multinomial logit model, in math I\n\nEach alternative gets a utility function, with systematic and random components\n\n\\[\nU_{car} = V_{car} + \\epsilon_{car} \\\\\nU_{transit} = V_{transit} + \\epsilon_{transit} \\\\\nU_{bike} = V_{bike} + \\epsilon_{bike} \\\\\nU_{walk} = V_{walk} + \\epsilon_{walk} \\\\\n\\]"
+    "text": "The multinomial logit model, in math I\n\nEach alternative gets a utility function, with systematic and random components\n\n\\[\n\\begin{align*}\nU_{car} &= V_{car} + \\epsilon_{car} \\\\\nU_{transit} &= V_{transit} + \\epsilon_{transit} \\\\\nU_{bike} &= V_{bike} + \\epsilon_{bike} \\\\\nU_{walk} &= V_{walk} + \\epsilon_{walk} \\\\\n\\end{align*}\n\\]"
   },
   {
     "objectID": "discrete-choice.html#the-multinomial-logit-model-in-math-ii",
     "href": "discrete-choice.html#the-multinomial-logit-model-in-math-ii",
     "title": "Introduction to Discrete Choice Models",
     "section": "The multinomial logit model, in math II",
-    "text": "The multinomial logit model, in math II\n\nLike in a logistic regression, the systematic portion of utility is usually a linear combination of predictors\n\n\\[\nV_{car} = \\alpha_{car} + \\beta_{car,income} x_{income} \\cdots \\\\\nV_{transit} = \\alpha_{transit} + \\beta_{transit,income} x_{income} \\cdots \\\\\nV_{bike} = \\alpha_{bike} + \\beta_{bike,income} x_{income} \\cdots \\\\\nV_{walk} = \\alpha_{walk} + \\beta_{walk,income} x_{income} \\cdots \\\\\n\\]"
+    "text": "The multinomial logit model, in math II\n\nLike in a logistic regression, the systematic portion of utility is usually a linear combination of predictors\n\n\\[\n\\begin{align*}\nV_{car} &= \\alpha_{car} + \\beta_{car,income} x_{income} \\cdots \\\\\nV_{transit} &= \\alpha_{transit} + \\beta_{transit,income} x_{income} \\cdots \\\\\nV_{bike} &= \\alpha_{bike} + \\beta_{bike,income} x_{income} \\cdots \\\\\nV_{walk} &= \\alpha_{walk} + \\beta_{walk,income} x_{income} \\cdots \\\\\n\\end{align*}\n\\]"
   },
   {
     "objectID": "discrete-choice.html#alternative-specific-constants",
@@ -291,14 +291,14 @@
     "href": "discrete-choice.html#identification-issues",
     "title": "Introduction to Discrete Choice Models",
     "section": "Identification issues",
-    "text": "Identification issues\n\nLooking again at our mode choice model, how do the differences between utilities change if we add 1 to all of the \\(\\alpha\\)’s or \\(\\beta\\)’s?\n\n\\[\nV_{car} = \\alpha_{car} + \\beta_{car,income} x_{income} \\cdots \\\\\nV_{transit} = \\alpha_{transit} + \\beta_{transit,income} x_{income} \\cdots \\\\\nV_{bike} = \\alpha_{bike} + \\beta_{bike,income} x_{income} \\cdots \\\\\nV_{walk} = \\alpha_{walk} + \\beta_{walk,income} x_{income} \\cdots \\\\\n\\]"
+    "text": "Identification issues\n\nLooking again at our mode choice model, how do the differences between utilities change if we add 1 to all of the \\(\\alpha\\)’s or \\(\\beta\\)’s?\n\n\\[\n\\begin{align*}\nV_{car} &= \\alpha_{car} + \\beta_{car,income} x_{income} \\cdots \\\\\nV_{transit} &= \\alpha_{transit} + \\beta_{transit,income} x_{income} \\cdots \\\\\nV_{bike} &= \\alpha_{bike} + \\beta_{bike,income} x_{income} \\cdots \\\\\nV_{walk} &= \\alpha_{walk} + \\beta_{walk,income} x_{income} \\cdots \\\\\n\\end{align*}\n\\]"
   },
   {
     "objectID": "discrete-choice.html#an-identified-model",
     "href": "discrete-choice.html#an-identified-model",
     "title": "Introduction to Discrete Choice Models",
     "section": "An identified model",
-    "text": "An identified model\n\nWe can solve this by setting one utility to zero\n\nWhich one does not affect predictions from the model, but will affect interpretations\n\nFor instance, we might do\n\n\\[\nV_{car} = 0 \\\\\nV_{transit} = \\alpha_{transit} + \\beta_{transit,income} x_{income} \\cdots \\\\\nV_{bike} = \\alpha_{bike} + \\beta_{bike,income} x_{income} \\cdots \\\\\nV_{walk} = \\alpha_{walk} + \\beta_{walk,income} x_{income} \\cdots \\\\\n\\]\n\nThis is exactly what a binary logistic regression does—you have coefficients for one outcome, and the utility of the other outcome is zero"
+    "text": "An identified model\n\nWe can solve this by setting one utility to zero\n\nWhich one does not affect predictions from the model, but will affect interpretations\n\nFor instance, we might do\n\n\\[\n\\begin{align*}\nV_{car} &= 0 \\\\\nV_{transit} &= \\alpha_{transit} + \\beta_{transit,income} x_{income} \\cdots \\\\\nV_{bike} &= \\alpha_{bike} + \\beta_{bike,income} x_{income} \\cdots \\\\\nV_{walk} &= \\alpha_{walk} + \\beta_{walk,income} x_{income} \\cdots \\\\\n\\end{align*}\n\\]\n\nThis is exactly what a binary logistic regression does—you have coefficients for one outcome, and the utility of the other outcome is zero"
   },
   {
     "objectID": "discrete-choice.html#interpreting-the-model",
@@ -333,7 +333,7 @@
     "href": "discrete-choice.html#interpreting-a-multinomial-logit-model-coefficients",
     "title": "Introduction to Discrete Choice Models",
     "section": "Interpreting a multinomial logit model: coefficients",
-    "text": "Interpreting a multinomial logit model: coefficients\n\n\n\n\n\n\nValue\nRobust std err.\nRobust t-stat.\nRobust p-value\n\n\n\n\nasc_transit\n-2.51009\n0.0620315\n-40.4648\n0\n\n\nasc_walk\n-1.52704\n0.0402584\n-37.9309\n0\n\n\nasc_bike\n-4.00531\n0.127131\n-31.5055\n0\n\n\n\n\n\n\nIn higher income households, relative to lower income households and relative to driving\n\nIs walking more prevalent than driving, or just relatively more prevalent 🤔\n\nThis is probably because this is Seattle which has an affluent, walkable downtown\n\nBiking is not really affected much by income (not statistically significant)\nTransit is relatively less prevalent\nWalking is relatively more prevalent"
+    "text": "Interpreting a multinomial logit model: coefficients\n\n\n\n\n\n\nValue\nRobust std err.\nRobust t-stat.\nRobust p-value\n\n\n\n\nb_income_over_100k_transit\n-1.46536\n0.142407\n-10.29\n0\n\n\nb_income_over_100k_walk\n0.223509\n0.055121\n4.05489\n5.01585e-05\n\n\nb_income_over_100k_bike\n0.122244\n0.176552\n0.692396\n0.488689\n\n\n\n\n\n\nIn higher income households, relative to lower income households and relative to driving\n\nIs walking more prevalent than driving, or just relatively more prevalent 🤔\n\nThis is probably because this is Seattle which has an affluent, walkable downtown\n\nBiking is not really affected much by income (not statistically significant)\nTransit is relatively less prevalent\nWalking is relatively more prevalent"
   },
   {
     "objectID": "discrete-choice.html#estimating-a-multinomial-logit-model-yourself",
@@ -508,7 +508,7 @@
     "href": "discrete-choice.html#the-binary-and-multinomial-logit-are-the-same-model",
     "title": "Introduction to Discrete Choice Models",
     "section": "The binary and multinomial logit are the same model",
-    "text": "The binary and multinomial logit are the same model\n\nThe binary logit model is just a multinomial logit model with two outcome and no generic variables\nIf we had two outcomes, 0 and 1, with systematic utilities \\(V_0\\) and \\(V_1\\), the choice probability would be, with \\(V_0 = 0\\)\n\n\\[\n\\begin{align}\nP(y = 1) &= \\frac{e^{V_1}}{e^{V_0} + e^{V_1}}\\\\\n&= \\frac{e^{V_1}}{e^0 + e^{V_1}}\\\\\n&= \\frac{e^{V_1}}{1 + e^{V_1}}\n\\end{align}\n\\]\nWhich is the same as the predicted probability in binary logistic regression"
+    "text": "The binary and multinomial logit are the same model\n\nThe binary logit model is just a multinomial logit model with two outcome and no generic variables\nIf we had two outcomes, 0 and 1, with systematic utilities \\(V_0\\) and \\(V_1\\), the choice probability would be, with \\(V_0 = 0\\)\n\n\\[\n\\begin{align*}\nP(y = 1) &= \\frac{e^{V_1}}{e^{V_0} + e^{V_1}}\\\\\n&= \\frac{e^{V_1}}{e^0 + e^{V_1}}\\\\\n&= \\frac{e^{V_1}}{1 + e^{V_1}}\n\\end{align*}\n\\]\nWhich is the same as the predicted probability in binary logistic regression"
   },
   {
     "objectID": "discrete-choice.html#calculating-choice-probabilities-in-biogeme",
@@ -655,7 +655,7 @@
     "href": "discrete-choice.html#comparing-coefficients-of-logistic-regression-models-1",
     "title": "Introduction to Discrete Choice Models",
     "section": "Comparing coefficients of logistic regression models",
-    "text": "Comparing coefficients of logistic regression models\n\n\n\nTrue model: \\(V_1 = 0.3 + 2x_1 + 2x_2 + 2x_3\\)\n\\(x_1\\), \\(x_2\\), \\(x_3\\) uncorrelated\n\n\n\n\n\n\nVariable\n\n\nModel 1\n\n\nModel 2\n\n\nModel 3\n\n\n\n\n\n\n(Intercept)\n\n\n0.166***\n\n\n0.209***\n\n\n0.334***\n\n\n\n\nx1\n\n\n0.984***\n\n\n1.273***\n\n\n1.995***\n\n\n\n\nx2\n\n\n-\n\n\n1.288***\n\n\n2.002***\n\n\n\n\nx3\n\n\n-\n\n\n-\n\n\n1.95***"
+    "text": "Comparing coefficients of logistic regression models\n\n\n\nTrue model: \\(V_1 = 0.3 + 2x_1 + 2x_2 + 2x_3\\)\n\\(x_1\\), \\(x_2\\), \\(x_3\\) uncorrelated\nDeeper dive here\n\n\n\n\n\n\nVariable\n\n\nModel 1\n\n\nModel 2\n\n\nModel 3\n\n\n\n\n\n\n(Intercept)\n\n\n0.166***\n\n\n0.209***\n\n\n0.334***\n\n\n\n\nx1\n\n\n0.984***\n\n\n1.273***\n\n\n1.995***\n\n\n\n\nx2\n\n\n-\n\n\n1.288***\n\n\n2.002***\n\n\n\n\nx3\n\n\n-\n\n\n-\n\n\n1.95***"
   },
   {
     "objectID": "discrete-choice.html#data-for-choice-modeling-stated-preference-data",
@@ -767,14 +767,14 @@
     "href": "discrete-choice.html#the-range-of-theta",
     "title": "Introduction to Discrete Choice Models",
     "section": "The range of \\(\\theta\\)",
-    "text": "The range of \\(\\theta\\)\n\n\\(\\theta\\) should be between 0 and 1\nIf it is not, the model is not consistent with random utility theory"
+    "text": "The range of \\(\\theta\\)\n\n\\(\\theta\\) should be between 0 and 1\n\n1: model is equivalent to multinomial logit model\n\nIf it is not, the model is not consistent with random utility theory"
   },
   {
     "objectID": "discrete-choice.html#estimating-a-nested-logit-model-in-biogeme",
     "href": "discrete-choice.html#estimating-a-nested-logit-model-in-biogeme",
     "title": "Introduction to Discrete Choice Models",
     "section": "Estimating a nested logit model in Biogeme",
-    "text": "Estimating a nested logit model in Biogeme\n\nWe will put transit and driving together in a “motorized” nest.\nBiogeme does not estimated \\(\\theta\\), instead it estimates \\(\\mu\\) which is \\(\\frac{1}{\\theta}\\)"
+    "text": "Estimating a nested logit model in Biogeme\n\nWe will put transit and driving together in a “motorized” nest.\nBiogeme does not estimate \\(\\theta\\), instead it estimates \\(\\mu\\) which is \\(\\frac{1}{\\theta}\\)"
   },
   {
     "objectID": "discrete-choice.html#estimating-a-nested-logit-model-in-biogeme-code",
@@ -872,7 +872,7 @@
     "href": "discrete-choice.html#going-deeper-scale-parameters-in-nested-logit",
     "title": "Introduction to Discrete Choice Models",
     "section": "Going deeper: scale parameters in nested logit",
-    "text": "Going deeper: scale parameters in nested logit\n\nAnother way to think about the nested logit model is that it allows an error term that varies between nests/top-level alternatives and another that varies within each nest\nSo, for instance, the utilities of biking and walking in our nested logit model above are\n\n\\[\n\\begin{align}\nU_{bike} &= V_{bike} + \\epsilon_{nonmotorized} + \\epsilon_{bike} \\\\\nU_{walk} &= V_{walk} + \\epsilon_{nonmotorized} + \\epsilon_{walk}\n\\end{align}\n\\]\n\nWhat \\(\\theta\\) actually represents is the ratio of the scales of the error terms at the top-level portion of the model and in the nest\nAs \\(\\theta\\) approaches 1, the scales of the error approach equality. When they are equal, the within nest variation is contributing all of the error term, and there is no shared unobserved variation."
+    "text": "Going deeper: scale parameters in nested logit\n\nAnother way to think about the nested logit model is that it allows an error term that varies between nests/top-level alternatives and another that varies within each nest\nSo, for instance, the utilities of biking and walking in our nested logit model above are\n\n\\[\n\\begin{align*}\nU_{bike} &= V_{bike} + \\epsilon_{nonmotorized} + \\epsilon_{bike} \\\\\nU_{walk} &= V_{walk} + \\epsilon_{nonmotorized} + \\epsilon_{walk}\n\\end{align*}\n\\]\n\nWhat \\(\\theta\\) actually represents is the ratio of the scales of the error terms at the top-level portion of the model and in the nest\nAs \\(\\theta\\) approaches 1, the scales of the error approach equality. When they are equal, the within nest variation is contributing all of the error term, and there is no shared unobserved variation."
   },
   {
     "objectID": "discrete-choice.html#estimation-challenges-with-the-nested-logit-local-optima-i",
@@ -900,7 +900,7 @@
     "href": "discrete-choice.html#estimation-challenges-with-logit-models-generally-convergence-and-identification",
     "title": "Introduction to Discrete Choice Models",
     "section": "Estimation challenges with logit models generally: convergence and identification",
-    "text": "Estimation challenges with logit models generally: convergence and identification\n\nIn each of the models above, we checked for convergence\nIf the model did not converge, it means Biogeme did not find a solution\nThis usually means an identification issue—for instance, multicollinearity, not excluding one ASC, etc.\nThere may also be cases where there is an idenfication issue that is indicated but unexpected coefficients, non-finite likelihoods, etc.—if anything looks off, identification is a good thing to think about\nSome identification issues may not be apparent in results at all"
+    "text": "Estimation challenges with logit models generally: convergence and identification\n\nIn each of the models above, we checked for convergence\nIf the model did not converge, it means Biogeme did not find a solution\nThis usually means an identification issue—for instance, multicollinearity, not excluding one ASC, etc.\nThere may also be cases where there is an idenfication issue that does not fail to converge, but has unexpected coefficients, non-finite likelihoods, etc.—if anything looks off, identification is a good thing to think about\nSome identification issues may not be apparent in results at all"
   },
   {
     "objectID": "discrete-choice.html#conclusion",
