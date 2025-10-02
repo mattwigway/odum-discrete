@@ -137,7 +137,7 @@
     "href": "discrete-choice.html#running-a-logistic-regression-in-python-results",
     "title": "Introduction to Discrete Choice Models",
     "section": "Running a logistic regression in Python: results",
-    "text": "Running a logistic regression in Python: results\n\n\n\nLogit Regression Results\n\n\nDep. Variable:\nwfh_expectation\nNo. Observations:\n1171\n\n\nModel:\nLogit\nDf Residuals:\n1167\n\n\nMethod:\nMLE\nDf Model:\n3\n\n\nDate:\nTue, 30 Sep 2025\nPseudo R-squ.:\n0.05368\n\n\nTime:\n11:52:47\nLog-Likelihood:\n-755.40\n\n\nconverged:\nTrue\nLL-Null:\n-798.25\n\n\nCovariance Type:\nnonrobust\nLLR p-value:\n1.837e-18\n\n\n\n\n\n\n\n\n\ncoef\nstd err\nz\nP&gt;|z|\n[0.025\n0.975]\n\n\nconst\n0.7258\n0.247\n2.944\n0.003\n0.243\n1.209\n\n\nage\n-0.0230\n0.005\n-5.065\n0.000\n-0.032\n-0.014\n\n\ncollege\n0.9273\n0.131\n7.102\n0.000\n0.671\n1.183\n\n\ngender_Male\n0.2520\n0.128\n1.967\n0.049\n0.001\n0.503"
+    "text": "Running a logistic regression in Python: results\n\n\n\nLogit Regression Results\n\n\nDep. Variable:\nwfh_expectation\nNo. Observations:\n1171\n\n\nModel:\nLogit\nDf Residuals:\n1167\n\n\nMethod:\nMLE\nDf Model:\n3\n\n\nDate:\nThu, 02 Oct 2025\nPseudo R-squ.:\n0.05368\n\n\nTime:\n10:51:17\nLog-Likelihood:\n-755.40\n\n\nconverged:\nTrue\nLL-Null:\n-798.25\n\n\nCovariance Type:\nnonrobust\nLLR p-value:\n1.837e-18\n\n\n\n\n\n\n\n\n\ncoef\nstd err\nz\nP&gt;|z|\n[0.025\n0.975]\n\n\nconst\n0.7258\n0.247\n2.944\n0.003\n0.243\n1.209\n\n\nage\n-0.0230\n0.005\n-5.065\n0.000\n-0.032\n-0.014\n\n\ncollege\n0.9273\n0.131\n7.102\n0.000\n0.671\n1.183\n\n\ngender_Male\n0.2520\n0.128\n1.967\n0.049\n0.001\n0.503"
   },
   {
     "objectID": "discrete-choice.html#exercise-add-the-black-and-hispanic-variables-to-the-model",
@@ -151,7 +151,7 @@
     "href": "discrete-choice.html#exercise-add-the-black-and-hispanic-variables-to-the-model-result",
     "title": "Introduction to Discrete Choice Models",
     "section": "Exercise: add the black and hispanic variables to the model: result",
-    "text": "Exercise: add the black and hispanic variables to the model: result\n\n\n\nLogit Regression Results\n\n\nDep. Variable:\nwfh_expectation\nNo. Observations:\n1171\n\n\nModel:\nLogit\nDf Residuals:\n1165\n\n\nMethod:\nMLE\nDf Model:\n5\n\n\nDate:\nTue, 30 Sep 2025\nPseudo R-squ.:\n0.05437\n\n\nTime:\n11:52:47\nLog-Likelihood:\n-754.85\n\n\nconverged:\nTrue\nLL-Null:\n-798.25\n\n\nCovariance Type:\nnonrobust\nLLR p-value:\n3.164e-17\n\n\n\n\n\n\n\n\n\ncoef\nstd err\nz\nP&gt;|z|\n[0.025\n0.975]\n\n\nconst\n0.7721\n0.261\n2.962\n0.003\n0.261\n1.283\n\n\nage\n-0.0237\n0.005\n-5.072\n0.000\n-0.033\n-0.015\n\n\ncollege\n0.9245\n0.131\n7.056\n0.000\n0.668\n1.181\n\n\nblack\n0.0801\n0.232\n0.346\n0.729\n-0.374\n0.534\n\n\nhispanic\n-0.1971\n0.201\n-0.979\n0.327\n-0.592\n0.197\n\n\ngender_Male\n0.2546\n0.128\n1.986\n0.047\n0.003\n0.506\n\n\n\n\n\n\nIs either statistically significant?"
+    "text": "Exercise: add the black and hispanic variables to the model: result\n\n\n\nLogit Regression Results\n\n\nDep. Variable:\nwfh_expectation\nNo. Observations:\n1171\n\n\nModel:\nLogit\nDf Residuals:\n1165\n\n\nMethod:\nMLE\nDf Model:\n5\n\n\nDate:\nThu, 02 Oct 2025\nPseudo R-squ.:\n0.05437\n\n\nTime:\n10:51:17\nLog-Likelihood:\n-754.85\n\n\nconverged:\nTrue\nLL-Null:\n-798.25\n\n\nCovariance Type:\nnonrobust\nLLR p-value:\n3.164e-17\n\n\n\n\n\n\n\n\n\ncoef\nstd err\nz\nP&gt;|z|\n[0.025\n0.975]\n\n\nconst\n0.7721\n0.261\n2.962\n0.003\n0.261\n1.283\n\n\nage\n-0.0237\n0.005\n-5.072\n0.000\n-0.033\n-0.015\n\n\ncollege\n0.9245\n0.131\n7.056\n0.000\n0.668\n1.181\n\n\nblack\n0.0801\n0.232\n0.346\n0.729\n-0.374\n0.534\n\n\nhispanic\n-0.1971\n0.201\n-0.979\n0.327\n-0.592\n0.197\n\n\ngender_Male\n0.2546\n0.128\n1.986\n0.047\n0.003\n0.506\n\n\n\n\n\n\nIs either statistically significant?"
   },
   {
     "objectID": "discrete-choice.html#an-alternate-conceptualization-of-the-logistic-regression-model-random-utility-theory",
@@ -903,11 +903,11 @@
     "text": "Estimation challenges with logit models generally: convergence and identification\n\nIn each of the models above, we checked for convergence\nIf the model did not converge, it means Biogeme did not find a solution\nThis usually means an identification issue—for instance, multicollinearity, not excluding one ASC, etc.\nThere may also be cases where there is an idenfication issue that does not fail to converge, but has unexpected coefficients, non-finite likelihoods, etc.—if anything looks off, identification is a good thing to think about\nSome identification issues may not be apparent in results at all"
   },
   {
-    "objectID": "discrete-choice.html#conclusion",
-    "href": "discrete-choice.html#conclusion",
+    "objectID": "discrete-choice.html#other-packages-for-discrete-choice-modeling",
+    "href": "discrete-choice.html#other-packages-for-discrete-choice-modeling",
     "title": "Introduction to Discrete Choice Models",
-    "section": "Conclusion",
-    "text": "Conclusion\n\nWe covered the binary, multinomial, and nested logit models\nThe multinomial logit model is used for multiple outcomes; the nested logit is used when you are concerned about independence of irrelevant alternatives\nWe estimated models using the Biogeme package, other packages are larch (Python) and apollo (R)"
+    "section": "Other packages for discrete choice modeling",
+    "text": "Other packages for discrete choice modeling\n\nlarch (Python, more “Pythonic” and better for integrating into larger codebases)\napollo (R)\nDiscreteChoiceModels.jl, (Julia, very fast and can handle extremely large datasets, still somewhat experimental)\nMost general-purpose statistical software has multinomial and nested logit models, but they tend to be less flexible that purpose-built packages"
   },
   {
     "objectID": "discrete-choice.html#questions",
@@ -922,5 +922,159 @@
     "title": "Odum Discrete Choice Modeling class",
     "section": "",
     "text": "Example code and data\nSlides"
+  },
+  {
+    "objectID": "discrete-choice.html#choice-experiment-design-labeled-experiments",
+    "href": "discrete-choice.html#choice-experiment-design-labeled-experiments",
+    "title": "Introduction to Discrete Choice Models",
+    "section": "Choice experiment design: labeled experiments",
+    "text": "Choice experiment design: labeled experiments\n\nTwo common ways to design a choice experiment and associated modeled structure\nIn a “labeled” experiment, the scenarios have labels that refer to some intrinsic aspect of the experiment, and associated bundle of unobserved attributes\n\ne.g. DSL, fiber, etc.\n\nYou can then add alternative specific constants for each of these outcomes except one, and proceed as normal"
+  },
+  {
+    "objectID": "discrete-choice.html#labeled-experiments-and-availability",
+    "href": "discrete-choice.html#labeled-experiments-and-availability",
+    "title": "Introduction to Discrete Choice Models",
+    "section": "Labeled experiments and availability",
+    "text": "Labeled experiments and availability\n\nWhen you have a large number of alternatives, you may not want to present all of them to respondents\nYou can leave some out, and then mark those as unavailable in estimation\nYou need to be a little careful, as the alternatives need to overlap between respondents\n\ne.g. if you had outcomes DSL, Fiber, Cable, and Satellite, you couldn’t give half the people a choice between DSL and Fiber, and half the people a choice between Cable and Satellite, and then run a single model"
+  },
+  {
+    "objectID": "discrete-choice.html#why-not",
+    "href": "discrete-choice.html#why-not",
+    "title": "Introduction to Discrete Choice Models",
+    "section": "Why not?",
+    "text": "Why not?\n\\[\n\\begin{align*}\nV_{DSL} &= 0 \\\\\nV_{fiber} &= \\alpha_{fiber} + \\beta_{fiber,urban} x_{urban} \\\\\nV_{cable} &= \\alpha_{cable} + \\beta_{cable,urban} x_{urban} \\\\\nV_{sat} &= \\alpha_{sat} + \\beta_{sat,urban} x_{urban}\n\\end{align*}\n\\]\n\nWhat happens if we add 1 to \\(\\alpha_{sat}\\) and \\(\\alpha_{cable}\\)?"
+  },
+  {
+    "objectID": "discrete-choice.html#complete-separation",
+    "href": "discrete-choice.html#complete-separation",
+    "title": "Introduction to Discrete Choice Models",
+    "section": "Complete separation",
+    "text": "Complete separation\nFor someone who saw the choice between cable and satellite\n\\[\n\\begin{align*}\nP_{cable} &= \\frac{e^{V_{cable}}}{\\displaystyle\\sum_i e^{V_i}} & \\quad\\quad &  P_{sat} &= \\frac{e^{V_{cable}}}{\\displaystyle\\sum_i e^{V_i}}  \\\\\nP_{cable} &= \\frac{e^{V_{cable}}}{e^{V_{cable}} + e^{V_{sat}}} & \\quad\\quad &  P_{sat} &= \\frac{e^{V_{cable}}}{e^{V_{cable}} + e^{V_{sat}}}  \\\\\n\\end{align*}\n\\]"
+  },
+  {
+    "objectID": "discrete-choice.html#adding-one-to-the-utilities",
+    "href": "discrete-choice.html#adding-one-to-the-utilities",
+    "title": "Introduction to Discrete Choice Models",
+    "section": "Adding one to the utilities",
+    "text": "Adding one to the utilities\n\\[\n\\begin{align*}\nP_{cable} &= \\frac{e^{V_{cable} + 1}}{e^{V_{cable} + 1} + e^{V_{sat} + 1}} & \\quad\\quad &  P_{sat} &= \\frac{e^{V_{cable} + 1}}{e^{V_{cable} + 1} + e^{V_{sat} + 1}}  \\\\\nP_{cable} &= \\frac{e^{V_{cable}}e^1}{e^{V_{cable}}e^1 + e^{V_{sat}}e^1} & \\quad\\quad &  P_{sat} &= \\frac{e^{V_{cable}}e^1}{e^{V_{cable}}e^1 + e^{V_{sat}}e^1}  \\\\\nP_{cable} &= \\frac{e^{V_{cable}}}{e^{V_{cable}} + e^{V_{sat}}} & \\quad\\quad &  P_{sat} &= \\frac{e^{V_{cable}}}{e^{V_{cable}} + e^{V_{sat}}} \\\\\nP_{cable} &= \\frac{e^{V_{cable}}}{\\displaystyle\\sum_i e^{V_i}} & \\quad\\quad &  P_{sat} &= \\frac{e^{V_{cable}}}{\\displaystyle\\sum_i e^{V_i}}\n\\end{align*}\n\\]\n\nNothing changes!"
+  },
+  {
+    "objectID": "discrete-choice.html#overlap-and-efficiency",
+    "href": "discrete-choice.html#overlap-and-efficiency",
+    "title": "Introduction to Discrete Choice Models",
+    "section": "Overlap and efficiency",
+    "text": "Overlap and efficiency\n\nYou can’t have groups of alternatives that don’t overlap with any other group\nThis doesn’t mean you have to have every possible combination, but the combinations you present have to overlap\nThere are specific tools and methods to design good choice experiments to avoid this, and to promote efficiency - i.e. the most possible data from the fewest possible questions"
+  },
+  {
+    "objectID": "discrete-choice.html#unlabeled-experiments",
+    "href": "discrete-choice.html#unlabeled-experiments",
+    "title": "Introduction to Discrete Choice Models",
+    "section": "Unlabeled experiments",
+    "text": "Unlabeled experiments\n\nUnlabeled experiments are where you present a few options to users that don’t have any intrinsic characteristics\ne.g. often used in residential location choice\nSo you have attributes of the homes (e.g. price, size, etc.) but there is nothing special about Home 1 vs Home 2 other than the attribute values\nYou then model the outcome using generic variables from the attributes\nMay leave out ASCs, or include them to account for order effects"
+  },
+  {
+    "objectID": "discrete-choice.html#best-worst-scaling",
+    "href": "discrete-choice.html#best-worst-scaling",
+    "title": "Introduction to Discrete Choice Models",
+    "section": "Best-worst scaling",
+    "text": "Best-worst scaling\n\nBest-worst scaling is a tool to let you get more information from a choice experiment\nInstead of having folks choose only the best option, you have them choose best and worst\nOr, in some cases, you present only one option and have them choose the best and worst attributes of that option\nYou may follow up with asking second-best and second-worst, etc.\nLots more info in Louviere,Flynn, & Marley (2015) Best-worst scaling: Theory, methods and applications."
+  },
+  {
+    "objectID": "discrete-choice.html#other-choice-models-the-mixed-logit",
+    "href": "discrete-choice.html#other-choice-models-the-mixed-logit",
+    "title": "Introduction to Discrete Choice Models",
+    "section": "Other choice models: the mixed logit",
+    "text": "Other choice models: the mixed logit\n\nThe mixed logit model allows coefficients to have distributions\ne.g. the travel cost coefficient might be (negative) lognormally distributed, with \\(\\mu = -5\\) and \\(\\sigma = 0.05\\)\nThis is really useful when integrating with a larger Monte Carlo simulation\n\nWe can draw values from this distribution for each individual\nor for each choice, but no one does this (though they probably should)\n\nRequires estimating distributions for within and between person variation"
+  },
+  {
+    "objectID": "discrete-choice.html#be-careful-with-ratios",
+    "href": "discrete-choice.html#be-careful-with-ratios",
+    "title": "Introduction to Discrete Choice Models",
+    "section": "Be careful with ratios",
+    "text": "Be careful with ratios\n\nSuppose we have travel time and travel cost specified as normally distributed variables\nWe want to get a distribution for willingness to pay\nOne might think you can just sample from each independently and take ratios\nWhat is the distribution of the ratio of normally distributed variables with mean 0?\n\nThe pure evil Cauchy distribution\n\nEven if the mean is not zero, moments are not defined Daly,Hess, & Train(2012) Assuring finite moments for willingness to pay in random coefficient models Transportation\nBasically, if the distribution in the denominator has positive probability at zero, moments not defined"
+  },
+  {
+    "objectID": "discrete-choice.html#other-distributions",
+    "href": "discrete-choice.html#other-distributions",
+    "title": "Introduction to Discrete Choice Models",
+    "section": "Other distributions",
+    "text": "Other distributions\n\nWe often use the lognormal distribution instead of the normal, since it accurately reflect a bounded-at-0 variable\n\n(if you agree that travel time coefficient should be bounded at zero)\n\nRatio of two lognormals is also lognormal"
+  },
+  {
+    "objectID": "discrete-choice.html#mixed-logit-example",
+    "href": "discrete-choice.html#mixed-logit-example",
+    "title": "Introduction to Discrete Choice Models",
+    "section": "Mixed logit: example",
+    "text": "Mixed logit: example\nInitial simulated log-likelhood (at starting values): -7345.956309032952\nLog-likelihood at constant: -6211.129848467907\nFinal simulated log-likelihood: -4498.351964529992\n100 DiscreteChoiceModels.HaltonDraws draws\nMcFadden's pseudo-R2 (relative to starting values): 0.2757594714205507\n┌───────────────────────────┬──────────┬───────────┬───────────┐\n│                           │     Coef │ Std. Err. │    Z-stat │\n├───────────────────────────┼──────────┼───────────┼───────────┤\n│             βtraveltime_μ │ -2.76947 │   0.03854 │ -71.86490 │\n│         βtraveltime_log_σ │ -1.19694 │   0.15900 │  -7.52773 │\n│             βtravelcost_μ │ -2.37482 │   0.13901 │ -17.08319 │\n│         βtravelcost_log_σ │ -0.62726 │   0.33379 │  -1.87917 │\n│                     αBike │ -3.36600 │   0.14039 │ -23.97688 │\n│    βBike_income_over_100k │  0.20176 │   0.17978 │   1.12226 │\n│           βBike_rush_hour │  0.05728 │   0.21564 │   0.26564 │\n│                     αWalk │  0.11803 │   0.05928 │   1.99103 │\n│    βWalk_income_over_100k │  0.44244 │   0.06900 │   6.41193 │\n│           βWalk_rush_hour │ -0.20535 │   0.09196 │  -2.23310 │\n│                  αTransit │ -1.11779 │   0.08937 │ -12.50790 │\n│ βTransit_income_over_100k │ -1.56190 │   0.16225 │  -9.62652 │\n│        βTransit_rush_hour │  0.17645 │   0.14121 │   1.24960 │\n└───────────────────────────┴──────────┴───────────┴───────────┘"
+  },
+  {
+    "objectID": "discrete-choice.html#estimation-in-willingness-to-pay-space",
+    "href": "discrete-choice.html#estimation-in-willingness-to-pay-space",
+    "title": "Introduction to Discrete Choice Models",
+    "section": "Estimation in willingness-to-pay space",
+    "text": "Estimation in willingness-to-pay space\n\nAnother way to address the problem is to model the distribution of value of travel time directly, by estimating the model in willingness-to-pay space\nThis allows us to have a coefficient for value of travel time directly, no additional math necessary"
+  },
+  {
+    "objectID": "discrete-choice.html#willingness-to-pay-space-mathematically",
+    "href": "discrete-choice.html#willingness-to-pay-space-mathematically",
+    "title": "Introduction to Discrete Choice Models",
+    "section": "Willingness-to-pay space, mathematically",
+    "text": "Willingness-to-pay space, mathematically\n\\[\n\\begin{align*}\nU_{car} &= \\beta_{cost} x_{cost} + \\beta_{time} x_{time}\\\\\nU_{car} &= \\beta_{cost} x_{cost} + \\beta_{cost} \\frac{\\beta_{time}}{\\beta_{cost}} x_{time}\\\\\nU_{car} &= \\beta_{cost} x_{cost} + \\beta_{cost} \\beta_{vtt} x_{time}\\\\\n\\end{align*}\n\\]\n\n\nBoth \\(\\beta_{cost}\\) and \\(\\beta_{vtt}\\) can have distributions"
+  },
+  {
+    "objectID": "discrete-choice.html#willingness-to-pay-space-example",
+    "href": "discrete-choice.html#willingness-to-pay-space-example",
+    "title": "Introduction to Discrete Choice Models",
+    "section": "Willingness-to-pay space: example",
+    "text": "Willingness-to-pay space: example\nMixed logit model\nInitial simulated log-likelhood (at starting values): -12333.236314725033\nLog-likelihood at constant: -6211.129848467907\nFinal simulated log-likelihood: -4499.111396296912\n100 DiscreteChoiceModels.HaltonDraws draws\nMcFadden's pseudo-R2 (relative to starting values): 0.27563720191637875\n┌───────────────────────────┬───────────┬──────────────────┬───────────┐\n│                           │      Coef │        Std. Err. │    Z-stat │\n├───────────────────────────┼───────────┼──────────────────┼───────────┤\n│                    βvtt_μ │  -0.61288 │          0.06122 │ -10.01040 │\n│                βvtt_log_σ │ -43.69876 │ 1581373323.31223 │  -0.00000 │\n│             βtravelcost_μ │  -2.15985 │          0.06630 │ -32.57663 │\n│         βtravelcost_log_σ │  -0.90543 │          0.11662 │  -7.76398 │\n│                     αBike │  -3.37726 │          0.14032 │ -24.06821 │\n│    βBike_income_over_100k │   0.20680 │          0.17992 │   1.14935 │\n│           βBike_rush_hour │   0.04512 │          0.21595 │   0.20896 │\n│                     αWalk │   0.09446 │          0.05812 │   1.62541 │\n│    βWalk_income_over_100k │   0.44023 │          0.06900 │   6.38015 │\n│           βWalk_rush_hour │  -0.21144 │          0.09183 │  -2.30254 │\n│                  αTransit │  -1.09066 │          0.08675 │ -12.57318 │\n│ βTransit_income_over_100k │  -1.52870 │          0.15712 │  -9.72939 │\n│        βTransit_rush_hour │   0.10867 │          0.13738 │   0.79106 │\n└───────────────────────────┴───────────┴──────────────────┴───────────┘\n\n(pretend you didn’t see the standard error on \\(\\beta_{vtt \\mathrm{log} \\sigma}\\))\nMean of a lognormal distribution is \\(e^{\\mu + \\frac{\\sigma^2}{2}}\\)\nTo ensure \\(\\sigma &gt; 0\\), we estimated \\(\\mathrm{ln} \\sigma\\) instead of \\(\\sigma\\)\nSo mean of our VTT distribution is \\(e^{-0.61 + \\frac{(e^{-44.7})^2}{2}} \\times 60 = 32.92 / \\mathrm{hr}\\)"
+  },
+  {
+    "objectID": "discrete-choice.html#comparison-to-bayesian-models",
+    "href": "discrete-choice.html#comparison-to-bayesian-models",
+    "title": "Introduction to Discrete Choice Models",
+    "section": "Comparison to Bayesian models",
+    "text": "Comparison to Bayesian models\n\nBayesian models also estimate distributions of coefficients\nYou integrate together an assumed prior distribution with some data to get a posterior distribution\nMixed logit is a bit different: we are assuming the distribution functional form, but estimating the parameters from data with no priors"
+  },
+  {
+    "objectID": "discrete-choice.html#estimating-the-mixed-logit-model",
+    "href": "discrete-choice.html#estimating-the-mixed-logit-model",
+    "title": "Introduction to Discrete Choice Models",
+    "section": "Estimating the mixed logit model",
+    "text": "Estimating the mixed logit model\n\nLike other choice models, the log-likelihood is still the product of the predicted probabilities of the chosen outcomes\n\\(l = \\displaystyle\\prod_n P_{ny}\\), \\(\\ell = \\displaystyle\\sum_n \\mathrm{ln} P_{ny}\\)\nBut this probability includes an integral:\n\\(P_{ni} = \\int \\frac{e^{V_{ni}(\\beta)}}{\\displaystyle\\sum_j e^{V_{nj}(\\beta)} } f(\\beta) d\\beta\\) Train(2009) Discrete Choice Methods with Simulation"
+  },
+  {
+    "objectID": "discrete-choice.html#breaking-down-the-probability",
+    "href": "discrete-choice.html#breaking-down-the-probability",
+    "title": "Introduction to Discrete Choice Models",
+    "section": "Breaking down the probability",
+    "text": "Breaking down the probability\n\n\\(P_{ni} = \\int \\left(\\frac{e^{V_{ni}(\\beta)}}{\\displaystyle\\sum_j e^{V_{nj}(\\beta)} }\\right) f(\\beta) d\\beta\\)\n\\(\\beta\\) is your parameter vector, some of which are probabilistic\nWe have to integrate over (i.e. evaluate at every possible value of) this parameter vector\nThe predicted probability gets multiplied by the probability of that parameter vector\nSince the probability of all possible parameter vectors is 1, this is essentially a weighted average"
+  },
+  {
+    "objectID": "discrete-choice.html#computational-considerations",
+    "href": "discrete-choice.html#computational-considerations",
+    "title": "Introduction to Discrete Choice Models",
+    "section": "Computational considerations",
+    "text": "Computational considerations\n\nMost of the time, we don’t have a closed-form solution for that integral\nInstead, we used simulated likelihoods\nRandomly draw K possible beta vectors\n\\(P_{ni} \\approx \\sum_k^K \\frac{e^{V_{ni}(\\beta_k)}}{\\displaystyle\\sum_j e^{V_{nj}(\\beta_k)} } K^{-1}\\)"
+  },
+  {
+    "objectID": "discrete-choice.html#applications-of-the-mixed-logit-model",
+    "href": "discrete-choice.html#applications-of-the-mixed-logit-model",
+    "title": "Introduction to Discrete Choice Models",
+    "section": "Applications of the mixed logit model",
+    "text": "Applications of the mixed logit model\n\nIn the San Francisco travel demand model, they estimate a value-of-travel-time distribution\nThe model then simulates actions of discrete “agents” (people/households)\nEach person has a value of time drawn from this distribution at the start of the model run"
+  },
+  {
+    "objectID": "discrete-choice.html#mixed-logit-as-an-alternative-to-nested-logit",
+    "href": "discrete-choice.html#mixed-logit-as-an-alternative-to-nested-logit",
+    "title": "Introduction to Discrete Choice Models",
+    "section": "Mixed logit as an alternative to nested logit",
+    "text": "Mixed logit as an alternative to nested logit\n\nYou can also use the mixed logit as an “error components” that allows error correlation between some alternatives\nIn a more flexible way than the nested logit\nFor example:\n\n\\[\n\\begin{align*}\nU_{car} &= V_{car} + \\epsilon_{car} \\\\\nU_{transit} &= V_{transit} + \\epsilon_{transit} \\\\\nU_{bike} &= V_{bike} + \\epsilon_{nonmotorized} + \\epsilon_{bike} \\\\\nU_{walk} &= V_{walk} + \\epsilon_{nonmotorized} + \\epsilon_{walk} \\\\\n\\end{align*}\n\\]\nwhere \\(\\epsilon_{nonmotorized}\\) is a coefficient with a distribution."
+  },
+  {
+    "objectID": "discrete-choice.html#disutility-of-travel-time-distribution",
+    "href": "discrete-choice.html#disutility-of-travel-time-distribution",
+    "title": "Introduction to Discrete Choice Models",
+    "section": "Disutility of travel time: distribution",
+    "text": "Disutility of travel time: distribution"
   }
 ]
