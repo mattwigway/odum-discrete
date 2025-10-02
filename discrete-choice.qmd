@@ -1859,7 +1859,7 @@ Nothing changes!
 
 - Suppose you have a model of mode choice, with two alternatives: driving and a red bus
 - One individual has a 50% probability of choosing each alternative
-- Suppose you paint half the buses red but don't change anything about the service
+- Suppose you paint half the buses blue but don't change anything about the service
 
 ## The red bus/blue bus problem
 
