@@ -16,7 +16,7 @@ execute:
     echo: true
     output: true
     cache: false
-bibliography: bibliography.bib
+bibliography: discrete-choice.bib
 csl: presentation.csl
 from: markdown+emoji
 ---
@@ -2381,6 +2381,183 @@ plt.yticks([])
 - This usually means an identification issue—for instance, multicollinearity, not excluding one ASC, etc.
 - There may also be cases where there is an idenfication issue that does not fail to converge, but has unexpected coefficients, non-finite likelihoods, etc.—if anything looks off, identification is a good thing to think about
 - Some identification issues may not be apparent in results at all
+
+## Other choice models: the mixed logit
+
+::: {.incremental}
+- The _mixed logit_ model allows coefficients to have distributions
+- e.g. the travel cost coefficient might be (negative) lognormally distributed, with $\mu = -5$ and $\sigma = 0.05$
+- This is really useful when integrating with a larger Monte Carlo simulation
+    - We can draw values from this distribution for each individual
+    - or for each choice, but no one does this (though they probably should)
+        - Requires estimating distributions for within and between person variation
+:::
+
+## Be careful with ratios
+
+::: {.incremental}
+- Suppose we have travel time and travel cost specified as normally distributed variables
+- We want to get a distribution for willingness to pay
+- One might think you can just sample from each independently and take ratios
+- What is the distribution of the ratio of normally distributed variables with mean 0?
+    - The _pure evil_ Cauchy distribution
+- Even if the mean is not zero, moments are not defined [@dalyAssuringFiniteMoments2012]
+- Basically, if the distribution in the denominator has positive probability at zero, moments not defined
+:::
+
+## Other distributions
+
+- We often use the _lognormal_ distribution instead of the normal, since it accurately reflect a bounded-at-0 variable
+    - (if you agree that travel time coefficient should be bounded at zero)
+- Ratio of two lognormals is also lognormal
+
+## Mixed logit: example
+
+```
+Initial simulated log-likelhood (at starting values): -7345.956309032952
+Log-likelihood at constant: -6211.129848467907
+Final simulated log-likelihood: -4498.351964529992
+100 DiscreteChoiceModels.HaltonDraws draws
+McFadden's pseudo-R2 (relative to starting values): 0.2757594714205507
+┌───────────────────────────┬──────────┬───────────┬───────────┐
+│                           │     Coef │ Std. Err. │    Z-stat │
+├───────────────────────────┼──────────┼───────────┼───────────┤
+│             βtraveltime_μ │ -2.76947 │   0.03854 │ -71.86490 │
+│         βtraveltime_log_σ │ -1.19694 │   0.15900 │  -7.52773 │
+│             βtravelcost_μ │ -2.37482 │   0.13901 │ -17.08319 │
+│         βtravelcost_log_σ │ -0.62726 │   0.33379 │  -1.87917 │
+│                     αBike │ -3.36600 │   0.14039 │ -23.97688 │
+│    βBike_income_over_100k │  0.20176 │   0.17978 │   1.12226 │
+│           βBike_rush_hour │  0.05728 │   0.21564 │   0.26564 │
+│                     αWalk │  0.11803 │   0.05928 │   1.99103 │
+│    βWalk_income_over_100k │  0.44244 │   0.06900 │   6.41193 │
+│           βWalk_rush_hour │ -0.20535 │   0.09196 │  -2.23310 │
+│                  αTransit │ -1.11779 │   0.08937 │ -12.50790 │
+│ βTransit_income_over_100k │ -1.56190 │   0.16225 │  -9.62652 │
+│        βTransit_rush_hour │  0.17645 │   0.14121 │   1.24960 │
+└───────────────────────────┴──────────┴───────────┴───────────┘
+```
+
+## Disutility of travel time: distribution
+
+```{python}
+#| echo: false
+#| fig-alt: "Probability density function of lognormal travel time coefficient"
+xs = np.arange(0, 0.3, 0.0005)
+ys = scipy.stats.lognorm.pdf(xs, np.exp(-1.19694), scale=np.exp(-2.76947))
+plt.plot(-xs, ys)
+```
+
+## Estimation in willingness-to-pay space
+
+- Another way to address the problem is to model the distribution of value of travel time directly, by estimating the model in _willingness-to-pay space_
+- This allows us to have a coefficient for value of travel time directly, no additional math necessary
+
+## Willingness-to-pay space, mathematically
+
+$$
+\begin{align*}
+U_{car} &= \beta_{cost} x_{cost} + \beta_{time} x_{time}\\
+U_{car} &= \beta_{cost} x_{cost} + \beta_{cost} \frac{\beta_{time}}{\beta_{cost}} x_{time}\\
+U_{car} &= \beta_{cost} x_{cost} + \beta_{cost} \beta_{vtt} x_{time}\\
+\end{align*}
+$$
+
+::: {.fragment}
+- Both $\beta_{cost}$ and $\beta_{vtt}$ can have distributions
+:::
+
+## Willingness-to-pay space: example
+
+```
+Mixed logit model
+Initial simulated log-likelhood (at starting values): -12333.236314725033
+Log-likelihood at constant: -6211.129848467907
+Final simulated log-likelihood: -4499.111396296912
+100 DiscreteChoiceModels.HaltonDraws draws
+McFadden's pseudo-R2 (relative to starting values): 0.27563720191637875
+┌───────────────────────────┬───────────┬──────────────────┬───────────┐
+│                           │      Coef │        Std. Err. │    Z-stat │
+├───────────────────────────┼───────────┼──────────────────┼───────────┤
+│                    βvtt_μ │  -0.61288 │          0.06122 │ -10.01040 │
+│                βvtt_log_σ │ -43.69876 │ 1581373323.31223 │  -0.00000 │
+│             βtravelcost_μ │  -2.15985 │          0.06630 │ -32.57663 │
+│         βtravelcost_log_σ │  -0.90543 │          0.11662 │  -7.76398 │
+│                     αBike │  -3.37726 │          0.14032 │ -24.06821 │
+│    βBike_income_over_100k │   0.20680 │          0.17992 │   1.14935 │
+│           βBike_rush_hour │   0.04512 │          0.21595 │   0.20896 │
+│                     αWalk │   0.09446 │          0.05812 │   1.62541 │
+│    βWalk_income_over_100k │   0.44023 │          0.06900 │   6.38015 │
+│           βWalk_rush_hour │  -0.21144 │          0.09183 │  -2.30254 │
+│                  αTransit │  -1.09066 │          0.08675 │ -12.57318 │
+│ βTransit_income_over_100k │  -1.52870 │          0.15712 │  -9.72939 │
+│        βTransit_rush_hour │   0.10867 │          0.13738 │   0.79106 │
+└───────────────────────────┴───────────┴──────────────────┴───────────┘
+```
+
+::: {.incremental}
+- (pretend you didn't see the standard error on $\beta_{vtt \mathrm{log} \sigma}$)
+- Mean of a lognormal distribution is $e^{\mu + \frac{\sigma^2}{2}}$
+- To ensure $\sigma > 0$, we estimated $\mathrm{ln} \sigma$ instead of $\sigma$
+- So mean of our VTT distribution is $e^{-0.61 + \frac{(e^{-44.7})^2}{2}} \times 60 = 32.92 / \mathrm{hr}$
+:::
+
+## Comparison to Bayesian models
+
+- Bayesian models also estimate distributions of coefficients
+- You integrate together an assumed _prior distribution_ with some data to get a _posterior distribution_
+- Mixed logit is a bit different: we are assuming the distribution functional form, but estimating the parameters from data with no priors
+
+## Estimating the mixed logit model
+
+::: {.incremental}
+- Like other choice models, the log-likelihood is still the product of the predicted probabilities of the chosen outcomes
+- $l = \displaystyle\prod_n P_{ny}$, $\ell = \displaystyle\sum_n \mathrm{ln} P_{ny}$
+- But this probability includes an integral:
+- $P_{ni} = \int \frac{e^{V_{ni}(\beta)}}{\displaystyle\sum_j e^{V_{nj}(\beta)} } f(\beta) d\beta$ [@train_discrete_2009]
+:::
+
+## Breaking down the probability
+
+::: {.incremental}
+- $P_{ni} = \int \left(\frac{e^{V_{ni}(\beta)}}{\displaystyle\sum_j e^{V_{nj}(\beta)} }\right) f(\beta) d\beta$
+- $\beta$ is your parameter vector, some of which are probabilistic
+- We have to integrate over (i.e. evaluate at every possible value of) this parameter vector
+- The predicted probability gets multiplied by the probability of that parameter vector
+- Since the probability of all possible parameter vectors is 1, this is essentially a weighted average
+:::
+
+## Computational considerations
+
+::: {.incremental}
+- Most of the time, we don't have a closed-form solution for that integral
+- Instead, we used _simulated_ likelihoods
+- Randomly draw K possible beta vectors
+- $P_{ni} \approx \sum_k^K \frac{e^{V_{ni}(\beta_k)}}{\displaystyle\sum_j e^{V_{nj}(\beta_k)} } K^{-1}$
+:::
+
+## Applications of the mixed logit model
+
+- In the San Francisco travel demand model, they estimate a value-of-travel-time distribution
+- The model then simulates actions of discrete "agents" (people/households)
+- Each person has a value of time drawn from this distribution at the start of the model run
+
+## Mixed logit as an alternative to nested logit
+
+- You can also use the mixed logit as an "error components" that allows error correlation between some alternatives
+- In a more flexible way than the nested logit
+- For example:
+
+$$
+\begin{align*}
+U_{car} &= V_{car} + \epsilon_{car} \\
+U_{transit} &= V_{transit} + \epsilon_{transit} \\
+U_{bike} &= V_{bike} + \epsilon_{nonmotorized} + \epsilon_{bike} \\
+U_{walk} &= V_{walk} + \epsilon_{nonmotorized} + \epsilon_{walk} \\
+\end{align*}
+$$
+
+where $\epsilon_{nonmotorized}$ is a coefficient with a distribution.
 
 ## Other packages for discrete choice modeling
 
